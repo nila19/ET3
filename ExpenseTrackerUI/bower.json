@@ -1,0 +1,16 @@
+{
+  "name": "expense-tracker-ui",
+  "version": "0.0.0",
+  "private": true,
+  "dependencies": {
+    "angular": "1.5.x",
+    "angular-animate": "1.5.x",
+    "angular-mocks": "1.5.x",
+    "angular-resource": "1.5.x",
+    "angular-route": "1.5.x",
+    "bootstrap": "3.3.x",
+    "jquery": "x",
+    "less": "^2.7.1",
+    "toastr": "^2.1.3"
+  }
+}
