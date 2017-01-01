@@ -109,7 +109,7 @@
                         <div class="col-lg-2 col-md-4 col-sm-6">
                           <div class="card card-stats">
                             <div class="card-header" data-background-color="blue">
-                              <a id="acct1" href="#"><i class="material-icons">account_balance</i></a>
+                              <a id="acct2" href="#"><i class="material-icons">account_balance</i></a>
                             </div>
                             <div class="card-content">
                               <p class="category">Chase Checking</p>
@@ -136,7 +136,7 @@
                         <div class="col-lg-2 col-md-4 col-sm-6">
                           <div class="card card-stats">
                             <div class="card-header" data-background-color="red">
-                              <a id="acct1" href="#"><i class="material-icons">credit_card</i></a>
+                              <a id="acct3" href="#"><i class="material-icons">credit_card</i></a>
                             </div>
                             <div class="card-content">
                               <p class="category">BOA VISA</p>
@@ -163,7 +163,7 @@
                         <div class="col-lg-2 col-md-4 col-sm-6">
                           <div class="card card-stats">
                             <div class="card-header" data-background-color="red">
-                              <a id="acct1" href="#"><i class="material-icons">credit_card</i></a>
+                              <a id="acct4" href="#"><i class="material-icons">credit_card</i></a>
                             </div>
                             <div class="card-content">
                               <p class="category">Chase Freedom</p>
@@ -190,7 +190,7 @@
                         <div class="col-lg-2 col-md-4 col-sm-6">
                           <div class="card card-stats">
                             <div class="card-header" data-background-color="red">
-                              <a id="acct1" href="#"><i class="material-icons">credit_card</i></a>
+                              <a id="acct5" href="#"><i class="material-icons">credit_card</i></a>
                             </div>
                             <div class="card-content">
                               <p class="category">Blue Cash</p>
@@ -217,7 +217,7 @@
                         <div class="col-lg-2 col-md-4 col-sm-6">
                           <div class="card card-stats">
                             <div class="card-header" data-background-color="red">
-                              <a id="acct1" href="#"><i class="material-icons">credit_card</i></a>
+                              <a id="acct6" href="#"><i class="material-icons">credit_card</i></a>
                             </div>
                             <div class="card-content">
                               <p class="category">GAP VISA</p>
@@ -246,7 +246,7 @@
                         <div class="col-lg-2 col-md-4 col-sm-6">
                           <div class="card card-stats">
                             <div class="card-header" data-background-color="green">
-                              <a id="acct1" href="#"><i class="material-icons">attach_money</i></a>
+                              <a id="acct7" href="#"><i class="material-icons">attach_money</i></a>
                             </div>
                             <div class="card-content">
                               <p class="category">Cash - Bala</p>
@@ -273,7 +273,7 @@
                         <div class="col-lg-2 col-md-4 col-sm-6">
                           <div class="card card-stats">
                             <div class="card-header" data-background-color="green">
-                              <a id="acct1" href="#"><i class="material-icons">attach_money</i></a>
+                              <a id="acct8" href="#"><i class="material-icons">attach_money</i></a>
                             </div>
                             <div class="card-content">
                               <p class="category">Cash - Anitha</p>
@@ -300,7 +300,7 @@
                         <div class="col-lg-2 col-md-4 col-sm-6">
                           <div class="card card-stats">
                             <div class="card-header" data-background-color="green">
-                              <a id="acct1" href="#"><i class="material-icons">attach_money</i></a>
+                              <a id="acct9" href="#"><i class="material-icons">attach_money</i></a>
                             </div>
                             <div class="card-content">
                               <p class="category">Aetna HSA</p>
@@ -336,13 +336,13 @@
                                 <div class="nav-tabs-wrapper">
                                   <span class="nav-tabs-title text-uppercase">Bills:</span>
                                   <ul class="nav nav-tabs" data-tabs="tabs">
-                                    <li class="active">
+                                    <li id="h_bills_open" class="active">
                                       <a href="#currentbills" data-toggle="tab">
                                         <i class="material-icons">flag</i>
                                         Open
                                       <div class="ripple-container"></div></a>
                                     </li>
-                                    <li class="">
+                                    <li id="h_bills_closed" class="">
                                       <a href="#pastbills" data-toggle="tab">
                                         <i class="material-icons">schedule</i>
                                         Closed
@@ -356,53 +356,47 @@
                             <div class="card-content">
                               <div class="tab-content">
                                 <div class="tab-pane active" id="currentbills">
-                                  <table class="table">
-                                    <thead class="text-warning text-uppercase">
-                                      <tr>
-                                        <th>&nbsp;</th>
-                                        <th>Bill Date</th>
-                                        <th>Bill Amount</th>
-                                        <th>Due Date</th>
-                                        <th>&nbsp;</th>
-                                      </tr>
-                                    </thead>
-                                    <tbody>
-                                      <tr>
-                                        <td class="td-actions text-right">
-                                          <button type="button" rel="tooltip" title="In progress" class="btn btn-primary btn-simple btn-xs">
-                                            <i class="material-icons">schedule</i>
-                                          </button>
-                                        </td>
-                                        <td>21-Jan-17</td>
-                                        <td></td>
-                                        <td>21-Feb-17</td>
-                                        <td class="td-actions text-right">&nbsp;
-                                        </td>
-                                      </tr>
-                                      <tr>
-                                        <td class="td-actions text-right">
-                                          <button type="button" rel="tooltip" title="View Expenses" class="btn btn-primary btn-simple btn-xs">
-                                            <i class="material-icons">list</i>
-                                          </button>
-                                        </td>
-                                        <td>21-Dec-16</td>
-                                        <td>$ 1,258.54</td>
-                                        <td>21-Jan-17</td>
-                                        <td class="td-actions text-right">
-                                          <button type="button" rel="tooltip" title="Pay the bill" class="btn btn-success btn-simple btn-xs">
-                                            <i class="material-icons">send</i>
-                                          </button>
-                                        </td>
-                                      </tr>
-                                      <tr>
-                                        <td></td>
-                                        <td>&nbsp;</td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                      </tr>
-                                    </tbody>
-                                  </table>
+                                  <div class="row">
+                                    <div class="col-md-1">&nbsp;</div>
+                                    <div class="col-md-3">
+                                      <button type="button" rel="tooltip" title="View Expenses" class="btn btn-primary btn-lg">
+                                        <i class="material-icons">list</i>
+                                      </button>
+                                    </div>
+                                    <div class="col-md-4">
+                                      <table class="table">
+                                        <tbody>
+                                          <tr>
+                                            <td class="text-right text-uppercase text-warning">Bill Date</td>
+                                            <td>&nbsp;</td>
+                                            <td>21-Nov-16</td>
+                                          </tr>
+                                          <tr>
+                                            <td class="text-right text-uppercase text-warning">Bill Amount</td>
+                                            <td>&nbsp;</td>
+                                            <td>$ 2,250.45</td>
+                                          </tr>
+                                          <tr>
+                                            <td class="text-right text-uppercase text-warning">Due Date</td>
+                                            <td>&nbsp;</td>
+                                            <td>21-Nov-16</td>
+                                          </tr>
+                                        </tbody>
+                                      </table>
+                                    </div>
+                                    <div class="col-md-1">&nbsp;</div>
+                                    <div class="col-md-3">
+                                      <button type="button" rel="tooltip" title="Pay Now" class="btn btn-success btn-lg">
+                                        <i class="material-icons">payment</i>
+                                      </button>
+                                    </div>
+                                  </div>
+                                  <div class="card-footer">
+                                    <div class="stats">
+                                        <i class="material-icons">schedule</i>
+                                      &nbsp;Next Bill on 16-Jan
+                                    </div>
+                                  </div>
                                 </div>
                                 <div class="tab-pane" id="pastbills">
                                   <table class="table">
@@ -441,9 +435,9 @@
                                       <tr>
                                         <td colspan="3">
                                           <div class="stats">
-                                            <button type="button" class="btn btn-primary btn-simple btn-xs">
+                                            <button type="button" class="btn btn-simple btn-xs">
                                               <i class="material-icons">schedule</i>
-                                            </button>&nbsp;Next bill on 16-Jan
+                                            </button>&nbsp;Next Bill on 16-Jan
                                           </div>
                                         </td>
                                         <td>
@@ -473,9 +467,14 @@
 								<div class="card-header card-chart" data-background-color="orange">
 									<div class="ct-chart" id="emailsSubscriptionChart"></div>
 								</div>
-								<div class="card-content">
-									<h6 class="title">Monthly Expenses Trend</h6>
-								</div>
+                                <div class="card-content">
+                                </div>
+                                <div class="card-footer">
+                                  <div class="stats">
+                                      <i class="material-icons">schedule</i>
+                                    &nbsp;Monthly Expenses Trend
+                                  </div>
+                                </div>
 							</div>
 						</div>
 					</div>

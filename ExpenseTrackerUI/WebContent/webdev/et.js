@@ -2,7 +2,19 @@ function initButtons() {
 	console.log('Initializing buttons....');
 
 	$('#acct1').click(function() {
-		console.log('BOA clicked....');
+		console.log('BOA 7787 clicked....');
+		$('#h_bills_open').removeClass('active').hide();
+		$('#currentbills').hide();
+		$('#h_bills_closed').addClass('active');
+		$('#pastbills').show();
+	});
+
+	$('#acct3').click(function() {
+		console.log('BOA VISA clicked....');
+		$('#h_bills_closed').removeClass('active');
+		$('#pastbills').hide();
+		$('#h_bills_open').addClass('active').show();
+		$('#currentbills').show();
 	});
 
 	// Default
