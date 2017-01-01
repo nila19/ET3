@@ -127,7 +127,7 @@
                             </div>
                             <div class="card-footer" align="center">
                               <div class="stats">
-                                <span class="btn btn-success btn-sm"> Tally <span class="badge">42</span>
+                                <span class="btn btn-success btn-sm"> Tally
                                 </span>
                               </div>
                             </div>
@@ -181,7 +181,7 @@
                             </div>
                             <div class="card-footer" align="center">
                               <div class="stats">
-                                <span class="btn btn-success btn-sm"> Tally <span class="badge">42</span>
+                                <span class="btn btn-success btn-sm"> Tally
                                 </span>
                               </div>
                             </div>
@@ -433,34 +433,32 @@
                                             <i class="material-icons">list</i>
                                           </button>
                                         </td>
-                                        <td>21-Oct-16</td>
-                                        <td>$ 758.54</td>
-                                        <td>21-Nov-16</td>
-                                        <td>15-Nov-16</td>
-                                      </tr>
-                                      <tr>
-                                        <td class="td-actions text-right">
-                                          <button type="button" rel="tooltip" title="View Expenses" class="btn btn-primary btn-simple btn-xs">
-                                            <i class="material-icons">list</i>
-                                          </button>
-                                        </td>
                                         <td>21-Sep-16</td>
                                         <td>$ 1,008.22</td>
                                         <td>21-Oct-16</td>
                                         <td>15-Oct-16</td>
                                       </tr>
                                       <tr>
-                                        <td>&nbsp;</td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td class="td-actions text-right">
-                                          <button type="button" class="btn btn-primary btn-simple btn-xs">
-                                            <i class="material-icons">skip_previous</i>
-                                          </button>&nbsp;&nbsp;
-                                          <button type="button" class="btn btn-primary btn-simple btn-xs">
-                                            <i class="material-icons">skip_next</i>
-                                          </button>
+                                        <td colspan="3">
+                                          <div class="stats">
+                                            <button type="button" class="btn btn-primary btn-simple btn-xs">
+                                              <i class="material-icons">schedule</i>
+                                            </button>&nbsp;Next bill on 16-Jan
+                                          </div>
+                                        </td>
+                                        <td>
+                                          <div class="stats">
+                                            <button type="button" class="btn btn-primary btn-simple btn-xs">
+                                              <i class="material-icons">skip_previous</i>
+                                            </button>
+                                          </div>
+                                        </td>
+                                        <td>
+                                          <div class="stats">
+                                            <button type="button" class="btn btn-primary btn-simple btn-xs">
+                                              <i class="material-icons">skip_next</i>
+                                            </button>
+                                          </div>
                                         </td>
                                       </tr>
                                     </tbody>
@@ -494,7 +492,7 @@
                                           <tr>
                                             <th>&nbsp;</th>
 	                                        <th>Entry Date</th>
-	                                    	<th>Trans Dt</th>
+	                                    	<th>Trans</th>
 	                                    	<th>Category</th>
 	                                    	<th>Description</th>
                                             <th>Amount</th>
@@ -515,6 +513,12 @@
                                               </button>
                                               <button type="button" rel="tooltip" title="Delete" class="btn btn-danger btn-simple btn-xs">
                                                 <i class="material-icons">delete</i>
+                                              </button>
+                                              <button type="button" rel="tooltip" title="Move Up" class="btn btn-primary btn-simple btn-xs">
+                                                <i class="material-icons">arrow_upward</i>
+                                              </button>
+                                              <button type="button" rel="tooltip" title="Move Down" class="btn btn-primary btn-simple btn-xs">
+                                                <i class="material-icons">arrow_downward</i>
                                               </button>
                                             </td>
                                           	<td>19-Dec-16 10:55 AM</td>
@@ -542,31 +546,11 @@
                                               <button type="button" rel="tooltip" title="Delete" class="btn btn-danger btn-simple btn-xs">
                                                 <i class="material-icons">delete</i>
                                               </button>
-                                            </td>
-                                            <td>19-Dec-16 10:55 AM</td>
-                                            <td>17-Dec</td>
-                                            <td>Transport ~ Car Gas</td>
-                                            <td>Costco Gas</td>
-                                            <td>$ 1,300.45</td>
-                                            <td>BOA - 7787</td>
-                                            <td>$ 1,962.33</td>
-                                            <td>$ 2,136.56</td>
-                                            <td>BOA VISA</td>
-                                            <td>$ 1,100.33</td>
-                                            <td>$ 1,340.56</td>
-                                            <td class="td-actions text-right">
-                                              <button type="button" rel="tooltip" title="Adhoc Expense" class="btn btn-primary btn-simple btn-xs">
-                                                <i class="material-icons">shopping_cart</i>
+                                              <button type="button" rel="tooltip" title="Move Up" class="btn btn-primary btn-simple btn-xs">
+                                                <i class="material-icons">arrow_upward</i>
                                               </button>
-                                            </td>
-                                          </tr>
-                                          <tr>
-                                            <td class="td-actions text-right">
-                                              <button type="button" rel="tooltip" title="Edit" class="btn btn-success btn-simple btn-xs">
-                                                <i class="material-icons">mode_edit</i>
-                                              </button>
-                                              <button type="button" rel="tooltip" title="Delete" class="btn btn-danger btn-simple btn-xs">
-                                                <i class="material-icons">delete</i>
+                                              <button type="button" rel="tooltip" title="Move Down" class="btn btn-primary btn-simple btn-xs">
+                                                <i class="material-icons">arrow_downward</i>
                                               </button>
                                             </td>
                                             <td>19-Dec-16 10:55 AM</td>
@@ -594,6 +578,12 @@
                                               <button type="button" rel="tooltip" title="Delete" class="btn btn-danger btn-simple btn-xs">
                                                 <i class="material-icons">delete</i>
                                               </button>
+                                              <button type="button" rel="tooltip" title="Move Up" class="btn btn-primary btn-simple btn-xs">
+                                                <i class="material-icons">arrow_upward</i>
+                                              </button>
+                                              <button type="button" rel="tooltip" title="Move Down" class="btn btn-primary btn-simple btn-xs">
+                                                <i class="material-icons">arrow_downward</i>
+                                              </button>
                                             </td>
                                             <td>19-Dec-16 10:55 AM</td>
                                             <td>17-Dec</td>
@@ -620,6 +610,44 @@
                                               <button type="button" rel="tooltip" title="Delete" class="btn btn-danger btn-simple btn-xs">
                                                 <i class="material-icons">delete</i>
                                               </button>
+                                              <button type="button" rel="tooltip" title="Move Up" class="btn btn-primary btn-simple btn-xs">
+                                                <i class="material-icons">arrow_upward</i>
+                                              </button>
+                                              <button type="button" rel="tooltip" title="Move Down" class="btn btn-primary btn-simple btn-xs">
+                                                <i class="material-icons">arrow_downward</i>
+                                              </button>
+                                            </td>
+                                            <td>19-Dec-16 10:55 AM</td>
+                                            <td>17-Dec</td>
+                                            <td>Food ~ Kroger Groceries</td>
+                                            <td>Taekwondo Belt Testing</td>
+                                            <td>$ 1,300.45</td>
+                                            <td>BOA - 7787</td>
+                                            <td>$ 11,962.33</td>
+                                            <td>$ 12,136.56</td>
+                                            <td>BOA VISA</td>
+                                            <td>$ 1,100.33</td>
+                                            <td>$ 1,340.56</td>
+                                            <td class="td-actions text-right">
+                                              <button type="button" rel="tooltip" title="Adhoc Expense" class="btn btn-primary btn-simple btn-xs">
+                                                <i class="material-icons">shopping_cart</i>
+                                              </button>
+                                            </td>
+                                          </tr>
+                                          <tr>
+                                            <td class="td-actions text-right">
+                                              <button type="button" rel="tooltip" title="Edit" class="btn btn-success btn-simple btn-xs">
+                                                <i class="material-icons">mode_edit</i>
+                                              </button>
+                                              <button type="button" rel="tooltip" title="Delete" class="btn btn-danger btn-simple btn-xs">
+                                                <i class="material-icons">delete</i>
+                                              </button>
+                                              <button type="button" rel="tooltip" title="Move Up" class="btn btn-primary btn-simple btn-xs">
+                                                <i class="material-icons">arrow_upward</i>
+                                              </button>
+                                              <button type="button" rel="tooltip" title="Move Down" class="btn btn-primary btn-simple btn-xs">
+                                                <i class="material-icons">arrow_downward</i>
+                                              </button>
                                             </td>
                                             <td>19-Dec-16 10:55 AM</td>
                                             <td>17-Dec</td>
@@ -629,6 +657,38 @@
                                             <td>BOA - 7787</td>
                                             <td>$ 1,962.33</td>
                                             <td>$ 2,136.56</td>
+                                            <td>BOA VISA</td>
+                                            <td>$ 1,100.33</td>
+                                            <td>$ 1,340.56</td>
+                                            <td class="td-actions text-right">
+                                              <button type="button" rel="tooltip" title="Adhoc Expense" class="btn btn-primary btn-simple btn-xs">
+                                                <i class="material-icons">shopping_cart</i>
+                                              </button>
+                                            </td>
+                                          </tr>
+                                          <tr>
+                                            <td class="td-actions text-right">
+                                              <button type="button" rel="tooltip" title="Edit" class="btn btn-success btn-simple btn-xs">
+                                                <i class="material-icons">mode_edit</i>
+                                              </button>
+                                              <button type="button" rel="tooltip" title="Delete" class="btn btn-danger btn-simple btn-xs">
+                                                <i class="material-icons">delete</i>
+                                              </button>
+                                              <button type="button" rel="tooltip" title="Move Up" class="btn btn-primary btn-simple btn-xs">
+                                                <i class="material-icons">arrow_upward</i>
+                                              </button>
+                                              <button type="button" rel="tooltip" title="Move Down" class="btn btn-primary btn-simple btn-xs">
+                                                <i class="material-icons">arrow_downward</i>
+                                              </button>
+                                            </td>
+                                            <td>19-Dec-16 10:55 AM</td>
+                                            <td>17-Dec</td>
+                                            <td>Food ~ Kroger Groceries</td>
+                                            <td>Taekwondo Belt Testing</td>
+                                            <td>$ 1,300.45</td>
+                                            <td>BOA - 7787</td>
+                                            <td>$ 11,962.33</td>
+                                            <td>$ 12,136.56</td>
                                             <td>BOA VISA</td>
                                             <td>$ 1,100.33</td>
                                             <td>$ 1,340.56</td>

@@ -680,7 +680,7 @@ h2.title {
   border-radius: 3px;
   position: relative;
   padding: 12px 30px;
-  margin: 10px 1px;
+  margin: 5px 2px;		/********* Bala - Changed from 10px 1px to 5px 2px *****/
   font-size: 12px;
   font-weight: 400;
   text-transform: uppercase;
@@ -2348,7 +2348,7 @@ select.form-control[multiple], .form-group.is-focused select.form-control[multip
 .table > thead > tr > td,
 .table > tbody > tr > td,
 .table > tfoot > tr > td {
-  padding: 12px 8px;
+  padding: 4px 4px;	/********** Bala - Changed padding from 12px 8px to 4px 4px  **********/
   vertical-align: middle;
 }
 .table > thead > tr > th {
@@ -3519,7 +3519,7 @@ footer .btn {
   display: inline-block;
   position: relative;
   width: 100%;
-  margin: 25px 0;
+  margin: 15px 0;	/***** Bala - Changed the margin from 25px to 15px ******/
   box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.14);
   border-radius: 3px;
   color: rgba(0,0,0, 0.87);
@@ -3559,16 +3559,16 @@ footer .btn {
   color: #999999;
 }
 .card .card-content {
-  padding: 15px 20px;
+  padding: 10px 10px; /***** Bala - Changed from 15px 20px to 10px 10px ******/
 }
 .card .card-content .category {
   margin-bottom: 0;
 }
 .card .card-header {
   box-shadow: 0 10px 30px -12px rgba(0, 0, 0, 0.42), 0 4px 25px 0px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(0, 0, 0, 0.2);
-  margin: -20px 15px 0;
+  margin: -15px 15px 0;	/******Bala - Changed the margin from -20px to -15px *****/
   border-radius: 3px;
-  padding: 15px;
+  padding: 10px;
   background-color: #999999;
 }
 .card .card-header .title {
@@ -3632,12 +3632,12 @@ footer .btn {
 .card .card-footer .stats {
   line-height: 22px;
   color: #999999;
-  font-size: 12px;
+  font-size: 13px; /******** Bala - Changed font-size from 12px to 13px.  ********/
 }
 .card .card-footer .stats .material-icons {
   position: relative;
   top: 4px;
-  font-size: 16px;
+  font-size: 20px;	/******** Bala - Changed the font-size from 16px to 20px.  ********/
 }
 .card .card-footer h6 {
   color: #999999;

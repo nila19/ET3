@@ -85,6 +85,8 @@ gulp.task('watch', ['default'], function() {
 	gulp.watch(src.css, ['css']);
 	gulp.watch(src.htm, ['htm']);
 	gulp.watch(src.images, ['images']);
+	gulp.watch(src.theme, ['theme']);
+	gulp.watch(src.bower, ['bower']);
 	plugins.util.log('***** WATCHING FOR SOURCE CHANGES *****');
 });
 
