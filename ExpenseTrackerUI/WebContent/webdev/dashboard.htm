@@ -34,33 +34,35 @@
 					</div>
 					<div class="collapse navbar-collapse">
                         <div class="navbar-left">
-                            <a href="#" class="btn btn-default">
+                            <a href="dashboard.htm" class="btn btn-primary">
                                 <i class="material-icons">dashboard</i> Dashboard
                             </a>
                         </div>
                         <div class="navbar-left">
-                            <a href="#" class="btn btn-success">
+                            <a href="summary.htm" class="btn btn-success">
                                 <i class="material-icons">content_copy</i> Monthly Summary
                             </a>
                         </div>
                         <div class="navbar-left">
-                            <a href="#" class="btn btn-google">
+                            <a href="search.htm" class="btn btn-google">
                                 <i class="material-icons">search</i> Search
                             </a>
                         </div>
                         <div class="navbar-right">
                             <span class="btn btn-success">
-                                <i class="material-icons">attach_money</i>
+                                <i id="et_currency_usd" class="material-icons">attach_money</i>
+                                <i id="et_currency_inr" class="material-icons">euro_symbol</i>
                             </span>
                         </div>
-                        <div class="dropdown navbar-right">
+                        <div id="et_city" class="dropdown navbar-right">
                             <a href="#" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
-                                Houston - 2014
+                                <span data-city-fl="Y">Houston - 2014</span>
                                 <b class="caret"></b>
                             </a>
                             <ul class="dropdown-menu">
-                                <li><a href="#">Chennai - 2010</a></li>
-                                <li><a href="#">Macon - 2009</a></li>
+                                <li><a href="#" data-city="Houston - 2014" data-currency="USD">Houston - 2014</a></li>
+                                <li><a href="#" data-city="Chennai - 2010" data-currency="INR">Chennai - 2010</a></li>
+                                <li><a href="#" data-city="Macon - 2009" data-currency="USD">Macon - 2009</a></li>
                             </ul>
                         </div>
                         <div class="navbar-right">
@@ -358,34 +360,28 @@
                                 <div class="tab-pane active" id="currentbills">
                                   <div class="row">
                                     <div class="col-md-1">&nbsp;</div>
-                                    <div class="col-md-3">
-                                      <button type="button" rel="tooltip" title="View Expenses" class="btn btn-primary btn-lg">
-                                        <i class="material-icons">list</i>
-                                      </button>
-                                    </div>
-                                    <div class="col-md-4">
+                                    <div class="col-md-7">
                                       <table class="table">
                                         <tbody>
                                           <tr>
-                                            <td class="text-right text-uppercase text-warning">Bill Date</td>
-                                            <td>&nbsp;</td>
+                                            <td class="text-right text-uppercase text-warning">Bill Date&nbsp;</td>
                                             <td>21-Nov-16</td>
                                           </tr>
                                           <tr>
-                                            <td class="text-right text-uppercase text-warning">Bill Amount</td>
-                                            <td>&nbsp;</td>
+                                            <td class="text-right text-uppercase text-warning">Bill Amount&nbsp;</td>
                                             <td>$ 2,250.45</td>
                                           </tr>
                                           <tr>
-                                            <td class="text-right text-uppercase text-warning">Due Date</td>
-                                            <td>&nbsp;</td>
+                                            <td class="text-right text-uppercase text-warning">Due Date&nbsp;</td>
                                             <td>21-Nov-16</td>
                                           </tr>
                                         </tbody>
                                       </table>
                                     </div>
-                                    <div class="col-md-1">&nbsp;</div>
-                                    <div class="col-md-3">
+                                    <div class="col-md-4">
+                                      <button type="button" rel="tooltip" title="View Expenses" class="btn btn-primary btn-lg">
+                                        <i class="material-icons">list</i>
+                                      </button>
                                       <button type="button" rel="tooltip" title="Pay Now" class="btn btn-success btn-lg">
                                         <i class="material-icons">payment</i>
                                       </button>
@@ -650,38 +646,6 @@
                                             </td>
                                             <td>19-Dec-16 10:55 AM</td>
                                             <td>17-Dec</td>
-                                            <td>Transport ~ Car Gas</td>
-                                            <td>Costco Gas</td>
-                                            <td>$ 1,300.45</td>
-                                            <td>BOA - 7787</td>
-                                            <td>$ 1,962.33</td>
-                                            <td>$ 2,136.56</td>
-                                            <td>BOA VISA</td>
-                                            <td>$ 1,100.33</td>
-                                            <td>$ 1,340.56</td>
-                                            <td class="td-actions text-right">
-                                              <button type="button" rel="tooltip" title="Adhoc Expense" class="btn btn-primary btn-simple btn-xs">
-                                                <i class="material-icons">shopping_cart</i>
-                                              </button>
-                                            </td>
-                                          </tr>
-                                          <tr>
-                                            <td class="td-actions text-right">
-                                              <button type="button" rel="tooltip" title="Edit" class="btn btn-success btn-simple btn-xs">
-                                                <i class="material-icons">mode_edit</i>
-                                              </button>
-                                              <button type="button" rel="tooltip" title="Delete" class="btn btn-danger btn-simple btn-xs">
-                                                <i class="material-icons">delete</i>
-                                              </button>
-                                              <button type="button" rel="tooltip" title="Move Up" class="btn btn-primary btn-simple btn-xs">
-                                                <i class="material-icons">arrow_upward</i>
-                                              </button>
-                                              <button type="button" rel="tooltip" title="Move Down" class="btn btn-primary btn-simple btn-xs">
-                                                <i class="material-icons">arrow_downward</i>
-                                              </button>
-                                            </td>
-                                            <td>19-Dec-16 10:55 AM</td>
-                                            <td>17-Dec</td>
                                             <td>Food ~ Kroger Groceries</td>
                                             <td>Taekwondo Belt Testing</td>
                                             <td>$ 1,300.45</td>
@@ -697,6 +661,8 @@
                                               </button>
                                             </td>
                                           </tr>
+                                      </tbody>
+                                      <tfoot>
                                           <tr>
                                             <td colspan="11">&nbsp;</td>
                                             <td class="td-actions text-right">
@@ -709,7 +675,7 @@
                                             </td>
                                             <td>&nbsp;</td>
                                           </tr>
-	                                    </tbody>
+	                                    </tfoot>
 	                                </table>
 	                            </div>
 	                        </div>
@@ -742,7 +708,8 @@
 			// Javascript method's body can be found in assets/js/demos.js
         	demo.initDashboardPageCharts();
 			
-			initButtons();
+			initNavbar();
+			initDashboard();
     	});
 	</script>
 
