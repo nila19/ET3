@@ -113,7 +113,7 @@ gulp.task('watch', ['default'], function() {
 	gulp.watch(src.images, ['images']);
 	gulp.watch(src.theme, ['theme']);
 	gulp.watch(src.bower, ['bower']);
-	plugins.util.log('***** WATCHING FOR SOURCE CHANGES *****');
+	plugins.util.log(plugins.util.colors.cyan('***** WATCHING FOR SOURCE CHANGES *****'));
 });
 
 gulp.task('clean', function() {
