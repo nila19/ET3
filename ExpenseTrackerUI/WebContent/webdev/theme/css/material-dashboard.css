@@ -648,7 +648,7 @@ h2.title {
 }
 .main-panel > .content {
   margin-top: 70px;
-  padding: 30px 15px;
+  padding: 5px 5px;	/****** Bala - Changed from 30px 15px to 5px 5px *******/
   min-height: calc(100% - 123px);
 }
 .main-panel > .footer {
@@ -1322,7 +1322,7 @@ h2.title {
 .btn.btn-xs, .btn-group-xs .btn,
 .navbar .navbar-nav > li > a.btn.btn-xs, .btn-group-xs
 .navbar .navbar-nav > li > a.btn {
-  padding: 4px 15px;
+  padding: 4px 10px; /****** Bala - Changed from 4px 15px to 0px 10px *******/
   font-size: 10px;
 }
 .btn.btn-just-icon,
@@ -1938,7 +1938,7 @@ label.control-label {
 
 .form-group {
   padding-bottom: 7px;
-  margin: 27px 0 0 0;
+  margin: 10px 0 0 0;	/***** Bala - Changed margin from 27px 0 0 0 to 10px 0 0 0 *****/
 }
 .form-group .form-control {
   margin-bottom: 7px;
@@ -3559,7 +3559,7 @@ footer .btn {
   color: #999999;
 }
 .card .card-content {
-  padding: 10px 10px; /***** Bala - Changed from 15px 20px to 10px 10px ******/
+  padding: 10px 20px; /***** Bala - Changed from 15px 20px to 10px 20px ******/
 }
 .card .card-content .category {
   margin-bottom: 0;

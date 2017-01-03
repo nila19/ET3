@@ -2,8 +2,23 @@ var gulp = require('gulp'),
 	runSequence = require('run-sequence'),
 	streamqueue = require('streamqueue'),
 	del = require('del'),
+	chalk = require('chalk'),
+	supportsColor = require('supports-color'),
 	gulpif = require('gulp-if'),
 	plugins = require('gulp-load-plugins')();
+
+plugins.util.colors = chalk;
+
+if (supportsColor) {
+	if (supportsColor.has16m) {
+	    console.log('Terminal supports 16 Million colors (truecolor)');
+	} else if (supportsColor.has256) {
+	    console.log('Terminal supports 256 colors');
+	} else {
+	    console.log('Terminal has basic support for color');
+	}
+	console.log(chalk.blue('Hello world!'));
+}
 
 //****************************** Intermediate path variables ******************************//
 var	dir = {
@@ -35,16 +50,12 @@ function buildExcludes() {
 	return paths;
 }
 
-function log(task, status) {
-	plugins.util.log('********** ' + status + ' :: ' + task + ' **********');
-}
-
 //*********************** Source & Destination paths used in Tasks ***********************//
 var flag = {
 	prod: !!plugins.util.env.prod,		//gulp --prod
 	merge: !!plugins.util.env.merge,	//gulp --merge
 	maps: !plugins.util.env.prod,		//Do not generate sourcemaps for --prod
-	less_preserve: !plugins.util.env.prod,		//Do not preserve less for --prod
+	//less_preserve: !plugins.util.env.prod,		//Do not preserve less for --prod
 };
 
 var src = {
@@ -68,20 +79,35 @@ var dest = {
 	appjs: 'app.js'
 };
 
+//******************************** Plumber Error Handling ********************************//
+
+//Reassign gulp.src to have an inbuilt error handling in the pipe.
+var gulp_src = gulp.src;
+gulp.src = function() {
+	return gulp_src.apply(gulp, arguments).pipe(plugins.plumber(function(error) {
+		plugins.util.log(plugins.util.colors.red('Error (' + error.plugin + '): ' + error.message));
+		this.emit('end');
+	}));
+};
+
+function log(task, status) {
+	plugins.util.log(plugins.util.colors.yellow('********** ' + status + ' :: ' + task + ' **********'));
+}
+
 //******************************** Tasks ********************************//
 
 gulp.task('default', function(done) {
 	return runSequence('clean', 'js', 'less', 'less-pr', 'css', 'htm', 'images', 'ico', 
 			'theme', 'bower', function() {
 		log('default', 'END');
-		plugins.util.log('***** COMPLETED ALL DEFAULT TASKS *****');
+		plugins.util.log(plugins.util.colors.yellow('***** COMPLETED ALL DEFAULT TASKS *****'));
 		done();
 	})
 });
 
 gulp.task('watch', ['default'], function() {
 	gulp.watch(src.js, ['js']);
-	gulp.watch(src.less, ['less']);
+	gulp.watch(src.less, ['less','less-pr']);
 	gulp.watch(src.css, ['css']);
 	gulp.watch(src.htm, ['htm']);
 	gulp.watch(src.images, ['images']);
@@ -97,9 +123,7 @@ gulp.task('clean', function() {
 
 gulp.task('bower', function() {
 	return gulp.src(src.bower)
-		.pipe(gulp.dest(dest.bower)).on('end', function() {
-			log('less, css, htm, images, theme, bower', 'COMPLETED');
-		});
+		.pipe(gulp.dest(dest.bower));
 });
 
 gulp.task('theme', function() {
@@ -123,10 +147,6 @@ gulp.task('htm', function() {
 });
 
 gulp.task('less-pr', function() {
-//	var p = [src.css];
-//	if(flag.less_preserve) {
-//		p.push([src.less]);
-//	}
 	return gulp.src(src.less)
 		.pipe(gulp.dest(dest.root));
 });
