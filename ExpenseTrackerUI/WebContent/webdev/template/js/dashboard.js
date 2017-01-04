@@ -54,36 +54,9 @@ var dashFunctions = {
 
 	initAddExpenseCard: function() {
 		// Initialize Add Expense card
-		$('#tabheadertitleModifyExpense').hide();
-		$('#tabheadertitleAddExpense').show();
-		$('#tabheaderAddAdjustment').show();
 		$('#tabheaderAddExpense').addClass('active').show();
 		$('#tabcontentAddAdjustment').removeClass('active');
 		$('#tabcontentAddExpense').addClass('active').show();
-
-		$('#txtBillOnExpense').hide();
-		$('#tabcontentAddExpense :button[data-btn-addExpense-Action="CANCEL"]').hide();
-		$('#tabcontentAddExpense :button[data-btn-addExpense-Action="ADD"]').attr(
-				'data-btn-addExpense-Action', 'ADD');
-		$('#icon_addExpense_modify').hide();
-		$('#icon_addExpense_add').show();
-	},
-
-	initModifyExpenseCard: function() {
-		// Initialize Modify Expense card
-		$('#tabheadertitleAddExpense').hide();
-		$('#tabheadertitleModifyExpense').show();
-		$('#tabheaderAddAdjustment').removeClass('active').hide();
-		$('#tabheaderAddExpense').removeClass('active').hide();
-		$('#tabcontentAddAdjustment').removeClass('active');
-		$('#tabcontentAddExpense').addClass('active').show();
-
-		$('#txtBillOnExpense').show();
-		$('#tabcontentAddExpense :button[data-btn-addExpense-Action="CANCEL"]').show();
-		$('#tabcontentAddExpense :button[data-btn-addExpense-Action="ADD"]').attr(
-				'data-btn-addExpense-Action', 'MODIFY');
-		$('#icon_addExpense_add').hide();
-		$('#icon_addExpense_modify').show();
 	}
 };
 
@@ -135,20 +108,19 @@ var dashEventMapper = {
 
 		// On click of : Pay Bill OK
 		$('#btnPayBillAction').click(function() {
+			$('#modalPayBill').modal('hide');
 			dashFunctions.showBillsTab('CLOSED');
 			appUtils.msg.show('Bill Pay');
 		});
 
 		// On click of : Add Expense
-		$('#tabcontentAddExpense :button[data-btn-addExpense-Action]').click(function() {
-			if ($(this).attr('data-btn-addExpense-Action') === 'ADD') {
-				$('#btn_unfilter_expenseslist').hide();
-				appUtils.msg.show('Add Expense');
-			}
+		$('#btnAddExpense').click(function() {
+			$('#btn_unfilter_expenseslist').hide();
+			appUtils.msg.show('Add Expense');
 		});
 
 		// On click of : Add Adjustment
-		$('#tabcontentAddAdjustment :button[data-btn-addExpense-Action]').click(function() {
+		$('#btnAddAdjustment').click(function() {
 			$('#btn_unfilter_expenseslist').hide();
 			appUtils.msg.show('Add Adjustment');
 		});
@@ -169,33 +141,14 @@ var dashEventMapper = {
 		// On click of : Modify Expense from List
 		$('#cardExpenseList :button[data-btn-edit-expense]').click(function() {
 			if ($(this).attr('data-btn-edit-expense') === 'MODIFY') {
-				// Hide the 'Add Expense' button at the Navbar.
-				dashFlags.addExpenseShowChart = true;
-				dashFunctions.toggleAddExpenseShowChart();
-				$('#btnToggleAddExpenseShowChart').hide();
-
-				dashFunctions.initModifyExpenseCard();
+				$('#modalModifyExpense').modal('show');
 			}
 		});
 
 		// On click of : Modify Expense OK
-		$('#tabcontentAddExpense :button[data-btn-addExpense-Action]').click(function() {
-			if ($(this).attr('data-btn-addExpense-Action') === 'MODIFY') {
-				appUtils.msg.show('Modify Expense');
-			}
-		});
-
-		// On click of : Modify Expense OK or CANCEL
-		$('#tabcontentAddExpense :button[data-btn-addExpense-Action]').click(function() {
-			var action = $(this).attr('data-btn-addExpense-Action');
-			if (action === 'MODIFY' || action === 'CANCEL') {
-				// Restore the 'Add Expense' button at the Navbar.
-				dashFlags.addExpenseShowChart = true;
-				dashFunctions.toggleAddExpenseShowChart();
-				$('#btnToggleAddExpenseShowChart').show();
-
-				dashFunctions.initAddExpenseCard();
-			}
+		$('#btnModifyExpenseAction').click(function() {
+			$('#modalModifyExpense').modal('hide');
+			appUtils.msg.show('Modify Expense');
 		});
 	}
 };

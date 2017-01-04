@@ -430,13 +430,12 @@
                 <div class="card-header" data-background-color="orange">
                   <div class="nav-tabs-navigation">
                     <div class="nav-tabs-wrapper">
-                      <span id="tabheadertitleAddExpense" class="nav-tabs-title text-uppercase">Add</span>
-                      <span id="tabheadertitleModifyExpense" class="nav-tabs-title text-uppercase">Modify</span>
+                      <span class="nav-tabs-title text-uppercase">Add</span>
                       <ul class="nav nav-tabs" data-tabs="tabs">
-                        <li id="tabheaderAddExpense" class="active"><a href="#tabcontentAddExpense" data-toggle="tab"> <i class="material-icons">flag</i>
+                        <li class="active"><a href="#tabcontentAddExpense" data-toggle="tab"> <i class="material-icons">flag</i>
                             Expense
                             <div class="ripple-container"></div></a></li>
-                        <li id="tabheaderAddAdjustment" class=""><a href="#tabcontentAddAdjustment" data-toggle="tab"> <i class="material-icons">schedule</i>
+                        <li class=""><a href="#tabcontentAddAdjustment" data-toggle="tab"> <i class="material-icons">schedule</i>
                             Adjustment
                             <div class="ripple-container"></div></a></li>
                       </ul>
@@ -470,16 +469,7 @@
                               </select>
                             </div>
                           </div>
-                          <div class="col-md-4">
-                            <div class="form-group label-floating" id="txtBillOnExpense">
-                              <label class="control-label">Bill</label> <select class="form-control">
-                                <option></option>
-                                <option>Chase Freedom - Bill #1</option>
-                                <option>BOA - 7787 - Bill #2</option>
-                                <option>Sapphire Visa - Bill #3</option>
-                              </select>
-                            </div>
-                          </div>
+                          <div class="col-md-4">&nbsp;</div>
                         </div>
                         <div class="row">
                           <div class="col-md-4">
@@ -499,11 +489,8 @@
                           </div>
                           <div class="col-md-3">
                             <div class="form-group">
-                              <button type="button" data-btn-addExpense-Action="ADD" rel="tooltip" title="Save" class="btn btn-success btn-lg pull-right">
-                                <i id="icon_addExpense_add" class="material-icons">add</i><i id="icon_addExpense_modify" class="material-icons">save</i>
-                              </button>
-                              <button type="button" data-btn-addExpense-Action="CANCEL" class="btn btn-default btn-lg pull-right">
-                                <i class="material-icons">cancel</i>
+                              <button type="button" id="btnAddExpense" rel="tooltip" title="Add" class="btn btn-success btn-lg pull-right">
+                                <i class="material-icons">add</i>
                               </button>
                             </div>
                           </div>
@@ -555,7 +542,7 @@
                           </div>
                           <div class="col-md-3">
                             <div class="form-group">
-                              <button type="button" data-btn-addExpense-Action="ADD" rel="tooltip" title="Save" class="btn btn-success btn-lg pull-right">
+                              <button type="button" id="btnAddAdjustment" rel="tooltip" title="Add" class="btn btn-success btn-lg pull-right">
                                 <i class="material-icons">add</i>
                               </button>
                             </div>
@@ -858,7 +845,7 @@
               <input type="text" class="form-control">
             </div>
             <div class="form-group">
-              <button type="button" class="btn btn-warning pull-right" id="btnModifyExpenseAction" rel="tooltip" title="Modify Expense"><i class="material-icons">save</i></button>
+              <button type="button" class="btn btn-warning pull-right" id="btnModifyExpenseAction" rel="tooltip" title="Save"><i class="material-icons">save</i></button>
             </div>
           </form>
         </div>
