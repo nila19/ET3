@@ -57,6 +57,17 @@ var dashFunctions = {
 		$('#tabheaderAddExpense').addClass('active').show();
 		$('#tabcontentAddAdjustment').removeClass('active');
 		$('#tabcontentAddExpense').addClass('active').show();
+	},
+
+	initEditExpModel: function(action, type) {
+		if (action === 'DELETE') {
+			$('#modalDeleteExpense [data-edit-exp-field]').hide();
+			$('#modalDeleteExpense [data-edit-exp-field = "' + type + '"]').show();
+		}
+		if (action === 'MODIFY') {
+			$('#modalModifyExpense [data-edit-exp-field]').hide();
+			$('#modalModifyExpense [data-edit-exp-field = "' + type + '"]').show();
+		}
 	}
 };
 
@@ -102,14 +113,13 @@ var dashEventMapper = {
 		});
 
 		// On click of : Pay Bill
-		$('#btnPayBill').click(function() {
+		$('#tabcontentBillsOpen [data-btn-pay-bill]').click(function() {
 			$('#modalPayBill').modal('show');
 		});
 
 		// On click of : Pay Bill OK
 		$('#btnPayBillAction').click(function() {
 			$('#modalPayBill').modal('hide');
-			dashFunctions.showBillsTab('CLOSED');
 			appUtils.msg.show('Bill Pay');
 		});
 
@@ -126,11 +136,14 @@ var dashEventMapper = {
 		});
 
 		// On click of : Delete Expense from List
-		$('#cardExpenseList :button[data-btn-edit-expense]').click(function() {
-			if ($(this).attr('data-btn-edit-expense') === 'DELETE') {
-				$('#modalDeleteExpense').modal('show');
-			}
-		});
+		$('#cardExpenseList :button[data-btn-edit-expense]').click(
+				function() {
+					if ($(this).attr('data-btn-edit-expense') === 'DELETE') {
+						dashFunctions.initEditExpModel('DELETE', $(this).attr(
+								'data-btn-edit-expense-type'));
+						$('#modalDeleteExpense').modal('show');
+					}
+				});
 
 		// On click of : Delete Expense OK
 		$('#btnDeleteExpenseAction').click(function() {
@@ -139,11 +152,14 @@ var dashEventMapper = {
 		});
 
 		// On click of : Modify Expense from List
-		$('#cardExpenseList :button[data-btn-edit-expense]').click(function() {
-			if ($(this).attr('data-btn-edit-expense') === 'MODIFY') {
-				$('#modalModifyExpense').modal('show');
-			}
-		});
+		$('#cardExpenseList :button[data-btn-edit-expense]').click(
+				function() {
+					if ($(this).attr('data-btn-edit-expense') === 'MODIFY') {
+						dashFunctions.initEditExpModel('MODIFY', $(this).attr(
+								'data-btn-edit-expense-type'));
+						$('#modalModifyExpense').modal('show');
+					}
+				});
 
 		// On click of : Modify Expense OK
 		$('#btnModifyExpenseAction').click(function() {
