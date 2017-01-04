@@ -39,27 +39,28 @@
               </a>
             </div>
             <div class="navbar-right">
-              <span class="btn btn-success"> <i id="icn_currency_usd" class="material-icons">attach_money</i> <i id="icn_currency_inr"
+              <span class="btn btn-success"> <i id="icon_currency_usd" class="material-icons">attach_money</i> <i id="icon_currency_inr"
                 class="material-icons">euro_symbol</i>
               </span>
             </div>
-            <div id="et_city" class="dropdown navbar-right">
-              <a href="#" class="btn btn-primary dropdown-toggle" data-toggle="dropdown"> <span data-city-fl="Y">Houston - 2014</span> <b
+            <div id="selectChangeCity" class="dropdown navbar-right">
+              <a href="#" class="btn btn-primary dropdown-toggle" data-toggle="dropdown"> <span data-city-selected="Y">Houston - 2014</span> <b
                 class="caret"></b>
               </a>
               <ul class="dropdown-menu">
-                <li><a href="#" data-city="Houston - 2014" data-currency="USD">Houston - 2014</a></li>
-                <li><a href="#" data-city="Chennai - 2010" data-currency="INR">Chennai - 2010</a></li>
-                <li><a href="#" data-city="Macon - 2009" data-currency="USD">Macon - 2009</a></li>
+                <li><a href="#" data-city-option="Houston - 2014" data-city-currency="USD">Houston - 2014</a></li>
+                <li><a href="#" data-city-option="Chennai - 2010" data-city-currency="INR">Chennai - 2010</a></li>
+                <li><a href="#" data-city-option="Macon - 2009" data-city-currency="USD">Macon - 2009</a></li>
               </ul>
             </div>
             <div class="navbar-right">
-              <a href="#" id="toggle2row" class="btn btn-primary"> <i class="material-icons">expand_more</i>
+              <a href="#" id="btnToggleRowAdditionalAccounts" class="btn btn-primary"> <i id="icon_expand_more" class="material-icons">expand_more</i>
+                <i id="icon_expand_less" class="material-icons">expand_less</i>
               </a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             </div>
             <div class="navbar-right">
-              <a id="btnAddExpense" href="#" class="btn btn-warning"> <i id="icn_addExp" 
-                class="material-icons">add</i><i id="icn_chart" class="material-icons">insert_chart</i>
+              <a id="btnToggleAddExpenseShowChart" href="#" class="btn btn-warning"> <i id="icon_add_expense" 
+                class="material-icons">add</i><i id="icon_show_chart" class="material-icons">insert_chart</i>
               </a>
             </div>
           </div>
@@ -68,11 +69,13 @@
 
       <div class="content">
         <div class="container-fluid">
+
+        <!-- First row of Accounts Cards -->
           <div class="row">
             <div class="col-lg-2 col-md-4 col-sm-6">
               <div class="card card-stats">
-                <div class="card-header" data-btn-acct-filter-bills="Y" data-background-color="blue">
-                  <a id="acct1" href="#"><i class="material-icons">account_balance</i></a>
+                <div class="card-header" data-card-accounts="DEBIT" data-background-color="blue">
+                  <a href="#"><i class="material-icons">account_balance</i></a>
                 </div>
                 <div class="card-content">
                   <p class="category">BOA - 7787</p>
@@ -88,15 +91,15 @@
                 </div>
                 <div class="card-footer" align="center">
                   <div class="stats">
-                    <span class="btn btn-success btn-sm" data-btn-tally="tally">Tally <span class="badge">42</span></span>
+                    <span class="btn btn-success btn-sm" data-btn-tally="Y">Tally <span class="badge">42</span></span>
                   </div>
                 </div>
               </div>
             </div>
             <div class="col-lg-2 col-md-4 col-sm-6">
               <div class="card card-stats">
-                <div class="card-header" data-btn-acct-filter-bills="Y" data-background-color="blue">
-                  <a id="acct2" href="#"><i class="material-icons">account_balance</i></a>
+                <div class="card-header" data-card-accounts="DEBIT" data-background-color="blue">
+                  <a href="#"><i class="material-icons">account_balance</i></a>
                 </div>
                 <div class="card-content">
                   <p class="category">Chase Checking</p>
@@ -112,15 +115,15 @@
                 </div>
                 <div class="card-footer" align="center">
                   <div class="stats">
-                    <span class="btn btn-success btn-sm" data-btn-tally="tally">Tally</span>
+                    <span class="btn btn-success btn-sm" data-btn-tally="Y">Tally</span>
                   </div>
                 </div>
               </div>
             </div>
             <div class="col-lg-2 col-md-4 col-sm-6">
               <div class="card card-stats">
-                <div class="card-header" data-btn-acct-filter-bills="Y" data-background-color="red">
-                  <a id="acct3" href="#"><i class="material-icons">credit_card</i></a>
+                <div class="card-header" data-card-accounts="CREDIT" data-background-color="red">
+                  <a href="#"><i class="material-icons">credit_card</i></a>
                 </div>
                 <div class="card-content">
                   <p class="category">BOA VISA</p>
@@ -136,15 +139,15 @@
                 </div>
                 <div class="card-footer" align="center">
                   <div class="stats">
-                    <span class="btn btn-success btn-sm" data-btn-tally="tally">Tally<span class="badge">42</span></span>
+                    <span class="btn btn-success btn-sm" data-btn-tally="Y">Tally<span class="badge">42</span></span>
                   </div>
                 </div>
               </div>
             </div>
             <div class="col-lg-2 col-md-4 col-sm-6">
               <div class="card card-stats">
-                <div class="card-header" data-btn-acct-filter-bills="Y" data-background-color="red">
-                  <a id="acct4" href="#"><i class="material-icons">credit_card</i></a>
+                <div class="card-header" data-card-accounts="CREDIT" data-background-color="red">
+                  <a href="#"><i class="material-icons">credit_card</i></a>
                 </div>
                 <div class="card-content">
                   <p class="category">Chase Freedom</p>
@@ -160,15 +163,15 @@
                 </div>
                 <div class="card-footer" align="center">
                   <div class="stats">
-                    <span class="btn btn-success btn-sm" data-btn-tally="tally">Tally</span>
+                    <span class="btn btn-success btn-sm" data-btn-tally="Y">Tally</span>
                   </div>
                 </div>
               </div>
             </div>
             <div class="col-lg-2 col-md-4 col-sm-6">
               <div class="card card-stats">
-                <div class="card-header" data-btn-acct-filter-bills="Y" data-background-color="red">
-                  <a id="acct5" href="#"><i class="material-icons">credit_card</i></a>
+                <div class="card-header" data-card-accounts="CREDIT" data-background-color="red">
+                  <a href="#"><i class="material-icons">credit_card</i></a>
                 </div>
                 <div class="card-content">
                   <p class="category">Blue Cash</p>
@@ -184,15 +187,15 @@
                 </div>
                 <div class="card-footer" align="center">
                   <div class="stats">
-                    <span class="btn btn-success btn-sm" data-btn-tally="tally">Tally <span class="badge">42</span></span>
+                    <span class="btn btn-success btn-sm" data-btn-tally="Y">Tally <span class="badge">42</span></span>
                   </div>
                 </div>
               </div>
             </div>
             <div class="col-lg-2 col-md-4 col-sm-6">
               <div class="card card-stats">
-                <div class="card-header" data-btn-acct-filter-bills="Y" data-background-color="red">
-                  <a id="acct6" href="#"><i class="material-icons">credit_card</i></a>
+                <div class="card-header" data-card-accounts="CREDIT" data-background-color="red">
+                  <a href="#"><i class="material-icons">credit_card</i></a>
                 </div>
                 <div class="card-content">
                   <p class="category">GAP VISA</p>
@@ -208,17 +211,19 @@
                 </div>
                 <div class="card-footer" align="center">
                   <div class="stats">
-                    <span class="btn btn-success btn-sm" data-btn-tally="tally">Tally <span class="badge">42</span></span>
+                    <span class="btn btn-success btn-sm" data-btn-tally="Y">Tally <span class="badge">42</span></span>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-          <div class="row" data-et-row="2">
+
+        <!-- Second row of Accounts Cards -->
+          <div class="row" data-row-additional-accounts="Y">
             <div class="col-lg-2 col-md-4 col-sm-6">
               <div class="card card-stats">
-                <div class="card-header" data-btn-acct-filter-bills="Y" data-background-color="green">
-                  <a id="acct7" href="#"><i class="material-icons">attach_money</i></a>
+                <div class="card-header" data-card-accounts="DEBIT" data-background-color="green">
+                  <a href="#"><i class="material-icons">attach_money</i></a>
                 </div>
                 <div class="card-content">
                   <p class="category">Cash - Bala</p>
@@ -234,15 +239,15 @@
                 </div>
                 <div class="card-footer" align="center">
                   <div class="stats">
-                    <span class="btn btn-success btn-sm" data-btn-tally="tally">Tally <span class="badge">42</span></span>
+                    <span class="btn btn-success btn-sm" data-btn-tally="Y">Tally <span class="badge">42</span></span>
                   </div>
                 </div>
               </div>
             </div>
             <div class="col-lg-2 col-md-4 col-sm-6">
               <div class="card card-stats">
-                <div class="card-header" data-btn-acct-filter-bills="Y" data-background-color="green">
-                  <a id="acct8" href="#"><i class="material-icons">attach_money</i></a>
+                <div class="card-header" data-card-accounts="DEBIT" data-background-color="green">
+                  <a href="#"><i class="material-icons">attach_money</i></a>
                 </div>
                 <div class="card-content">
                   <p class="category">Cash - Anitha</p>
@@ -258,15 +263,15 @@
                 </div>
                 <div class="card-footer" align="center">
                   <div class="stats">
-                    <span class="btn btn-success btn-sm" data-btn-tally="tally">Tally <span class="badge">42</span></span>
+                    <span class="btn btn-success btn-sm" data-btn-tally="Y">Tally <span class="badge">42</span></span>
                   </div>
                 </div>
               </div>
             </div>
             <div class="col-lg-2 col-md-4 col-sm-6">
               <div class="card card-stats">
-                <div class="card-header" data-btn-acct-filter-bills="Y" data-background-color="green">
-                  <a id="acct9" href="#"><i class="material-icons">attach_money</i></a>
+                <div class="card-header" data-card-accounts="DEBIT" data-background-color="green">
+                  <a href="#"><i class="material-icons">attach_money</i></a>
                 </div>
                 <div class="card-content">
                   <p class="category">Aetna HSA</p>
@@ -282,17 +287,17 @@
                 </div>
                 <div class="card-footer" align="center">
                   <div class="stats">
-                    <span class="btn btn-success btn-sm" data-btn-tally="tally">Tally <span class="badge">42</span></span>
+                    <span class="btn btn-success btn-sm" data-btn-tally="Y">Tally <span class="badge">42</span></span>
                   </div>
                 </div>
               </div>
             </div>
           </div>
 
-          <!-- Bills & Monthly Trend / Add Expense -->
+        <!-- Third row : Bills Card & Add Expense / Monthly Trend Cards -->
           <div class="row">
 
-          <!-- Bills -->
+          <!-- Bills Card -->
             <div class="col-md-5">
               <div class="card card-nav-tabs" id="cardBills">
                 <div class="card-header" data-background-color="purple">
@@ -300,10 +305,10 @@
                     <div class="nav-tabs-wrapper">
                       <span class="nav-tabs-title text-uppercase">Bills for <strong>(BOA VISA)</strong></span>
                       <ul class="nav nav-tabs" data-tabs="tabs">
-                        <li id="h_bills_open" class="active"><a href="#tabcontentBillsCurrent" data-toggle="tab"> <i class="material-icons">flag</i>
+                        <li id="tabheaderBillsOpen" class="active"><a href="#tabcontentBillsOpen" data-toggle="tab"> <i class="material-icons">flag</i>
                             Open
                             <div class="ripple-container"></div></a></li>
-                        <li id="h_bills_closed" class=""><a href="#tabcontentBillsPast" data-toggle="tab"> <i class="material-icons">schedule</i>
+                        <li id="tabheaderBillsClosed" class=""><a href="#tabcontentBillsClosed" data-toggle="tab"> <i class="material-icons">schedule</i>
                             Closed
                             <div class="ripple-container"></div></a></li>
                       </ul>
@@ -313,7 +318,7 @@
 
                 <div class="card-content">
                   <div class="tab-content">
-                    <div class="tab-pane active" id="tabcontentBillsCurrent">
+                    <div class="tab-pane active" id="tabcontentBillsOpen">
                       <div class="row">
                         <div class="col-md-1">&nbsp;</div>
                         <div class="col-md-7">
@@ -335,7 +340,7 @@
                           </table>
                         </div>
                         <div class="col-md-4">
-                          <button type="button" data-btn-bill-filter-expenses="Y" rel="tooltip" title="View Expenses" class="btn btn-primary btn-lg">
+                          <button type="button" data-btn-view-expenses-for-bill="Y" rel="tooltip" title="View Expenses" class="btn btn-primary btn-lg">
                             <i class="material-icons">list</i>
                           </button>
                           <button type="button" id="btnPayBill" rel="tooltip" title="Pay Now" class="btn btn-success btn-lg">
@@ -349,7 +354,7 @@
                         </div>
                       </div>
                     </div>
-                    <div class="tab-pane" id="tabcontentBillsPast">
+                    <div class="tab-pane" id="tabcontentBillsClosed">
                       <table class="table">
                         <thead class="text-warning text-uppercase">
                           <tr>
@@ -363,7 +368,7 @@
                         <tbody>
                           <tr>
                             <td class="td-actions text-right">
-                              <button type="button" data-btn-bill-filter-expenses="Y" rel="tooltip" title="View Expenses" class="btn btn-primary btn-simple btn-xs">
+                              <button type="button" data-btn-view-expenses-for-bill="Y" rel="tooltip" title="View Expenses" class="btn btn-primary btn-simple btn-xs">
                                 <i class="material-icons">list</i>
                               </button>
                             </td>
@@ -374,7 +379,7 @@
                           </tr>
                           <tr>
                             <td class="td-actions text-right">
-                              <button type="button" data-btn-bill-filter-expenses="Y" rel="tooltip" title="View Expenses" class="btn btn-primary btn-simple btn-xs">
+                              <button type="button" data-btn-view-expenses-for-bill="Y" rel="tooltip" title="View Expenses" class="btn btn-primary btn-simple btn-xs">
                                 <i class="material-icons">list</i>
                               </button>
                             </td>
@@ -394,7 +399,7 @@
                             </td>
                             <td>
                               <div class="stats">
-                                <button type="button" id="btn_billlist_filterremove" rel="tooltip" title="Remove Filter" class="btn btn-primary btn-xs">
+                                <button type="button" id="btn_unfilter_billslist" rel="tooltip" title="Clear Filter" class="btn btn-primary btn-xs">
                                   <i class="material-icons">filter_list</i>
                                 </button>
                               </div>
@@ -418,20 +423,20 @@
               </div>
             </div>
 
-          <!-- Monthly Trend / Add Expense -->
-            <div class="col-md-7" id="addExpCard">
+          <!-- Add Expense -->
+            <div class="col-md-7" id="cardAddExpense">
 
               <div class="card card-nav-tabs">
                 <div class="card-header" data-background-color="orange">
                   <div class="nav-tabs-navigation">
                     <div class="nav-tabs-wrapper">
-                      <span id="spn-exp-card-add" class="nav-tabs-title text-uppercase">Add</span>
-                      <span id="spn-exp-card-modify" class="nav-tabs-title text-uppercase">Modify</span>
+                      <span id="tabheadertitleAddExpense" class="nav-tabs-title text-uppercase">Add</span>
+                      <span id="tabheadertitleModifyExpense" class="nav-tabs-title text-uppercase">Modify</span>
                       <ul class="nav nav-tabs" data-tabs="tabs">
-                        <li id="h_add_exp" class="active"><a href="#tabcontentAddExpense" data-toggle="tab"> <i class="material-icons">flag</i>
+                        <li id="tabheaderAddExpense" class="active"><a href="#tabcontentAddExpense" data-toggle="tab"> <i class="material-icons">flag</i>
                             Expense
                             <div class="ripple-container"></div></a></li>
-                        <li id="h_add_adj" class=""><a href="#tabcontentAddAdjustment" data-toggle="tab"> <i class="material-icons">schedule</i>
+                        <li id="tabheaderAddAdjustment" class=""><a href="#tabcontentAddAdjustment" data-toggle="tab"> <i class="material-icons">schedule</i>
                             Adjustment
                             <div class="ripple-container"></div></a></li>
                       </ul>
@@ -466,7 +471,7 @@
                             </div>
                           </div>
                           <div class="col-md-4">
-                            <div class="form-group label-floating" id="input_bill">
+                            <div class="form-group label-floating" id="txtBillOnExpense">
                               <label class="control-label">Bill</label> <select class="form-control">
                                 <option></option>
                                 <option>Chase Freedom - Bill #1</option>
@@ -479,7 +484,7 @@
                         <div class="row">
                           <div class="col-md-4">
                             <div class="form-group label-floating">
-                              <label class="control-label">Description</label> <input type="text" class="form-control">
+                              <label class="control-label">Description</label> <input id="txtDescriptionAdd" type="text" class="form-control" data-provide="typeahead" autocomplete="off">
                             </div>
                           </div>
                           <div class="col-md-2">
@@ -494,10 +499,10 @@
                           </div>
                           <div class="col-md-3">
                             <div class="form-group">
-                              <button type="button" data-btn-addExp-Action="ADD" class="btn btn-success btn-lg pull-right">
-                                <i id="icn_addExp_add" class="material-icons">add</i><i id="icn_addExp_modify" class="material-icons">save</i>
+                              <button type="button" data-btn-addExpense-Action="ADD" class="btn btn-success btn-lg pull-right">
+                                <i id="icon_addExpense_add" class="material-icons">add</i><i id="icon_addExpense_modify" class="material-icons">save</i>
                               </button>
-                              <button type="button" data-btn-addExp-Action="CANCEL" class="btn btn-default btn-lg pull-right">
+                              <button type="button" data-btn-addExpense-Action="CANCEL" class="btn btn-default btn-lg pull-right">
                                 <i class="material-icons">cancel</i>
                               </button>
                             </div>
@@ -535,7 +540,7 @@
                         <div class="row">
                           <div class="col-md-4">
                             <div class="form-group label-floating">
-                              <label class="control-label">Description</label> <input type="text" class="form-control">
+                              <label class="control-label">Description</label> <input type="text" id="txtDescriptionAdjust" class="form-control" data-provide="typeahead" autocomplete="off">
                             </div>
                           </div>
                           <div class="col-md-2">
@@ -550,7 +555,7 @@
                           </div>
                           <div class="col-md-3">
                             <div class="form-group">
-                              <button type="button" data-btn-addExp-Action="ADD" class="btn btn-success btn-lg pull-right">
+                              <button type="button" data-btn-addExpense-Action="ADD" class="btn btn-success btn-lg pull-right">
                                 <i class="material-icons">add</i>
                               </button>
                             </div>
@@ -567,10 +572,10 @@
             </div>
 
           <!-- Monthly Trend -->
-            <div class="col-md-7" id="monthlyExpCard">
+            <div class="col-md-7" id="cardMonthlyExpenseChart">
               <div class="card">
                 <div class="card-header card-chart" data-background-color="orange">
-                  <div class="ct-chart" id="dashboardChart"></div>
+                  <div class="ct-chart" id="chartMonthlyExpense"></div>
                 </div>
                 <div class="card-content"></div>
                 <div class="card-footer">
@@ -586,12 +591,12 @@
           <!-- Expense List -->
           <div class="row">
             <div class="col-md-12">
-              <div class="card">
+              <div class="card" id="cardExpenseList">
                 <div class="card-header" data-background-color="blue">
                   <h4 class="title text-uppercase">Expense List</h4>
                 </div>
                 <div class="card-content table-responsive">
-                  <table class="table table-hover" id="tbl_ExpenseList">
+                  <table class="table table-hover">
                     <thead class="text-warning text-uppercase">
                       <tr>
                         <th>&nbsp;</th>
@@ -612,10 +617,10 @@
                     <tbody>
                       <tr>
                         <td class="td-actions text-right">
-                          <button type="button" data-btn-edit-exp="MODIFY" rel="tooltip" title="Edit" class="btn btn-success btn-simple btn-xs">
+                          <button type="button" data-btn-edit-expense="MODIFY" rel="tooltip" title="Edit" class="btn btn-success btn-simple btn-xs">
                             <i class="material-icons">mode_edit</i>
                           </button>
-                          <button type="button" data-btn-edit-exp="DELETE" rel="tooltip" title="Delete" class="btn btn-danger btn-simple btn-xs">
+                          <button type="button" data-btn-edit-expense="DELETE" rel="tooltip" title="Delete" class="btn btn-danger btn-simple btn-xs">
                             <i class="material-icons">delete</i>
                           </button>
                           <button type="button" rel="tooltip" title="Move Up" class="btn btn-primary btn-simple btn-xs">
@@ -644,10 +649,10 @@
                       </tr>
                       <tr>
                         <td class="td-actions text-right">
-                          <button type="button" data-btn-edit-exp="MODIFY" rel="tooltip" title="Edit" class="btn btn-success btn-simple btn-xs">
+                          <button type="button" data-btn-edit-expense="MODIFY" rel="tooltip" title="Edit" class="btn btn-success btn-simple btn-xs">
                             <i class="material-icons">mode_edit</i>
                           </button>
-                          <button type="button" data-btn-edit-exp="DELETE" rel="tooltip" title="Delete" class="btn btn-danger btn-simple btn-xs">
+                          <button type="button" data-btn-edit-expense="DELETE" rel="tooltip" title="Delete" class="btn btn-danger btn-simple btn-xs">
                             <i class="material-icons">delete</i>
                           </button>
                           <button type="button" rel="tooltip" title="Move Up" class="btn btn-primary btn-simple btn-xs">
@@ -676,10 +681,10 @@
                       </tr>
                       <tr>
                         <td class="td-actions text-right">
-                          <button type="button" data-btn-edit-exp="MODIFY" rel="tooltip" title="Edit" class="btn btn-success btn-simple btn-xs">
+                          <button type="button" data-btn-edit-expense="MODIFY" rel="tooltip" title="Edit" class="btn btn-success btn-simple btn-xs">
                             <i class="material-icons">mode_edit</i>
                           </button>
-                          <button type="button" data-btn-edit-exp="DELETE" rel="tooltip" title="Delete" class="btn btn-danger btn-simple btn-xs">
+                          <button type="button" data-btn-edit-expense="DELETE" rel="tooltip" title="Delete" class="btn btn-danger btn-simple btn-xs">
                             <i class="material-icons">delete</i>
                           </button>
                           <button type="button" rel="tooltip" title="Move Up" class="btn btn-primary btn-simple btn-xs">
@@ -708,10 +713,10 @@
                       </tr>
                       <tr>
                         <td class="td-actions text-right">
-                          <button type="button" data-btn-edit-exp="MODIFY" rel="tooltip" title="Edit" class="btn btn-success btn-simple btn-xs">
+                          <button type="button" data-btn-edit-expense="MODIFY" rel="tooltip" title="Edit" class="btn btn-success btn-simple btn-xs">
                             <i class="material-icons">mode_edit</i>
                           </button>
-                          <button type="button" data-btn-edit-exp="DELETE" rel="tooltip" title="Delete" class="btn btn-danger btn-simple btn-xs">
+                          <button type="button" data-btn-edit-expense="DELETE" rel="tooltip" title="Delete" class="btn btn-danger btn-simple btn-xs">
                             <i class="material-icons">delete</i>
                           </button>
                           <button type="button" rel="tooltip" title="Move Up" class="btn btn-primary btn-simple btn-xs">
@@ -740,10 +745,10 @@
                       </tr>
                       <tr>
                         <td class="td-actions text-right">
-                          <button type="button" data-btn-edit-exp="MODIFY" rel="tooltip" title="Edit" class="btn btn-success btn-simple btn-xs">
+                          <button type="button" data-btn-edit-expense="MODIFY" rel="tooltip" title="Edit" class="btn btn-success btn-simple btn-xs">
                             <i class="material-icons">mode_edit</i>
                           </button>
-                          <button type="button" data-btn-edit-exp="DELETE" rel="tooltip" title="Delete" class="btn btn-danger btn-simple btn-xs">
+                          <button type="button" data-btn-edit-expense="DELETE" rel="tooltip" title="Delete" class="btn btn-danger btn-simple btn-xs">
                             <i class="material-icons">delete</i>
                           </button>
                           <button type="button" rel="tooltip" title="Move Up" class="btn btn-primary btn-simple btn-xs">
@@ -776,7 +781,7 @@
                         <td colspan="10">&nbsp;</td>
                         <td>
                           <div class="stats">
-                            <button type="button" id="btn_explist_filterremove" rel="tooltip" title="Remove Filter" class="btn btn-primary btn-xs">
+                            <button type="button" id="btn_unfilter_expenseslist" rel="tooltip" title="Clear Filter" class="btn btn-primary btn-xs">
                               <i class="material-icons">filter_list</i>
                             </button>
                           </div>
@@ -806,7 +811,7 @@
 
   <!--   Modal Windows   -->
 
-  <div class="modal fade" id="mdlDeleteExp" tabindex="-1">
+  <div class="modal fade" id="modalDeleteExpense" tabindex="-1">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
@@ -835,133 +840,19 @@
             </div>
             <div class="form-group">
               <label for="description" class="control-label">Description</label>
-              <input type="text" id="description" class="form-control" disabled="disabled">
+              <input type="text" class="form-control" disabled="disabled">
             </div>
             <div class="form-group">
               <label for="amount" class="control-label">Amount</label>
-              <input type="text" id="amount" class="form-control" disabled="disabled">
+              <input type="text" class="form-control" disabled="disabled">
             </div>
             <div class="form-group">
-              <button type="button" class="btn btn-danger pull-right" id="btnDeleteExpOK"><i class="material-icons">delete</i></button>
+              <button type="button" class="btn btn-danger pull-right" id="btnDeleteExpenseAction"><i class="material-icons">delete</i></button>
               <button type="button" class="btn btn-default pull-right" data-dismiss="modal"><i class="material-icons">cancel</i></button>
             </div>
           </form>
         </div>
         <div class="modal-footer">
-        </div>
-      </div>
-    </div>
-  </div>
-
-
-  <div class="modal fade" id="mdlAddExp" tabindex="-1">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
-          <h4 class="modal-title" id="mdlAddExpLabel">Add Expense</h4>
-        </div>
-        <div class="modal-body">
-          <form>
-            <div class="form-group">
-              <div class="checkbox">
-                <label><input type="checkbox" name="adjust"> Adjust</label>&nbsp;&nbsp;&nbsp;
-                <label><input type="checkbox" name="adhoc"> Adhoc</label>
-              </div>
-            </div>
-            <div class="form-group">
-              <label for="fromAccount" class="control-label">From Acccount</label>
-              <select id="fromAccount" class="form-control">
-                <option></option>
-                <option>Chase Freedom</option>
-                <option>BOA - 7787</option>
-                <option>Chase - Sapphire Visa</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label for="toAccount" class="control-label">To Acccount</label>
-              <select id="toAccount" class="form-control">
-                <option></option>
-                <option>Chase Freedom</option>
-                <option>BOA - 7787</option>
-                <option>Chase - Sapphire Visa</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label for="category" class="control-label">Category</label>
-              <select id="category" class="form-control">
-                <option></option>
-                <option>Shopping ~ Restaurant</option>
-                <option>Food ~ Kroger Groceries</option>
-                <option>House ~ Electricity</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label for="description" class="control-label">Description</label>
-              <input type="text" id="description" class="form-control">
-            </div>
-            <div class="form-group">
-              <label for="amount" class="control-label">Amount</label>
-              <input type="text" id="amount" class="form-control">
-            </div>
-          </form>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary" id="btnAdd">Add Expense</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-
-  <div class="modal fade" id="modalAddExpense" tabindex="-1">
-    <div class="modal-dialog">
-      <div class="modal-content">
-
-        <div class="modal-body">
-
-          <div class="card card-stats">
-            <div class="card-header" data-background-color="blue">
-              <h4 class="title text-uppercase">Add Expense</h4>
-            </div>
-            <div class="card-content container-fluid">
-
-              <form class="text-left">
-                <div class="row">
-                      <div class="col-md-12 appRow">
-                        <div class="form-group label-floating">
-                          <label class="control-label">From Acccount</label> <select class="form-control">
-                            <option></option>
-                            <option>Chase Freedom</option>
-                            <option>BOA - 7787</option>
-                            <option>Chase - Sapphire Visa</option>
-                          </select>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="row">
-                      <div class="col-md-12 appRow">
-                        <div class="form-group label-floating">
-                          <label class="control-label">To Acccount</label> <select class="form-control">
-                            <option></option>
-                            <option>Chase Freedom</option>
-                            <option>BOA - 7787</option>
-                            <option>Chase - Sapphire Visa</option>
-                          </select>
-                        </div>
-                      </div>
-                    </div>
-                  
-              </form>
-
-            </div>
-          </div>
-
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary" id="button-send">Send message</button>
         </div>
       </div>
     </div>
@@ -973,19 +864,27 @@
 <script src="../bower_components/jquery/dist/jquery.js"></script>
 <script src="../bower_components/bootstrap/dist/js/bootstrap.js"></script>
 <script src="../bower_components/less/dist/less.js"></script>
+<script src="../bower_components/angular/angular.js"></script>
+<script src="../bower_components/angular-route/angular-route.js"></script>
+<script src="../bower_components/angular-resource/angular-resource.js"></script>
+<script src="../bower_components/angular-animate/angular-animate.js"></script>
+<script src="../bower_components/angular-bootstrap3-typeahead/angular-bootstrap3-typeahead.js"></script>
+<script src="../bower_components/bootstrap3-typeahead/bootstrap3-typeahead.js"></script>
+<script src="../bower_components/typeahead.js/dist/bloodhound.js"></script>
 
 <script src="../theme/js/material.min.js" type="text/javascript"></script>
 <script src="../theme/js/chartist.min.js"></script>
 <script src="../theme/js/bootstrap-notify.js"></script>
 <script src="../theme/js/material-dashboard.js"></script>
 
-<script src="app-template.js"></script>
+<script src="js/utils.js"></script>
+<script src="js/navbar.js"></script>
+<script src="js/dashboard.js"></script>
 
 <script type="text/javascript">
   $(document).ready(function() {
-    appTemplate.initNavbar();
-    appTemplate.initDashboard();
-    appTemplateChart.initChart();
+	appNavbar.init();
+	appDashboard.init();
   });
 </script>
 
