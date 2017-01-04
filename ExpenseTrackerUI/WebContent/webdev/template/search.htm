@@ -161,7 +161,7 @@
           <!-- Search Results -->
           <div class="row">
             <div class="col-md-12">
-              <div class="card">
+              <div class="card" id="cardExpenseList">
                 <div class="card-header" data-background-color="blue">
                   <h4 class="title text-uppercase">Expense List</h4>
                 </div>
@@ -187,10 +187,10 @@
                     <tbody>
                       <tr>
                         <td class="td-actions text-right">
-                          <button type="button" rel="tooltip" title="Edit" class="btn btn-success btn-simple btn-xs">
+                          <button type="button" data-btn-edit-expense="MODIFY" rel="tooltip" title="Edit" class="btn btn-success btn-simple btn-xs">
                             <i class="material-icons">mode_edit</i>
                           </button>
-                          <button type="button" rel="tooltip" title="Delete" class="btn btn-danger btn-simple btn-xs">
+                          <button type="button" data-btn-edit-expense="DELETE" rel="tooltip" title="Delete" class="btn btn-danger btn-simple btn-xs">
                             <i class="material-icons">delete</i>
                           </button>
                           <button type="button" rel="tooltip" title="Move Up" class="btn btn-primary btn-simple btn-xs">
@@ -219,10 +219,10 @@
                       </tr>
                       <tr>
                         <td class="td-actions text-right">
-                          <button type="button" rel="tooltip" title="Edit" class="btn btn-success btn-simple btn-xs">
+                          <button type="button" data-btn-edit-expense="MODIFY" rel="tooltip" title="Edit" class="btn btn-success btn-simple btn-xs">
                             <i class="material-icons">mode_edit</i>
                           </button>
-                          <button type="button" rel="tooltip" title="Delete" class="btn btn-danger btn-simple btn-xs">
+                          <button type="button" data-btn-edit-expense="DELETE" rel="tooltip" title="Delete" class="btn btn-danger btn-simple btn-xs">
                             <i class="material-icons">delete</i>
                           </button>
                           <button type="button" rel="tooltip" title="Move Up" class="btn btn-primary btn-simple btn-xs">
@@ -251,10 +251,10 @@
                       </tr>
                       <tr>
                         <td class="td-actions text-right">
-                          <button type="button" rel="tooltip" title="Edit" class="btn btn-success btn-simple btn-xs">
+                          <button type="button" data-btn-edit-expense="MODIFY" rel="tooltip" title="Edit" class="btn btn-success btn-simple btn-xs">
                             <i class="material-icons">mode_edit</i>
                           </button>
-                          <button type="button" rel="tooltip" title="Delete" class="btn btn-danger btn-simple btn-xs">
+                          <button type="button" data-btn-edit-expense="DELETE" rel="tooltip" title="Delete" class="btn btn-danger btn-simple btn-xs">
                             <i class="material-icons">delete</i>
                           </button>
                           <button type="button" rel="tooltip" title="Move Up" class="btn btn-primary btn-simple btn-xs">
@@ -283,10 +283,10 @@
                       </tr>
                       <tr>
                         <td class="td-actions text-right">
-                          <button type="button" rel="tooltip" title="Edit" class="btn btn-success btn-simple btn-xs">
+                          <button type="button" data-btn-edit-expense="MODIFY" rel="tooltip" title="Edit" class="btn btn-success btn-simple btn-xs">
                             <i class="material-icons">mode_edit</i>
                           </button>
-                          <button type="button" rel="tooltip" title="Delete" class="btn btn-danger btn-simple btn-xs">
+                          <button type="button" data-btn-edit-expense="DELETE" rel="tooltip" title="Delete" class="btn btn-danger btn-simple btn-xs">
                             <i class="material-icons">delete</i>
                           </button>
                           <button type="button" rel="tooltip" title="Move Up" class="btn btn-primary btn-simple btn-xs">
@@ -315,10 +315,10 @@
                       </tr>
                       <tr>
                         <td class="td-actions text-right">
-                          <button type="button" rel="tooltip" title="Edit" class="btn btn-success btn-simple btn-xs">
+                          <button type="button" data-btn-edit-expense="MODIFY" rel="tooltip" title="Edit" class="btn btn-success btn-simple btn-xs">
                             <i class="material-icons">mode_edit</i>
                           </button>
-                          <button type="button" rel="tooltip" title="Delete" class="btn btn-danger btn-simple btn-xs">
+                          <button type="button" data-btn-edit-expense="DELETE" rel="tooltip" title="Delete" class="btn btn-danger btn-simple btn-xs">
                             <i class="material-icons">delete</i>
                           </button>
                           <button type="button" rel="tooltip" title="Move Up" class="btn btn-primary btn-simple btn-xs">
@@ -347,10 +347,10 @@
                       </tr>
                       <tr>
                         <td class="td-actions text-right">
-                          <button type="button" rel="tooltip" title="Edit" class="btn btn-success btn-simple btn-xs">
+                          <button type="button" data-btn-edit-expense="MODIFY" rel="tooltip" title="Edit" class="btn btn-success btn-simple btn-xs">
                             <i class="material-icons">mode_edit</i>
                           </button>
-                          <button type="button" rel="tooltip" title="Delete" class="btn btn-danger btn-simple btn-xs">
+                          <button type="button" data-btn-edit-expense="DELETE" rel="tooltip" title="Delete" class="btn btn-danger btn-simple btn-xs">
                             <i class="material-icons">delete</i>
                           </button>
                           <button type="button" rel="tooltip" title="Move Up" class="btn btn-primary btn-simple btn-xs">
@@ -407,6 +407,105 @@
     </div>
   </div>
 
+  <!--   Modal Windows   -->
+
+  <div class="modal fade" id="modalModifyExpense" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
+          <h4 class="modal-title">Modify Expense</h4>
+        </div>
+        <div class="modal-body">
+          <form>
+            <div class="form-group">
+              <label class="control-label">From Account</label>
+              <select class="form-control">
+                <option></option>
+                <option>Chase Freedom</option>
+                <option>BOA - 7787</option>
+                <option>Chase - Sapphire Visa</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="control-label">Category</label> <select class="form-control">
+                <option></option>
+                <option>Shopping ~ Restaurant</option>
+                <option>Food ~ Kroger Groceries</option>
+                <option>House ~ Electricity</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="control-label">Bill</label> <select class="form-control">
+                <option></option>
+                <option>Chase Freedom - Bill #1</option>
+                <option>BOA - 7787 - Bill #2</option>
+                <option>Sapphire Visa - Bill #3</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="control-label">Description</label>
+              <input type="text" class="form-control">
+            </div>
+            <div class="form-group">
+              <label class="control-label">Amount</label>
+              <input type="text" class="form-control">
+            </div>
+            <div class="form-group">
+              <label class="control-label">Date</label>
+              <input type="text" class="form-control">
+            </div>
+            <div class="form-group">
+              <button type="button" class="btn btn-warning pull-right" id="btnModifyExpenseAction" rel="tooltip" title="Save"><i class="material-icons">save</i></button>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="modalDeleteExpense" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
+          <h4 class="modal-title">Are you sure you want to Delete this Expense ?</h4>
+        </div>
+        <div class="modal-body">
+          <form>
+            <div class="form-group">
+              <label class="control-label">From Account</label>
+              <input type="text" class="form-control" disabled="disabled">
+            </div>
+            <div class="form-group">
+              <label class="control-label">Category</label>
+              <input type="text" class="form-control" disabled="disabled">
+            </div>
+            <div class="form-group">
+              <label class="control-label">Description</label>
+              <input type="text" class="form-control" disabled="disabled">
+            </div>
+            <div class="form-group">
+              <label class="control-label">Amount</label>
+              <input type="text" class="form-control" disabled="disabled">
+            </div>
+            <div class="form-group">
+              <label class="control-label">Date</label>
+              <input type="text" class="form-control" disabled="disabled">
+            </div>
+            <div class="form-group">
+              <button type="button" class="btn btn-danger pull-right" id="btnDeleteExpenseAction" rel="tooltip" title="Delete Expense"><i class="material-icons">delete</i></button>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+        </div>
+      </div>
+    </div>
+  </div>
+
 </body>
 
 <!--   Core JS Files   -->
@@ -428,10 +527,12 @@
 
 <script src="js/utils.js"></script>
 <script src="js/navbar.js"></script>
+<script src="js/search.js"></script>
 
 <script type="text/javascript">
   $(document).ready(function(){
 	navMain.init();
+	searchMain.init();
   });
 </script>
 
