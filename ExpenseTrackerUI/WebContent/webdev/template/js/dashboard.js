@@ -1,9 +1,9 @@
-var appFlags = {
+var dashFlags = {
 	rowAdditionalAccounts: false,
 	addExpenseShowChart: true
 };
 
-var appFunx = {
+var dashFunctions = {
 	showBillsTab: function(flag) {
 		if (flag === 'CLOSED') {
 			$('#tabheaderBillsOpen').removeClass('active').hide();
@@ -24,7 +24,7 @@ var appFunx = {
 	},
 
 	toggleRowAdditionalAccounts: function() {
-		if (appFlags.rowAdditionalAccounts) {
+		if (dashFlags.rowAdditionalAccounts) {
 			$('div[data-row-additional-accounts]').hide();
 			$('#icon_expand_less').hide();
 			$('#icon_expand_more').show();
@@ -33,11 +33,11 @@ var appFunx = {
 			$('#icon_expand_more').hide();
 			$('#icon_expand_less').show();
 		}
-		appFlags.rowAdditionalAccounts = !appFlags.rowAdditionalAccounts;
+		dashFlags.rowAdditionalAccounts = !dashFlags.rowAdditionalAccounts;
 	},
 
 	toggleAddExpenseShowChart: function() {
-		if (appFlags.addExpenseShowChart) {
+		if (dashFlags.addExpenseShowChart) {
 			$('#icon_add_expense').hide();
 			$('#icon_show_chart').show();
 			$('#cardMonthlyExpenseChart').hide();
@@ -49,7 +49,7 @@ var appFunx = {
 			$('#cardMonthlyExpenseChart').show();
 			appUtils.initChart();
 		}
-		appFlags.addExpenseShowChart = !appFlags.addExpenseShowChart;
+		dashFlags.addExpenseShowChart = !dashFlags.addExpenseShowChart;
 	},
 
 	initAddExpenseCard: function() {
@@ -87,20 +87,20 @@ var appFunx = {
 	}
 };
 
-var appEventMapper = {
+var dashEventMapper = {
 	map: function() {
 		// On click of : Accounts Card
 		$('div[data-card-accounts]').click(function() {
 			var a = $(this);
 			var closed = a.attr('data-card-accounts') === 'CREDIT' ? 'CLOSED' : 'OPEN';
 
-			appFunx.showBillsTab(closed);
-			appFunx.showUnFilterOnBillsExpenses();
+			dashFunctions.showBillsTab(closed);
+			dashFunctions.showUnFilterOnBillsExpenses();
 		});
 
 		// On click of : Toggle Row of Additional Accounts
 		$('#btnToggleRowAdditionalAccounts').click(function() {
-			appFunx.toggleRowAdditionalAccounts();
+			dashFunctions.toggleRowAdditionalAccounts();
 		});
 
 		// On click of : UnFilter ExpensesList
@@ -120,7 +120,7 @@ var appEventMapper = {
 
 		// On click of : ToggleAddExpenseShowChart
 		$('#btnToggleAddExpenseShowChart').click(function() {
-			appFunx.toggleAddExpenseShowChart();
+			dashFunctions.toggleAddExpenseShowChart();
 		});
 
 		// On click of : Tally buttons
@@ -130,7 +130,12 @@ var appEventMapper = {
 
 		// On click of : Pay Bill
 		$('#btnPayBill').click(function() {
-			appFunx.showBillsTab('CLOSED');
+			$('#modalPayBill').modal('show');
+		});
+
+		// On click of : Pay Bill OK
+		$('#btnPayBillAction').click(function() {
+			dashFunctions.showBillsTab('CLOSED');
 			appUtils.msg.show('Bill Pay');
 		});
 
@@ -165,11 +170,11 @@ var appEventMapper = {
 		$('#cardExpenseList :button[data-btn-edit-expense]').click(function() {
 			if ($(this).attr('data-btn-edit-expense') === 'MODIFY') {
 				// Hide the 'Add Expense' button at the Navbar.
-				appFlags.addExpenseShowChart = true;
-				appFunx.toggleAddExpenseShowChart();
+				dashFlags.addExpenseShowChart = true;
+				dashFunctions.toggleAddExpenseShowChart();
 				$('#btnToggleAddExpenseShowChart').hide();
 
-				appFunx.initModifyExpenseCard();
+				dashFunctions.initModifyExpenseCard();
 			}
 		});
 
@@ -185,21 +190,21 @@ var appEventMapper = {
 			var action = $(this).attr('data-btn-addExpense-Action');
 			if (action === 'MODIFY' || action === 'CANCEL') {
 				// Restore the 'Add Expense' button at the Navbar.
-				appFlags.addExpenseShowChart = true;
-				appFunx.toggleAddExpenseShowChart();
+				dashFlags.addExpenseShowChart = true;
+				dashFunctions.toggleAddExpenseShowChart();
 				$('#btnToggleAddExpenseShowChart').show();
 
-				appFunx.initAddExpenseCard();
+				dashFunctions.initAddExpenseCard();
 			}
 		});
 	}
 };
 
-var appDashboard = {
+var dashMain = {
 	init: function() {
 		// Re-initialize flags
-		appFlags.rowAdditionalAccounts = false;
-		appFlags.addExpenseShowChart = true;
+		dashFlags.rowAdditionalAccounts = false;
+		dashFlags.addExpenseShowChart = true;
 
 		// Hide Additional row of Accounts
 		$('div[data-row-additional-accounts]').hide();
@@ -211,10 +216,10 @@ var appDashboard = {
 		$('#btn_unfilter_billslist').hide();
 
 		// Hide Monthly Expenses Chart
-		appFunx.toggleAddExpenseShowChart();
+		dashFunctions.toggleAddExpenseShowChart();
 
-		appFunx.initAddExpenseCard();
+		dashFunctions.initAddExpenseCard();
 
-		appEventMapper.map();
+		dashEventMapper.map();
 	}
 };

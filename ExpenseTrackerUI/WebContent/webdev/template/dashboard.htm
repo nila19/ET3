@@ -452,7 +452,7 @@
                         <div class="row">
                           <div class="col-md-4">
                             <div class="form-group label-floating">
-                              <label class="control-label">From Acccount</label> <select class="form-control">
+                              <label class="control-label">From Account</label> <select class="form-control">
                                 <option></option>
                                 <option>Chase Freedom</option>
                                 <option>BOA - 7787</option>
@@ -499,7 +499,7 @@
                           </div>
                           <div class="col-md-3">
                             <div class="form-group">
-                              <button type="button" data-btn-addExpense-Action="ADD" class="btn btn-success btn-lg pull-right">
+                              <button type="button" data-btn-addExpense-Action="ADD" rel="tooltip" title="Save" class="btn btn-success btn-lg pull-right">
                                 <i id="icon_addExpense_add" class="material-icons">add</i><i id="icon_addExpense_modify" class="material-icons">save</i>
                               </button>
                               <button type="button" data-btn-addExpense-Action="CANCEL" class="btn btn-default btn-lg pull-right">
@@ -517,7 +517,7 @@
                         <div class="row">
                           <div class="col-md-4">
                             <div class="form-group label-floating">
-                              <label class="control-label">From Acccount</label> <select class="form-control">
+                              <label class="control-label">From Account</label> <select class="form-control">
                                 <option></option>
                                 <option>Chase Freedom</option>
                                 <option>BOA - 7787</option>
@@ -527,7 +527,7 @@
                           </div>
                           <div class="col-md-4">
                             <div class="form-group label-floating">
-                              <label class="control-label">To Acccount</label> <select class="form-control">
+                              <label class="control-label">To Account</label> <select class="form-control">
                                 <option></option>
                                 <option>Chase Freedom</option>
                                 <option>BOA - 7787</option>
@@ -555,7 +555,7 @@
                           </div>
                           <div class="col-md-3">
                             <div class="form-group">
-                              <button type="button" data-btn-addExpense-Action="ADD" class="btn btn-success btn-lg pull-right">
+                              <button type="button" data-btn-addExpense-Action="ADD" rel="tooltip" title="Save" class="btn btn-success btn-lg pull-right">
                                 <i class="material-icons">add</i>
                               </button>
                             </div>
@@ -811,6 +811,63 @@
 
   <!--   Modal Windows   -->
 
+  <div class="modal fade" id="modalModifyExpense" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
+          <h4 class="modal-title">Modify Expense</h4>
+        </div>
+        <div class="modal-body">
+          <form>
+            <div class="form-group">
+              <label class="control-label">From Account</label>
+              <select class="form-control">
+                <option></option>
+                <option>Chase Freedom</option>
+                <option>BOA - 7787</option>
+                <option>Chase - Sapphire Visa</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="control-label">Category</label> <select class="form-control">
+                <option></option>
+                <option>Shopping ~ Restaurant</option>
+                <option>Food ~ Kroger Groceries</option>
+                <option>House ~ Electricity</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="control-label">Bill</label> <select class="form-control">
+                <option></option>
+                <option>Chase Freedom - Bill #1</option>
+                <option>BOA - 7787 - Bill #2</option>
+                <option>Sapphire Visa - Bill #3</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="control-label">Description</label>
+              <input type="text" class="form-control">
+            </div>
+            <div class="form-group">
+              <label class="control-label">Amount</label>
+              <input type="text" class="form-control">
+            </div>
+            <div class="form-group">
+              <label class="control-label">Date</label>
+              <input type="text" class="form-control">
+            </div>
+            <div class="form-group">
+              <button type="button" class="btn btn-warning pull-right" id="btnModifyExpenseAction" rel="tooltip" title="Modify Expense"><i class="material-icons">save</i></button>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+        </div>
+      </div>
+    </div>
+  </div>
+
   <div class="modal fade" id="modalDeleteExpense" tabindex="-1">
     <div class="modal-dialog">
       <div class="modal-content">
@@ -821,8 +878,60 @@
         <div class="modal-body">
           <form>
             <div class="form-group">
-              <label for="fromAccount" class="control-label">From Acccount</label>
-              <select id="fromAccount" class="form-control" disabled="disabled">
+              <label class="control-label">From Account</label>
+              <input type="text" class="form-control" disabled="disabled">
+            </div>
+            <div class="form-group">
+              <label class="control-label">Category</label>
+              <input type="text" class="form-control" disabled="disabled">
+            </div>
+            <div class="form-group">
+              <label class="control-label">Description</label>
+              <input type="text" class="form-control" disabled="disabled">
+            </div>
+            <div class="form-group">
+              <label class="control-label">Amount</label>
+              <input type="text" class="form-control" disabled="disabled">
+            </div>
+            <div class="form-group">
+              <label class="control-label">Date</label>
+              <input type="text" class="form-control" disabled="disabled">
+            </div>
+            <div class="form-group">
+              <button type="button" class="btn btn-danger pull-right" id="btnDeleteExpenseAction" rel="tooltip" title="Delete Expense"><i class="material-icons">delete</i></button>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="modalPayBill" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
+          <h4 class="modal-title">Pay Bill</h4>
+        </div>
+        <div class="modal-body">
+          <form>
+            <div class="form-group">
+              <label class="control-label">Account</label>
+              <input type="text" class="form-control" disabled="disabled">
+            </div>
+            <div class="form-group">
+              <label class="control-label">Bill</label>
+              <input type="text" class="form-control" disabled="disabled" value="24-Dec-16 #0065">
+            </div>
+            <div class="form-group">
+              <label class="control-label">Bill Amount</label>
+              <input type="text" class="form-control" disabled="disabled" value="$ 1,024.35">
+            </div>
+            <div class="form-group">
+              <label class="control-label">Pay From </label>
+              <select class="form-control">
                 <option></option>
                 <option>Chase Freedom</option>
                 <option>BOA - 7787</option>
@@ -830,25 +939,11 @@
               </select>
             </div>
             <div class="form-group">
-              <label for="category" class="control-label">Category</label>
-              <select id="category" class="form-control" disabled="disabled">
-                <option></option>
-                <option>Shopping ~ Restaurant</option>
-                <option>Food ~ Kroger Groceries</option>
-                <option>House ~ Electricity</option>
-              </select>
+              <label class="control-label">Date</label>
+              <input type="text" class="form-control">
             </div>
             <div class="form-group">
-              <label for="description" class="control-label">Description</label>
-              <input type="text" class="form-control" disabled="disabled">
-            </div>
-            <div class="form-group">
-              <label for="amount" class="control-label">Amount</label>
-              <input type="text" class="form-control" disabled="disabled">
-            </div>
-            <div class="form-group">
-              <button type="button" class="btn btn-danger pull-right" id="btnDeleteExpenseAction"><i class="material-icons">delete</i></button>
-              <button type="button" class="btn btn-default pull-right" data-dismiss="modal"><i class="material-icons">cancel</i></button>
+              <button type="button" class="btn btn-danger pull-right" id="btnPayBillAction" rel="tooltip" title="Pay Bill"><i class="material-icons">payment</i></button>
             </div>
           </form>
         </div>
@@ -883,8 +978,8 @@
 
 <script type="text/javascript">
   $(document).ready(function() {
-	appNavbar.init();
-	appDashboard.init();
+	navMain.init();
+	dashMain.init();
   });
 </script>
 
