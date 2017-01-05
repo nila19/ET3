@@ -8,6 +8,51 @@ var searchFunctions = {
 			$('#modalModifyExpense [data-edit-exp-field]').hide();
 			$('#modalModifyExpense [data-edit-exp-field = "' + type + '"]').show();
 		}
+	},
+
+	initTypeAheads: function() {
+		var descriptions = ['Kroger', 'Kroger Groceries', 'Walmart', 'Costco', 'CreditCard Bill',
+				'Cash', 'Walgreens'];
+		var accounts = ['BOA - 7787', 'BOA VISA', 'Chase Freedom', 'Chase Checking', 'Blue Cash',
+				'Gap VISA', 'Cash Bala', 'Cash Anitha', 'HSA'];
+		var categories = ['Food ~ Kroger Groceries', 'Transport ~ Car Gas',
+				'Shopping ~ Restaurant', 'Shopping ~ Shopping', 'House ~ Rent'];
+		var months = ['Dec-16', 'Oct-16', 'Sep-16', 'Aug-16', 'Jul-16', 'Jun-16'];
+
+		var fields = {
+			descriptions: ['txtSearch_Description'],
+			accounts: ['txtSearch_Account'],
+			categories: ['txtSearch_Category'],
+			months: ['txtSearch_ExpMonth', 'txtSearch_EntryMonth']
+		};
+
+		$.each(fields.descriptions, function(i, description) {
+			$('#' + description).typeahead({
+				source: descriptions,
+				minLength: 0
+			});
+		});
+
+		$.each(fields.accounts, function(i, account) {
+			$('#' + account).typeahead({
+				source: accounts,
+				minLength: 0
+			});
+		});
+
+		$.each(fields.categories, function(i, category) {
+			$('#' + category).typeahead({
+				source: categories,
+				minLength: 0
+			});
+		});
+
+		$.each(fields.months, function(i, month) {
+			$('#' + month).typeahead({
+				source: months,
+				minLength: 0
+			});
+		});
 	}
 };
 
@@ -50,5 +95,6 @@ var searchEventMapper = {
 var searchMain = {
 	init: function() {
 		searchEventMapper.map();
+		searchFunctions.initTypeAheads();
 	}
 };

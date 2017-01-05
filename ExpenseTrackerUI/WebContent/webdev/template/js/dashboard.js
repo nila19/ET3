@@ -68,6 +68,44 @@ var dashFunctions = {
 			$('#modalModifyExpense [data-edit-exp-field]').hide();
 			$('#modalModifyExpense [data-edit-exp-field = "' + type + '"]').show();
 		}
+	},
+
+	initTypeAheads: function() {
+		var descriptions = ['Kroger', 'Kroger Groceries', 'Walmart', 'Costco', 'CreditCard Bill',
+				'Cash', 'Walgreens'];
+		var accounts = ['BOA - 7787', 'BOA VISA', 'Chase Freedom', 'Chase Checking', 'Blue Cash',
+				'Gap VISA', 'Cash Bala', 'Cash Anitha', 'HSA'];
+		var categories = ['Food ~ Kroger Groceries', 'Transport ~ Car Gas',
+				'Shopping ~ Restaurant', 'Shopping ~ Shopping', 'House ~ Rent'];
+
+		var fields = {
+			descriptions: ['txtAddExp_Description', 'txtAddAdj_Description',
+					'txtModify_Description'],
+			accounts: ['txtAddExp_FromAccount', 'txtAddAdj_FromAccount', 'txtAddAdj_ToAccount',
+					'txtPayBill_FromAccount', 'txtModify_FromAccount', 'txtModify_ToAccount'],
+			categories: ['txtAddExp_Category', 'txtModify_Category']
+		};
+
+		$.each(fields.descriptions, function(i, description) {
+			$('#' + description).typeahead({
+				source: descriptions,
+				minLength: 0
+			});
+		});
+
+		$.each(fields.accounts, function(i, account) {
+			$('#' + account).typeahead({
+				source: accounts,
+				minLength: 0
+			});
+		});
+
+		$.each(fields.categories, function(i, category) {
+			$('#' + category).typeahead({
+				source: categories,
+				minLength: 0
+			});
+		});
 	}
 };
 
@@ -188,6 +226,7 @@ var dashMain = {
 		dashFunctions.toggleAddExpenseShowChart();
 
 		dashFunctions.initAddExpenseCard();
+		dashFunctions.initTypeAheads();
 
 		dashEventMapper.map();
 	}

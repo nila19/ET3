@@ -8,6 +8,7 @@
 <meta name="viewport" content="width=device-width" />
 
 <link href="../bower_components/bootstrap/dist/css/bootstrap.css" rel="stylesheet">
+<link href="../bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.css" rel="stylesheet">
 <link href="../theme/css/material-dashboard.css" rel="stylesheet" />
 <link href="../theme/css/font-awesome.min.css" rel="stylesheet">
 <link href="../theme/css/fonts.css" rel='stylesheet' type='text/css'>
@@ -491,22 +492,14 @@
                         <div class="row">
                           <div class="col-md-4">
                             <div class="form-group label-floating">
-                              <label class="control-label">From Account</label> <select class="form-control">
-                                <option></option>
-                                <option>Chase Freedom</option>
-                                <option>BOA - 7787</option>
-                                <option>Chase - Sapphire Visa</option>
-                              </select>
+                              <label class="control-label">From Account</label>
+                              <input id="txtAddExp_FromAccount" type="text" class="form-control" data-provide="typeahead" autocomplete="off">
                             </div>
                           </div>
                           <div class="col-md-4">
                             <div class="form-group label-floating">
-                              <label class="control-label">Category</label> <select class="form-control">
-                                <option></option>
-                                <option>Shopping ~ Restaurant</option>
-                                <option>Food ~ Kroger Groceries</option>
-                                <option>House ~ Electricity</option>
-                              </select>
+                              <label class="control-label">Category</label> 
+                              <input id="txtAddExp_Category" type="text" class="form-control" data-provide="typeahead" autocomplete="off">
                             </div>
                           </div>
                           <div class="col-md-4">
@@ -518,7 +511,8 @@
                         <div class="row">
                           <div class="col-md-4">
                             <div class="form-group label-floating">
-                              <label class="control-label">Description</label> <input id="txtDescriptionAdd" type="text" class="form-control" data-provide="typeahead" autocomplete="off">
+                              <label class="control-label">Description</label> 
+                              <input id="txtAddExp_Description" type="text" class="form-control" data-provide="typeahead" autocomplete="off">
                             </div>
                           </div>
                           <div class="col-md-2">
@@ -528,7 +522,7 @@
                           </div>
                           <div class="col-md-3">
                             <div class="form-group label-floating">
-                              <label class="control-label">Date</label> <input type="text" class="form-control">
+                              <label class="control-label">Date</label> <input type="text" class="form-control" data-provide="datepicker">
                             </div>
                           </div>
                           <div class="col-md-3">
@@ -548,22 +542,14 @@
                         <div class="row">
                           <div class="col-md-4">
                             <div class="form-group label-floating">
-                              <label class="control-label">From Account</label> <select class="form-control">
-                                <option></option>
-                                <option>Chase Freedom</option>
-                                <option>BOA - 7787</option>
-                                <option>Chase - Sapphire Visa</option>
-                              </select>
+                              <label class="control-label">From Account</label>
+                              <input id="txtAddAdj_FromAccount" type="text" class="form-control" data-provide="typeahead" autocomplete="off">
                             </div>
                           </div>
                           <div class="col-md-4">
                             <div class="form-group label-floating">
-                              <label class="control-label">To Account</label> <select class="form-control">
-                                <option></option>
-                                <option>Chase Freedom</option>
-                                <option>BOA - 7787</option>
-                                <option>Chase - Sapphire Visa</option>
-                              </select>
+                              <label class="control-label">To Account</label>
+                              <input id="txtAddAdj_ToAccount" type="text" class="form-control" data-provide="typeahead" autocomplete="off">
                             </div>
                           </div>
                           <div class="col-md-4">&nbsp;</div>
@@ -571,7 +557,8 @@
                         <div class="row">
                           <div class="col-md-4">
                             <div class="form-group label-floating">
-                              <label class="control-label">Description</label> <input type="text" id="txtDescriptionAdjust" class="form-control" data-provide="typeahead" autocomplete="off">
+                              <label class="control-label">Description</label>
+                              <input id="txtAddAdj_Description" type="text" class="form-control" data-provide="typeahead" autocomplete="off">
                             </div>
                           </div>
                           <div class="col-md-2">
@@ -581,7 +568,7 @@
                           </div>
                           <div class="col-md-3">
                             <div class="form-group label-floating">
-                              <label class="control-label">Date</label> <input type="text" class="form-control">
+                              <label class="control-label">Date</label> <input type="text" class="form-control" data-provide="datepicker">
                             </div>
                           </div>
                           <div class="col-md-3">
@@ -818,32 +805,18 @@
           <form>
             <div class="form-group">
               <label class="control-label">From Account</label>
-              <select class="form-control">
-                <option></option>
-                <option>Chase Freedom</option>
-                <option>BOA - 7787</option>
-                <option>Chase - Sapphire Visa</option>
-              </select>
+              <input id="txtModify_FromAccount" type="text" class="form-control" data-provide="typeahead" autocomplete="off">
             </div>
             <div data-edit-exp-field="ADJUSTMENT" class="form-group">
               <label class="control-label">To Account</label>
-              <select class="form-control">
-                <option></option>
-                <option>Chase Freedom</option>
-                <option>BOA - 7787</option>
-                <option>Chase - Sapphire Visa</option>
-              </select>
+              <input id="txtModify_ToAccount" type="text" class="form-control" data-provide="typeahead" autocomplete="off">
             </div>
             <div data-edit-exp-field="EXPENSE" class="form-group">
-              <label class="control-label">Category</label> <select class="form-control">
-                <option></option>
-                <option>Shopping ~ Restaurant</option>
-                <option>Food ~ Kroger Groceries</option>
-                <option>House ~ Electricity</option>
-              </select>
+              <label class="control-label">Category</label>
+              <input id="txtModify_Category" type="text" class="form-control" data-provide="typeahead" autocomplete="off">
             </div>
             <div data-edit-exp-field="EXPENSE" class="form-group">
-              <label class="control-label">Bill</label> <select class="form-control">
+              <label class="control-label">Bill</label><select class="form-control">
                 <option></option>
                 <option>Chase Freedom - Bill #1</option>
                 <option>BOA - 7787 - Bill #2</option>
@@ -852,7 +825,7 @@
             </div>
             <div class="form-group">
               <label class="control-label">Description</label>
-              <input type="text" class="form-control">
+                <input id="txtModify_Description" type="text" class="form-control" data-provide="typeahead" autocomplete="off">
             </div>
             <div class="form-group">
               <label class="control-label">Amount</label>
@@ -860,7 +833,7 @@
             </div>
             <div class="form-group">
               <label class="control-label">Date</label>
-              <input type="text" class="form-control">
+              <input type="text" class="form-control" data-provide="datepicker" value="03/03/2010">
             </div>
             <div class="form-group">
               <div data-edit-exp-field="EXPENSE" class="checkbox">
@@ -947,16 +920,11 @@
             </div>
             <div class="form-group">
               <label class="control-label">Pay From </label>
-              <select class="form-control">
-                <option></option>
-                <option>Chase Freedom</option>
-                <option>BOA - 7787</option>
-                <option>Chase - Sapphire Visa</option>
-              </select>
+                <input id="txtPayBill_FromAccount" type="text" class="form-control" data-provide="typeahead" autocomplete="off">
             </div>
             <div class="form-group">
               <label class="control-label">Date</label>
-              <input type="text" class="form-control">
+              <input type="text" class="form-control" data-provide="datepicker">
             </div>
             <div class="form-group">
               <button type="button" class="btn btn-primary pull-right" id="btnPayBillAction" rel="tooltip" title="Pay Bill"><i class="material-icons">payment</i></button>
@@ -981,7 +949,7 @@
 <script src="../bower_components/angular-animate/angular-animate.js"></script>
 <script src="../bower_components/angular-bootstrap3-typeahead/angular-bootstrap3-typeahead.js"></script>
 <script src="../bower_components/bootstrap3-typeahead/bootstrap3-typeahead.js"></script>
-<script src="../bower_components/typeahead.js/dist/bloodhound.js"></script>
+<script src="../bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.js"></script>
 
 <script src="../theme/js/material.min.js" type="text/javascript"></script>
 <script src="../theme/js/chartist.min.js"></script>
