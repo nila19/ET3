@@ -1,0 +1,96 @@
+      <!-- Search Content -->
+      <div class="content">
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-md-12">
+
+              <div class="card">
+                <div class="card-content">
+                  <form>
+                    <div class="row">
+
+                      <div class="col-lg-2 col-md-3">
+                        <div class="form-group label-floating">
+                          <label class="control-label">Category</label>
+                          <input id="txtSearch_Category" type="text" class="form-control" data-provide="typeahead" autocomplete="off">
+                        </div>
+                      </div>
+                      <div class="col-lg-2 col-md-3">
+                        <div class="form-group label-floating">
+                          <label class="control-label">Description</label>
+                          <input id="txtSearch_Description" type="text" class="form-control" data-provide="typeahead" autocomplete="off">
+                        </div>
+                      </div>
+                      <div class="col-lg-1 col-md-2">
+                        <div class="form-group label-floating">
+                          <label class="control-label">Amount</label> <input type="text" class="form-control">
+                        </div>
+                      </div>
+                      <div class="col-lg-1 col-md-2">
+                        <div class="form-group label-floating">
+                          <label class="control-label">Exp Month</label>
+                          <input id="txtSearch_ExpMonth" type="text" class="form-control" data-provide="typeahead" autocomplete="off">
+                        </div>
+                      </div>
+                      <div class="col-lg-1 col-md-2">
+                        <div class="form-group label-floating">
+                          <label class="control-label">Entry Month</label>
+                          <input id="txtSearch_EntryMonth" type="text" class="form-control" data-provide="typeahead" autocomplete="off">
+                        </div>
+                      </div>
+                      <div class="col-lg-2 col-md-3">
+                        <div class="form-group label-floating">
+                          <label class="control-label">Account</label>
+                          <input id="txtSearch_Account" type="text" class="form-control" data-provide="typeahead" autocomplete="off">
+                        </div>
+                      </div>
+                      <div class="col-lg-1 col-md-2">
+                        <div>
+                          Adjust
+                          <div class="checkbox">
+                            <label> <input type="checkbox" name="adjust"> Yes
+                            </label>
+                          </div>
+                          <div class="checkbox">
+                            <label> <input type="checkbox" name="adjust"> No
+                            </label>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-lg-1 col-md-2">
+                        <div>
+                          Adhoc
+                          <div class="checkbox">
+                            <label> <input type="checkbox" name="adhoc"> Yes
+                            </label>
+                          </div>
+                          <div class="checkbox">
+                            <label> <input type="checkbox" name="adhoc"> No
+                            </label>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-lg-1 col-md-2">
+                        <button type="button" class="btn btn-danger btn-lg pull-right">Search</button>
+                      </div>
+                    </div>
+                    <!-- /.row -->
+
+                  </form>
+                </div>
+                <!-- /.card-content -->
+              </div>
+              <!-- /.card -->
+
+            </div>
+          </div>
+
+          <!-- Search Results -->
+          <explist></explist>
+
+        </div>
+      </div>
+
+      <!--   Edit Modal Windows   -->
+      <edit></edit>
+      
