@@ -9,17 +9,6 @@ var gulp = require('gulp'),
 
 plugins.util.colors = chalk;
 
-if (supportsColor) {
-	if (supportsColor.has16m) {
-	    console.log('Terminal supports 16 Million colors (truecolor)');
-	} else if (supportsColor.has256) {
-	    console.log('Terminal supports 256 colors');
-	} else {
-	    console.log('Terminal has basic support for color');
-	}
-	console.log(chalk.blue('Hello world!'));
-}
-
 //****************************** Intermediate path variables ******************************//
 var	dir = {
 	src: 'WebContent/webdev',
@@ -29,7 +18,7 @@ var	dir = {
 var path = {
 	excludes: {
 		bower: dir.src + '/bower_components/**/*.*',
-		theme: dir.src + '/theme/**/*.*'
+		theme: dir.src + '/a_theme/**/*.*'
 	},
 	js: {
 		modules: dir.src + '/**/*.module.js',
@@ -50,6 +39,18 @@ function buildExcludes() {
 	return paths;
 }
 
+//*** Unused
+function checkColor() {
+	if (supportsColor) {
+		if (supportsColor.has16m) {
+		    console.log('Terminal supports 16 Million colors (truecolor)');
+		} else if (supportsColor.has256) {
+		    console.log('Terminal supports 256 colors');
+		} else {
+		    console.log('Terminal has basic support for color');
+		}
+	}
+}
 //*********************** Source & Destination paths used in Tasks ***********************//
 var flag = {
 	prod: !!plugins.util.env.prod,		//gulp --prod
@@ -75,7 +76,7 @@ var dest = {
 	root: dir.dest,
 	images: dir.dest + '/images/',
 	bower: dir.dest + '/bower_components/',
-	theme: dir.dest + '/theme/',
+	theme: dir.dest + '/a_theme/',
 	appjs: 'app.js'
 };
 
