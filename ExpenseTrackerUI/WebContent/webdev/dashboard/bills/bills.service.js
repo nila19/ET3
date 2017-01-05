@@ -7,6 +7,7 @@
 
 	billsService.$inject = ['CONSTANTS'];
 	function billsService(CONSTANTS) {
+		return {};
 
 	}
 

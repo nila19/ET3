@@ -7,6 +7,7 @@
 
 	explistService.$inject = ['CONSTANTS'];
 	function explistService(CONSTANTS) {
+		return {};
 
 	}
 

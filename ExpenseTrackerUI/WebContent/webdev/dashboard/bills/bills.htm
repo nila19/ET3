@@ -1,0 +1,206 @@
+          <!-- Bills Card -->
+            <div class="col-md-6">
+              <div class="card card-nav-tabs" id="cardBills">
+                <div class="card-header" data-background-color="purple">
+                  <div class="nav-tabs-navigation">
+                    <div class="nav-tabs-wrapper">
+                      <span class="nav-tabs-title text-uppercase">Bills</strong></span>
+                      <ul class="nav nav-tabs" data-tabs="tabs">
+                        <li id="tabheaderBillsOpen" class="active"><a href="#tabcontentBillsOpen" data-toggle="tab"> <i class="material-icons">flag</i>
+                            Open
+                            <div class="ripple-container"></div></a></li>
+                        <li id="tabheaderBillsClosed" class=""><a href="#tabcontentBillsClosed" data-toggle="tab"> <i class="material-icons">schedule</i>
+                            Closed
+                            <div class="ripple-container"></div></a></li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="card-content">
+                  <div class="tab-content">
+                    <div class="tab-pane active" id="tabcontentBillsOpen">
+                      <table class="table">
+                        <thead class="text-warning text-uppercase">
+                          <tr>
+                            <th>&nbsp;</th>
+                            <th>Acccount</th>
+                            <th>Bill Date</th>
+                            <th>Bill Amount</th>
+                            <th>Due Date</th>
+                            <th>Paid Now</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <td class="td-actions text-right">
+                              <button type="button" data-btn-view-expenses-for-bill="Y" rel="tooltip" title="View Expenses" class="btn btn-primary btn-simple btn-xs">
+                                <i class="material-icons">list</i>
+                              </button>
+                            </td>
+                            <td>BOA VISA</td>
+                            <td>21-Nov-16</td>
+                            <td>$ 1,258.54</td>
+                            <td>21-Dec-16</td>
+                            <td>
+                              <button type="button" data-btn-pay-bill="Y" rel="tooltip" title="Pay Now" class="btn btn-primary btn-xs">
+                                <i class="material-icons">payment</i>
+                              </button>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td class="td-actions text-right">
+                              <button type="button" data-btn-view-expenses-for-bill="Y" rel="tooltip" title="View Expenses" class="btn btn-primary btn-simple btn-xs">
+                                <i class="material-icons">list</i>
+                              </button>
+                            </td>
+                            <td>Chase Freedom</td>
+                            <td>21-Sep-16</td>
+                            <td>$ 1,008.22</td>
+                            <td>21-Oct-16</td>
+                            <td>
+                              <button type="button" data-btn-pay-bill="Y" rel="tooltip" title="Pay Now" class="btn btn-primary btn-xs">
+                                <i class="material-icons">payment</i>
+                              </button>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td colspan="4">
+                              <div class="stats">
+                                <button type="button" class="btn btn-simple btn-xs">
+                                  <i class="material-icons">schedule</i>
+                                </button>
+                              </div>
+                            </td>
+                            <td>
+                              <div class="stats">
+                                <button type="button" id="btn_unfilter_billslist" rel="tooltip" title="Clear Filter" class="btn btn-primary btn-xs">
+                                  <i class="material-icons">filter_list</i>
+                                </button>
+                              </div>
+                            </td>
+                            <td>
+                              <div class="stats">
+                                <button type="button" class="btn btn-primary btn-xs">
+                                  <i class="material-icons">skip_previous</i>
+                                </button>
+                                <button type="button" class="btn btn-primary btn-xs">
+                                  <i class="material-icons">skip_next</i>
+                                </button>
+                              </div>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                    <div class="tab-pane" id="tabcontentBillsClosed">
+                      <table class="table">
+                        <thead class="text-warning text-uppercase">
+                          <tr>
+                            <th>&nbsp;</th>
+                            <th>Acccount</th>
+                            <th>Bill Date</th>
+                            <th>Bill Amount</th>
+                            <th>Due Date</th>
+                            <th>Paid On</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <td class="td-actions text-right">
+                              <button type="button" data-btn-view-expenses-for-bill="Y" rel="tooltip" title="View Expenses" class="btn btn-primary btn-simple btn-xs">
+                                <i class="material-icons">list</i>
+                              </button>
+                            </td>
+                            <td>BOA VISA</td>
+                            <td>21-Nov-16</td>
+                            <td>$ 1,258.54</td>
+                            <td>21-Dec-16</td>
+                            <td>15-Dec-16</td>
+                          </tr>
+                          <tr>
+                            <td class="td-actions text-right">
+                              <button type="button" data-btn-view-expenses-for-bill="Y" rel="tooltip" title="View Expenses" class="btn btn-primary btn-simple btn-xs">
+                                <i class="material-icons">list</i>
+                              </button>
+                            </td>
+                            <td>Chase Freedom</td>
+                            <td>21-Sep-16</td>
+                            <td>$ 1,008.22</td>
+                            <td>21-Oct-16</td>
+                            <td>15-Oct-16</td>
+                          </tr>
+                          <tr>
+                            <td colspan="4">
+                              <div class="stats">
+                                <button type="button" class="btn btn-simple btn-xs">
+                                  <i class="material-icons">schedule</i>
+                                </button>
+                              </div>
+                            </td>
+                            <td>
+                              <div class="stats">
+                                <button type="button" id="btn_unfilter_billslist" rel="tooltip" title="Clear Filter" class="btn btn-primary btn-xs">
+                                  <i class="material-icons">filter_list</i>
+                                </button>
+                              </div>
+                            </td>
+                            <td>
+                              <div class="stats">
+                                <button type="button" class="btn btn-primary btn-xs">
+                                  <i class="material-icons">skip_previous</i>
+                                </button>
+                                <button type="button" class="btn btn-primary btn-xs">
+                                  <i class="material-icons">skip_next</i>
+                                </button>
+                              </div>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+  <!--   Bill Pay Modal Window   -->
+  <div class="modal fade" id="modalPayBill" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
+          <h4 class="modal-title text-primary text-uppercase"><i class="material-icons">list</i> Pay Bill</h4>
+        </div>
+        <div class="modal-body">
+          <form>
+            <div class="form-group">
+              <label class="control-label">Account</label>
+              <input type="text" class="form-control" disabled="disabled">
+            </div>
+            <div class="form-group">
+              <label class="control-label">Bill</label>
+              <input type="text" class="form-control" disabled="disabled" value="24-Dec-16 #0065">
+            </div>
+            <div class="form-group">
+              <label class="control-label">Bill Amount</label>
+              <input type="text" class="form-control" disabled="disabled" value="$ 1,024.35">
+            </div>
+            <div class="form-group">
+              <label class="control-label">Pay From </label>
+                <input id="txtPayBill_FromAccount" type="text" class="form-control" data-provide="typeahead" autocomplete="off">
+            </div>
+            <div class="form-group">
+              <label class="control-label">Date</label>
+              <input type="text" class="form-control" data-provide="datepicker">
+            </div>
+            <div class="form-group">
+              <button type="button" class="btn btn-primary pull-right" id="btnPayBillAction" rel="tooltip" title="Pay Bill"><i class="material-icons">payment</i></button>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+        </div>
+      </div>
+    </div>
+  </div>

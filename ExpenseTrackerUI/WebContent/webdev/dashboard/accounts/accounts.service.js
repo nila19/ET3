@@ -7,6 +7,7 @@
 
 	accountsService.$inject = ['CONSTANTS'];
 	function accountsService(CONSTANTS) {
+		return {};
 
 	}
 

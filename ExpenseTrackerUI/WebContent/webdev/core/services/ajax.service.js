@@ -3,7 +3,7 @@
 (function(angular) {
 	'use strict';
 
-	angular.module('services').factory('ajaxService', ajaxService);
+	angular.module('core.services').factory('ajaxService', ajaxService);
 
 	ajaxService.$inject = ['CONSTANTS', '$resource'];
 	function ajaxService(CONSTANTS, $resource) {

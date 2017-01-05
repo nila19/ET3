@@ -7,6 +7,7 @@
 
 	editService.$inject = ['CONSTANTS'];
 	function editService(CONSTANTS) {
+		return {};
 
 	}
 

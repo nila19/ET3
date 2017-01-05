@@ -1,0 +1,124 @@
+          <!-- Add Expense -->
+            <div class="col-md-6" id="cardAddExpense">
+
+              <div class="card card-nav-tabs">
+                <div class="card-header" data-background-color="green">
+                  <div class="nav-tabs-navigation">
+                    <div class="nav-tabs-wrapper">
+                      <span class="nav-tabs-title text-uppercase">Add</span>
+                      <ul class="nav nav-tabs" data-tabs="tabs">
+                        <li class="active"><a href="#tabcontentAddExpense" data-toggle="tab"> <i class="material-icons">add_shopping_cart</i>
+                            Expense
+                            <div class="ripple-container"></div></a></li>
+                        <li class=""><a href="#tabcontentAddAdjustment" data-toggle="tab"> <i class="material-icons">transform</i>
+                            Adjustment
+                            <div class="ripple-container"></div></a></li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="card-content">
+                  <div class="tab-content">
+
+                    <div class="tab-pane active" id="tabcontentAddExpense">
+                      <form>
+                        <div class="row">
+                          <div class="col-md-4">
+                            <div class="form-group label-floating">
+                              <label class="control-label">From Account</label>
+                              <input id="txtAddExp_FromAccount" type="text" class="form-control" data-provide="typeahead" autocomplete="off">
+                            </div>
+                          </div>
+                          <div class="col-md-4">
+                            <div class="form-group label-floating">
+                              <label class="control-label">Category</label> 
+                              <input id="txtAddExp_Category" type="text" class="form-control" data-provide="typeahead" autocomplete="off">
+                            </div>
+                          </div>
+                          <div class="col-md-4">
+                            <div class="checkbox">
+                              <label> <input type="checkbox" name="adhoc">Adhoc</label>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="col-md-4">
+                            <div class="form-group label-floating">
+                              <label class="control-label">Description</label> 
+                              <input id="txtAddExp_Description" type="text" class="form-control" data-provide="typeahead" autocomplete="off">
+                            </div>
+                          </div>
+                          <div class="col-md-2">
+                            <div class="form-group label-floating">
+                              <label class="control-label">Amount</label> <input type="text" class="form-control">
+                            </div>
+                          </div>
+                          <div class="col-md-3">
+                            <div class="form-group label-floating">
+                              <label class="control-label">Date</label> <input type="text" class="form-control" data-provide="datepicker">
+                            </div>
+                          </div>
+                          <div class="col-md-3">
+                            <div class="form-group">
+                              <button type="button" id="btnAddExpense" rel="tooltip" title="Add" class="btn btn-success btn-lg pull-right">
+                                <i class="material-icons">add</i>
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="clearfix"></div>
+                      </form>
+                    </div>
+
+                    <div class="tab-pane" id="tabcontentAddAdjustment">
+                      <form>
+                        <div class="row">
+                          <div class="col-md-4">
+                            <div class="form-group label-floating">
+                              <label class="control-label">From Account</label>
+                              <input id="txtAddAdj_FromAccount" type="text" class="form-control" data-provide="typeahead" autocomplete="off">
+                            </div>
+                          </div>
+                          <div class="col-md-4">
+                            <div class="form-group label-floating">
+                              <label class="control-label">To Account</label>
+                              <input id="txtAddAdj_ToAccount" type="text" class="form-control" data-provide="typeahead" autocomplete="off">
+                            </div>
+                          </div>
+                          <div class="col-md-4">&nbsp;</div>
+                        </div>
+                        <div class="row">
+                          <div class="col-md-4">
+                            <div class="form-group label-floating">
+                              <label class="control-label">Description</label>
+                              <input id="txtAddAdj_Description" type="text" class="form-control" data-provide="typeahead" autocomplete="off">
+                            </div>
+                          </div>
+                          <div class="col-md-2">
+                            <div class="form-group label-floating">
+                              <label class="control-label">Amount</label> <input type="text" class="form-control">
+                            </div>
+                          </div>
+                          <div class="col-md-3">
+                            <div class="form-group label-floating">
+                              <label class="control-label">Date</label> <input type="text" class="form-control" data-provide="datepicker">
+                            </div>
+                          </div>
+                          <div class="col-md-3">
+                            <div class="form-group">
+                              <button type="button" id="btnAddAdjustment" rel="tooltip" title="Add" class="btn btn-success btn-lg pull-right">
+                                <i class="material-icons">add</i>
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="clearfix"></div>
+                      </form>
+                    </div>
+                    
+                  </div>
+                </div>
+              </div>
+
+            </div>

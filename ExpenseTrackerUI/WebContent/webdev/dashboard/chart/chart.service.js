@@ -7,6 +7,7 @@
 
 	chartService.$inject = ['CONSTANTS'];
 	function chartService(CONSTANTS) {
+		return {};
 
 	}
 

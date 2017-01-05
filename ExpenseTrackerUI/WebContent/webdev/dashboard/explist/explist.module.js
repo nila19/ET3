@@ -3,6 +3,6 @@
 (function(angular) {
 	'use strict';
 
-	angular.module('dashboard.explist', ['core', 'services']);
+	angular.module('dashboard.explist', ['core']);
 
 })(window.angular);

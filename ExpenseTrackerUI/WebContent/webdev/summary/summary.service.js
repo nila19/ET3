@@ -7,6 +7,7 @@
 
 	summaryService.$inject = ['CONSTANTS'];
 	function summaryService(CONSTANTS) {
+		return {};
 
 	}
 

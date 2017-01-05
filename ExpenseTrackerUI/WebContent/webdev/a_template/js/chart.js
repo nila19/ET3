@@ -1,5 +1,3 @@
-/** ** ./dashboard/chart/chart.component.js *** */
-
 var appChart = {
 	// Dashboard Chart
 	init: function() {
@@ -38,20 +36,3 @@ var appChart = {
 		md.startAnimationForBarChart(chart);
 	}
 };
-
-(function(angular) {
-	'use strict';
-
-	angular.module('dashboard.chart').component('chart', {
-		templateUrl: 'dashboard/chart/chart.htm',
-		controller: ChartController
-	});
-
-	ChartController.$inject = ['chartService', 'CONSTANTS', '$location'];
-	function ChartController(cs, CONSTANTS, $location) {
-		var vm = this;
-
-		appChart.init();
-		// /////////////////////
-	}
-})(window.angular);

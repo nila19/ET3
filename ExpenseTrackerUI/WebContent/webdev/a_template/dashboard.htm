@@ -297,7 +297,7 @@
             </div>
           </div>
 
-        <!-- Third row : Bills Card & Add Expense / Monthly Trend Cards -->
+        <!-- Third row -->
           <div class="row">
 
           <!-- Bills Card -->
@@ -591,7 +591,7 @@
 
             </div>
 
-          <!-- Monthly Trend -->
+          <!-- Monthly Trend Chart -->
             <div class="col-md-6" id="cardMonthlyExpenseChart">
               <div class="card">
                 <div class="card-header card-chart" data-background-color="orange">
@@ -794,8 +794,9 @@
     </div>
   </div>
 
-  <!--   Modal Windows   -->
+  <!--   Edit Modal Windows   -->
 
+  <!--   Modify Expense Modal Window   -->
   <div class="modal fade" id="modalModifyExpense" tabindex="-1">
     <div class="modal-dialog">
       <div class="modal-content">
@@ -852,6 +853,7 @@
     </div>
   </div>
 
+  <!--   Delete Expense Modal Window   -->
   <div class="modal fade" id="modalDeleteExpense" tabindex="-1">
     <div class="modal-dialog">
       <div class="modal-content">
@@ -900,6 +902,7 @@
     </div>
   </div>
 
+  <!--   Bill Pay Modal Window   -->
   <div class="modal fade" id="modalPayBill" tabindex="-1">
     <div class="modal-dialog">
       <div class="modal-content">
@@ -961,12 +964,14 @@
 
 <script src="js/utils.js"></script>
 <script src="js/navbar.js"></script>
+<script src="js/chart.js"></script>
 <script src="js/dashboard.js"></script>
 
 <script type="text/javascript">
   $(document).ready(function() {
 	navMain.init();
 	dashMain.init();
+	appChart.init();
   });
 </script>
 

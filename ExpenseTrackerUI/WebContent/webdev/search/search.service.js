@@ -7,6 +7,7 @@
 
 	searchService.$inject = ['CONSTANTS'];
 	function searchService(CONSTANTS) {
+		return {};
 
 	}
 

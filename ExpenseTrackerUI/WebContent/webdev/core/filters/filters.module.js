@@ -3,6 +3,6 @@
 (function(angular) {
 	'use strict';
 
-	angular.module('filters', ['core']);
+	angular.module('core.filters', ['core']);
 
 })(window.angular);

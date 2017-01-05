@@ -3,6 +3,6 @@
 (function(angular) {
 	'use strict';
 
-	angular.module('summary', ['core', 'services', 'nav']);
+	angular.module('summary', ['core', 'menu']);
 
 })(window.angular);

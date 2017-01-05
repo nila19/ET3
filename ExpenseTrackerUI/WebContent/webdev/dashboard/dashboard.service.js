@@ -7,7 +7,7 @@
 
 	dashboardService.$inject = ['CONSTANTS'];
 	function dashboardService(CONSTANTS) {
-
+		return {};
 	}
 
 })(window.angular);

@@ -3,6 +3,6 @@
 (function(angular) {
 	'use strict';
 
-	angular.module('dashboard.edit', ['core', 'services']);
+	angular.module('dashboard.edit', ['core']);
 
 })(window.angular);
