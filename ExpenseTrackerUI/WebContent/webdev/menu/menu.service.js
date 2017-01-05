@@ -3,7 +3,7 @@
 (function(angular) {
 	'use strict';
 
-	angular.module('menu').factory('navService', menuService);
+	angular.module('menu').factory('menuService', menuService);
 
 	menuService.$inject = ['CONSTANTS'];
 	function menuService(CONSTANTS) {

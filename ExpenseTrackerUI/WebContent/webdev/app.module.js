@@ -3,7 +3,7 @@
 (function(angular) {
 	'use strict';
 
-	angular.module('app', ['core', 'dashboard', 'nav', 'search', 'summary', 'ngRoute']);
+	angular.module('app', ['core', 'dashboard', 'menu', 'search', 'summary', 'ngRoute']);
 
 	angular.module('app').config(['$compileProvider', function($compileProvider) {
 		$compileProvider.debugInfoEnabled(false);
