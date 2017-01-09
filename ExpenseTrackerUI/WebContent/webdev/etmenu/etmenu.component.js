@@ -1,4 +1,4 @@
-/** ** ./menu/menu.component.js *** */
+/** ** ./etmenu/etmenu.component.js *** */
 
 var navFunctions = {
 	changeCity: function(name, currency) {
@@ -28,28 +28,25 @@ var navEventMapper = {
 	}
 };
 
-var navMain = {
-	init: function() {
-		// Change currency when city changes.
-		$('#icon_currency_inr').hide();
-
-		navEventMapper.map();
-	}
-};
-
 (function(angular) {
 	'use strict';
 
-	angular.module('menu').component('menu', {
-		templateUrl: 'menu/menu.htm',
-		controller: MenuController
+	angular.module('etmenu').component('etmenu', {
+		templateUrl: 'etmenu/etmenu.htm',
+		controller: ETMenuController
 	});
 
-	MenuController.$inject = ['menuService', 'CONSTANTS', '$location'];
-	function MenuController(ms, CONSTANTS, $location) {
+	ETMenuController.$inject = ['etmenuService', 'CONSTANTS', 'CONSTANTS', '$location'];
+	function ETMenuController(ms, C, V, $location) {
 		var vm = this;
+		var showbuttons = (ms.getPage() === C.PAGES.DASHBOARD);
 
-		navMain.init();
+		init();
 		// /////////////////////
+
+		function init() {
+			$('#icon_currency_inr').hide();
+
+		}
 	}
 })(window.angular);

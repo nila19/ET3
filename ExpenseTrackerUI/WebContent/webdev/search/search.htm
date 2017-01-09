@@ -1,5 +1,7 @@
+  <div class="wrapper">
+    <div class="main-panel">
       <!-- Menu panel -->
-      <menu></menu>
+      <etmenu></etmenu>
 
       <!-- Search Content -->
       <div class="content">
@@ -9,76 +11,70 @@
 
               <div class="card">
                 <div class="card-content">
-                  <form>
+                  <form name="searchForm" method="post" novalidate="novalidate" ng-submit="$ctrl.doSearch(searchForm)">
                     <div class="row">
 
                       <div class="col-lg-2 col-md-3">
                         <div class="form-group label-floating">
                           <label class="control-label">Category</label>
-                          <input id="txtSearch_Category" type="text" class="form-control" data-provide="typeahead" autocomplete="off">
+                          <input id="category" name="category" ng-model="$ctrl.category" type="text" class="form-control" data-provide="typeahead" autocomplete="off">
                         </div>
                       </div>
                       <div class="col-lg-2 col-md-3">
                         <div class="form-group label-floating">
                           <label class="control-label">Description</label>
-                          <input id="txtSearch_Description" type="text" class="form-control" data-provide="typeahead" autocomplete="off">
+                          <input id="description" name="description" ng-model="$ctrl.description" type="text" class="form-control" data-provide="typeahead" autocomplete="off">
                         </div>
                       </div>
                       <div class="col-lg-1 col-md-2">
                         <div class="form-group label-floating">
-                          <label class="control-label">Amount</label> <input type="text" class="form-control">
+                          <label class="control-label">Amount</label>
+                          <input name="amount" ng-model="$ctrl.amount" xx-amount type="text" class="form-control">
                         </div>
                       </div>
                       <div class="col-lg-1 col-md-2">
                         <div class="form-group label-floating">
                           <label class="control-label">Exp Month</label>
-                          <input id="txtSearch_ExpMonth" type="text" class="form-control" data-provide="typeahead" autocomplete="off">
+                          <input id="expMonth" name="expMonth" ng-model="$ctrl.expMonth" type="text" class="form-control" data-provide="typeahead" autocomplete="off">
                         </div>
                       </div>
                       <div class="col-lg-1 col-md-2">
                         <div class="form-group label-floating">
                           <label class="control-label">Entry Month</label>
-                          <input id="txtSearch_EntryMonth" type="text" class="form-control" data-provide="typeahead" autocomplete="off">
+                          <input id="entryMonth" name="entryMonth" ng-model="$ctrl.entryMonth" type="text" class="form-control" data-provide="typeahead" autocomplete="off">
                         </div>
                       </div>
                       <div class="col-lg-2 col-md-3">
                         <div class="form-group label-floating">
                           <label class="control-label">Account</label>
-                          <input id="txtSearch_Account" type="text" class="form-control" data-provide="typeahead" autocomplete="off">
+                          <input id="account" name="account" ng-model="$ctrl.account" type="text" class="form-control" data-provide="typeahead" autocomplete="off">
                         </div>
                       </div>
                       <div class="col-lg-1 col-md-2">
-                        <div>
-                          Adjust
-                          <div class="checkbox">
-                            <label> <input type="checkbox" name="adjust"> Yes
-                            </label>
-                          </div>
-                          <div class="checkbox">
-                            <label> <input type="checkbox" name="adjust"> No
-                            </label>
-                          </div>
+                        <div class="form-group label-floating">
+                          <label class="control-label">Adjust</label> 
+                          <select name="adjust" ng-model="$ctrl.adjust" class="form-control">
+                            <option></option>
+                            <option value="Yes">Yes</option>
+                            <option value="No">No</option>
+                          </select>
                         </div>
                       </div>
                       <div class="col-lg-1 col-md-2">
-                        <div>
-                          Adhoc
-                          <div class="checkbox">
-                            <label> <input type="checkbox" name="adhoc"> Yes
-                            </label>
-                          </div>
-                          <div class="checkbox">
-                            <label> <input type="checkbox" name="adhoc"> No
-                            </label>
-                          </div>
+                        <div class="form-group label-floating">
+                          <label class="control-label">Adhoc</label> 
+                          <select name="adhoc" ng-model="$ctrl.adhoc" class="form-control">
+                            <option></option>
+                            <option value="Yes">Yes</option>
+                            <option value="No">No</option>
+                          </select>
                         </div>
                       </div>
                       <div class="col-lg-1 col-md-2">
-                        <button type="button" class="btn btn-danger btn-lg pull-right">Search</button>
+                        <button type="submit" class="btn btn-danger btn-lg pull-right">Search</button>
                       </div>
                     </div>
                     <!-- /.row -->
-
                   </form>
                 </div>
                 <!-- /.card-content -->
@@ -96,4 +92,5 @@
 
       <!--   Edit Modal Windows   -->
       <edit></edit>
-      
+    </div>
+  </div>

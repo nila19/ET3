@@ -3,6 +3,6 @@
 (function(angular) {
 	'use strict';
 
-	angular.module('summary', ['core', 'menu']);
+	angular.module('summary', ['core', 'etmenu']);
 
 })(window.angular);

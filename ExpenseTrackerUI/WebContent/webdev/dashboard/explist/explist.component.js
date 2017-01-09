@@ -9,9 +9,14 @@
 	});
 
 	ExplistController.$inject = ['explistService', 'CONSTANTS', '$location'];
-	function ExplistController(els, CONSTANTS, $location) {
+	function ExplistController(els, C, $location) {
 		var vm = this;
 
+		init();
+
 		// /////////////////////
+		function init() {
+			$('#btn_unfilter_expenseslist').hide();
+		}
 	}
 })(window.angular);
