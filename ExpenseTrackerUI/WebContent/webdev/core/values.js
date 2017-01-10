@@ -6,34 +6,42 @@
 	angular.module('core').value(
 			'VALUES',
 			{
+				defaultCity: {
+					id: 20,
+					name: 'Chennai - 2010',
+					curr: 'INR'
+				},
 				cities: [{
 					id: 10,
-					name: Houston - 2014,
-					curr: USD
+					name: 'Houston - 2014',
+					curr: 'USD'
 				}, {
 					id: 20,
-					name: Chennai - 2010,
-					curr: INR
+					name: 'Chennai - 2010',
+					curr: 'INR'
 				}, {
 					id: 30,
-					name: Macon - 2009,
-					curr: INR
+					name: 'Macon - 2009',
+					curr: 'INR'
 				}],
 				categories: [{
 					id: 175,
 					name: 'Food ~ Kroger Groceries',
 					main: 'Food',
-					sub: 'Kroger Groceries'
+					sub: 'Kroger Groceries',
+					icon: 'local_mall'
 				}, {
 					id: 179,
 					name: 'Transport ~ Car Gas',
 					main: 'Transport',
-					sub: 'Car Gas'
+					sub: 'Car Gas',
+					icon: 'local_gas_station'
 				}, {
 					id: 170,
 					name: 'House ~ Rent',
 					main: 'House',
-					sub: 'Rent'
+					sub: 'Rent',
+					icon: 'home'
 				}],
 				descriptions: ['Kroger', 'Kroger Groceries', 'Walmart', 'Costco',
 						'CreditCard Bill', 'Cash', 'Walgreens'],

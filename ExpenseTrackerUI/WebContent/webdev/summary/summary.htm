@@ -20,324 +20,24 @@
                         <th class="text-right">&nbsp;</th>
                         <th class="text-right">&nbsp;</th>
                         <th class="text-right">&nbsp;</th>
-                        <th class="text-right"><strong>2016</strong></th>
-                        <th class="text-right"><strong>Dec-16</strong></th>
-                        <th class="text-right"><strong>Nov-16</strong></th>
-                        <th class="text-right"><strong>Oct-16</strong></th>
-                        <th class="text-right"><strong>Sep-16</strong></th>
-                        <th class="text-right"><strong>Aug-16</strong></th>
-                        <th class="text-right"><strong>Jul-16</strong></th>
-                        <th class="text-right"><strong>Jun-16</strong></th>
-                        <th class="text-right"><strong>May-16</strong></th>
-                        <th class="text-right"><strong>Apr-16</strong></th>
-                        <th class="text-right"><strong>Mar-16</strong></th>
-                        <th class="text-right"><strong>Feb-16</strong></th>
-                        <th class="text-right"><strong>Jan-16</strong></th>
+                        <th ng-repeat="h1 in $ctrl.data.header" class="text-right"><strong>{{h1.mth}}</strong></th>
                       </tr>
                       <tr class="text-warning">
                         <th class="text-right">&nbsp;</th>
                         <th class="text-right">&nbsp;</th>
                         <th class="text-right">&nbsp;</th>
-                        <th class="text-right sumTotalCell">38,945.32</th>
-                        <th class="text-right sumTotalCell">6,423.45</th>
-                        <th class="text-right sumTotalCell">4,845.43</th>
-                        <th class="text-right sumTotalCell">2,293.56</th>
-                        <th class="text-right sumTotalCell">6,758.67</th>
-                        <th class="text-right sumTotalCell">4,574.89</th>
-                        <th class="text-right sumTotalCell">6,345.87</th>
-                        <th class="text-right sumTotalCell">8,354.76</th>
-                        <th class="text-right sumTotalCell">2,956.78</th>
-                        <th class="text-right sumTotalCell">1,443.65</th>
-                        <th class="text-right sumTotalCell">1,4545.47</th>
-                        <th class="text-right sumTotalCell">5,7567.64</th>
-                        <th class="text-right sumTotalCell">3,457.67</th>
+                        <th ng-repeat="h2 in $ctrl.data.header2 track by $index" ng-click="$ctrl.listExp(0, $index)" class="text-right sumTotalCell">
+                          <strong>{{$ctrl.data.header2[$index] | currency}}</strong>
+                        </th>
                       </tr>
                     </thead>
                     <tbody>
-                      <tr>
-                        <td class="td-actions text-right"><a class="btn btn-primary btn-simple btn-sm"> <i class="material-icons">home</i>
-                        </a></td>
-                        <td>House</td>
-                        <td>Rent</td>
-                        <td class="text-right sumTotalCell">$ 4,300.45</td>
-                        <td class="text-right sumDetailCell">$ 300.45</td>
-                        <td class="text-right sumDetailCell">$ 645.45</td>
-                        <td class="text-right sumDetailCell">$ 5,962.33</td>
-                        <td class="text-right sumDetailCell">$ 6,136.56</td>
-                        <td class="text-right">$ 7,300.45</td>
-                        <td class="text-right">$ 2,140.33</td>
-                        <td class="text-right">$ 1,340.56</td>
-                        <td class="text-right">$ 645.45</td>
-                        <td class="text-right">$ 5,962.33</td>
-                        <td class="text-right">$ 6,136.56</td>
-                        <td class="text-right">$ 300.45</td>
-                        <td class="text-right">$ 7,300.45</td>
-                      </tr>
-                      <tr>
-                        <td class="td-actions text-right"><a class="btn btn-primary btn-simple btn-sm"> <i class="material-icons">power</i>
-                        </a></td>
-                        <td>House</td>
-                        <td>Electricity</td>
-                        <td class="text-right sumTotalCell">$ 800.45</td>
-                        <td class="text-right sumDetailCell">$ 300.45</td>
-                        <td class="text-right sumDetailCell">$ 645.45</td>
-                        <td class="text-right sumDetailCell">$ 5,962.33</td>
-                        <td class="text-right sumDetailCell">$ 136.56</td>
-                        <td class="text-right">$ 300.45</td>
-                        <td class="text-right">$ 140.33</td>
-                        <td class="text-right">$ 340.56</td>
-                        <td class="text-right">$ 645.45</td>
-                        <td class="text-right">$ 1,962.33</td>
-                        <td class="text-right">$ 136.56</td>
-                        <td class="text-right">$ 300.45</td>
-                        <td class="text-right">$ 300.45</td>
-                      </tr>
-                      <tr>
-                        <td class="td-actions text-right"><a class="btn btn-primary btn-simple btn-sm"> <i class="material-icons">school</i>
-                        </a></td>
-                        <td>House</td>
-                        <td>School</td>
-                        <td class="text-right sumTotalCell">$ 1,300.45</td>
-                        <td class="text-right">$ 300.45</td>
-                        <td class="text-right">$ 645.45</td>
-                        <td class="text-right">$ 5,962.33</td>
-                        <td class="text-right">$ 6,136.56</td>
-                        <td class="text-right">$ 7,300.45</td>
-                        <td class="text-right">$ 2,140.33</td>
-                        <td class="text-right">$ 1,340.56</td>
-                        <td class="text-right">$ 645.45</td>
-                        <td class="text-right">$ 5,962.33</td>
-                        <td class="text-right">$ 6,136.56</td>
-                        <td class="text-right">$ 300.45</td>
-                        <td class="text-right">$ 7,300.45</td>
-                      </tr>
-                      <tr>
-                        <td class="td-actions text-right"><a class="btn btn-primary btn-simple btn-sm"> <i class="material-icons">wifi</i>
-                        </a></td>
-                        <td>Network</td>
-                        <td>Internet</td>
-                        <td class="text-right sumTotalCell">$ 4,300.45</td>
-                        <td class="text-right">$ 300.45</td>
-                        <td class="text-right">$ 645.45</td>
-                        <td class="text-right">$ 5,962.33</td>
-                        <td class="text-right">$ 6,136.56</td>
-                        <td class="text-right">$ 7,300.45</td>
-                        <td class="text-right">$ 2,140.33</td>
-                        <td class="text-right">$ 1,340.56</td>
-                        <td class="text-right">$ 645.45</td>
-                        <td class="text-right">$ 5,962.33</td>
-                        <td class="text-right">$ 6,136.56</td>
-                        <td class="text-right">$ 300.45</td>
-                        <td class="text-right">$ 7,300.45</td>
-                      </tr>
-                      <tr>
-                        <td class="td-actions text-right"><a class="btn btn-primary btn-simple btn-sm"> <i class="material-icons">phone_iphone</i>
-                        </a></td>
-                        <td>Network</td>
-                        <td>Mobile</td>
-                        <td class="text-right sumTotalCell">$ 4,300.45</td>
-                        <td class="text-right">$ 300.45</td>
-                        <td class="text-right">$ 645.45</td>
-                        <td class="text-right">$ 5,962.33</td>
-                        <td class="text-right">$ 6,136.56</td>
-                        <td class="text-right">$ 7,300.45</td>
-                        <td class="text-right">$ 2,140.33</td>
-                        <td class="text-right">$ 1,340.56</td>
-                        <td class="text-right">$ 645.45</td>
-                        <td class="text-right">$ 5,962.33</td>
-                        <td class="text-right">$ 6,136.56</td>
-                        <td class="text-right">$ 300.45</td>
-                        <td class="text-right">$ 7,300.45</td>
-                      </tr>
-                      <tr>
-                        <td class="td-actions text-right"><a class="btn btn-primary btn-simple btn-sm"> <i class="material-icons">local_mall</i>
-                        </a></td>
-                        <td>Food</td>
-                        <td>Kroger Groceries</td>
-                        <td class="text-right sumTotalCell">$ 4,300.45</td>
-                        <td class="text-right">$ 300.45</td>
-                        <td class="text-right">$ 645.45</td>
-                        <td class="text-right">$ 5,962.33</td>
-                        <td class="text-right">$ 6,136.56</td>
-                        <td class="text-right">$ 7,300.45</td>
-                        <td class="text-right">$ 2,140.33</td>
-                        <td class="text-right">$ 1,340.56</td>
-                        <td class="text-right">$ 645.45</td>
-                        <td class="text-right">$ 5,962.33</td>
-                        <td class="text-right">$ 6,136.56</td>
-                        <td class="text-right">$ 300.45</td>
-                        <td class="text-right">$ 7,300.45</td>
-                      </tr>
-                      <tr>
-                        <td class="td-actions text-right"><a class="btn btn-primary btn-simple btn-sm"> <i class="material-icons">local_mall</i>
-                        </a></td>
-                        <td>Food</td>
-                        <td>Indian Groceries</td>
-                        <td class="text-right">$ 4,300.45</td>
-                        <td class="text-right">$ 300.45</td>
-                        <td class="text-right">$ 645.45</td>
-                        <td class="text-right">$ 5,962.33</td>
-                        <td class="text-right">$ 6,136.56</td>
-                        <td class="text-right">$ 7,300.45</td>
-                        <td class="text-right">$ 2,140.33</td>
-                        <td class="text-right">$ 1,340.56</td>
-                        <td class="text-right">$ 645.45</td>
-                        <td class="text-right">$ 5,962.33</td>
-                        <td class="text-right">$ 6,136.56</td>
-                        <td class="text-right">$ 300.45</td>
-                        <td class="text-right">$ 7,300.45</td>
-                      </tr>
-                      <tr>
-                        <td class="td-actions text-right"><a class="btn btn-primary btn-simple btn-sm"> <i class="material-icons">restaurant</i>
-                        </a></td>
-                        <td>Shopping</td>
-                        <td>Restaurant</td>
-                        <td class="text-right">$ 4,300.45</td>
-                        <td class="text-right">$ 300.45</td>
-                        <td class="text-right">$ 645.45</td>
-                        <td class="text-right">$ 5,962.33</td>
-                        <td class="text-right">$ 6,136.56</td>
-                        <td class="text-right">$ 7,300.45</td>
-                        <td class="text-right">$ 2,140.33</td>
-                        <td class="text-right">$ 1,340.56</td>
-                        <td class="text-right">$ 645.45</td>
-                        <td class="text-right">$ 5,962.33</td>
-                        <td class="text-right">$ 6,136.56</td>
-                        <td class="text-right">$ 300.45</td>
-                        <td class="text-right">$ 7,300.45</td>
-                      </tr>
-                      <tr>
-                        <td class="td-actions text-right"><a class="btn btn-primary btn-simple btn-sm"> <i class="material-icons">shopping_cart</i>
-                        </a></td>
-                        <td>Shopping</td>
-                        <td>Shopping</td>
-                        <td class="text-right">$ 4,300.45</td>
-                        <td class="text-right">$ 300.45</td>
-                        <td class="text-right">$ 645.45</td>
-                        <td class="text-right">$ 5,962.33</td>
-                        <td class="text-right">$ 6,136.56</td>
-                        <td class="text-right">$ 7,300.45</td>
-                        <td class="text-right">$ 2,140.33</td>
-                        <td class="text-right">$ 1,340.56</td>
-                        <td class="text-right">$ 645.45</td>
-                        <td class="text-right">$ 5,962.33</td>
-                        <td class="text-right">$ 6,136.56</td>
-                        <td class="text-right">$ 300.45</td>
-                        <td class="text-right">$ 7,300.45</td>
-                      </tr>
-                      <tr>
-                        <td class="td-actions text-right"><a class="btn btn-primary btn-simple btn-sm"> <i class="material-icons">local_movies</i>
-                        </a></td>
-                        <td>Shopping</td>
-                        <td>Entertainment</td>
-                        <td class="text-right">$ 4,300.45</td>
-                        <td class="text-right">$ 300.45</td>
-                        <td class="text-right">$ 645.45</td>
-                        <td class="text-right">$ 5,962.33</td>
-                        <td class="text-right">$ 6,136.56</td>
-                        <td class="text-right">$ 7,300.45</td>
-                        <td class="text-right">$ 2,140.33</td>
-                        <td class="text-right">$ 1,340.56</td>
-                        <td class="text-right">$ 645.45</td>
-                        <td class="text-right">$ 5,962.33</td>
-                        <td class="text-right">$ 6,136.56</td>
-                        <td class="text-right">$ 300.45</td>
-                        <td class="text-right">$ 7,300.45</td>
-                      </tr>
-                      <tr>
-                        <td class="td-actions text-right"><a class="btn btn-primary btn-simple btn-sm"> <i class="material-icons">flight</i>
-                        </a></td>
-                        <td>Shopping</td>
-                        <td>Travel</td>
-                        <td class="text-right">$ 4,300.45</td>
-                        <td class="text-right">$ 300.45</td>
-                        <td class="text-right">$ 645.45</td>
-                        <td class="text-right">$ 5,962.33</td>
-                        <td class="text-right">$ 6,136.56</td>
-                        <td class="text-right">$ 7,300.45</td>
-                        <td class="text-right">$ 2,140.33</td>
-                        <td class="text-right">$ 1,340.56</td>
-                        <td class="text-right">$ 645.45</td>
-                        <td class="text-right">$ 5,962.33</td>
-                        <td class="text-right">$ 6,136.56</td>
-                        <td class="text-right">$ 300.45</td>
-                        <td class="text-right">$ 7,300.45</td>
-                      </tr>
-                      <tr>
-                        <td class="td-actions text-right"><a class="btn btn-primary btn-simple btn-sm"> <i class="material-icons">directions_car</i>
-                        </a></td>
-                        <td>Transport</td>
-                        <td>Car Insurance</td>
-                        <td class="text-right">$ 4,300.45</td>
-                        <td class="text-right">$ 300.45</td>
-                        <td class="text-right">$ 645.45</td>
-                        <td class="text-right">$ 5,962.33</td>
-                        <td class="text-right">$ 6,136.56</td>
-                        <td class="text-right">$ 7,300.45</td>
-                        <td class="text-right">$ 2,140.33</td>
-                        <td class="text-right">$ 1,340.56</td>
-                        <td class="text-right">$ 645.45</td>
-                        <td class="text-right">$ 5,962.33</td>
-                        <td class="text-right">$ 6,136.56</td>
-                        <td class="text-right">$ 300.45</td>
-                        <td class="text-right">$ 7,300.45</td>
-                      </tr>
-                      <tr>
-                        <td class="td-actions text-right"><a class="btn btn-primary btn-simple btn-sm"> <i class="material-icons">local_gas_station</i>
-                        </a></td>
-                        <td>Transport</td>
-                        <td>Car Gas</td>
-                        <td class="text-right">$ 4,300.45</td>
-                        <td class="text-right">$ 300.45</td>
-                        <td class="text-right">$ 645.45</td>
-                        <td class="text-right">$ 5,962.33</td>
-                        <td class="text-right">$ 6,136.56</td>
-                        <td class="text-right">$ 7,300.45</td>
-                        <td class="text-right">$ 2,140.33</td>
-                        <td class="text-right">$ 1,340.56</td>
-                        <td class="text-right">$ 645.45</td>
-                        <td class="text-right">$ 5,962.33</td>
-                        <td class="text-right">$ 6,136.56</td>
-                        <td class="text-right">$ 300.45</td>
-                        <td class="text-right">$ 7,300.45</td>
-                      </tr>
-                      <tr>
-                        <td class="td-actions text-right"><a class="btn btn-success btn-simple btn-sm"> <i class="material-icons">local_hospital</i>
-                        </a></td>
-                        <td>Misc</td>
-                        <td>Medical</td>
-                        <td class="text-right">$ 4,300.45</td>
-                        <td class="text-right">$ 300.45</td>
-                        <td class="text-right">$ 645.45</td>
-                        <td class="text-right">$ 5,962.33</td>
-                        <td class="text-right">$ 6,136.56</td>
-                        <td class="text-right">$ 7,300.45</td>
-                        <td class="text-right">$ 2,140.33</td>
-                        <td class="text-right">$ 1,340.56</td>
-                        <td class="text-right">$ 645.45</td>
-                        <td class="text-right">$ 5,962.33</td>
-                        <td class="text-right">$ 6,136.56</td>
-                        <td class="text-right">$ 300.45</td>
-                        <td class="text-right">$ 7,300.45</td>
-                      </tr>
-                      <tr>
-                        <td class="td-actions text-right"><a class="btn btn-success btn-simple btn-sm"> <i class="material-icons">local_laundry_service</i>
-                        </a></td>
-                        <td>Misc</td>
-                        <td>Others</td>
-                        <td class="text-right">$ 4,300.45</td>
-                        <td class="text-right">$ 300.45</td>
-                        <td class="text-right">$ 645.45</td>
-                        <td class="text-right">$ 5,962.33</td>
-                        <td class="text-right">$ 6,136.56</td>
-                        <td class="text-right">$ 7,300.45</td>
-                        <td class="text-right">$ 2,140.33</td>
-                        <td class="text-right">$ 1,340.56</td>
-                        <td class="text-right">$ 645.45</td>
-                        <td class="text-right">$ 5,962.33</td>
-                        <td class="text-right">$ 6,136.56</td>
-                        <td class="text-right">$ 300.45</td>
-                        <td class="text-right">$ 7,300.45</td>
+                      <tr ng-repeat="row in $ctrl.data.rows">
+                        <td class="td-actions text-right">
+                          <a class="btn btn-primary btn-simple btn-sm"><i class="material-icons">{{row.cat.icon}}</i></a></td>
+                        <td>{{row.cat.main}}</td>
+                        <td>{{row.cat.sub}}</td>
+                        <td ng-repeat="col in row.cols track by $index" ng-click="$ctrl.listExp(row.cat.id, $index)" class="text-right sumDetailCell">{{row.cols[$index] | currency}}</td>
                       </tr>
                     </tbody>
                     <tfoot>
@@ -345,10 +45,10 @@
                         <td colspan="2">&nbsp;</td>
                         <td>
                           <div class="stats">
-                            <button type="button" class="btn btn-primary btn-xs" data-refresh-summary="Previous">
+                            <button type="button" ng-show="$ctrl.hasPrevPage()" ng-click="$ctrl.prevPage()" class="btn btn-primary btn-xs">
                               <i class="material-icons">skip_previous</i>
                             </button>
-                            <button type="button" class="btn btn-primary btn-xs" data-refresh-summary="Next">
+                            <button type="button" ng-show="$ctrl.hasNextPage()" ng-click="$ctrl.nextPage()" class="btn btn-primary btn-xs">
                               <i class="material-icons">skip_next</i>
                             </button>
                           </div>
@@ -356,21 +56,21 @@
                         <td colspan="2">
                           <div class="row">
                             <div class="col-md-4">
-                              <div class="checkbox">
-                                <label> <input type="checkbox" name="adhoc">Adhoc
-                                </label>
+                              <div class="form-group">
+                                <label class="control-label">Adhoc</label>
+                                <input type="checkbox" ng-model="$ctrl.adhoc" ng-click="$ctrl.reload()" name="adhoc" class="form-control">
                               </div>
                             </div>
                             <div class="col-md-4">
-                              <div class="checkbox">
-                                <label> <input type="checkbox" name="regular">Regular
-                                </label>
+                              <div class="form-group">
+                                <label class="control-label">Regular</label>
+                                <input type="checkbox" ng-model="$ctrl.regular" ng-click="$ctrl.reload()" name="regular" class="form-control">
                               </div>
                             </div>
                             <div class="col-md-4">
-                              <div class="checkbox">
-                                <label> <input type="checkbox" name="forecast">Forecast
-                                </label>
+                              <div class="form-group">
+                                <label class="control-label">Forecast</label>
+                                <input type="checkbox" ng-model="$ctrl.forecast" ng-click="$ctrl.reload()" name="forecast" class="form-control">
                               </div>
                             </div>
                           </div>

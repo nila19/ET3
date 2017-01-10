@@ -9,13 +9,15 @@
 	});
 
 	SearchController.$inject = ['searchService', 'etmenuService', 'explistService', 'CONSTANTS',
-			'VALUES', '$location'];
-	function SearchController(ss, ms, els, C, V, $location) {
+			'VALUES', '$location', '$routeParams'];
+	function SearchController(ss, ms, els, C, V, $location, $routeParams) {
 		var vm = this;
 
 		init();
-
 		// TODO Run default search.
+		// TODO Check if sent from Summary - use $routeParams.
+		// vm.cat = $routeParams.cat;
+		// vm.mth = $routeParams.mth;
 
 		// ***** Exposed functions ******//
 		vm.doSearch = doSearch;
@@ -24,12 +26,11 @@
 		function doSearch(form) {
 			if (!form.$valid) {
 				console.log('Form has errors. Please correct & resubmit.');
-				toastr.warning('Form has errors. Please correct & resubmit.');
+				// toastr.warning('Form has errors. Please correct & resubmit.');
 				return;
 			}
-			toastr.info('Form is good to submit.');
-			console.log('Cat - ' + vm.categoryId + ' :: Acc - ' + vm.accountId + ' :: Desc - ' +
-					vm.description + ' :: Exp M - ' + vm.expMonth);
+			console.log('City -' + ms.getCity() + ' :: Cat - ' + vm.categoryId + ' :: Acc - ' +
+					vm.accountId + ' :: Desc - ' + vm.description + ' :: Exp M - ' + vm.expMonth);
 			// TODO Do ajax search
 		}
 

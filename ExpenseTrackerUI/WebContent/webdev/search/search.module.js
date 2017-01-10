@@ -4,6 +4,6 @@
 	'use strict';
 
 	angular.module('search', ['core', 'etmenu', 'bootstrap3-typeahead', 'core.directives',
-			'dashboard.explist', 'dashboard.edit']);
+			'dashboard.explist', 'dashboard.edit', 'ngRoute']);
 
 })(window.angular);

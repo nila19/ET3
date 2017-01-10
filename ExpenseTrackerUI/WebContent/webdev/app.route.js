@@ -13,6 +13,8 @@
 			template: '<dashboard></dashboard>'
 		}).when('/summary', {
 			template: '<summary></summary>'
+		}).when('/search/:cat/:mth', {
+			template: '<search></search>'
 		}).when('/search', {
 			template: '<search></search>'
 		}).otherwise('/dashboard');

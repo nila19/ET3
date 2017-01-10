@@ -1,33 +1,5 @@
 /** ** ./etmenu/etmenu.component.js *** */
 
-var navFunctions = {
-	changeCity: function(name, currency) {
-		$('#selectChangeCity').find('span[data-city-selected]').html(name);
-		if (currency === 'INR') {
-			$('#icon_currency_inr').show();
-			$('#icon_currency_usd').hide();
-		} else {
-			$('#icon_currency_inr').hide();
-			$('#icon_currency_usd').show();
-		}
-	}
-};
-
-var navEventMapper = {
-	map: function() {
-		// On click of : City Change
-		$('#selectChangeCity').find('a[data-city-currency]').click(function() {
-			var a = $(this);
-			var name = a.attr('data-city-option');
-			var currency = a.attr('data-city-currency');
-
-			navFunctions.changeCity(name, currency);
-			appUtils.msg.show('City Change');
-			// TODO Refresh the page.
-		});
-	}
-};
-
 (function(angular) {
 	'use strict';
 
@@ -36,17 +8,45 @@ var navEventMapper = {
 		controller: ETMenuController
 	});
 
-	ETMenuController.$inject = ['etmenuService', 'CONSTANTS', 'CONSTANTS', '$location'];
-	function ETMenuController(ms, C, V, $location) {
+	ETMenuController.$inject = ['etmenuService', 'CONSTANTS', 'VALUES', '$location', '$filter'];
+	function ETMenuController(ms, C, V, $location, $filter) {
 		var vm = this;
-		var showbuttons = (ms.getPage() === C.PAGES.DASHBOARD);
+		vm.toggleMoreAccounts = toggleMoreAccounts;
+		vm.toggleChart = toggleChart;
+		vm.changeCity = changeCity;
 
 		init();
 		// /////////////////////
 
 		function init() {
-			$('#icon_currency_inr').hide();
+			vm.showButtons = (ms.getPage() === C.PAGES.DASHBOARD);
+			vm.showingMoreAccounts = false;
+			vm.showingChart = false;
+			vm.CURRENCY = C.CURRENCY;
+			vm.cities = V.cities;
+			setCity(V.defaultCity);
+		}
 
+		function toggleMoreAccounts() {
+			console.log('Toggling more accounts..');
+			// TODO
+		}
+
+		function toggleChart() {
+			console.log('Toggling chart..');
+			// TODO
+		}
+
+		function changeCity(cityId) {
+			setCity($filter('filter')(vm.cities, function(d) {
+				return d.id === cityId;
+			})[0]);
+			// TODO Ajax refresh the screen.
+		}
+
+		function setCity(city) {
+			vm.city = city;
+			ms.setCity(city);
 		}
 	}
 })(window.angular);

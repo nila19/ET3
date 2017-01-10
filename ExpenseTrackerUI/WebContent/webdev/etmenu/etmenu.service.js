@@ -24,6 +24,7 @@
 		};
 
 		return {
+			city: city,
 			getPage: getPage,
 			setPage: setPage,
 			getCity: getCity,

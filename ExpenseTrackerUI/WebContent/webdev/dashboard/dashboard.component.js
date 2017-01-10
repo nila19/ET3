@@ -243,11 +243,15 @@ var dashMain = {
 	});
 
 	DashboardController.$inject = ['dashboardService', 'CONSTANTS', '$location'];
-	function DashboardController(ds, CONSTANTS, $location) {
+	function DashboardController(ds, C, $location) {
 		var vm = this;
 
 		// TODO - Break this into multiple sub-components.
 		dashMain.init();
 		// /////////////////////
+		function init() {
+			els.setPage(C.PAGES.DASHBOARD);
+			ms.setPage(C.PAGES.DASHBOARD);
+		}
 	}
 })(window.angular);

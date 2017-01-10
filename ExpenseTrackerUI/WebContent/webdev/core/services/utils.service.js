@@ -9,6 +9,7 @@
 	function utilsService(CONSTANTS, $resource) {
 		return {
 			getURL: getURL,
+			getById: getById,
 			showMsg: showMsg
 		};
 		// /////////////////////
@@ -16,6 +17,16 @@
 			var url = CONSTANTS.BASE_URL + CONSTANTS.URLs[func];
 			// return $http.post(url,obj);
 			return $resource(url);
+		}
+
+		// TODO Unused
+		function getById(arr, id) {
+			arr.forEach(function(obj) {
+				if (obj.id === id) {
+					return obj;
+				}
+			});
+			return null;
 		}
 
 		// Popup message
