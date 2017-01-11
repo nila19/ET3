@@ -19,10 +19,9 @@
 			return $resource(url);
 		}
 
-		// TODO Unused
 		function getById(arr, id) {
 			arr.forEach(function(obj) {
-				if (obj.id === id) {
+				if (obj.id === Number(id)) {
 					return obj;
 				}
 			});

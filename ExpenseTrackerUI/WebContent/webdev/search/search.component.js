@@ -8,41 +8,46 @@
 		controller: SearchController
 	});
 
-	SearchController.$inject = ['searchService', 'etmenuService', 'explistService', 'CONSTANTS',
-			'VALUES', '$location', '$routeParams'];
-	function SearchController(ss, ms, els, C, V, $location, $routeParams) {
+	SearchController.$inject = ['searchService', 'etmenuService', 'explistService', 'utilsService',
+			'CONSTANTS', 'VALUES', '$location', '$routeParams'];
+	function SearchController(ss, ms, els, us, C, V, $location, $routeParams) {
 		var vm = this;
+		vm.data = {};
 
 		init();
-		// TODO Run default search.
-		// TODO Check if sent from Summary - use $routeParams.
-		// vm.cat = $routeParams.cat;
-		// vm.mth = $routeParams.mth;
 
 		// ***** Exposed functions ******//
 		vm.doSearch = doSearch;
 
 		// ***** Function declarations *****//
-		function doSearch(form) {
-			if (!form.$valid) {
-				console.log('Form has errors. Please correct & resubmit.');
-				// toastr.warning('Form has errors. Please correct & resubmit.');
-				return;
+		function init() {
+			ms.page = C.PAGES.SEARCH;
+			els.page = C.PAGES.SEARCH;
+			els.rowCount = C.SIZES.SEARCH_ROW;
+
+			// Check if sent from Summary - use $routeParams.
+			vm.data.expMonth = $routeParams.mth;
+			vm.data.catId = $routeParams.cat;
+			// FIXME Find out why getById is returning null.
+			vm.data.category = us.getById(V.categories, vm.data.catId);
+			if (vm.data.category || vm.data.expMonth) {
+				console
+						.log('Delegated from Summary :: ' + vm.data.catId + ' , ' +
+								vm.data.expMonth);
 			}
-			console.log('City -' + ms.getCity() + ' :: Cat - ' + vm.categoryId + ' :: Acc - ' +
-					vm.accountId + ' :: Desc - ' + vm.description + ' :: Exp M - ' + vm.expMonth);
-			// TODO Do ajax search
+
+			// Run default search.
+			doSearch();
+
+			typeAheads();
 		}
 
-		function init() {
-			els.setPage(C.PAGES.SEARCH);
-			ms.setPage(C.PAGES.SEARCH);
-
+		function typeAheads() {
 			$('#category').typeahead({
 				source: V.categories,
 				minLength: 0,
 				updater: function(item) {
-					vm.categoryId = item.id;
+					vm.data.catId = item.id;
 					return item;
 				}
 			});
@@ -57,10 +62,15 @@
 				source: V.accounts,
 				minLength: 0,
 				updater: function(item) {
-					vm.accountId = item.id;
+					vm.data.acId = item.id;
 					return item;
 				}
 			});
+		}
+
+		function doSearch() {
+			var result = ss.doSearch(ms.city, vm.data);
+			els.loadData(result); // Refresh ExpenseList.
 		}
 	}
 })(window.angular);

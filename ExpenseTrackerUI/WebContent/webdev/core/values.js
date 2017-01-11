@@ -60,5 +60,6 @@
 				}],
 				months: ['Dec-16', 'Oct-16', 'Sep-16', 'Aug-16', 'Jul-16', 'Jun-16']
 			});
+	// TODO Ajax load values @ Dashboard.
 
 })(window.angular);

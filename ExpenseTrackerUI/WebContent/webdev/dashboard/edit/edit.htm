@@ -1,105 +1,101 @@
   <!--   Edit Modal Windows   -->
 
-  <div class="modal fade" id="modalModifyExpense" tabindex="-1">
+  <div class="modal fade" id="model_Modify" tabindex="-1">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
-          <h4 data-edit-exp-field="EXPENSE" class="modal-title text-warning text-uppercase"><i class="material-icons">add_shopping_cart</i> Modify Expense</h4>
-          <h4 data-edit-exp-field="ADJUSTMENT" class="modal-title text-warning text-uppercase"><i class="material-icons">transform</i> Modify Adjustment</h4>
+          <h4 class="modal-title text-warning text-uppercase">
+            <i class="material-icons">{{$ctrl.data.data.adjust?'transform':'add_shopping_cart'}}</i>
+            Modify {{$ctrl.data.data.adjust?'Adjustment':'Expense'}}</h4>
         </div>
         <div class="modal-body">
           <form>
             <div class="form-group">
               <label class="control-label">From Account</label>
-              <input id="txtModify_FromAccount" type="text" class="form-control" data-provide="typeahead" autocomplete="off">
+              <input id="m_fromAccount" ng-model="$ctrl.data.data.fromAc.name" type="text" class="form-control" data-provide="typeahead" autocomplete="off">
             </div>
-            <div data-edit-exp-field="ADJUSTMENT" class="form-group">
+            <div ng-show="$ctrl.data.data.adjust" class="form-group">
               <label class="control-label">To Account</label>
-              <input id="txtModify_ToAccount" type="text" class="form-control" data-provide="typeahead" autocomplete="off">
+              <input id="m_toAccount" ng-model="$ctrl.data.data.toAc.name" type="text" class="form-control" data-provide="typeahead" autocomplete="off">
             </div>
-            <div data-edit-exp-field="EXPENSE" class="form-group">
+            <div ng-show="!$ctrl.data.data.adjust" class="form-group">
               <label class="control-label">Category</label>
-              <input id="txtModify_Category" type="text" class="form-control" data-provide="typeahead" autocomplete="off">
+              <input id="m_category" ng-model="$ctrl.data.data.cat.name" type="text" class="form-control" data-provide="typeahead" autocomplete="off">
             </div>
-            <div data-edit-exp-field="EXPENSE" class="form-group">
-              <label class="control-label">Bill</label><select class="form-control">
-                <option></option>
-                <option>Chase Freedom - Bill #1</option>
-                <option>BOA - 7787 - Bill #2</option>
-                <option>Sapphire Visa - Bill #3</option>
-              </select>
+            <div ng-show="!$ctrl.data.data.adjust" class="form-group">
+              <label class="control-label">Bill</label>
+              <select ng-model="$ctrl.data.data.bill" ng-options="bill as bill.name for bill in $ctrl.data.data.bills track by bill.id" class="form-control"></select>
             </div>
             <div class="form-group">
               <label class="control-label">Description</label>
-                <input id="txtModify_Description" type="text" class="form-control" data-provide="typeahead" autocomplete="off">
+                <input id="m_description" ng-model="$ctrl.data.data.desc" type="text" class="form-control" data-provide="typeahead" autocomplete="off">
             </div>
             <div class="form-group">
               <label class="control-label">Amount</label>
-              <input type="text" class="form-control">
+              <input ng-model="$ctrl.data.data.amt" xx-amount type="text" class="form-control">
             </div>
             <div class="form-group">
               <label class="control-label">Date</label>
-              <input type="text" class="form-control" data-provide="datepicker" value="03/03/2010">
+              <input ng-model="$ctrl.data.data.transDtTxt" type="text" class="form-control" data-provide="datepicker">
             </div>
             <div class="form-group">
-              <div data-edit-exp-field="EXPENSE" class="checkbox">
-                <label> <input type="checkbox" name="adhoc">Adhoc</label>
+              <div ng-show="!$ctrl.data.data.adjust">
+                <label> <input type="checkbox" ng-model="$ctrl.data.data.adhoc" class="form-control">Adhoc</label>
               </div>
-              <button type="button" class="btn btn-warning pull-right" id="btnModifyExpenseAction" rel="tooltip" title="Save"><i class="material-icons">save</i></button>
+              <button type="button" ng-click="$ctrl.saveExp()" class="btn btn-warning pull-right" rel="tooltip" title="Save"><i class="material-icons">save</i></button>
             </div>
           </form>
         </div>
-        <div class="modal-footer">
-        </div>
+        <div class="modal-footer"></div>
       </div>
     </div>
   </div>
 
-  <div class="modal fade" id="modalDeleteExpense" tabindex="-1">
+  <div class="modal fade" id="model_Delete" tabindex="-1">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
-          <h4 data-edit-exp-field="EXPENSE" class="modal-title text-danger text-uppercase"><i class="material-icons">add_shopping_cart</i> Delete Expense</h4>
-          <h4 data-edit-exp-field="ADJUSTMENT" class="modal-title text-danger text-uppercase"><i class="material-icons">transform</i> Delete Adjustment</h4>
+          <h4 class="modal-title text-danger text-uppercase">
+            <i class="material-icons">{{$ctrl.data.data.adjust?'transform':'add_shopping_cart'}}</i>
+            Delete {{$ctrl.data.data.adjust?'Adjustment':'Expense'}}</h4>
         </div>
         <div class="modal-body">
           <form>
             <div class="form-group">
               <label class="control-label">From Account</label>
-              <input type="text" class="form-control" disabled="disabled">
+              <input ng-model="$ctrl.data.data.fromAc.name" type="text" class="form-control" disabled="disabled">
             </div>
-            <div data-edit-exp-field="ADJUSTMENT" class="form-group">
+            <div ng-show="$ctrl.data.data.adjust" class="form-group">
               <label class="control-label">To Account</label>
-              <input type="text" class="form-control" disabled="disabled">
+              <input ng-model="$ctrl.data.data.toAc.name" type="text" class="form-control" disabled="disabled">
             </div>
-            <div data-edit-exp-field="EXPENSE" class="form-group">
+            <div ng-show="!$ctrl.data.data.adjust" class="form-group">
               <label class="control-label">Category</label>
-              <input type="text" class="form-control" disabled="disabled">
+              <input ng-model="$ctrl.data.data.cat.name" type="text" class="form-control" disabled="disabled">
             </div>
             <div class="form-group">
               <label class="control-label">Description</label>
-              <input type="text" class="form-control" disabled="disabled">
+              <input ng-model="$ctrl.data.data.desc" type="text" class="form-control" disabled="disabled">
             </div>
             <div class="form-group">
               <label class="control-label">Amount</label>
-              <input type="text" class="form-control" disabled="disabled">
+              <input ng-model="$ctrl.data.data.amt" xx-amount type="text" class="form-control" disabled="disabled">
             </div>
             <div class="form-group">
               <label class="control-label">Date</label>
-              <input type="text" class="form-control" disabled="disabled">
+              <input ng-model="$ctrl.data.data.transDtTxt" type="text" class="form-control" disabled="disabled">
             </div>
             <div class="form-group">
-              <div data-edit-exp-field="EXPENSE" class="checkbox">
-                <label> <input type="checkbox" name="adhoc">Adhoc</label>
+              <div ng-show="!$ctrl.data.data.adjust">
+                <label> <input type="checkbox" ng-model="$ctrl.data.data.adhoc" class="form-control" disabled="disabled">Adhoc</label>
               </div>
-              <button type="button" class="btn btn-danger pull-right" id="btnDeleteExpenseAction" rel="tooltip" title="Delete Expense"><i class="material-icons">delete</i></button>
+              <button type="button" ng-click="$ctrl.deleteExp()" class="btn btn-danger pull-right" rel="tooltip" title="Delete Expense"><i class="material-icons">delete</i></button>
             </div>
           </form>
         </div>
-        <div class="modal-footer">
-        </div>
+        <div class="modal-footer"></div>
       </div>
     </div>
   </div>

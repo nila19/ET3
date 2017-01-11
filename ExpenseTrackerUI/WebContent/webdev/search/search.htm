@@ -11,49 +11,48 @@
 
               <div class="card">
                 <div class="card-content">
-                  <form name="searchForm" method="post" novalidate="novalidate" ng-submit="$ctrl.doSearch(searchForm)">
+                  <form>
                     <div class="row">
-
                       <div class="col-lg-2 col-md-3">
                         <div class="form-group label-floating">
                           <label class="control-label">Category</label>
-                          <input id="category" name="category" ng-model="$ctrl.category" type="text" class="form-control" data-provide="typeahead" autocomplete="off">
+                          <input id="category" ng-model="$ctrl.data.category" type="text" class="form-control" data-provide="typeahead" autocomplete="off">
                         </div>
                       </div>
                       <div class="col-lg-2 col-md-3">
                         <div class="form-group label-floating">
                           <label class="control-label">Description</label>
-                          <input id="description" name="description" ng-model="$ctrl.description" type="text" class="form-control" data-provide="typeahead" autocomplete="off">
+                          <input id="description" ng-model="$ctrl.data.description" type="text" class="form-control" data-provide="typeahead" autocomplete="off">
                         </div>
                       </div>
                       <div class="col-lg-1 col-md-2">
                         <div class="form-group label-floating">
                           <label class="control-label">Amount</label>
-                          <input name="amount" ng-model="$ctrl.amount" xx-amount type="text" class="form-control">
+                          <input ng-model="$ctrl.data.amount" xx-amount type="text" class="form-control">
                         </div>
                       </div>
                       <div class="col-lg-1 col-md-2">
                         <div class="form-group label-floating">
                           <label class="control-label">Exp Month</label>
-                          <input id="expMonth" name="expMonth" ng-model="$ctrl.expMonth" type="text" class="form-control" data-provide="typeahead" autocomplete="off">
+                          <input id="expMonth" ng-model="$ctrl.data.expMonth" type="text" class="form-control" data-provide="typeahead" autocomplete="off">
                         </div>
                       </div>
                       <div class="col-lg-1 col-md-2">
                         <div class="form-group label-floating">
                           <label class="control-label">Entry Month</label>
-                          <input id="entryMonth" name="entryMonth" ng-model="$ctrl.entryMonth" type="text" class="form-control" data-provide="typeahead" autocomplete="off">
+                          <input id="entryMonth" ng-model="$ctrl.data.entryMonth" type="text" class="form-control" data-provide="typeahead" autocomplete="off">
                         </div>
                       </div>
                       <div class="col-lg-2 col-md-3">
                         <div class="form-group label-floating">
                           <label class="control-label">Account</label>
-                          <input id="account" name="account" ng-model="$ctrl.account" type="text" class="form-control" data-provide="typeahead" autocomplete="off">
+                          <input id="account" ng-model="$ctrl.data.account" type="text" class="form-control" data-provide="typeahead" autocomplete="off">
                         </div>
                       </div>
                       <div class="col-lg-1 col-md-2">
                         <div class="form-group label-floating">
                           <label class="control-label">Adjust</label> 
-                          <select name="adjust" ng-model="$ctrl.adjust" class="form-control">
+                          <select ng-model="$ctrl.data.adjust" class="form-control">
                             <option></option>
                             <option value="Yes">Yes</option>
                             <option value="No">No</option>
@@ -63,7 +62,7 @@
                       <div class="col-lg-1 col-md-2">
                         <div class="form-group label-floating">
                           <label class="control-label">Adhoc</label> 
-                          <select name="adhoc" ng-model="$ctrl.adhoc" class="form-control">
+                          <select ng-model="$ctrl.data.adhoc" class="form-control">
                             <option></option>
                             <option value="Yes">Yes</option>
                             <option value="No">No</option>
@@ -71,7 +70,7 @@
                         </div>
                       </div>
                       <div class="col-lg-1 col-md-2">
-                        <button type="submit" class="btn btn-danger btn-lg pull-right">Search</button>
+                        <button type="button" ng-click="$ctrl.doSearch()" class="btn btn-danger btn-lg pull-right">Search</button>
                       </div>
                     </div>
                     <!-- /.row -->
@@ -90,7 +89,9 @@
         </div>
       </div>
 
-      <!--   Edit Modal Windows   -->
-      <edit></edit>
     </div>
   </div>
+
+  <!--   Edit Modal Windows   -->
+  <edit></edit>
+  

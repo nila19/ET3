@@ -1,16 +1,5 @@
 /** ** ./summary/summary.component.js *** */
 
-var summaryEventMapper = {
-	map: function() {
-		$(':button[data-refresh-summary]').click(function() {
-			appUtils.msg.show('Summary Refresh');
-		});
-		$(':input[type="checkbox"]').change(function() {
-			appUtils.msg.show('Summary Refresh');
-		});
-	}
-};
-
 (function(angular) {
 	'use strict';
 
@@ -23,8 +12,6 @@ var summaryEventMapper = {
 			'utilsService', 'CONSTANTS', 'VALUES', '$location'];
 	function SummaryController(sms, ms, els, us, C, V, $location) {
 		var vm = this;
-		vm.data = {};
-		console.log('City = ' + ms.getCity());
 
 		init();
 		reload();
@@ -40,20 +27,18 @@ var summaryEventMapper = {
 
 		// ***** Function declarations *****//
 		function init() {
-			ms.setPage(C.PAGES.SUMMARY);
+			ms.page = C.PAGES.SUMMARY;
+			els.rowCount = C.SIZES.SEARCH_ROW;
 			vm.pageNo = 0;
 			vm.maxPageNo = 0;
 			vm.data = {};
 			vm.adhoc = false;
 			vm.regular = false;
 			vm.forecast = false;
-			// vm.categories = V.categories;
 		}
 
 		function reload() {
-			console.log('Reloading with ... ' + ms.getCity() + ',' + vm.adhoc + ', ' + vm.regular +
-					', ' + vm.forecast);
-			sms.loadData(ms.getCity(), vm.adhoc, vm.regular, vm.forecast);
+			sms.loadData(ms.city, vm.adhoc, vm.regular, vm.forecast);
 			sms.getDataForPage(vm.data, vm.pageNo);
 			vm.maxPageNo = sms.getMaxPage();
 		}

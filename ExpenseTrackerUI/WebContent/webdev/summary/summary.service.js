@@ -84,12 +84,14 @@
 		};
 
 		var loadData = function(city, adhoc, regular, forecast) {
+			console.log('Loading Summ from vDB :: ' + city + ', ' + adhoc + ', ' + regular + ', ' +
+					forecast);
 			this.dummyData();
 			// TODO Ajax load from prod to local data.
-			this.maxPage = Math.ceil(this.data.header.length / C.SUMMARY_PAGE_SIZE) - 1;
+			this.maxPage = Math.ceil(this.data.header.length / C.SIZES.SUMMARY_COL) - 1;
 		};
 		var getDataForPage = function(pgData, pageno) {
-			var pgSz = C.SUMMARY_PAGE_SIZE;
+			var pgSz = C.SIZES.SUMMARY_COL;
 			pgData.header = this.data.header.slice(pageno * pgSz, (pageno + 1) * pgSz);
 			pgData.header2 = this.data.header2.slice(pageno * pgSz, (pageno + 1) * pgSz);
 
@@ -112,6 +114,7 @@
 
 		return {
 			data: data,
+			maxPage: maxPage,
 			dummyData: dummyData,
 			loadData: loadData,
 			getDataForPage: getDataForPage,

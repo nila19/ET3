@@ -111,9 +111,9 @@ gulp.task('watch', ['default'], function() {
 	gulp.watch(src.less, ['less','less-pr']);
 	gulp.watch(src.css, ['css']);
 	gulp.watch(src.htm, ['htm']);
-	gulp.watch(src.images, ['images']);
-	gulp.watch(src.theme, ['theme']);
-	gulp.watch(src.bower, ['bower']);
+//	gulp.watch(src.images, ['images']);
+//	gulp.watch(src.theme, ['theme']);
+//	gulp.watch(src.bower, ['bower']);
 	plugins.util.log(plugins.util.colors.cyan('***** WATCHING FOR SOURCE CHANGES *****'));
 });
 

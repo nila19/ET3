@@ -19,7 +19,7 @@
 		// /////////////////////
 
 		function init() {
-			vm.showButtons = (ms.getPage() === C.PAGES.DASHBOARD);
+			vm.showButtons = (ms.page === C.PAGES.DASHBOARD);
 			vm.showingMoreAccounts = false;
 			vm.showingChart = false;
 			vm.CURRENCY = C.CURRENCY;
@@ -46,7 +46,7 @@
 
 		function setCity(city) {
 			vm.city = city;
-			ms.setCity(city);
+			ms.city = city;
 		}
 	}
 })(window.angular);

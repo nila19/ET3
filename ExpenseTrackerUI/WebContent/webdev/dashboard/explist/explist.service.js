@@ -9,25 +9,45 @@
 	function explistService(C) {
 		var page = '';
 		var data;
+		var maxPageNo = 0;
+		var currPageNo = 0;
+		var rowCount = 1;
 
-		var getPage = function() {
-			return page;
-		};
-		var setPage = function(page) {
-			this.page = page;
-		};
-		var getData = function() {
-			return data;
-		};
-		var setData = function(data) {
+		var loadData = function(data) {
 			this.data = data;
+			this.maxPageNo = Math.ceil(this.data.rows.length / this.rowCount) - 1;
 		};
-
+		var getDataForPage = function(pgData, pageno) {
+			pgData.total = this.data.total;
+			pgData.rows = this.data.rows
+					.slice(pageno * this.rowCount, (pageno + 1) * this.rowCount);
+		};
+		var getMaxPage = function() {
+			return this.maxPage;
+		};
+		var setMaxPage = function(maxPage) {
+			this.maxPage = maxPage;
+		};
+		var getIndexOf = function(id) {
+			var idx;
+			this.data.rows.forEach(function(row, i) {
+				if (row.id === id) {
+					idx = i;
+				}
+			});
+			return idx;
+		};
 		return {
-			getPage: getPage,
-			setPage: setPage,
-			getData: getData,
-			setData: setData
+			page: page,
+			rowCount: rowCount,
+			maxPageNo: maxPageNo,
+			currPageNo: currPageNo,
+			data: data,
+			loadData: loadData,
+			getDataForPage: getDataForPage,
+			getMaxPage: getMaxPage,
+			setMaxPage: setMaxPage,
+			getIndexOf: getIndexOf
 		};
 	}
 

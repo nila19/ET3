@@ -10,25 +10,9 @@
 		var page = '';
 		var city;
 
-		var getPage = function() {
-			return page;
-		};
-		var setPage = function(page) {
-			this.page = page;
-		};
-		var getCity = function() {
-			return city;
-		};
-		var setCity = function(city) {
-			this.city = city;
-		};
-
 		return {
-			city: city,
-			getPage: getPage,
-			setPage: setPage,
-			getCity: getCity,
-			setCity: setCity
+			page: page,
+			city: city
 		};
 	}
 
