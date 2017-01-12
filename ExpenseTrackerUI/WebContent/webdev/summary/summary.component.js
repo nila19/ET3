@@ -48,10 +48,12 @@
 			sms.getDataForPage(vm.data, vm.pageNo);
 		}
 
-		function listExp(cat, mIdx) {
-			var path = '/search/' + cat + '/' + vm.data.header[mIdx].mth;
-			console.log(path);
-			$location.path(path);
+		function listExp(cat, mIdx, aggr) {
+			if (!aggr) {
+				var path = '/search/' + cat + '/' + vm.data.header[mIdx].mth;
+				console.log(path);
+				$location.path(path);
+			}
 		}
 
 		function hasPrevPage() {

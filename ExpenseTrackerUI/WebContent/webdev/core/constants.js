@@ -12,8 +12,9 @@
 		},
 		SIZES: {
 			SUMMARY_COL: 4,
-			SEARCH_ROW: 3,
-			DASHBOARD_ROW: 2
+			SEARCH_ROW: 3, // For Search
+			DASHBOARD_ROW: 2, // For Search
+			BILLS_ROW: 2
 		},
 		AMOUNT_REGEXP: /^-?\d+(?:\.\d{2}){0,1}$/,
 		BASE_URL: 'http://localhost:8080/TestWebServices/servlet',

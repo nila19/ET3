@@ -19,6 +19,7 @@
 		};
 		var dummySearch = function() {
 			return {
+				filterApplied: false,
 				total: 1500.45,
 				rows: [{
 					id: 2560,

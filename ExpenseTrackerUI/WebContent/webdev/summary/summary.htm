@@ -26,7 +26,7 @@
                         <th class="text-right">&nbsp;</th>
                         <th class="text-right">&nbsp;</th>
                         <th class="text-right">&nbsp;</th>
-                        <th ng-repeat="h2 in $ctrl.data.header2 track by $index" ng-click="$ctrl.listExp(0, $index)" class="text-right sumTotalCell">
+                        <th ng-repeat="h2 in $ctrl.data.header2 track by $index" ng-click="$ctrl.listExp(0, $index, $ctrl.data.header[$index].aggr)" class="text-right sumTotalCell">
                           <strong>{{$ctrl.data.header2[$index] | currency}}</strong>
                         </th>
                       </tr>
@@ -37,7 +37,7 @@
                           <a class="btn btn-primary btn-simple btn-sm"><i class="material-icons">{{row.cat.icon}}</i></a></td>
                         <td>{{row.cat.main}}</td>
                         <td>{{row.cat.sub}}</td>
-                        <td ng-repeat="col in row.cols track by $index" ng-click="$ctrl.listExp(row.cat.id, $index)" class="text-right sumDetailCell">{{row.cols[$index] | currency}}</td>
+                        <td ng-repeat="col in row.cols track by $index" ng-click="$ctrl.listExp(row.cat.id, $index, $ctrl.data.header[$index].aggr)" class="text-right sumDetailCell">{{row.cols[$index] | currency}}</td>
                       </tr>
                     </tbody>
                     <tfoot>

@@ -16,7 +16,6 @@
 				id: 2500,
 				entryDt: 1288323623006,
 				transDt: 1288323623006,
-				transDtTxt: '03/03/2010',
 				cat: {
 					id: 1750,
 					name: 'Food ~ Kroger Groceries',

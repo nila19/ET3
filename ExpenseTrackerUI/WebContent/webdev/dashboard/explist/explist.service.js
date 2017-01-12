@@ -8,25 +8,23 @@
 	explistService.$inject = ['CONSTANTS'];
 	function explistService(C) {
 		var page = '';
-		var data;
+		var data = {};
+		var pgData = {};
 		var maxPageNo = 0;
 		var currPageNo = 0;
 		var rowCount = 1;
 
 		var loadData = function(data) {
 			this.data = data;
+			this.currPageNo = 0;
 			this.maxPageNo = Math.ceil(this.data.rows.length / this.rowCount) - 1;
+			this.pgData.filterApplied = this.data.filterApplied;
+			this.pgData.total = this.data.total;
+			this.loadDataForPage();
 		};
-		var getDataForPage = function(pgData, pageno) {
-			pgData.total = this.data.total;
-			pgData.rows = this.data.rows
-					.slice(pageno * this.rowCount, (pageno + 1) * this.rowCount);
-		};
-		var getMaxPage = function() {
-			return this.maxPage;
-		};
-		var setMaxPage = function(maxPage) {
-			this.maxPage = maxPage;
+		var loadDataForPage = function() {
+			var pg = this.currPageNo;
+			this.pgData.rows = this.data.rows.slice(pg * this.rowCount, (pg + 1) * this.rowCount);
 		};
 		var getIndexOf = function(id) {
 			var idx;
@@ -39,14 +37,13 @@
 		};
 		return {
 			page: page,
-			rowCount: rowCount,
+			data: data,
+			pgData: pgData,
 			maxPageNo: maxPageNo,
 			currPageNo: currPageNo,
-			data: data,
+			rowCount: rowCount,
 			loadData: loadData,
-			getDataForPage: getDataForPage,
-			getMaxPage: getMaxPage,
-			setMaxPage: setMaxPage,
+			loadDataForPage: loadDataForPage,
 			getIndexOf: getIndexOf
 		};
 	}

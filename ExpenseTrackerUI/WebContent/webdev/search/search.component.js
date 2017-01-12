@@ -25,15 +25,15 @@
 			els.page = C.PAGES.SEARCH;
 			els.rowCount = C.SIZES.SEARCH_ROW;
 
-			// Check if sent from Summary - use $routeParams.
-			vm.data.expMonth = $routeParams.mth;
-			vm.data.catId = $routeParams.cat;
-			// FIXME Find out why getById is returning null.
-			vm.data.category = us.getById(V.categories, vm.data.catId);
-			if (vm.data.category || vm.data.expMonth) {
-				console
-						.log('Delegated from Summary :: ' + vm.data.catId + ' , ' +
-								vm.data.expMonth);
+			// Check if sent from Summary page.
+			if ($routeParams.mth || $routeParams.cat) {
+				vm.data.expMonth = $routeParams.mth;
+				vm.data.catId = $routeParams.cat;
+				var cat = us.getById(V.categories, vm.data.catId);
+				if (cat) {
+					vm.data.category = cat.name;
+				}
+				console.log('Routed from Summary :: ' + vm.data.catId + ' , ' + vm.data.expMonth);
 			}
 
 			// Run default search.
@@ -70,7 +70,7 @@
 
 		function doSearch() {
 			var result = ss.doSearch(ms.city, vm.data);
-			els.loadData(result); // Refresh ExpenseList.
+			els.loadData(result);
 		}
 	}
 })(window.angular);

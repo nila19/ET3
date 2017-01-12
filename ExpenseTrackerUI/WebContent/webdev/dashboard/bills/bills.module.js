@@ -3,6 +3,6 @@
 (function(angular) {
 	'use strict';
 
-	angular.module('dashboard.bills', ['core']);
+	angular.module('dashboard.bills', ['core', 'dashboard.billpay']);
 
 })(window.angular);

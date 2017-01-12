@@ -20,12 +20,13 @@
 		}
 
 		function getById(arr, id) {
+			var o = null;
 			arr.forEach(function(obj) {
 				if (obj.id === Number(id)) {
-					return obj;
+					o = obj;
 				}
 			});
-			return null;
+			return o;
 		}
 
 		// Popup message

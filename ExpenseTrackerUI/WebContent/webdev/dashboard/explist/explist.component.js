@@ -11,13 +11,10 @@
 	ExplistController.$inject = ['explistService', 'editService', 'CONSTANTS', '$location'];
 	function ExplistController(els, es, C, $location) {
 		var vm = this;
-		vm.data = {};
 
 		init();
-		loadPage(0);
 
 		// ***** Exposed functions ******//
-		vm.loadPage = loadPage;
 		vm.hasPrevPage = hasPrevPage;
 		vm.hasNextPage = hasNextPage;
 		vm.prevPage = prevPage;
@@ -25,16 +22,11 @@
 		vm.showModifyExp = showModifyExp;
 		vm.showDeleteExp = showDeleteExp;
 		vm.changeSeq = changeSeq;
+		vm.clearFilter = clearFilter;
 
 		// ***** Function declarations *****//
 		function init() {
-			vm.filterApplied = false;
-			// els.loadData(); // TODO Remove later, once search/DB implemented.
-		}
-
-		function loadPage(incr) {
-			els.currPageNo += incr;
-			els.getDataForPage(vm.data, els.currPageNo);
+			vm.data = els.pgData;
 		}
 
 		function hasPrevPage() {
@@ -46,11 +38,13 @@
 		}
 
 		function prevPage() {
-			loadPage(-1);
+			els.currPageNo -= 1;
+			els.loadDataForPage();
 		}
 
 		function nextPage() {
-			loadPage(+1);
+			els.currPageNo += 1;
+			els.loadDataForPage();
 		}
 
 		function showModifyExp(id) {
