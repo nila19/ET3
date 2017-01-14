@@ -1,4 +1,4 @@
-/** ** ./core/services/filters.module.js *** */
+/** ** ./core/filters/filters.module.js *** */
 
 (function(angular) {
 	'use strict';

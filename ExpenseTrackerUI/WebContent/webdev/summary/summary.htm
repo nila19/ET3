@@ -6,7 +6,6 @@
       <!-- Summary Content -->
       <div class="content">
         <div class="container-fluid">
-
           <div class="row">
             <div class="col-md-12">
               <div class="card">
@@ -20,24 +19,24 @@
                         <th class="text-right">&nbsp;</th>
                         <th class="text-right">&nbsp;</th>
                         <th class="text-right">&nbsp;</th>
-                        <th ng-repeat="h1 in $ctrl.data.header" class="text-right"><strong>{{h1.mth}}</strong></th>
+                        <th ng-repeat="h1 in $ctrl.data.pgData.header" class="text-right"><strong>{{h1.mth}}</strong></th>
                       </tr>
                       <tr class="text-warning">
                         <th class="text-right">&nbsp;</th>
                         <th class="text-right">&nbsp;</th>
                         <th class="text-right">&nbsp;</th>
-                        <th ng-repeat="h2 in $ctrl.data.header2 track by $index" ng-click="$ctrl.listExp(0, $index, $ctrl.data.header[$index].aggr)" class="text-right sumTotalCell">
-                          <strong>{{$ctrl.data.header2[$index] | currency}}</strong>
+                        <th ng-repeat="h2 in $ctrl.data.pgData.header2 track by $index" ng-click="$ctrl.listExpenses(0, $index, $ctrl.data.pgData.header[$index].aggr)" class="text-right sumTotalCell">
+                          <strong>{{$ctrl.data.pgData.header2[$index] | currency}}</strong>
                         </th>
                       </tr>
                     </thead>
                     <tbody>
-                      <tr ng-repeat="row in $ctrl.data.rows">
+                      <tr ng-repeat="row in $ctrl.data.pgData.rows">
                         <td class="td-actions text-right">
                           <a class="btn btn-primary btn-simple btn-sm"><i class="material-icons">{{row.cat.icon}}</i></a></td>
                         <td>{{row.cat.main}}</td>
                         <td>{{row.cat.sub}}</td>
-                        <td ng-repeat="col in row.cols track by $index" ng-click="$ctrl.listExp(row.cat.id, $index, $ctrl.data.header[$index].aggr)" class="text-right sumDetailCell">{{row.cols[$index] | currency}}</td>
+                        <td ng-repeat="col in row.cols track by $index" ng-click="$ctrl.listExpenses(row.cat.id, $index, $ctrl.data.pgData.header[$index].aggr)" class="text-right sumDetailCell">{{row.cols[$index] | currency}}</td>
                       </tr>
                     </tbody>
                     <tfoot>
@@ -58,19 +57,19 @@
                             <div class="col-md-4">
                               <div class="form-group">
                                 <label class="control-label">Adhoc</label>
-                                <input type="checkbox" ng-model="$ctrl.adhoc" ng-click="$ctrl.reload()" name="adhoc" class="form-control">
+                                <input type="checkbox" ng-model="$ctrl.data.adhoc" ng-click="$ctrl.loadSummary()" name="adhoc" class="form-control">
                               </div>
                             </div>
                             <div class="col-md-4">
                               <div class="form-group">
                                 <label class="control-label">Regular</label>
-                                <input type="checkbox" ng-model="$ctrl.regular" ng-click="$ctrl.reload()" name="regular" class="form-control">
+                                <input type="checkbox" ng-model="$ctrl.data.regular" ng-click="$ctrl.loadSummary()" name="regular" class="form-control">
                               </div>
                             </div>
                             <div class="col-md-4">
                               <div class="form-group">
                                 <label class="control-label">Forecast</label>
-                                <input type="checkbox" ng-model="$ctrl.forecast" ng-click="$ctrl.reload()" name="forecast" class="form-control">
+                                <input type="checkbox" ng-model="$ctrl.data.forecast" ng-click="$ctrl.loadSummary()" name="forecast" class="form-control">
                               </div>
                             </div>
                           </div>
@@ -83,8 +82,8 @@
               </div>
             </div>
           </div>
-
         </div>
       </div>
+
     </div>
   </div>

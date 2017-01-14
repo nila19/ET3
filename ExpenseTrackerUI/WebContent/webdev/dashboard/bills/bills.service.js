@@ -1,4 +1,4 @@
-/** ** ./dashboard/accounts/accounts.service.js *** */
+/** ** ./dashboard/bills/bills.service.js *** */
 
 (function(angular) {
 	'use strict';
@@ -7,18 +7,16 @@
 
 	billsService.$inject = ['CONSTANTS'];
 	function billsService(C) {
-		var page = '';
-		var data = {};
-		var pgData = {};
-		var currPageNo = 0;
-		var maxPageNo = 0;
+		var data = {
+			showBills: false,
+			pgData: {},
+			currPageNo: 0,
+			maxPageNo: 0,
+			filterApplied: false,
+			rows: []
+		};
 		var rowCount = C.SIZES.BILLS_ROW;
 
-		var getAllBills = function() {
-			console.log('Getting list of all Bills from vDB... ');
-			// TODO Ajax query DB for all Bills, sort by Open at top & then by Account.
-			this.loadData(this.dummyBills());
-		};
 		var dummyBills = function() {
 			return {
 				filterApplied: false,
@@ -85,23 +83,7 @@
 				}]
 			};
 		};
-		var loadData = function(data) {
-			this.data = data;
-			this.currPageNo = 0;
-			this.maxPageNo = Math.ceil(this.data.rows.length / this.rowCount) - 1;
-			this.pgData.filterApplied = this.data.filterApplied;
-			this.loadDataForPage();
-		};
-		var loadDataForPage = function() {
-			var pg = this.currPageNo;
-			this.pgData.rows = this.data.rows.slice(pg * this.rowCount, (pg + 1) * this.rowCount);
-		};
-		var getExpForBill = function(id) {
-			console.log('Getting expenses for Bill from vDB :: ' + id);
-			// TODO Ajax fetch expenses.
-			return this.dummyExps();
-		};
-		var dummyExps = function() {
+		var dummyExpenses = function() {
 			return {
 				filterApplied: true,
 				total: 320.45,
@@ -188,19 +170,35 @@
 				}]
 			};
 		};
+
+		var loadAllBills = function() {
+			console.log('Getting list of all Bills @ vDB... ');
+			// TODO Ajax query DB for all Bills, sort by Open at top & then by Account.
+			this.loadData(dummyBills());
+		};
+		var loadData = function(data) {
+			this.data.filterApplied = data.filterApplied;
+			this.data.rows = data.rows;
+			this.data.maxPageNo = Math.ceil(this.data.rows.length / rowCount) - 1;
+			this.data.pgData.filterApplied = this.data.filterApplied;
+			this.data.currPageNo = 0;
+			this.loadDataForPage();
+		};
+		var loadDataForPage = function() {
+			var pg = this.data.currPageNo;
+			this.data.pgData.rows = this.data.rows.slice(pg * rowCount, (pg + 1) * rowCount);
+		};
+		var getExpenses = function(id) {
+			console.log('Filtering expenses for Bill @ vDB :: ' + id);
+			// TODO Ajax fetch expenses.
+			return dummyExpenses();
+		};
 		return {
-			page: page,
 			data: data,
-			pgData: pgData,
-			currPageNo: currPageNo,
-			maxPageNo: maxPageNo,
-			rowCount: rowCount,
-			getAllBills: getAllBills,
-			dummyBills: dummyBills,
+			loadAllBills: loadAllBills,
 			loadData: loadData,
 			loadDataForPage: loadDataForPage,
-			getExpForBill: getExpForBill,
-			dummyExps: dummyExps
+			getExpenses: getExpenses,
 		};
 	}
 

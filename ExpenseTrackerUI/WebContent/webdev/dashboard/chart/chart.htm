@@ -1,8 +1,8 @@
           <!-- Monthly Trend Chart -->
-            <div class="col-md-6" id="cardMonthlyExpenseChart">
+            <div ng-show="$ctrl.data.showChart" class="col-md-6">
               <div class="card">
                 <div class="card-header card-chart" data-background-color="orange">
-                  <div class="ct-chart" id="chartMonthlyExpense"></div>
+                  <div class="ct-chart" id="{{$ctrl.data.tagId}}"></div>
                 </div>
                 <div class="card-content"></div>
                 <div class="card-footer">

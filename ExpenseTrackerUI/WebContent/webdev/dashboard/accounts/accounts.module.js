@@ -3,6 +3,6 @@
 (function(angular) {
 	'use strict';
 
-	angular.module('dashboard.accounts', ['core']);
+	angular.module('dashboard.accounts', ['core', 'dashboard.bills', 'dashboard.explist']);
 
 })(window.angular);

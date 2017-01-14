@@ -1,4 +1,4 @@
-/** ** ./core/directives/xx-integer.directive.js *** */
+/** ** ./core/directives/xx-date.directive.js *** */
 
 (function(angular) {
 	'use strict';

@@ -9,11 +9,9 @@
 	});
 
 	SearchController.$inject = ['searchService', 'etmenuService', 'explistService', 'utilsService',
-			'CONSTANTS', 'VALUES', '$location', '$routeParams'];
-	function SearchController(ss, ms, els, us, C, V, $location, $routeParams) {
+			'CONSTANTS', 'VALUES', '$routeParams'];
+	function SearchController(ss, ms, els, us, C, V, $routeParams) {
 		var vm = this;
-		vm.data = {};
-
 		init();
 
 		// ***** Exposed functions ******//
@@ -21,23 +19,28 @@
 
 		// ***** Function declarations *****//
 		function init() {
-			ms.page = C.PAGES.SEARCH;
-			els.page = C.PAGES.SEARCH;
-			els.rowCount = C.SIZES.SEARCH_ROW;
+			vm.data = ss.data;
+			ms.data.page = C.PAGES.SEARCH;
+			els.data.page = C.PAGES.SEARCH;
+			els.data.rowCount = C.SIZES.SEARCH_ROW;
+			els.data.filterApplied = false;
 
 			// Check if sent from Summary page.
 			if ($routeParams.mth || $routeParams.cat) {
-				vm.data.expMonth = $routeParams.mth;
-				vm.data.catId = $routeParams.cat;
-				var cat = us.getById(V.categories, vm.data.catId);
+				ss.data.expMonth = $routeParams.mth;
+				ss.data.catId = $routeParams.cat;
+				var cat = us.getById(V.categories, ss.data.catId);
 				if (cat) {
-					vm.data.category = cat.name;
+					ss.data.category = cat.name;
 				}
-				console.log('Routed from Summary :: ' + vm.data.catId + ' , ' + vm.data.expMonth);
+				console.log('Routed from Summary :: ' + ss.data.catId + ' , ' + ss.data.expMonth);
+				els.data.filterApplied = true;
 			}
 
+			console.log('City = ' + JSON.stringify(ms.data.city));
+
 			// Run default search.
-			doSearch();
+			loadData();
 
 			typeAheads();
 		}
@@ -47,7 +50,7 @@
 				source: V.categories,
 				minLength: 0,
 				updater: function(item) {
-					vm.data.catId = item.id;
+					ss.data.categoryId = item.id;
 					return item;
 				}
 			});
@@ -62,15 +65,20 @@
 				source: V.accounts,
 				minLength: 0,
 				updater: function(item) {
-					vm.data.acId = item.id;
+					ss.data.accountId = item.id;
 					return item;
 				}
 			});
 		}
 
-		function doSearch() {
-			var result = ss.doSearch(ms.city, vm.data);
+		function loadData() {
+			var result = ss.doSearch(ms.data.city);
 			els.loadData(result);
+		}
+
+		function doSearch() {
+			els.data.filterApplied = true;
+			loadData();
 		}
 	}
 })(window.angular);

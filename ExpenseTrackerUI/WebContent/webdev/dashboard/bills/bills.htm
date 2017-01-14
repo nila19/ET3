@@ -1,5 +1,5 @@
           <!-- Bills Card -->
-            <div class="col-md-6">
+            <div ng-show="$ctrl.data.showBills" class="col-md-6">
               <div class="card card-nav-tabs">
                 <div class="card-header" data-background-color="purple">
                   <div class="nav-tabs-navigation">
@@ -27,9 +27,9 @@
                           </tr>
                         </thead>
                         <tbody>
-                          <tr ng-repeat="row in $ctrl.data.rows">
+                          <tr ng-repeat="row in $ctrl.data.pgData.rows">
                             <td class="td-actions text-right">
-                              <button type="button" ng-click="$ctrl.filterExp(row.id)" rel="tooltip" title="View Expenses" class="btn btn-primary btn-simple btn-xs">
+                              <button type="button" ng-click="$ctrl.filterExpenses(row.id)" rel="tooltip" title="View Expenses" class="btn btn-primary btn-simple btn-xs">
                                 <i class="material-icons">list</i>
                               </button>
                             </td>

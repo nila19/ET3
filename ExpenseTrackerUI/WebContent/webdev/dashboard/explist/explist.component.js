@@ -8,10 +8,9 @@
 		controller: ExplistController
 	});
 
-	ExplistController.$inject = ['explistService', 'editService', 'CONSTANTS', '$location'];
-	function ExplistController(els, es, C, $location) {
+	ExplistController.$inject = ['explistService', 'editService', 'searchService', 'CONSTANTS'];
+	function ExplistController(els, es, ss, C) {
 		var vm = this;
-
 		init();
 
 		// ***** Exposed functions ******//
@@ -19,52 +18,56 @@
 		vm.hasNextPage = hasNextPage;
 		vm.prevPage = prevPage;
 		vm.nextPage = nextPage;
-		vm.showModifyExp = showModifyExp;
-		vm.showDeleteExp = showDeleteExp;
-		vm.changeSeq = changeSeq;
+		vm.showModifyExpense = showModifyExpense;
+		vm.showDeleteExpense = showDeleteExpense;
+		vm.changeSequence = changeSequence;
 		vm.clearFilter = clearFilter;
 
 		// ***** Function declarations *****//
 		function init() {
-			vm.data = els.pgData;
+			vm.data = els.data;
 		}
 
 		function hasPrevPage() {
-			return els.currPageNo > 0;
+			return els.data.currPageNo > 0;
 		}
 
 		function hasNextPage() {
-			return els.currPageNo < els.maxPageNo;
+			return els.data.currPageNo < els.data.maxPageNo;
 		}
 
 		function prevPage() {
-			els.currPageNo -= 1;
+			els.data.currPageNo -= 1;
 			els.loadDataForPage();
 		}
 
 		function nextPage() {
-			els.currPageNo += 1;
+			els.data.currPageNo += 1;
 			els.loadDataForPage();
 		}
 
-		function showModifyExp(id) {
-			es.fetchExp(id);
+		function showModifyExpense(id) {
+			es.fetchExpense(id);
 			$('#model_Modify').modal('show');
 		}
 
-		function showDeleteExp(id) {
-			es.fetchExp(id);
+		function showDeleteExpense(id) {
+			es.fetchExpense(id);
 			$('#model_Delete').modal('show');
 		}
 
-		function changeSeq(id, code) {
+		function changeSequence(id, code) {
 			var idx = els.getIndexOf(id);
 			var id2 = els.data.rows[idx + code].id;
-			es.swapExp(id, id2);
+			es.swapExpense(id, id2);
 		}
 
 		function clearFilter() {
-			// TODO Ask Dashboard ctrl to refresh & reload explist service.
+			if (els.data.page === C.PAGES.SEARCH) {
+				ss.initializeData();
+			}
+			els.data.filterApplied = false;
+			els.loadAllExpenses();
 		}
 	}
 })(window.angular);

@@ -11,16 +11,16 @@
 	EditController.$inject = ['editService', 'CONSTANTS', 'VALUES', '$location'];
 	function EditController(es, C, V, $location) {
 		var vm = this;
-		vm.data = es.data;
-
 		init();
 
 		// ***** Exposed functions ******//
-		vm.saveExp = saveExp;
-		vm.deleteExp = deleteExp;
+		vm.saveExpense = saveExpense;
+		vm.deleteExpense = deleteExpense;
 
 		// ***** Function declarations *****//
 		function init() {
+			vm.data = es.data;
+
 			typeAheads();
 		}
 
@@ -54,14 +54,14 @@
 			});
 		}
 
-		function saveExp() {
+		function saveExpense() {
 			// TODO Validate the form.
-			es.saveExp();
+			es.saveExpense();
 			$('#model_Modify').modal('hide');
 		}
 
-		function deleteExp() {
-			es.deleteExp();
+		function deleteExpense() {
+			es.deleteExpense();
 			$('#model_Delete').modal('hide');
 		}
 	}

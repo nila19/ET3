@@ -7,13 +7,11 @@
 
 	billpayService.$inject = ['CONSTANTS'];
 	function billpayService(C) {
-		var data = {};
-
-		var fetchBill = function(id) {
-			console.log('Getting info for Bill from vDB :: ' + id);
-			// TODO Ajax fetch bill details.
-			this.loadData(this.dummyBill());
+		var data = {
+			bill: null,
+			pay: null
 		};
+
 		var dummyBill = function() {
 			return {
 				bill: {
@@ -35,6 +33,12 @@
 				}
 			};
 		};
+
+		var loadBill = function(id) {
+			console.log('Getting info for Bill @ vDB :: ' + id);
+			// TODO Ajax fetch bill details.
+			this.loadData(dummyBill());
+		};
 		var loadData = function(data) {
 			this.data.bill = data.bill;
 			this.data.pay = data.pay;
@@ -46,8 +50,7 @@
 
 		return {
 			data: data,
-			fetchBill: fetchBill,
-			dummyBill: dummyBill,
+			loadBill: loadBill,
 			loadData: loadData,
 			payBill: payBill
 		};

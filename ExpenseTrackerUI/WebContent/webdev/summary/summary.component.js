@@ -12,64 +12,56 @@
 			'utilsService', 'CONSTANTS', 'VALUES', '$location'];
 	function SummaryController(sms, ms, els, us, C, V, $location) {
 		var vm = this;
-
 		init();
-		reload();
 
 		// ***** Exposed functions ******//
-		vm.reload = reload;
-		vm.changePage = changePage;
+		vm.loadSummary = loadSummary;
 		vm.hasPrevPage = hasPrevPage;
 		vm.hasNextPage = hasNextPage;
 		vm.prevPage = prevPage;
 		vm.nextPage = nextPage;
-		vm.listExp = listExp;
+		vm.listExpenses = listExpenses;
 
 		// ***** Function declarations *****//
 		function init() {
-			ms.page = C.PAGES.SUMMARY;
-			els.rowCount = C.SIZES.SEARCH_ROW;
-			vm.pageNo = 0;
-			vm.maxPageNo = 0;
-			vm.data = {};
-			vm.adhoc = false;
-			vm.regular = false;
-			vm.forecast = false;
+			vm.data = sms.data;
+
+			ms.data.page = C.PAGES.SUMMARY;
+			// els.data.rowCount = C.SIZES.SEARCH_ROW;
+
+			// Run default Summary.
+			loadSummary();
 		}
 
-		function reload() {
-			sms.loadData(ms.city, vm.adhoc, vm.regular, vm.forecast);
-			sms.getDataForPage(vm.data, vm.pageNo);
-			vm.maxPageNo = sms.getMaxPage();
+		function loadSummary() {
+			sms.loadSummary(ms.data.city);
 		}
 
-		function changePage(incr) {
-			vm.pageNo += incr;
-			sms.getDataForPage(vm.data, vm.pageNo);
-		}
-
-		function listExp(cat, mIdx, aggr) {
+		function listExpenses(cat, mIdx, aggr) {
 			if (!aggr) {
+				// TODO Set via Services.
 				var path = '/search/' + cat + '/' + vm.data.header[mIdx].mth;
-				console.log(path);
+				console.log('Navigating to :: ' + path);
 				$location.path(path);
 			}
 		}
 
 		function hasPrevPage() {
-			return vm.pageNo > 0;
+			return sms.data.currPageNo > 0;
 		}
 
 		function hasNextPage() {
-			return vm.pageNo < vm.maxPageNo;
+			return sms.data.currPageNo < sms.data.maxPageNo;
 		}
 
 		function prevPage() {
-			changePage(-1);
+			sms.data.currPageNo -= 1;
+			sms.loadDataForPage();
 		}
 
 		function nextPage() {
-			changePage(+1);
+			sms.data.currPageNo += 1;
+			sms.loadDataForPage();
 		}
 	}
 })(window.angular);

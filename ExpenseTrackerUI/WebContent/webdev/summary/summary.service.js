@@ -7,12 +7,21 @@
 
 	summaryService.$inject = ['CONSTANTS'];
 	function summaryService(C) {
-		var maxPage = 0;
-		var data;
+		var data = {
+			header: [],
+			header2: [],
+			rows: [],
+			maxPageNo: 0,
+			pgData: {},
+			currPageNo: 0,
+			adhoc: false,
+			regular: false,
+			forecast: false
+		};
+		var cols = C.SIZES.SUMMARY_COL;
 
-		// TODO Delete later
 		var dummyData = function() {
-			this.data = {
+			return {
 				header: [{
 					mth: 'JAN-17',
 					aggr: false
@@ -83,43 +92,40 @@
 			};
 		};
 
-		var loadData = function(city, adhoc, regular, forecast) {
-			console.log('Loading Summ from vDB :: ' + city + ', ' + adhoc + ', ' + regular + ', ' +
-					forecast);
-			this.dummyData();
-			// TODO Ajax load from prod to local data.
-			this.maxPage = Math.ceil(this.data.header.length / C.SIZES.SUMMARY_COL) - 1;
+		var loadSummary = function(city) {
+			// TODO Ajax generate Summary from DB
+			console.log('Loading Summary @ vDB :: ' + JSON.stringify(city) + ', ' +
+					JSON.stringify(this.data));
+			this.loadData(dummyData());
 		};
-		var getDataForPage = function(pgData, pageno) {
-			var pgSz = C.SIZES.SUMMARY_COL;
-			pgData.header = this.data.header.slice(pageno * pgSz, (pageno + 1) * pgSz);
-			pgData.header2 = this.data.header2.slice(pageno * pgSz, (pageno + 1) * pgSz);
+		var loadData = function(data) {
+			this.data.header = data.header;
+			this.data.header2 = data.header2;
+			this.data.rows = data.rows;
+			this.data.maxPageNo = Math.ceil(this.data.header.length / cols) - 1;
+			this.data.currPageNo = 0;
+			this.loadDataForPage();
+		};
+		var loadDataForPage = function() {
+			var pageno = this.data.currPageNo;
+			this.data.pgData.header = this.data.header.slice(pageno * cols, (pageno + 1) * cols);
+			this.data.pgData.header2 = this.data.header2.slice(pageno * cols, (pageno + 1) * cols);
 
 			var pgRows = [];
 			this.data.rows.forEach(function(row) {
 				var pgRow = {};
 				pgRow.cat = row.cat;
-				pgRow.cols = row.cols.slice(pageno * pgSz, (pageno + 1) * pgSz);
+				pgRow.cols = row.cols.slice(pageno * cols, (pageno + 1) * cols);
 				pgRows.push(pgRow);
 			});
-			pgData.rows = pgRows;
-		};
-
-		var getMaxPage = function() {
-			return this.maxPage;
-		};
-		var setMaxPage = function(maxPage) {
-			this.maxPage = maxPage;
+			this.data.pgData.rows = pgRows;
 		};
 
 		return {
 			data: data,
-			maxPage: maxPage,
-			dummyData: dummyData,
+			loadSummary: loadSummary,
 			loadData: loadData,
-			getDataForPage: getDataForPage,
-			getMaxPage: getMaxPage,
-			setMaxPage: setMaxPage
+			loadDataForPage: loadDataForPage
 		};
 	}
 

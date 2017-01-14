@@ -1,221 +1,31 @@
-        <!-- First row of Accounts Cards -->
-          <div class="row">
-            <div class="col-lg-2 col-md-4 col-sm-6">
+        <!-- Accounts Cards -->
+          <div class="row" ng-repeat="row in $ctrl.data.rows track by $index" ng-show="(($index == 0 && $ctrl.data.showAcctsRowOne) || ($index > 0 && $ctrl.data.showAcctsMore))">
+            <div class="col-lg-2 col-md-4 col-sm-6" ng-repeat="col in row.cols">
               <div class="card card-stats">
-                <div class="card-header" data-card-accounts="DEBIT" data-background-color="blue">
-                  <a href="#"><i class="material-icons">account_balance</i></a>
+                <div class="card-header" data-background-color="{{col.bgColor}}">
+                  <a href="" ng-click="$ctrl.filterAccount(col.id)"><i class="material-icons">{{col.icon}}</i></a>
                 </div>
                 <div class="card-content">
-                  <p class="category">BOA - 7787</p>
-                  <h3 class="title">$ 34,245.50</h3>
+                  <p class="category">{{col.name}}</p>
+                  <h3 class="title">{{col.balance | currency:''}}</h3>
                 </div>
                 <div class="card-footer">
                   <div class="stats">
-                    <i class="material-icons">check_circle</i> $ 34,245.50 @ 19-Dec-16 10:53 AM
+                    <i class="material-icons {{col.tallyToday?'text-success':'text-warning'}}">check_circle</i> {{col.tallyAmt | currency:'$ '}} @ {{col.tallyDt | date:'dd-MMM-yy hh:mm a'}}
                   </div>
-                  <div class="stats">
-                    <i class="material-icons">schedule</i> &nbsp;Next Bill on 16-Jan
+                  <div ng-show="col.doBills && !col.billDue" class="stats">
+                    <i class="material-icons">schedule</i> &nbsp;Next Bill on {{col.nextBillDt | date:'dd-MMM'}}
+                  </div>
+                  <div ng-show="col.doBills && col.billDue" class="stats">
+                    <i class="material-icons text-warning">local_offer</i> {{col.billAmt | currency:'$ '}} (Due on {{col.billDueDt | date:'dd-MMM'}})
+                  </div>
+                  <div ng-show="!col.doBills" class="stats">
+                    <i class="material-icons">block</i> &nbsp; No bills.
                   </div>
                 </div>
                 <div class="card-footer" align="center">
                   <div class="stats">
-                    <span class="btn btn-success btn-sm" data-btn-tally="Y">Tally <span class="badge">42</span></span>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="col-lg-2 col-md-4 col-sm-6">
-              <div class="card card-stats">
-                <div class="card-header" data-card-accounts="DEBIT" data-background-color="blue">
-                  <a href="#"><i class="material-icons">account_balance</i></a>
-                </div>
-                <div class="card-content">
-                  <p class="category">Chase Checking</p>
-                  <h3 class="title">$ 34,245.50</h3>
-                </div>
-                <div class="card-footer">
-                  <div class="stats">
-                    <i class="material-icons text-danger">check_circle</i> $ 34,245.50 @ 19-Dec-16 10:53 AM
-                  </div>
-                  <div class="stats">
-                    <i class="material-icons text-warning">local_offer</i> $ 2,245.50 (Due on 19-Dec-16)
-                  </div>
-                </div>
-                <div class="card-footer" align="center">
-                  <div class="stats">
-                    <span class="btn btn-success btn-sm" data-btn-tally="Y">Tally</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="col-lg-2 col-md-4 col-sm-6">
-              <div class="card card-stats">
-                <div class="card-header" data-card-accounts="CREDIT" data-background-color="red">
-                  <a href="#"><i class="material-icons">credit_card</i></a>
-                </div>
-                <div class="card-content">
-                  <p class="category">BOA VISA</p>
-                  <h3 class="title">$ 34,245.50</h3>
-                </div>
-                <div class="card-footer">
-                  <div class="stats">
-                    <i class="material-icons text-danger">check_circle</i> $ 34,245.50 @ 19-Dec-16 10:53 AM
-                  </div>
-                  <div class="stats">
-                    <i class="material-icons text-warning">local_offer</i> $ 2,245.50 (Due on 19-Dec-16)
-                  </div>
-                </div>
-                <div class="card-footer" align="center">
-                  <div class="stats">
-                    <span class="btn btn-success btn-sm" data-btn-tally="Y">Tally<span class="badge">42</span></span>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="col-lg-2 col-md-4 col-sm-6">
-              <div class="card card-stats">
-                <div class="card-header" data-card-accounts="CREDIT" data-background-color="red">
-                  <a href="#"><i class="material-icons">credit_card</i></a>
-                </div>
-                <div class="card-content">
-                  <p class="category">Chase Freedom</p>
-                  <h3 class="title">$ 34,245.50</h3>
-                </div>
-                <div class="card-footer">
-                  <div class="stats">
-                    <i class="material-icons text-danger">check_circle</i> $ 34,245.50 @ 19-Dec-16 10:53 AM
-                  </div>
-                  <div class="stats">
-                    <i class="material-icons text-warning">local_offer</i> $ 2,245.50 (Due on 19-Dec-16)
-                  </div>
-                </div>
-                <div class="card-footer" align="center">
-                  <div class="stats">
-                    <span class="btn btn-success btn-sm" data-btn-tally="Y">Tally</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="col-lg-2 col-md-4 col-sm-6">
-              <div class="card card-stats">
-                <div class="card-header" data-card-accounts="CREDIT" data-background-color="red">
-                  <a href="#"><i class="material-icons">credit_card</i></a>
-                </div>
-                <div class="card-content">
-                  <p class="category">Blue Cash</p>
-                  <h3 class="title">$ 34,245.50</h3>
-                </div>
-                <div class="card-footer">
-                  <div class="stats">
-                    <i class="material-icons text-danger">check_circle</i> $ 34,245.50 @ 19-Dec-16 10:53 AM
-                  </div>
-                  <div class="stats">
-                    <i class="material-icons text-warning">local_offer</i> $ 2,245.50 (Due on 19-Dec-16)
-                  </div>
-                </div>
-                <div class="card-footer" align="center">
-                  <div class="stats">
-                    <span class="btn btn-success btn-sm" data-btn-tally="Y">Tally <span class="badge">42</span></span>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="col-lg-2 col-md-4 col-sm-6">
-              <div class="card card-stats">
-                <div class="card-header" data-card-accounts="CREDIT" data-background-color="red">
-                  <a href="#"><i class="material-icons">credit_card</i></a>
-                </div>
-                <div class="card-content">
-                  <p class="category">GAP VISA</p>
-                  <h3 class="title">$ 34,245.50</h3>
-                </div>
-                <div class="card-footer">
-                  <div class="stats">
-                    <i class="material-icons text-danger">account_balance</i> $ 34,245.50 @ 19-Dec-16 10:53 AM
-                  </div>
-                  <div class="stats">
-                    <i class="material-icons text-warning">local_offer</i> $ 2,245.50 (Due on 19-Dec-16)
-                  </div>
-                </div>
-                <div class="card-footer" align="center">
-                  <div class="stats">
-                    <span class="btn btn-success btn-sm" data-btn-tally="Y">Tally <span class="badge">42</span></span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-        <!-- Second row of Accounts Cards -->
-          <div class="row" data-row-additional-accounts="Y">
-            <div class="col-lg-2 col-md-4 col-sm-6">
-              <div class="card card-stats">
-                <div class="card-header" data-card-accounts="DEBIT" data-background-color="green">
-                  <a href="#"><i class="material-icons">attach_money</i></a>
-                </div>
-                <div class="card-content">
-                  <p class="category">Cash - Bala</p>
-                  <h3 class="title">$ 34,245.50</h3>
-                </div>
-                <div class="card-footer">
-                  <div class="stats">
-                    <i class="material-icons text-danger">account_balance</i> $ 34,245.50 @ 19-Dec-16 10:53 AM
-                  </div>
-                  <div class="stats">
-                    <i class="material-icons text-warning">assignment</i> $ 2,245.50 (Due on 19-Dec-16)
-                  </div>
-                </div>
-                <div class="card-footer" align="center">
-                  <div class="stats">
-                    <span class="btn btn-success btn-sm" data-btn-tally="Y">Tally <span class="badge">42</span></span>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="col-lg-2 col-md-4 col-sm-6">
-              <div class="card card-stats">
-                <div class="card-header" data-card-accounts="DEBIT" data-background-color="green">
-                  <a href="#"><i class="material-icons">attach_money</i></a>
-                </div>
-                <div class="card-content">
-                  <p class="category">Cash - Anitha</p>
-                  <h3 class="title">$ 34,245.50</h3>
-                </div>
-                <div class="card-footer">
-                  <div class="stats">
-                    <i class="material-icons text-danger">account_balance</i> $ 34,245.50 @ 19-Dec-16 10:53 AM
-                  </div>
-                  <div class="stats">
-                    <i class="material-icons text-warning">assignment</i> $ 2,245.50 (Due on 19-Dec-16)
-                  </div>
-                </div>
-                <div class="card-footer" align="center">
-                  <div class="stats">
-                    <span class="btn btn-success btn-sm" data-btn-tally="Y">Tally <span class="badge">42</span></span>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="col-lg-2 col-md-4 col-sm-6">
-              <div class="card card-stats">
-                <div class="card-header" data-card-accounts="DEBIT" data-background-color="green">
-                  <a href="#"><i class="material-icons">attach_money</i></a>
-                </div>
-                <div class="card-content">
-                  <p class="category">Aetna HSA</p>
-                  <h3 class="title">$ 34,245.50</h3>
-                </div>
-                <div class="card-footer">
-                  <div class="stats">
-                    <i class="material-icons text-danger">account_balance</i> $ 34,245.50 @ 19-Dec-16 10:53 AM
-                  </div>
-                  <div class="stats">
-                    <i class="material-icons text-warning">assignment</i> $ 2,245.50 (Due on 19-Dec-16)
-                  </div>
-                </div>
-                <div class="card-footer" align="center">
-                  <div class="stats">
-                    <span class="btn btn-success btn-sm" data-btn-tally="Y">Tally <span class="badge">42</span></span>
+                    <span ng-click="$ctrl.tallyAccount(col.id)" class="btn btn-success btn-sm">Tally &nbsp;<span ng-show="col.untallyCnt > 0"  class="badge">{{col.untallyCnt}}</span></span>
                   </div>
                 </div>
               </div>

@@ -8,10 +8,33 @@
 		controller: AccountsController
 	});
 
-	AccountsController.$inject = ['accountsService', 'CONSTANTS', '$location'];
-	function AccountsController(acs, CONSTANTS, $location) {
+	AccountsController.$inject = ['accountsService', 'billsService', 'explistService', 'CONSTANTS',
+			'VALUES', '$location'];
+	function AccountsController(acs, bs, els, C, V, $location) {
 		var vm = this;
+		init();
 
-		// /////////////////////
+		// ***** Exposed functions ******//
+		vm.filterAccount = filterAccount;
+		vm.tallyAccount = tallyAccount;
+
+		// ***** Function declarations *****//
+		function init() {
+			vm.data = acs.data;
+		}
+
+		function filterAccount(id) {
+			var bills = acs.getBills(id);
+			bs.loadData(bills);
+			bs.data.filterApplied = true;
+
+			var expenses = acs.getExpenses(id);
+			els.loadData(expenses);
+			els.data.filterApplied = true;
+		}
+
+		function tallyAccount(id) {
+			acs.tallyAccount(id);
+		}
 	}
 })(window.angular);

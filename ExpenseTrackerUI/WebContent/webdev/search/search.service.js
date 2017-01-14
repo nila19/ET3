@@ -7,19 +7,34 @@
 
 	searchService.$inject = ['CONSTANTS'];
 	function searchService(CONSTANTS) {
-
-		var doSearch = function(city, data, cb) {
-			console.log('Search from vDB :: ' + JSON.stringify(city) + ', ' + data.catId + ', ' +
-					data.category + ', ' + data.description + ', ' + data.amount + ', ' +
-					data.expMonth + ', ' + data.entryMonth + ', ' + data.acId + ', ' +
-					data.account + ', ' + data.adjust + ', ' + data.adhoc);
-
-			// TODO Ajax search.
-			return this.dummySearch();
+		var data = {
+			categoryId: '',
+			category: '',
+			description: '',
+			amount: '',
+			accountId: '',
+			account: '',
+			expMonth: '',
+			entryMonth: '',
+			adjust: '',
+			adhoc: ''
 		};
+
+		var initializeData = function() {
+			this.data.categoryId = '';
+			this.data.category = '';
+			this.data.description = '';
+			this.data.amount = '';
+			this.data.accountId = '';
+			this.data.account = '';
+			this.data.expMonth = '';
+			this.data.entryMonth = '';
+			this.data.adjust = '';
+			this.data.adhoc = '';
+		};
+
 		var dummySearch = function() {
 			return {
-				filterApplied: false,
 				total: 1500.45,
 				rows: [{
 					id: 2560,
@@ -137,9 +152,17 @@
 			};
 		};
 
+		var doSearch = function(city) {
+			console.log('Search @ vDB :: ' + JSON.stringify(city) + ', ' +
+					JSON.stringify(this.data));
+			// TODO Ajax search.
+			return dummySearch();
+		};
+
 		return {
-			doSearch: doSearch,
-			dummySearch: dummySearch
+			data: data,
+			initializeData: initializeData,
+			doSearch: doSearch
 		};
 	}
 

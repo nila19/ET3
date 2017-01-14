@@ -1,44 +1,5 @@
 /** ** ./dashboard/chart/chart.component.js *** */
 
-var appChart = {
-	// Dashboard Chart
-	init: function() {
-		var dataChart = {
-			labels: ['Nov 16', 'Oct 16', 'Sep 16', 'Aug 16', 'Jul 16', 'Jun 16', 'May 16',
-					'Apr 16', 'Mar 16', 'Feb 16', 'Jan 16', 'Dec 15'],
-			series: [[1542.45, 443.56, 1320.25, 780.45, 553.43, 1453.45, 1326.45, 1434.45, 568,
-					1610.75, 756.43, 1895.56]]
-		};
-
-		var optionsChart = {
-			axisX: {
-				showGrid: false
-			},
-			low: 0,
-			high: 2500,
-			chartPadding: {
-				top: 0,
-				right: 5,
-				bottom: 0,
-				left: 0
-			}
-		};
-
-		var responsiveOptions = [['screen and (max-width: 640px)', {
-			seriesBarDistance: 5,
-			axisX: {
-				labelInterpolationFnc: function(value) {
-					return value[0];
-				}
-			}
-		}]];
-
-		var chart = Chartist
-				.Bar('#chartMonthlyExpense', dataChart, optionsChart, responsiveOptions);
-		md.startAnimationForBarChart(chart);
-	}
-};
-
 (function(angular) {
 	'use strict';
 
@@ -47,11 +8,22 @@ var appChart = {
 		controller: ChartController
 	});
 
-	ChartController.$inject = ['chartService', 'CONSTANTS', '$location'];
-	function ChartController(cs, CONSTANTS, $location) {
+	ChartController.$inject = ['chartService', 'CONSTANTS', '$timeout'];
+	function ChartController(cs, C, $timeout) {
 		var vm = this;
+		init();
 
-		appChart.init();
-		// /////////////////////
+		// ***** Function declarations *****//
+		function init() {
+			vm.data = cs.data;
+
+			cs.loadChartData();
+			// Wait to make sure DOM is loaded with the tagId, before the chart is rendered..
+			$timeout(renderChart, 1000);
+		}
+
+		function renderChart() {
+			cs.renderChart();
+		}
 	}
 })(window.angular);

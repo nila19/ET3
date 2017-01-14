@@ -1,4 +1,4 @@
-/** ** ./dashboard/edit/edit.service.js *** */
+/** ** ./dashboard/edit/editfunctions.service.js *** */
 
 (function(angular) {
 	'use strict';
@@ -7,7 +7,7 @@
 
 	editFunctionsService.$inject = ['CONSTANTS'];
 	function editFunctionsService(C) {
-		var fetchExp = function(id, data) {
+		var fetchExpense = function(id, data) {
 			console.log('Fetching Exp data from @ vDB :: ' + id);
 			// TODO Ajax to fetch
 			// Dummy data
@@ -55,23 +55,23 @@
 				}]
 			};
 		};
-		var saveExp = function(data) {
+		var saveExpense = function(data) {
 			// TODO Ajax save.
 			console.log('Changes saved @ vDB :: ' + JSON.stringify(data));
 		};
-		var deleteExp = function(id) {
+		var deleteExpense = function(id) {
 			// TODO Ajax save.
 			console.log('Deleted @ vDB :: ' + id);
 		};
-		var swapExp = function(id, id2) {
+		var swapExpense = function(id, id2) {
 			// TODO Ajax save.
 			console.log('Swapped @ vDB :: ' + id + ' : ' + id2);
 		};
 		return {
-			fetchExp: fetchExp,
-			saveExp: saveExp,
-			deleteExp: deleteExp,
-			swapExp: swapExp
+			fetchExpense: fetchExpense,
+			saveExpense: saveExpense,
+			deleteExpense: deleteExpense,
+			swapExpense: swapExpense
 		};
 	}
 

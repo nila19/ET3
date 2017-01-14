@@ -12,7 +12,6 @@
 			'$location'];
 	function BillsController(bs, els, bps, C, $location) {
 		var vm = this;
-
 		init();
 
 		// ***** Exposed functions ******//
@@ -21,45 +20,45 @@
 		vm.prevPage = prevPage;
 		vm.nextPage = nextPage;
 		vm.showBillPay = showBillPay;
-		vm.filterExp = filterExp;
+		vm.filterExpenses = filterExpenses;
 		vm.clearFilter = clearFilter;
 
 		// ***** Function declarations *****//
 		function init() {
-			clearFilter();
-			vm.data = bs.pgData;
+			vm.data = bs.data;
 		}
 
 		function hasPrevPage() {
-			return bs.currPageNo > 0;
+			return bs.data.currPageNo > 0;
 		}
 
 		function hasNextPage() {
-			return bs.currPageNo < bs.maxPageNo;
+			return bs.data.currPageNo < bs.data.maxPageNo;
 		}
 
 		function prevPage() {
-			bs.currPageNo -= 1;
+			bs.data.currPageNo -= 1;
 			bs.loadDataForPage();
 		}
 
 		function nextPage() {
-			bs.currPageNo += 1;
+			bs.data.currPageNo += 1;
 			bs.loadDataForPage();
 		}
 
 		function showBillPay(id) {
-			bps.fetchBill(id);
+			bps.loadBill(id);
 			$('#model_BillPay').modal('show');
 		}
 
-		function filterExp(id) {
-			var result = bs.getExpForBill(id);
-			els.loadData(result);
+		function filterExpenses(id) {
+			var expenses = bs.getExpenses(id);
+			els.loadData(expenses);
+			els.data.filterApplied = true;
 		}
 
 		function clearFilter() {
-			bs.getAllBills();
+			bs.loadAllBills();
 		}
 	}
 })(window.angular);

@@ -21,31 +21,31 @@
             </div>
             <div class="navbar-right">
               <span class="btn btn-success"> 
-                <i ng-show="$ctrl.city.curr === $ctrl.CURRENCY.USD" class="material-icons">attach_money</i> 
-                <i ng-show="$ctrl.city.curr === $ctrl.CURRENCY.INR" class="material-icons">euro_symbol</i>
+                <i ng-show="$ctrl.data.city.curr === $ctrl.data.CURRENCY.USD" class="material-icons">attach_money</i> 
+                <i ng-show="$ctrl.data.city.curr === $ctrl.data.CURRENCY.INR" class="material-icons">euro_symbol</i>
               </span>
             </div>
             <div class="dropdown navbar-right">
               <a class="btn btn-primary dropdown-toggle" data-toggle="dropdown"> 
-              <span>{{$ctrl.city.name}}</span> <b
+              <span>{{$ctrl.data.city.name}}</span> <b
                 class="caret"></b>
               </a>
               <ul class="dropdown-menu">
-                <li ng-repeat="city in $ctrl.cities" ng-click="changeCity()">
+                <li ng-repeat="city in $ctrl.data.cities">
                   <a ng-click="$ctrl.changeCity(city.id)">{{city.name}}</a>
                 </li>
               </ul>
             </div>
             <div class="navbar-right">
-              <a ng-show="$ctrl.showButtons" ng-click="$ctrl.toggleMoreAccounts()" class="btn btn-primary"> 
-                <i ng-show="!$ctrl.showingMoreAccounts" class="material-icons">expand_more</i>
-                <i ng-show="$ctrl.showingMoreAccounts" class="material-icons">expand_less</i>
+              <a ng-show="$ctrl.data.showButtons" ng-click="$ctrl.toggleMoreAccounts()" class="btn btn-primary"> 
+                <i ng-show="!$ctrl.data.showingMoreAccounts" class="material-icons">expand_more</i>
+                <i ng-show="$ctrl.data.showingMoreAccounts" class="material-icons">expand_less</i>
               </a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             </div>
             <div class="navbar-right">
-              <a ng-show="$ctrl.showButtons" ng-click="$ctrl.toggleChart()" class="btn btn-warning"> 
-                <i ng-show="$ctrl.showingChart" class="material-icons">add</i>
-                <i ng-show="!$ctrl.showingChart" class="material-icons">insert_chart</i>
+              <a ng-show="$ctrl.data.showButtons" ng-click="$ctrl.toggleChart()" class="btn btn-warning"> 
+                <i ng-show="$ctrl.data.showingChart" class="material-icons">add</i>
+                <i ng-show="!$ctrl.data.showingChart" class="material-icons">insert_chart</i>
               </a>
             </div>
           </div>

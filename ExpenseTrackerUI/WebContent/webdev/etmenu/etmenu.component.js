@@ -8,45 +8,39 @@
 		controller: ETMenuController
 	});
 
-	ETMenuController.$inject = ['etmenuService', 'CONSTANTS', 'VALUES', '$location', '$filter'];
-	function ETMenuController(ms, C, V, $location, $filter) {
+	ETMenuController.$inject = ['etmenuService', 'dashboardService', 'utilsService', 'CONSTANTS',
+			'VALUES'];
+	function ETMenuController(ms, ds, us, C, V) {
 		var vm = this;
+		init();
+
+		// ***** Exposed functions ******//
 		vm.toggleMoreAccounts = toggleMoreAccounts;
 		vm.toggleChart = toggleChart;
 		vm.changeCity = changeCity;
 
-		init();
-		// /////////////////////
-
+		// ***** Function declarations *****//
 		function init() {
-			vm.showButtons = (ms.page === C.PAGES.DASHBOARD);
-			vm.showingMoreAccounts = false;
-			vm.showingChart = false;
-			vm.CURRENCY = C.CURRENCY;
-			vm.cities = V.cities;
-			setCity(V.defaultCity);
+			if (!ms.data || !ms.data.city || !ms.data.cities) {
+				ms.loadCities();
+			}
+
+			vm.data = ms.data;
+			ms.data.showButtons = (ms.data.page === C.PAGES.DASHBOARD);
 		}
 
 		function toggleMoreAccounts() {
 			console.log('Toggling more accounts..');
-			// TODO
+			ds.toggleMoreAccounts();
 		}
 
 		function toggleChart() {
 			console.log('Toggling chart..');
-			// TODO
+			ds.toggleChart();
 		}
 
-		function changeCity(cityId) {
-			setCity($filter('filter')(vm.cities, function(d) {
-				return d.id === cityId;
-			})[0]);
-			// TODO Ajax refresh the screen.
-		}
-
-		function setCity(city) {
-			vm.city = city;
-			ms.city = city;
+		function changeCity(id) {
+			ms.data.city = us.getById(ms.data.cities, id);
 		}
 	}
 })(window.angular);

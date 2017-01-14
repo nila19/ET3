@@ -97,11 +97,19 @@ function log(task, status) {
 
 //******************************** Tasks ********************************//
 
-gulp.task('default', function(done) {
+gulp.task('all', function(done) {
 	return runSequence('clean', 'js', 'less', 'less-pr', 'css', 'htm', 'images', 'ico', 
 			'theme', 'bower', function() {
 		log('default', 'END');
 		plugins.util.log(plugins.util.colors.yellow('***** COMPLETED ALL DEFAULT TASKS *****'));
+		done();
+	})
+});
+
+gulp.task('default', function(done) {
+	return runSequence('js', 'less', 'less-pr', 'css', 'htm', function() {
+		log('default', 'END');
+		plugins.util.log(plugins.util.colors.yellow('***** COMPLETED ALL SOURCE TASKS *****'));
 		done();
 	})
 });

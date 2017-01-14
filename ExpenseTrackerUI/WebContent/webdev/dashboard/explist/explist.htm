@@ -25,18 +25,18 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <tr ng-repeat="row in $ctrl.data.rows">
+                      <tr ng-repeat="row in $ctrl.data.pgData.rows">
                         <td class="td-actions text-right">
-                          <button type="button" ng-click="$ctrl.showModifyExp(row.id)" rel="tooltip" title="Edit" class="btn btn-warning btn-simple btn-xs">
+                          <button type="button" ng-click="$ctrl.showModifyExpense(row.id)" rel="tooltip" title="Edit" class="btn btn-warning btn-simple btn-xs">
                             <i class="material-icons">mode_edit</i>
                           </button>
-                          <button type="button" ng-click="$ctrl.showDeleteExp(row.id)" rel="tooltip" title="Delete" class="btn btn-danger btn-simple btn-xs">
+                          <button type="button" ng-click="$ctrl.showDeleteExpense(row.id)" rel="tooltip" title="Delete" class="btn btn-danger btn-simple btn-xs">
                             <i class="material-icons">delete</i>
                           </button>
-                          <button type="button" ng-click="$ctrl.changeSeq(row.id,-1)" rel="tooltip" title="Move Up" class="btn btn-primary btn-simple btn-xs">
+                          <button type="button" ng-click="$ctrl.changeSequence(row.id,-1)" rel="tooltip" title="Move Up" class="btn btn-primary btn-simple btn-xs">
                             <i class="material-icons">arrow_upward</i>
                           </button>
-                          <button type="button" ng-click="$ctrl.changeSeq(row.id,1)" rel="tooltip" title="Move Down" class="btn btn-primary btn-simple btn-xs">
+                          <button type="button" ng-click="$ctrl.changeSequence(row.id,1)" rel="tooltip" title="Move Down" class="btn btn-primary btn-simple btn-xs">
                             <i class="material-icons">arrow_downward</i>
                           </button>
                         </td>

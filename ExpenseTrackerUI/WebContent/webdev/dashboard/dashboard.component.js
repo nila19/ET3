@@ -242,16 +242,34 @@ var dashMain = {
 		controller: DashboardController
 	});
 
-	DashboardController.$inject = ['dashboardService', 'CONSTANTS', '$location'];
-	function DashboardController(ds, C, $location) {
+	DashboardController.$inject = ['dashboardService', 'etmenuService', 'accountsService',
+			'billsService', 'addService', 'chartService', 'explistService', 'CONSTANTS', 'VALUES'];
+	function DashboardController(ds, ms, acs, bs, as, cs, els, C, V) {
 		var vm = this;
+		init();
 
-		// TODO - Break this into multiple sub-components.
-		dashMain.init();
-		// /////////////////////
 		function init() {
-			els.setPage(C.PAGES.DASHBOARD);
-			ms.setPage(C.PAGES.DASHBOARD);
+			ms.data.page = C.PAGES.DASHBOARD;
+			els.data.page = C.PAGES.DASHBOARD;
+			els.data.rowCount = C.SIZES.DASHBOARD_ROW;
+
+			els.data.filterApplied = false;
+
+			acs.data.showAcctsRowOne = true;
+			as.data.showAdd = true;
+			bs.data.showBills = true;
+
+			ms.data.showingMoreAccounts = false;
+			acs.data.showAcctsMore = false;
+			ms.data.showingChart = false;
+			cs.data.showChart = false;
+
+			// ds.toggleMoreAccounts();
+
+			// Load default bills & expenses.
+			acs.loadAccountDetails();
+			bs.loadAllBills();
+			els.loadAllExpenses();
 		}
 	}
 })(window.angular);
