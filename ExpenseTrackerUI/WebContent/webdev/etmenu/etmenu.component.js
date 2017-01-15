@@ -20,11 +20,9 @@
 
 		// ***** Function declarations *****//
 		function init() {
-			if (!ms.data || !ms.data.city || !ms.data.cities) {
-				ms.loadCities();
-			}
-
 			vm.data = ms.data;
+
+			ms.checkInit();
 			ms.data.showButtons = (ms.data.page === C.PAGES.DASHBOARD);
 		}
 

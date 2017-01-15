@@ -21,11 +21,14 @@
 		function init() {
 			vm.data = ss.data;
 			ms.data.page = C.PAGES.SEARCH;
-			els.data.page = C.PAGES.SEARCH;
 			els.data.rowCount = C.SIZES.SEARCH_ROW;
 			els.data.filterApplied = false;
 
-			checkIfFromSummary();
+			// If menu is not loaded, load the default city.
+			ms.checkInit();
+
+			isFromSummary();
+
 			// Run default search.
 			loadData();
 
@@ -33,7 +36,7 @@
 		}
 
 		// Check if sent from Summary page.
-		function checkIfFromSummary() {
+		function isFromSummary() {
 			if ($routeParams.mth || $routeParams.cat) {
 				ss.data.expMonth = $routeParams.mth;
 				ss.data.catId = $routeParams.cat;
@@ -78,7 +81,8 @@
 		}
 
 		function loadData() {
-			els.loadData(ss.doSearch());
+			// els.loadData(ss.doSearch());
+			els.loadAllExpenses();
 		}
 	}
 })(window.angular);

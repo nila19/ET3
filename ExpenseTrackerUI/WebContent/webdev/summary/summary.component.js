@@ -26,6 +26,9 @@
 			vm.data = sms.data;
 			ms.data.page = C.PAGES.SUMMARY;
 
+			// If menu is not loaded, load the default city.
+			ms.checkInit();
+
 			// Run default Summary.
 			loadSummary();
 		}

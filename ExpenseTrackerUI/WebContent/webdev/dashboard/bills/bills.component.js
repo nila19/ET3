@@ -8,8 +8,9 @@
 		controller: BillsController
 	});
 
-	BillsController.$inject = ['billsService', 'explistService', 'billpayService'];
-	function BillsController(bs, els, bps) {
+	BillsController.$inject = ['billsService', 'dashboardService', 'explistService',
+			'billpayService'];
+	function BillsController(bs, ds, els, bps) {
 		var vm = this;
 		init();
 
@@ -50,9 +51,11 @@
 			$('#model_BillPay').modal('show');
 		}
 
+		// FIXME Rename this... Make this as a toggle..
 		function filterExpenses(id) {
-			var expenses = bs.getExpenses(id);
-			els.loadData(expenses);
+			ds.bill = id;
+
+			els.loadData(bs.getExpenses(id));
 			els.data.filterApplied = true;
 		}
 

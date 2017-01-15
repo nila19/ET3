@@ -16,13 +16,10 @@
 
 		function init() {
 			ms.data.page = C.PAGES.DASHBOARD;
-			els.data.page = C.PAGES.DASHBOARD;
 			els.data.rowCount = C.SIZES.DASHBOARD_ROW;
 
 			// Menu is not loaded yet; load the default city.
-			if (!ms.data || !ms.data.city || !ms.data.cities) {
-				ms.loadCities();
-			}
+			ms.checkInit();
 
 			setFlags();
 			loadPage();

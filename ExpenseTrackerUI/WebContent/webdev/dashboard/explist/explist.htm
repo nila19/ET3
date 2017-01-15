@@ -52,7 +52,7 @@
                         <td class="text-right">{{row.toFrom | currency:''}}</td>
                         <td class="text-right">{{row.toTo | currency:''}}</td>
                         <td class="td-actions text-right">
-                          <span rel="tooltip" title="{{row.adhoc?'Adhoc Expense':row.adjust?'Adjustment':''}}" class="btn btn-primary btn-simple btn-xs nobtn">&nbsp;
+                          <span rel="tooltip" title="{{row.adhoc?'Adhoc Expense':row.adjust?'Adjustment':''}}" class="btn btn-primary btn-simple btn-xs no-btn">&nbsp;
                             <i ng-show="{{row.adhoc}}" class="material-icons">card_giftcard</i><i ng-show="{{row.adjust}}" class="material-icons">transform</i>
                           </span>
                         </td>
@@ -72,12 +72,18 @@
                         </td>
                         <td colspan="2">
                           <div class="stats">
+                            <span ng-show="!$ctrl.hasPrevPage()" class="btn btn-default btn-xs no-btn">
+                              <i class="material-icons">skip_previous</i>
+                            </span>
                             <button type="button" ng-show="$ctrl.hasPrevPage()" ng-click="$ctrl.prevPage()" class="btn btn-primary btn-xs">
                               <i class="material-icons">skip_previous</i>
                             </button>
                             <button type="button" ng-show="$ctrl.hasNextPage()" ng-click="$ctrl.nextPage()" class="btn btn-primary btn-xs">
                               <i class="material-icons">skip_next</i>
                             </button>
+                            <span ng-show="!$ctrl.hasNextPage()" class="btn btn-default btn-xs no-btn">
+                              <i class="material-icons">skip_next</i>
+                            </span>
                           </div>
                         </td>
                       </tr>

@@ -8,8 +8,8 @@
 		controller: AddController
 	});
 
-	AddController.$inject = ['addService', 'VALUES'];
-	function AddController(as, V) {
+	AddController.$inject = ['addService', 'explistService', 'VALUES'];
+	function AddController(as, els, V) {
 		var vm = this;
 		init();
 
@@ -56,6 +56,8 @@
 		function addExpense() {
 			// TODO Validate form.
 			as.addExpense();
+			// Refresh expense list.
+			els.loadAllExpenses();
 		}
 
 		function switchTab(code) {

@@ -16,6 +16,12 @@
 			cities: null,
 			CURRENCY: C.CURRENCY
 		};
+
+		var checkInit = function() {
+			if (!this.data || !this.data.city || !this.data.cities) {
+				this.loadCities();
+			}
+		};
 		var loadCities = function() {
 			console.log('Loading cities @ vDB...');
 			// TODO - Ajax load city list from DB
@@ -24,6 +30,7 @@
 		};
 		return {
 			data: data,
+			checkInit: checkInit,
 			loadCities: loadCities
 		};
 	}

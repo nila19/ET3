@@ -8,8 +8,9 @@
 		controller: AccountsController
 	});
 
-	AccountsController.$inject = ['accountsService', 'billsService', 'explistService'];
-	function AccountsController(acs, bs, els) {
+	AccountsController.$inject = ['accountsService', 'dashboardService', 'billsService',
+			'explistService'];
+	function AccountsController(acs, ds, bs, els) {
 		var vm = this;
 		init();
 
@@ -22,13 +23,14 @@
 			vm.data = acs.data;
 		}
 
+		// FIXME - Make this as a Toggle.
 		function filterAccount(id) {
-			var bills = acs.getBills(id);
-			bs.loadData(bills);
+			ds.account = id;
+
+			bs.loadData(acs.getBills(id));
 			bs.data.filterApplied = true;
 
-			var expenses = acs.getExpenses(id);
-			els.loadData(expenses);
+			els.loadData(acs.getExpenses(id));
 			els.data.filterApplied = true;
 		}
 

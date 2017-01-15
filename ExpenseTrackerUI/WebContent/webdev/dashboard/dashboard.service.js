@@ -7,6 +7,10 @@
 
 	dashboardService.$inject = ['etmenuService', 'accountsService', 'addService', 'chartService'];
 	function dashboardService(ms, acs, as, cs) {
+		var data = {
+			account: null,
+			bill: null
+		};
 		var toggleMoreAccounts = function() {
 			ms.data.showingMoreAccounts = !ms.data.showingMoreAccounts;
 			acs.data.showAcctsMore = !acs.data.showAcctsMore;
@@ -18,6 +22,7 @@
 			cs.renderChart();
 		};
 		return {
+			data: data,
 			toggleMoreAccounts: toggleMoreAccounts,
 			toggleChart: toggleChart
 		};

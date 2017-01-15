@@ -8,8 +8,8 @@
 		controller: EditController
 	});
 
-	EditController.$inject = ['editService', 'VALUES'];
-	function EditController(es, V) {
+	EditController.$inject = ['editService', 'explistService', 'VALUES'];
+	function EditController(es, els, V) {
 		var vm = this;
 		init();
 
@@ -58,13 +58,15 @@
 			// TODO Validate the form.
 			es.saveExpense();
 			$('#model_Modify').modal('hide');
-			// TODO Refresh exp list.
+			// Refresh expense list.
+			els.loadAllExpenses();
 		}
 
 		function deleteExpense() {
 			es.deleteExpense();
 			$('#model_Delete').modal('hide');
-			// TODO Refresh exp list.
+			// Refresh expense list.
+			els.loadAllExpenses();
 		}
 	}
 })(window.angular);

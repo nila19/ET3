@@ -141,6 +141,7 @@
 		var loadAllExpenses = function() {
 			console.log('Loading all Expenses @ vDB...' + ms.data.city.name);
 			// TODO Ajax fetch all expenses for City.
+			// If from SEARCH, re-execute search; if from Dashboard, check for Account/Bill filters.
 			this.loadData(dummyExpenses());
 		};
 		var loadData = function(data) {

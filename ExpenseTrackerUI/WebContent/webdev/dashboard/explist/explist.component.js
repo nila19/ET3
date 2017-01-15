@@ -8,8 +8,9 @@
 		controller: ExplistController
 	});
 
-	ExplistController.$inject = ['explistService', 'editService', 'searchService', 'CONSTANTS'];
-	function ExplistController(els, es, ss, C) {
+	ExplistController.$inject = ['explistService', 'editService', 'etmenuService', 'searchService',
+			'CONSTANTS'];
+	function ExplistController(els, es, ms, ss, C) {
 		var vm = this;
 		init();
 
@@ -60,11 +61,12 @@
 			var idx = els.getIndexOf(id);
 			var id2 = els.data.rows[idx + code].id;
 			es.swapExpense(id, id2);
-			// TODO Refresh exp list.
+			// Refresh expense list.
+			els.loadAllExpenses();
 		}
 
 		function clearFilter() {
-			if (els.data.page === C.PAGES.SEARCH) {
+			if (ms.data.page === C.PAGES.SEARCH) {
 				ss.initializeData();
 			}
 			els.data.filterApplied = false;
