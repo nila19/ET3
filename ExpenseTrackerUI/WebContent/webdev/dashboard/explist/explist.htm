@@ -52,9 +52,9 @@
                         <td class="text-right">{{row.toFrom | currency:''}}</td>
                         <td class="text-right">{{row.toTo | currency:''}}</td>
                         <td class="td-actions text-right">
-                          <button type="button" rel="tooltip" title="{{row.adhoc?'Adhoc Expense':row.adjust?'Adjustment':''}}" class="btn btn-primary btn-simple btn-xs">&nbsp;
+                          <span rel="tooltip" title="{{row.adhoc?'Adhoc Expense':row.adjust?'Adjustment':''}}" class="btn btn-primary btn-simple btn-xs nobtn">&nbsp;
                             <i ng-show="{{row.adhoc}}" class="material-icons">card_giftcard</i><i ng-show="{{row.adjust}}" class="material-icons">transform</i>
-                          </button>
+                          </span>
                         </td>
                       </tr>
                     </tbody>

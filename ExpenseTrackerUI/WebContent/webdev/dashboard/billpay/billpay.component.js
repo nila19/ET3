@@ -8,8 +8,8 @@
 		controller: BillPayController
 	});
 
-	BillPayController.$inject = ['billpayService', 'CONSTANTS', 'VALUES', '$location'];
-	function BillPayController(bps, C, V, $location) {
+	BillPayController.$inject = ['billpayService', 'VALUES'];
+	function BillPayController(bps, V) {
 		var vm = this;
 		init();
 

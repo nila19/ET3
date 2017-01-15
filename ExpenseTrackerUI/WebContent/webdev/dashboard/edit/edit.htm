@@ -6,42 +6,42 @@
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
           <h4 class="modal-title text-warning text-uppercase">
-            <i class="material-icons">{{$ctrl.data.data.adjust?'transform':'add_shopping_cart'}}</i>
-            Modify {{$ctrl.data.data.adjust?'Adjustment':'Expense'}}</h4>
+            <i class="material-icons">{{$ctrl.data.expense.adjust?'transform':'add_shopping_cart'}}</i>
+            Modify {{$ctrl.data.expense.adjust?'Adjustment':'Expense'}}</h4>
         </div>
         <div class="modal-body">
           <form>
             <div class="form-group">
               <label class="control-label">From Account</label>
-              <input id="m_fromAccount" ng-model="$ctrl.data.data.fromAc.name" type="text" class="form-control" data-provide="typeahead" autocomplete="off">
+              <input id="m_fromAccount" ng-model="$ctrl.data.expense.fromAc.name" type="text" class="form-control" data-provide="typeahead" autocomplete="off">
             </div>
-            <div ng-show="$ctrl.data.data.adjust" class="form-group">
+            <div ng-show="$ctrl.data.expense.adjust" class="form-group">
               <label class="control-label">To Account</label>
-              <input id="m_toAccount" ng-model="$ctrl.data.data.toAc.name" type="text" class="form-control" data-provide="typeahead" autocomplete="off">
+              <input id="m_toAccount" ng-model="$ctrl.data.expense.toAc.name" type="text" class="form-control" data-provide="typeahead" autocomplete="off">
             </div>
-            <div ng-show="!$ctrl.data.data.adjust" class="form-group">
+            <div ng-show="!$ctrl.data.expense.adjust" class="form-group">
               <label class="control-label">Category</label>
-              <input id="m_category" ng-model="$ctrl.data.data.cat.name" type="text" class="form-control" data-provide="typeahead" autocomplete="off">
+              <input id="m_category" ng-model="$ctrl.data.expense.cat.name" type="text" class="form-control" data-provide="typeahead" autocomplete="off">
             </div>
-            <div ng-show="!$ctrl.data.data.adjust" class="form-group">
+            <div ng-show="!$ctrl.data.expense.adjust" class="form-group">
               <label class="control-label">Bill</label>
-              <select ng-model="$ctrl.data.data.bill" ng-options="bill as bill.name for bill in $ctrl.data.data.bills track by bill.id" class="form-control"></select>
+              <select ng-model="$ctrl.data.expense.bill" ng-options="bill as bill.name for bill in $ctrl.data.expense.bills track by bill.id" class="form-control"></select>
             </div>
             <div class="form-group">
               <label class="control-label">Description</label>
-                <input id="m_description" ng-model="$ctrl.data.data.desc" type="text" class="form-control" data-provide="typeahead" autocomplete="off">
+                <input id="m_description" ng-model="$ctrl.data.expense.desc" type="text" class="form-control" data-provide="typeahead" autocomplete="off">
             </div>
             <div class="form-group">
               <label class="control-label">Amount</label>
-              <input ng-model="$ctrl.data.data.amt" xx-amount type="text" class="form-control">
+              <input ng-model="$ctrl.data.expense.amt" xx-amount type="text" class="form-control">
             </div>
             <div class="form-group">
               <label class="control-label">Date</label>
-              <input ng-model="$ctrl.data.data.transDt" xx-date type="text" class="form-control" data-provide="datepicker">
+              <input ng-model="$ctrl.data.expense.transDt" xx-date type="text" class="form-control" data-provide="datepicker">
             </div>
             <div class="form-group">
-              <div ng-show="!$ctrl.data.data.adjust">
-                <label> <input type="checkbox" ng-model="$ctrl.data.data.adhoc" class="form-control">Adhoc</label>
+              <div ng-show="!$ctrl.data.expense.adjust">
+                <label> <input type="checkbox" ng-model="$ctrl.data.expense.adhoc" class="form-control">Adhoc</label>
               </div>
               <button type="button" ng-click="$ctrl.saveExpense()" class="btn btn-warning pull-right" rel="tooltip" title="Save"><i class="material-icons">save</i></button>
             </div>
@@ -58,38 +58,38 @@
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
           <h4 class="modal-title text-danger text-uppercase">
-            <i class="material-icons">{{$ctrl.data.data.adjust?'transform':'add_shopping_cart'}}</i>
-            Delete {{$ctrl.data.data.adjust?'Adjustment':'Expense'}}</h4>
+            <i class="material-icons">{{$ctrl.data.expense.adjust?'transform':'add_shopping_cart'}}</i>
+            Delete {{$ctrl.data.expense.adjust?'Adjustment':'Expense'}}</h4>
         </div>
         <div class="modal-body">
           <form>
             <div class="form-group">
               <label class="control-label">From Account</label>
-              <input ng-model="$ctrl.data.data.fromAc.name" type="text" class="form-control" disabled="disabled">
+              <input ng-model="$ctrl.data.expense.fromAc.name" type="text" class="form-control" disabled="disabled">
             </div>
-            <div ng-show="$ctrl.data.data.adjust" class="form-group">
+            <div ng-show="$ctrl.data.expense.adjust" class="form-group">
               <label class="control-label">To Account</label>
-              <input ng-model="$ctrl.data.data.toAc.name" type="text" class="form-control" disabled="disabled">
+              <input ng-model="$ctrl.data.expense.toAc.name" type="text" class="form-control" disabled="disabled">
             </div>
-            <div ng-show="!$ctrl.data.data.adjust" class="form-group">
+            <div ng-show="!$ctrl.data.expense.adjust" class="form-group">
               <label class="control-label">Category</label>
-              <input ng-model="$ctrl.data.data.cat.name" type="text" class="form-control" disabled="disabled">
+              <input ng-model="$ctrl.data.expense.cat.name" type="text" class="form-control" disabled="disabled">
             </div>
             <div class="form-group">
               <label class="control-label">Description</label>
-              <input ng-model="$ctrl.data.data.desc" type="text" class="form-control" disabled="disabled">
+              <input ng-model="$ctrl.data.expense.desc" type="text" class="form-control" disabled="disabled">
             </div>
             <div class="form-group">
               <label class="control-label">Amount</label>
-              <input ng-model="$ctrl.data.data.amt" xx-amount type="text" class="form-control" disabled="disabled">
+              <input ng-model="$ctrl.data.expense.amt" xx-amount type="text" class="form-control" disabled="disabled">
             </div>
             <div class="form-group">
               <label class="control-label">Date</label>
-              <input ng-model="$ctrl.data.data.transDt" xx-date type="text" class="form-control" disabled="disabled">
+              <input ng-model="$ctrl.data.expense.transDt" xx-date type="text" class="form-control" disabled="disabled">
             </div>
             <div class="form-group">
-              <div ng-show="!$ctrl.data.data.adjust">
-                <label> <input type="checkbox" ng-model="$ctrl.data.data.adhoc" class="form-control" disabled="disabled">Adhoc</label>
+              <div ng-show="!$ctrl.data.expense.adjust">
+                <label> <input type="checkbox" ng-model="$ctrl.data.expense.adhoc" class="form-control" disabled="disabled">Adhoc</label>
               </div>
               <button type="button" ng-click="$ctrl.deleteExpense()" class="btn btn-danger pull-right" rel="tooltip" title="Delete Expense"><i class="material-icons">delete</i></button>
             </div>

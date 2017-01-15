@@ -5,8 +5,8 @@
 
 	angular.module('dashboard.explist').factory('explistService', explistService);
 
-	explistService.$inject = ['CONSTANTS'];
-	function explistService(C) {
+	explistService.$inject = ['etmenuService', 'CONSTANTS'];
+	function explistService(ms, C) {
 		var data = {
 			pgData: {
 				rows: []
@@ -139,7 +139,7 @@
 		};
 
 		var loadAllExpenses = function() {
-			console.log('Loading all Expenses @ vDB...');
+			console.log('Loading all Expenses @ vDB...' + ms.data.city.name);
 			// TODO Ajax fetch all expenses for City.
 			this.loadData(dummyExpenses());
 		};

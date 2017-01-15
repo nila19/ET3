@@ -5,8 +5,8 @@
 
 	angular.module('dashboard.bills').factory('billsService', billsService);
 
-	billsService.$inject = ['CONSTANTS'];
-	function billsService(C) {
+	billsService.$inject = ['etmenuService', 'CONSTANTS'];
+	function billsService(ms, C) {
 		var data = {
 			showBills: false,
 			pgData: {},
@@ -172,7 +172,7 @@
 		};
 
 		var loadAllBills = function() {
-			console.log('Getting list of all Bills @ vDB... ');
+			console.log('Getting list of all Bills @ vDB... ' + ms.data.city.name);
 			// TODO Ajax query DB for all Bills, sort by Open at top & then by Account.
 			this.loadData(dummyBills());
 		};
@@ -189,7 +189,7 @@
 			this.data.pgData.rows = this.data.rows.slice(pg * rowCount, (pg + 1) * rowCount);
 		};
 		var getExpenses = function(id) {
-			console.log('Filtering expenses for Bill @ vDB :: ' + id);
+			console.log('Filtering expenses for Bill @ vDB :: ' + id + ',' + ms.data.city.name);
 			// TODO Ajax fetch expenses.
 			return dummyExpenses();
 		};

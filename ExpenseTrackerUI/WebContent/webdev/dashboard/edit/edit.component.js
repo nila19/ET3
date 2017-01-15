@@ -8,8 +8,8 @@
 		controller: EditController
 	});
 
-	EditController.$inject = ['editService', 'CONSTANTS', 'VALUES', '$location'];
-	function EditController(es, C, V, $location) {
+	EditController.$inject = ['editService', 'VALUES'];
+	function EditController(es, V) {
 		var vm = this;
 		init();
 
@@ -29,7 +29,7 @@
 				source: V.categories,
 				minLength: 0,
 				updater: function(item) {
-					es.data.data.cat.id = item.id;
+					es.data.expense.cat.id = item.id;
 					return item;
 				}
 			});
@@ -40,7 +40,7 @@
 				source: V.accounts,
 				minLength: 0,
 				updater: function(item) {
-					es.data.data.fromAc.id = item.id;
+					es.data.expense.fromAc.id = item.id;
 					return item;
 				}
 			});
@@ -48,7 +48,7 @@
 				source: V.accounts,
 				minLength: 0,
 				updater: function(item) {
-					es.data.data.toAc.id = item.id;
+					es.data.expense.toAc.id = item.id;
 					return item;
 				}
 			});
@@ -58,11 +58,13 @@
 			// TODO Validate the form.
 			es.saveExpense();
 			$('#model_Modify').modal('hide');
+			// TODO Refresh exp list.
 		}
 
 		function deleteExpense() {
 			es.deleteExpense();
 			$('#model_Delete').modal('hide');
+			// TODO Refresh exp list.
 		}
 	}
 })(window.angular);

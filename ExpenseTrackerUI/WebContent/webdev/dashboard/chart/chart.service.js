@@ -5,8 +5,8 @@
 
 	angular.module('dashboard.chart').factory('chartService', chartService);
 
-	chartService.$inject = ['CONSTANTS'];
-	function chartService(C) {
+	chartService.$inject = ['etmenuService'];
+	function chartService(ms) {
 		var data = {
 			showChart: false,
 			tagId: 'chartMonthlyExpense',
@@ -45,7 +45,7 @@
 		};
 
 		var loadChartData = function() {
-			console.log('Getting chart data @ vDB... ');
+			console.log('Getting chart data @ vDB... ' + ms.data.city.name);
 			// TODO Ajax query DB for chart data.
 			this.loadData(dummyChart());
 		};

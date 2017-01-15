@@ -8,9 +8,8 @@
 		controller: BillsController
 	});
 
-	BillsController.$inject = ['billsService', 'explistService', 'billpayService', 'CONSTANTS',
-			'$location'];
-	function BillsController(bs, els, bps, C, $location) {
+	BillsController.$inject = ['billsService', 'explistService', 'billpayService'];
+	function BillsController(bs, els, bps) {
 		var vm = this;
 		init();
 

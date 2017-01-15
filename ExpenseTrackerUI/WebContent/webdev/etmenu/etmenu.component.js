@@ -8,9 +8,8 @@
 		controller: ETMenuController
 	});
 
-	ETMenuController.$inject = ['etmenuService', 'dashboardService', 'utilsService', 'CONSTANTS',
-			'VALUES'];
-	function ETMenuController(ms, ds, us, C, V) {
+	ETMenuController.$inject = ['etmenuService', 'dashboardService', 'utilsService', 'CONSTANTS'];
+	function ETMenuController(ms, ds, us, C) {
 		var vm = this;
 		init();
 

@@ -8,8 +8,8 @@
 		controller: ChartController
 	});
 
-	ChartController.$inject = ['chartService', 'CONSTANTS', '$timeout'];
-	function ChartController(cs, C, $timeout) {
+	ChartController.$inject = ['chartService', '$timeout'];
+	function ChartController(cs, $timeout) {
 		var vm = this;
 		init();
 

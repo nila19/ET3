@@ -8,9 +8,8 @@
 		controller: AccountsController
 	});
 
-	AccountsController.$inject = ['accountsService', 'billsService', 'explistService', 'CONSTANTS',
-			'VALUES', '$location'];
-	function AccountsController(acs, bs, els, C, V, $location) {
+	AccountsController.$inject = ['accountsService', 'billsService', 'explistService'];
+	function AccountsController(acs, bs, els) {
 		var vm = this;
 		init();
 

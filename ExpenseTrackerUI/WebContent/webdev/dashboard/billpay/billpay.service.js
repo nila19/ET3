@@ -5,8 +5,8 @@
 
 	angular.module('dashboard.billpay').factory('billpayService', billpayService);
 
-	billpayService.$inject = ['CONSTANTS'];
-	function billpayService(C) {
+	billpayService.$inject = ['etmenuService', 'utilsService'];
+	function billpayService(ms, us) {
 		var data = {
 			bill: null,
 			pay: null
@@ -35,7 +35,7 @@
 		};
 
 		var loadBill = function(id) {
-			console.log('Getting info for Bill @ vDB :: ' + id);
+			console.log('Getting info for Bill @ vDB :: ' + id + ',' + ms.data.city.name);
 			// TODO Ajax fetch bill details.
 			this.loadData(dummyBill());
 		};
@@ -44,8 +44,10 @@
 			this.data.pay = data.pay;
 		};
 		var payBill = function() {
-			console.log('Paying Bill @ vDB :: ' + JSON.stringify(this.data));
+			console.log('Paying Bill @ vDB :: ' + ms.data.city.name + ',' +
+					JSON.stringify(this.data));
 			// TODO Ajax fetch bill details.
+			us.showMsg('Bill Pay', 'success');
 		};
 
 		return {

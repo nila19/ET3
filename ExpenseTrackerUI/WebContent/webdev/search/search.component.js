@@ -25,7 +25,15 @@
 			els.data.rowCount = C.SIZES.SEARCH_ROW;
 			els.data.filterApplied = false;
 
-			// Check if sent from Summary page.
+			checkIfFromSummary();
+			// Run default search.
+			loadData();
+
+			typeAheads();
+		}
+
+		// Check if sent from Summary page.
+		function checkIfFromSummary() {
 			if ($routeParams.mth || $routeParams.cat) {
 				ss.data.expMonth = $routeParams.mth;
 				ss.data.catId = $routeParams.cat;
@@ -36,13 +44,6 @@
 				console.log('Routed from Summary :: ' + ss.data.catId + ' , ' + ss.data.expMonth);
 				els.data.filterApplied = true;
 			}
-
-			console.log('City = ' + JSON.stringify(ms.data.city));
-
-			// Run default search.
-			loadData();
-
-			typeAheads();
 		}
 
 		function typeAheads() {
@@ -71,14 +72,13 @@
 			});
 		}
 
-		function loadData() {
-			var result = ss.doSearch(ms.data.city);
-			els.loadData(result);
-		}
-
 		function doSearch() {
 			els.data.filterApplied = true;
 			loadData();
+		}
+
+		function loadData() {
+			els.loadData(ss.doSearch());
 		}
 	}
 })(window.angular);

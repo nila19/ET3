@@ -5,8 +5,8 @@
 
 	angular.module('summary').factory('summaryService', summaryService);
 
-	summaryService.$inject = ['CONSTANTS'];
-	function summaryService(C) {
+	summaryService.$inject = ['etmenuService', 'CONSTANTS'];
+	function summaryService(ms, C) {
 		var data = {
 			header: [],
 			header2: [],
@@ -92,9 +92,9 @@
 			};
 		};
 
-		var loadSummary = function(city) {
+		var loadSummary = function() {
 			// TODO Ajax generate Summary from DB
-			console.log('Loading Summary @ vDB :: ' + JSON.stringify(city) + ', ' +
+			console.log('Loading Summary @ vDB :: ' + ms.data.city.name + ', ' +
 					JSON.stringify(this.data));
 			this.loadData(dummyData());
 		};

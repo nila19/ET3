@@ -5,9 +5,8 @@
 
 	angular.module('dashboard').factory('dashboardService', dashboardService);
 
-	dashboardService.$inject = ['etmenuService', 'accountsService', 'addService', 'chartService',
-			'CONSTANTS'];
-	function dashboardService(ms, acs, as, cs, C) {
+	dashboardService.$inject = ['etmenuService', 'accountsService', 'addService', 'chartService'];
+	function dashboardService(ms, acs, as, cs) {
 		var toggleMoreAccounts = function() {
 			ms.data.showingMoreAccounts = !ms.data.showingMoreAccounts;
 			acs.data.showAcctsMore = !acs.data.showAcctsMore;

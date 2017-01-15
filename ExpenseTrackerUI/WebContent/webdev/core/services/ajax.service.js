@@ -6,13 +6,13 @@
 	angular.module('core.services').factory('ajaxService', ajaxService);
 
 	ajaxService.$inject = ['CONSTANTS', '$resource'];
-	function ajaxService(CONSTANTS, $resource) {
+	function ajaxService(C, $resource) {
 		return {
 			getURL: getURL
 		};
 		// /////////////////////
 		function getURL(func) {
-			var url = CONSTANTS.BASE_URL + CONSTANTS.URLs[func];
+			var url = C.BASE_URL + C.URLs[func];
 			// return $http.post(url,obj);
 			return $resource(url);
 		}

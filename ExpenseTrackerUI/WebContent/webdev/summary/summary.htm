@@ -33,7 +33,7 @@
                     <tbody>
                       <tr ng-repeat="row in $ctrl.data.pgData.rows">
                         <td class="td-actions text-right">
-                          <a class="btn btn-primary btn-simple btn-sm"><i class="material-icons">{{row.cat.icon}}</i></a></td>
+                          <a class="btn btn-primary btn-simple btn-sm nobtn"><i class="material-icons">{{row.cat.icon}}</i></a></td>
                         <td>{{row.cat.main}}</td>
                         <td>{{row.cat.sub}}</td>
                         <td ng-repeat="col in row.cols track by $index" ng-click="$ctrl.listExpenses(row.cat.id, $index, $ctrl.data.pgData.header[$index].aggr)" class="text-right sumDetailCell">{{row.cols[$index] | currency}}</td>

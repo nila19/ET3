@@ -47,12 +47,12 @@
 		}
 
 		function showModifyExpense(id) {
-			es.fetchExpense(id);
+			es.loadExpense(id);
 			$('#model_Modify').modal('show');
 		}
 
 		function showDeleteExpense(id) {
-			es.fetchExpense(id);
+			es.loadExpense(id);
 			$('#model_Delete').modal('show');
 		}
 
@@ -60,6 +60,7 @@
 			var idx = els.getIndexOf(id);
 			var id2 = els.data.rows[idx + code].id;
 			es.swapExpense(id, id2);
+			// TODO Refresh exp list.
 		}
 
 		function clearFilter() {

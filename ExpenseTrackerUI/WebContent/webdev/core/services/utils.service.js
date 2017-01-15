@@ -6,7 +6,7 @@
 	angular.module('core.services').factory('utilsService', utilsService);
 
 	utilsService.$inject = ['CONSTANTS', '$resource'];
-	function utilsService(CONSTANTS, $resource) {
+	function utilsService(C, $resource) {
 		return {
 			getURL: getURL,
 			getById: getById,
@@ -14,7 +14,7 @@
 		};
 		// /////////////////////
 		function getURL(func) {
-			var url = CONSTANTS.BASE_URL + CONSTANTS.URLs[func];
+			var url = C.BASE_URL + C.URLs[func];
 			// return $http.post(url,obj);
 			return $resource(url);
 		}
@@ -31,12 +31,12 @@
 
 		// Popup message
 		function showMsg(action, type) {
-			var t = type ? CONSTANTS.MSG[type] : CONSTANTS.MSG.INFO;
+			// var t = type ? C.MSG[type] : C.MSG.INFO;
 			$.notify({
 				icon: 'notifications',
 				message: '<b>' + action + '</b> - Completed successfully.'
 			}, {
-				type: t,
+				type: 'success',
 				delay: 1000,
 				placement: {
 					from: 'top',

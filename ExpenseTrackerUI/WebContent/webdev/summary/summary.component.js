@@ -8,9 +8,8 @@
 		controller: SummaryController
 	});
 
-	SummaryController.$inject = ['summaryService', 'etmenuService', 'explistService',
-			'utilsService', 'CONSTANTS', 'VALUES', '$location'];
-	function SummaryController(sms, ms, els, us, C, V, $location) {
+	SummaryController.$inject = ['summaryService', 'etmenuService', 'CONSTANTS', '$location'];
+	function SummaryController(sms, ms, C, $location) {
 		var vm = this;
 		init();
 
@@ -25,16 +24,14 @@
 		// ***** Function declarations *****//
 		function init() {
 			vm.data = sms.data;
-
 			ms.data.page = C.PAGES.SUMMARY;
-			// els.data.rowCount = C.SIZES.SEARCH_ROW;
 
 			// Run default Summary.
 			loadSummary();
 		}
 
 		function loadSummary() {
-			sms.loadSummary(ms.data.city);
+			sms.loadSummary();
 		}
 
 		function listExpenses(cat, mIdx, aggr) {

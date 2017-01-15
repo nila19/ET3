@@ -7,9 +7,9 @@
 			'VALUES',
 			{
 				defaultCity: {
-					id: 20,
-					name: 'Chennai - 2010',
-					curr: 'INR'
+					id: 10,
+					name: 'Houston - 2014',
+					curr: 'USD'
 				},
 				cities: [{
 					id: 10,
@@ -22,7 +22,7 @@
 				}, {
 					id: 30,
 					name: 'Macon - 2009',
-					curr: 'INR'
+					curr: 'USD'
 				}],
 				categories: [{
 					id: 175,

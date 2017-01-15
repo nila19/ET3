@@ -8,8 +8,8 @@
 		controller: AddController
 	});
 
-	AddController.$inject = ['addService', 'CONSTANTS', 'VALUES', '$location'];
-	function AddController(as, C, V, $location) {
+	AddController.$inject = ['addService', 'VALUES'];
+	function AddController(as, V) {
 		var vm = this;
 		init();
 

@@ -5,8 +5,8 @@
 
 	angular.module('dashboard.add').factory('addService', addService);
 
-	addService.$inject = ['CONSTANTS'];
-	function addService(C) {
+	addService.$inject = ['etmenuService', 'utilsService'];
+	function addService(ms, us) {
 		var data = {
 			showAdd: false,
 			tabs: {
@@ -22,7 +22,9 @@
 
 		var addExpense = function() {
 			// TODO Ajax add to database.
-			console.log('Adding expense @ vDB :: ' + JSON.stringify(this.data));
+			console.log('Adding expense @ vDB :: ' + ms.data.city.name + ',' +
+					JSON.stringify(this.data));
+			us.showMsg('Add Expense', 'success');
 		};
 
 		return {

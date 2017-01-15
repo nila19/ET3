@@ -5,8 +5,8 @@
 
 	angular.module('dashboard.accounts').factory('accountsService', accountsService);
 
-	accountsService.$inject = ['CONSTANTS'];
-	function accountsService(C) {
+	accountsService.$inject = ['etmenuService', 'utilsService', 'CONSTANTS'];
+	function accountsService(ms, us, C) {
 		var data = {
 			rows: [],
 			maxRows: 0,
@@ -15,7 +15,6 @@
 		};
 		var colCount = C.SIZES.ACCTS_COL;
 
-		// /Dummy data
 		var dummyAccounts = function() {
 			return {
 				accts: [{
@@ -256,7 +255,7 @@
 
 		var loadAccountDetails = function() {
 			// TODO Ajax fetch account details from DB.
-			console.log('Getting account details @ vDB..');
+			console.log('Getting account details @ vDB..' + JSON.stringify(ms.data.city));
 			this.loadData(dummyAccounts());
 		};
 		var loadData = function(data) {
@@ -274,15 +273,16 @@
 		};
 		var tallyAccount = function(id) {
 			// TODO - Ajax Tally id.
-			console.log('Tallying the account @ vDB :: ' + id);
+			console.log('Tallying account @ vDB :: ' + id + ', ' + ms.data.city.name);
+			us.showMsg('Tally', 'success');
 		};
 		var getBills = function(id) {
 			// TODO Ajax fetch bills for Account.
-			console.log('Filtering bills for account @ vDB :: ' + id);
+			console.log('Filtering bills for account @ vDB :: ' + id + ', ' + ms.data.city.name);
 			return dummyBills();
 		};
 		var getExpenses = function(id) {
-			console.log('Filtering expenses for Account @ vDB :: ' + id);
+			console.log('Filtering expenses for Account @ vDB :: ' + id + ', ' + ms.data.city.name);
 			// TODO Ajax fetch expenses for Account.
 			return dummyExpenses();
 		};

@@ -5,8 +5,8 @@
 
 	angular.module('search').factory('searchService', searchService);
 
-	searchService.$inject = ['CONSTANTS'];
-	function searchService(CONSTANTS) {
+	searchService.$inject = ['etmenuService'];
+	function searchService(ms) {
 		var data = {
 			categoryId: '',
 			category: '',
@@ -152,9 +152,8 @@
 			};
 		};
 
-		var doSearch = function(city) {
-			console.log('Search @ vDB :: ' + JSON.stringify(city) + ', ' +
-					JSON.stringify(this.data));
+		var doSearch = function() {
+			console.log('Search @ vDB :: ' + ms.data.city.name + ', ' + JSON.stringify(this.data));
 			// TODO Ajax search.
 			return dummySearch();
 		};
