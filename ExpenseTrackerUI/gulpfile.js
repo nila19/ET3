@@ -2,6 +2,7 @@ var gulp = require('gulp'),
 	runSequence = require('run-sequence'),
 	streamqueue = require('streamqueue'),
 	del = require('del'),
+	fs = require('fs'),
 	chalk = require('chalk'),
 	supportsColor = require('supports-color'),
 	gulpif = require('gulp-if'),
@@ -12,23 +13,22 @@ plugins.util.colors = chalk;
 //****************************** Intermediate path variables ******************************//
 var	dir = {
 	src: 'WebContent/webdev',
-	dest: 'WebContent/webapp'
+	dest: 'WebContent/webapp',
+	appSrc: 'WebContent/webdev/app',
+	appDest: 'WebContent/webapp/app'
 };
 
 var path = {
-	excludes: {
-		bower: dir.src + '/bower_components/**/*.*',
-		theme: dir.src + '/a_theme/**/*.*'
-	},
+	excludes: {},
 	js: {
-		modules: dir.src + '/**/*.module.js',
-		all: dir.src + '/**/*.js'
+		modules: dir.appSrc + '/**/*.module.js',
+		all: dir.appSrc + '/**/*.js'
 	},
-	less: dir.src + '/**/*.less',
-	css: dir.src + '/**/*.css',
-	htm: dir.src + '/**/*.htm*',
-	images: dir.src + '/images/**/*.*',
-	ico: dir.src + '/**/*.ico'
+	less: dir.appSrc + '/**/*.less',
+	htm: dir.appSrc + '/**/*.htm',
+	bower: dir.src + '/bower_components/**/*.*',
+	theme: dir.src + '/theme/**/*.*',
+	template: dir.src + '/template/**/*.*',
 };
 
 function buildExcludes() {
@@ -62,21 +62,20 @@ var flag = {
 var src = {
 	js: [path.js.all].concat(buildExcludes()),
 	less: [path.less].concat(buildExcludes()),
-	css: [path.css].concat(buildExcludes()),
 	htm: [path.htm].concat(buildExcludes()),
-	images: [path.images].concat(buildExcludes()),
-	ico: [path.ico].concat(buildExcludes()),
 	jsModules: [path.js.modules].concat(buildExcludes()),
 	jsOthers: [path.js.all].concat(buildExcludes(path.js.modules)),
-	bower: path.excludes.bower,
-	theme: path.excludes.theme
+	bower: path.bower,
+	theme: path.theme,
+	template: path.template
 };
 
 var dest = {
 	root: dir.dest,
-	images: dir.dest + '/images/',
+	app: dir.dest + '/app/',
 	bower: dir.dest + '/bower_components/',
-	theme: dir.dest + '/a_theme/',
+	theme: dir.dest + '/theme/',
+	template: dir.dest + '/template/',
 	appjs: 'app.js'
 };
 
@@ -95,83 +94,90 @@ function log(task, status) {
 	plugins.util.log(plugins.util.colors.yellow('********** ' + status + ' :: ' + task + ' **********'));
 }
 
+//***********************************************************************//
 //******************************** Tasks ********************************//
 
-gulp.task('all', function(done) {
-	return runSequence('clean', 'js', 'less', 'less-pr', 'css', 'htm', 'images', 'ico', 
-			'theme', 'bower', function() {
-		log('default', 'END');
-		plugins.util.log(plugins.util.colors.yellow('***** COMPLETED ALL DEFAULT TASKS *****'));
+gulp.task('non-app', function(done) {
+	return runSequence('theme', 'template', 'bower', function() {
+		log('NON-APP', 'END');
+		plugins.util.log(plugins.util.colors.yellow('***** COMPLETED ALL NON-APP TASKS *****'));
 		done();
 	})
 });
 
-gulp.task('default', function(done) {
-	return runSequence('js', 'less', 'less-pr', 'css', 'htm', function() {
-		log('default', 'END');
-		plugins.util.log(plugins.util.colors.yellow('***** COMPLETED ALL SOURCE TASKS *****'));
+gulp.task('app', function(done) {
+	return runSequence('app.clean', 'js', 'css', 'htm', function() {
+		log('APP', 'END');
+		plugins.util.log(plugins.util.colors.yellow('***** COMPLETED ALL APP TASKS *****'));
 		done();
 	})
 });
 
-gulp.task('watch', ['default'], function() {
+gulp.task('watch', ['app'], function() {
 	gulp.watch(src.js, ['js']);
-	gulp.watch(src.less, ['less','less-pr']);
-	gulp.watch(src.css, ['css']);
+	gulp.watch(src.less, ['css']);
 	gulp.watch(src.htm, ['htm']);
-//	gulp.watch(src.images, ['images']);
-//	gulp.watch(src.theme, ['theme']);
-//	gulp.watch(src.bower, ['bower']);
 	plugins.util.log(plugins.util.colors.cyan('***** WATCHING FOR SOURCE CHANGES *****'));
 });
 
-gulp.task('clean', function() {
-	del.sync(dest.root + '/*');
-	log('Destination clean-up', 'COMPLETED');
+gulp.task('app.clean', function() {
+	if(fs.existsSync(dest.app)) {
+		del.sync(dest.app + '/*');
+	}
+	log('App clean-up', 'COMPLETED');
 });
 
+//*************************** Non-App Sources ***************************//
 gulp.task('bower', function() {
+	var d = dest.bower;
+	if(fs.existsSync(d)) {
+		del.sync(d + '/*');
+	}
 	return gulp.src(src.bower)
-		.pipe(gulp.dest(dest.bower));
+		.pipe(gulp.dest(d));
+});
+
+gulp.task('template', function() {
+	var d = dest.template;
+	if(fs.existsSync(d)) {
+		del.sync(d + '/*');
+	}
+	return gulp.src(src.template)
+		.pipe(gulp.dest(d));
 });
 
 gulp.task('theme', function() {
+	var d = dest.theme;
+	if(fs.existsSync(d)) {
+		del.sync(d + '/*');
+	}
 	return gulp.src(src.theme)
-		.pipe(gulp.dest(dest.theme));
+		.pipe(gulp.dest(d));
 });
 
-gulp.task('ico', function() {
-	return gulp.src(src.ico)
-		.pipe(gulp.dest(dest.root));
-});
-
-gulp.task('images', function() {
-	return gulp.src(src.images)
-		.pipe(gulp.dest(dest.images));
-});
-
+//***************************** App Sources *****************************//
 gulp.task('htm', function() {
 	return gulp.src(src.htm)
-		.pipe(gulp.dest(dest.root));
+		.pipe(gulp.dest(dest.app));
 });
 
+gulp.task('css', function(done) {
+	return runSequence('less-pr', 'less', function() {
+		log('css processing', 'COMPLETED');
+		done();
+	});
+});
 gulp.task('less-pr', function() {
 	return gulp.src(src.less)
-		.pipe(gulp.dest(dest.root));
+		.pipe(gulp.dest(dest.app));
 });
-
-gulp.task('css', function() {
-	return gulp.src(src.css)
-		.pipe(gulp.dest(dest.root));
-});
-
 gulp.task('less', function() {
 	return gulp.src(src.less)
 		.pipe(gulpif(flag.maps, plugins.sourcemaps.init()))
 		.pipe(plugins.less())
 		.pipe(gulpif(flag.prod, plugins.cleanCss()))
 		.pipe(gulpif(flag.maps, plugins.sourcemaps.write('.')))
-		.pipe(gulp.dest(dest.root));
+		.pipe(gulp.dest(dest.app));
 });
 
 gulp.task('js', function(done) {
@@ -180,7 +186,6 @@ gulp.task('js', function(done) {
 		done();
 	});
 });
-
 gulp.task('js-jshint', function() {
 	return gulp.src(src.js)
 		.pipe(plugins.jshint())
@@ -188,12 +193,11 @@ gulp.task('js-jshint', function() {
 		.pipe(plugins.jscs())
 		.pipe(plugins.jscs.reporter());
 });
-
 gulp.task('js-merge', function() {
 	return streamqueue({objectMode: true}, gulp.src(src.jsModules), gulp.src(src.jsOthers))
 		.pipe(gulpif((flag.maps && flag.merge), plugins.sourcemaps.init()))
 		.pipe(gulpif(flag.merge, plugins.concat(dest.appjs)))
 		.pipe(gulpif(flag.prod, plugins.uglify()))
 		.pipe(gulpif((flag.maps && flag.merge), plugins.sourcemaps.write('.')))
-		.pipe(gulp.dest(dest.root));
+		.pipe(gulp.dest(dest.app));
 });
