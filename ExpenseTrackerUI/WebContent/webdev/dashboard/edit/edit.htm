@@ -15,15 +15,15 @@
               <label class="control-label">From Account</label>
               <input id="m_fromAccount" ng-model="$ctrl.data.expense.fromAc.name" type="text" class="form-control" data-provide="typeahead" autocomplete="off">
             </div>
-            <div ng-show="$ctrl.data.expense.adjust" class="form-group">
+            <div ng-if="$ctrl.data.expense.adjust" class="form-group">
               <label class="control-label">To Account</label>
               <input id="m_toAccount" ng-model="$ctrl.data.expense.toAc.name" type="text" class="form-control" data-provide="typeahead" autocomplete="off">
             </div>
-            <div ng-show="!$ctrl.data.expense.adjust" class="form-group">
+            <div ng-if="!$ctrl.data.expense.adjust" class="form-group">
               <label class="control-label">Category</label>
               <input id="m_category" ng-model="$ctrl.data.expense.cat.name" type="text" class="form-control" data-provide="typeahead" autocomplete="off">
             </div>
-            <div ng-show="!$ctrl.data.expense.adjust" class="form-group">
+            <div ng-if="!$ctrl.data.expense.adjust" class="form-group">
               <label class="control-label">Bill</label>
               <select ng-model="$ctrl.data.expense.bill" ng-options="bill as bill.name for bill in $ctrl.data.expense.bills track by bill.id" class="form-control"></select>
             </div>
@@ -40,7 +40,7 @@
               <input ng-model="$ctrl.data.expense.transDt" xx-date type="text" class="form-control" data-provide="datepicker">
             </div>
             <div class="form-group">
-              <div ng-show="!$ctrl.data.expense.adjust">
+              <div ng-if="!$ctrl.data.expense.adjust">
                 <label> <input type="checkbox" ng-model="$ctrl.data.expense.adhoc" class="form-control">Adhoc</label>
               </div>
               <button type="button" ng-click="$ctrl.saveExpense()" class="btn btn-warning pull-right" rel="tooltip" title="Save"><i class="material-icons">save</i></button>
@@ -67,11 +67,11 @@
               <label class="control-label">From Account</label>
               <input ng-model="$ctrl.data.expense.fromAc.name" type="text" class="form-control" disabled="disabled">
             </div>
-            <div ng-show="$ctrl.data.expense.adjust" class="form-group">
+            <div ng-if="$ctrl.data.expense.adjust" class="form-group">
               <label class="control-label">To Account</label>
               <input ng-model="$ctrl.data.expense.toAc.name" type="text" class="form-control" disabled="disabled">
             </div>
-            <div ng-show="!$ctrl.data.expense.adjust" class="form-group">
+            <div ng-if="!$ctrl.data.expense.adjust" class="form-group">
               <label class="control-label">Category</label>
               <input ng-model="$ctrl.data.expense.cat.name" type="text" class="form-control" disabled="disabled">
             </div>
@@ -88,7 +88,7 @@
               <input ng-model="$ctrl.data.expense.transDt" xx-date type="text" class="form-control" disabled="disabled">
             </div>
             <div class="form-group">
-              <div ng-show="!$ctrl.data.expense.adjust">
+              <div ng-if="!$ctrl.data.expense.adjust">
                 <label> <input type="checkbox" ng-model="$ctrl.data.expense.adhoc" class="form-control" disabled="disabled">Adhoc</label>
               </div>
               <button type="button" ng-click="$ctrl.deleteExpense()" class="btn btn-danger pull-right" rel="tooltip" title="Delete Expense"><i class="material-icons">delete</i></button>

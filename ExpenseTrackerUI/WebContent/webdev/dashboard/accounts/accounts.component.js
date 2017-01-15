@@ -23,15 +23,17 @@
 			vm.data = acs.data;
 		}
 
-		// FIXME - Make this as a Toggle.
 		function filterAccount(id) {
-			ds.account = id;
+			// If same account is already selected, do nothing.
+			if (acs.data.filterBy !== id) {
+				acs.data.filterBy = id;
 
-			bs.loadData(acs.getBills(id));
-			bs.data.filterApplied = true;
+				bs.data.filterApplied = true;
+				bs.loadAllBills();
 
-			els.loadData(acs.getExpenses(id));
-			els.data.filterApplied = true;
+				els.data.filterApplied = true;
+				els.loadAllExpenses();
+			}
 		}
 
 		function tallyAccount(id) {

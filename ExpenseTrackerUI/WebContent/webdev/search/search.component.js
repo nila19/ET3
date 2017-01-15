@@ -26,12 +26,10 @@
 
 			// If menu is not loaded, load the default city.
 			ms.checkInit();
-
 			isFromSummary();
 
 			// Run default search.
-			loadData();
-
+			loadExpenses();
 			typeAheads();
 		}
 
@@ -77,11 +75,10 @@
 
 		function doSearch() {
 			els.data.filterApplied = true;
-			loadData();
+			loadExpenses();
 		}
 
-		function loadData() {
-			// els.loadData(ss.doSearch());
+		function loadExpenses() {
 			els.loadAllExpenses();
 		}
 	}

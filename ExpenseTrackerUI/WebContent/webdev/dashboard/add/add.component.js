@@ -56,7 +56,6 @@
 		function addExpense() {
 			// TODO Validate form.
 			as.addExpense();
-			// Refresh expense list.
 			els.loadAllExpenses();
 		}
 

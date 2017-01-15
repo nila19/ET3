@@ -5,8 +5,9 @@
 
 	angular.module('dashboard.explist').factory('explistService', explistService);
 
-	explistService.$inject = ['etmenuService', 'CONSTANTS'];
-	function explistService(ms, C) {
+	explistService.$inject = ['etmenuService', 'searchService', 'accountsService', 'billsService',
+			'CONSTANTS'];
+	function explistService(ms, ss, acs, bs, C) {
 		var data = {
 			pgData: {
 				rows: []
@@ -138,11 +139,44 @@
 			};
 		};
 
+		var clearFilter = function() {
+			console.log('Clearing filter on Expenses....');
+			this.data.filterApplied = false;
+			if (ms.data.page === C.PAGES.SEARCH) {
+				ss.initializeData();
+			} else if (ms.data.page === C.PAGES.DASHBOARD) {
+				// Clear filter for Bills
+				if (acs.data.filterBy) {
+					bs.clearFilter();
+				}
+				bs.data.filterBy = null;
+				acs.data.filterBy = null;
+			}
+			this.loadAllExpenses();
+		};
 		var loadAllExpenses = function() {
-			console.log('Loading all Expenses @ vDB...' + ms.data.city.name);
-			// TODO Ajax fetch all expenses for City.
-			// If from SEARCH, re-execute search; if from Dashboard, check for Account/Bill filters.
-			this.loadData(dummyExpenses());
+			var list = null;
+			if (ms.data.page === C.PAGES.SEARCH) {
+				list = ss.doSearch();
+			} else if (ms.data.page === C.PAGES.DASHBOARD) {
+				if (bs.data.filterBy) {
+					console.log('Filtering expenses for Bill @ vDB :: ' + bs.data.filterBy);
+					// Filter by Bill
+					// TODO Ajax fetch all expenses.
+					list = dummyExpenses();
+				} else if (acs.data.filterBy) {
+					console.log('Filtering expenses for Account @ vDB :: ' + acs.data.filterBy);
+					// Filter by Account
+					// TODO Ajax fetch all expenses.
+					list = dummyExpenses();
+				} else {
+					console.log('Getting all expenses @ vDB');
+					// TODO Ajax fetch all expenses.
+					list = dummyExpenses();
+				}
+			}
+			console.log('Loading Expenses @ vDB...' + ms.data.city.name);
+			this.loadData(list);
 		};
 		var loadData = function(data) {
 			this.data.total = data.total;
@@ -169,6 +203,7 @@
 
 		return {
 			data: data,
+			clearFilter: clearFilter,
 			loadAllExpenses: loadAllExpenses,
 			loadData: loadData,
 			loadDataForPage: loadDataForPage,

@@ -20,7 +20,6 @@
 		// ***** Function declarations *****//
 		function init() {
 			vm.data = es.data;
-
 			typeAheads();
 		}
 
@@ -57,16 +56,14 @@
 		function saveExpense() {
 			// TODO Validate the form.
 			es.saveExpense();
-			$('#model_Modify').modal('hide');
-			// Refresh expense list.
 			els.loadAllExpenses();
+			$('#model_Modify').modal('hide');
 		}
 
 		function deleteExpense() {
 			es.deleteExpense();
-			$('#model_Delete').modal('hide');
-			// Refresh expense list.
 			els.loadAllExpenses();
+			$('#model_Delete').modal('hide');
 		}
 	}
 })(window.angular);

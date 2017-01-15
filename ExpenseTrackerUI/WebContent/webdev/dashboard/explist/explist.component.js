@@ -57,20 +57,15 @@
 			$('#model_Delete').modal('show');
 		}
 
-		function changeSequence(id, code) {
+		function changeSequence(id, diff) {
 			var idx = els.getIndexOf(id);
-			var id2 = els.data.rows[idx + code].id;
+			var id2 = els.data.rows[idx + diff].id;
 			es.swapExpense(id, id2);
-			// Refresh expense list.
 			els.loadAllExpenses();
 		}
 
 		function clearFilter() {
-			if (ms.data.page === C.PAGES.SEARCH) {
-				ss.initializeData();
-			}
-			els.data.filterApplied = false;
-			els.loadAllExpenses();
+			els.clearFilter();
 		}
 	}
 })(window.angular);

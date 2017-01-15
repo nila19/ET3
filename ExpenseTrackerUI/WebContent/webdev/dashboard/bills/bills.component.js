@@ -51,16 +51,19 @@
 			$('#model_BillPay').modal('show');
 		}
 
-		// FIXME Rename this... Make this as a toggle..
 		function filterExpenses(id) {
-			ds.bill = id;
-
-			els.loadData(bs.getExpenses(id));
-			els.data.filterApplied = true;
+			// If same bill is already selected, do nothing.
+			if (bs.data.filterBy !== id) {
+				bs.data.filterBy = id;
+				els.data.filterApplied = true;
+				els.loadAllExpenses();
+			}
 		}
 
 		function clearFilter() {
-			bs.loadAllBills();
+			bs.clearFilter();
+			// Clear filter on Expenses..
+			els.clearFilter();
 		}
 	}
 })(window.angular);

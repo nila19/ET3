@@ -1,8 +1,8 @@
         <!-- Accounts Cards -->
-          <div class="row" ng-repeat="row in $ctrl.data.rows track by $index" ng-show="(($index == 0 && $ctrl.data.showAcctsRowOne) || ($index > 0 && $ctrl.data.showAcctsMore))">
+          <div class="row" ng-repeat="row in $ctrl.data.rows track by $index" ng-if="(($index == 0 && $ctrl.data.showAcctsRowOne) || ($index > 0 && $ctrl.data.showAcctsMore))">
             <div class="col-lg-2 col-md-4 col-sm-6" ng-repeat="col in row.cols">
               <div class="card card-stats">
-                <div class="card-header" data-background-color="{{col.bgColor}}">
+                <div class="card-header" data-background-color="{{$ctrl.data.filterBy === col.id? 'orange' : col.bgColor}}">
                   <a href="" ng-click="$ctrl.filterAccount(col.id)"><i class="material-icons">{{col.icon}}</i></a>
                 </div>
                 <div class="card-content">
@@ -13,19 +13,19 @@
                   <div class="stats">
                     <i class="material-icons {{col.tallyToday?'text-success':'text-warning'}}">check_circle</i> {{col.tallyAmt | currency:'$ '}} @ {{col.tallyDt | date:'dd-MMM-yy hh:mm a'}}
                   </div>
-                  <div ng-show="col.doBills && !col.billDue" class="stats">
+                  <div ng-if="col.doBills && !col.billDue" class="stats">
                     <i class="material-icons">schedule</i> &nbsp;Next Bill on {{col.nextBillDt | date:'dd-MMM'}}
                   </div>
-                  <div ng-show="col.doBills && col.billDue" class="stats">
+                  <div ng-if="col.doBills && col.billDue" class="stats">
                     <i class="material-icons text-warning">local_offer</i> {{col.billAmt | currency:'$ '}} (Due on {{col.billDueDt | date:'dd-MMM'}})
                   </div>
-                  <div ng-show="!col.doBills" class="stats">
+                  <div ng-if="!col.doBills" class="stats">
                     <i class="material-icons">block</i> &nbsp; No bills.
                   </div>
                 </div>
                 <div class="card-footer" align="center">
                   <div class="stats">
-                    <span ng-click="$ctrl.tallyAccount(col.id)" class="btn btn-success btn-sm">Tally &nbsp;<span ng-show="col.untallyCnt > 0"  class="badge">{{col.untallyCnt}}</span></span>
+                    <span ng-click="$ctrl.tallyAccount(col.id)" class="btn btn-success btn-sm">Tally &nbsp;<span ng-if="col.untallyCnt > 0"  class="badge">{{col.untallyCnt}}</span></span>
                   </div>
                 </div>
               </div>

@@ -29,7 +29,7 @@
                         <tbody>
                           <tr ng-repeat="row in $ctrl.data.pgData.rows">
                             <td class="td-actions text-right">
-                              <button type="button" ng-click="$ctrl.filterExpenses(row.id)" rel="tooltip" title="View Expenses" class="btn btn-primary btn-simple btn-xs">
+                              <button type="button" ng-click="$ctrl.filterExpenses(row.id)" rel="tooltip" title="View Expenses" class="btn btn-primary btn-simple btn-xs" ng-class="{'btn-warning': ($ctrl.data.filterBy === row.id)}">
                                 <i class="material-icons">list</i>
                               </button>
                             </td>
@@ -37,12 +37,12 @@
                             <td>{{row.billDt | date:'dd-MMM-yy'}}</td>
                             <td>{{row.billAmt | currency:''}}</td>
                             <td>{{row.dueDt | date:'dd-MMM-yy'}}</td>
-                            <td ng-show="!row.paid">
-                              <button type="button" ng-click="$ctrl.showBillPay(row.id)" rel="tooltip" title="Pay Now" class="btn btn-primary btn-xs">
+                            <td ng-switch="row.paid.toString()" class="td-actions">
+                              <span ng-switch-when="true">{{row.paidDt | date:'dd-MMM-yy'}}</span>
+                              <button ng-switch-when="false" type="button" ng-click="$ctrl.showBillPay(row.id)" rel="tooltip" title="Pay Now" class="btn btn-primary btn-xs">
                                 <i class="material-icons">payment</i>
                               </button>
                             </td>
-                            <td ng-show="row.paid">{{row.paidDt | date:'dd-MMM-yy'}}</td>
                           </tr>
                           <tr>
                             <td colspan="4">
@@ -54,25 +54,19 @@
                             </td>
                             <td>
                               <div class="stats">
-                                <button type="button" ng-show="$ctrl.data.filterApplied" ng-click="$ctrl.clearFilter()" rel="tooltip" title="Clear Filter" class="btn btn-primary btn-xs">
+                                <button type="button" ng-if="$ctrl.data.filterApplied" ng-click="$ctrl.clearFilter()" rel="tooltip" title="Clear Filter" class="btn btn-primary btn-xs">
                                   <i class="material-icons">filter_list</i>
                                 </button>
                               </div>
                             </td>
                             <td>
                               <div class="stats">
-                                <span ng-show="!$ctrl.hasPrevPage()" class="btn btn-default btn-xs no-btn">
-                                  <i class="material-icons">skip_previous</i>
-                                </span>
-                                <button type="button" ng-show="$ctrl.hasPrevPage()" ng-click="$ctrl.prevPage()" class="btn btn-primary btn-xs">
+                                <button type="button" ng-disabled="!$ctrl.hasPrevPage()" ng-click="$ctrl.prevPage()" class="btn btn-primary btn-xs">
                                   <i class="material-icons">skip_previous</i>
                                 </button>
-                                <button type="button" ng-show="$ctrl.hasNextPage()" ng-click="$ctrl.nextPage()" class="btn btn-primary btn-xs">
+                                <button type="button" ng-disabled="!$ctrl.hasNextPage()" ng-click="$ctrl.nextPage()" class="btn btn-primary btn-xs">
                                   <i class="material-icons">skip_next</i>
                                 </button>
-                                <span ng-show="!$ctrl.hasNextPage()" class="btn btn-default btn-xs no-btn">
-                                  <i class="material-icons">skip_next</i>
-                                </span>
                               </div>
                             </td>
                           </tr>
