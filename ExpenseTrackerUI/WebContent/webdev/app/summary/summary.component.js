@@ -8,8 +8,9 @@
 		controller: SummaryController
 	});
 
-	SummaryController.$inject = ['summaryService', 'etmenuService', 'CONSTANTS', '$location'];
-	function SummaryController(sms, ms, C, $location) {
+	SummaryController.$inject = ['summaryService', 'searchService', 'etmenuService', 'CONSTANTS',
+			'$location'];
+	function SummaryController(sms, ss, ms, C, $location) {
 		var vm = this;
 		init();
 
@@ -37,13 +38,11 @@
 			sms.loadSummary();
 		}
 
-		function listExpenses(cat, mIdx, aggr) {
-			if (!aggr) {
-				// TODO Set via Services.
-				var path = '/search/' + cat + '/' + vm.data.header[mIdx].mth;
-				console.log('Navigating to :: ' + path);
-				$location.path(path);
-			}
+		function listExpenses(cat, mIdx) {
+			// TODO Set via Services.
+			ss.data.categoryId = cat;
+			ss.data.expMonth = vm.data.header[mIdx].mth;
+			$location.path('/search/Y');
 		}
 
 		function hasPrevPage() {

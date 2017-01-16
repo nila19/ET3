@@ -11,7 +11,7 @@
 			DANGER: 'danger'
 		},
 		SIZES: {
-			SUMMARY_COL: 4,
+			SUMMARY_COL: 13,
 			SEARCH_ROW: 5, // # of Expense @ Search
 			DASHBOARD_ROW: 4, // # of Expense @ Dashboard
 			BILLS_ROW: 2, // # of Bills @ Dashboard

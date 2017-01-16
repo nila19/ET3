@@ -4,7 +4,7 @@
 	'use strict';
 
 	angular.module('app', ['core', 'dashboard', 'etmenu', 'search', 'summary', 'core.directives',
-			'ngRoute']);
+			'ngRoute', 'ui.bootstrap']);
 
 	angular.module('app').config(['$compileProvider', function($compileProvider) {
 		$compileProvider.debugInfoEnabled(false);
@@ -13,24 +13,3 @@
 	}]);
 
 })(window.angular);
-
-// TODO Remove
-var appUtils = {
-	// Popup message
-	msg: {
-		types: ['', 'info', 'success', 'warning', 'danger'],
-		show: function(action) {
-			$.notify({
-				icon: 'notifications',
-				message: '<b>' + action + '</b> - Completed successfully.'
-			}, {
-				type: 'success',
-				delay: 1000,
-				placement: {
-					from: 'top',
-					align: 'center'
-				}
-			});
-		}
-	}
-};

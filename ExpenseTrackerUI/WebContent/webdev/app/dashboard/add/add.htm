@@ -33,15 +33,21 @@
                               <input type="text" ng-model="$ctrl.data.fromAc.name" id="exp_fromAccount" class="form-control" data-provide="typeahead" autocomplete="off">
                             </div>
                           </div>
-                          <div class="col-md-4">
+                          <div class="col-md-5">
                             <div class="form-group label-floating">
                               <label class="control-label">Category</label> 
                               <input type="text" ng-model="$ctrl.data.cat.name" id="exp_category" class="form-control" data-provide="typeahead" autocomplete="off">
                             </div>
                           </div>
-                          <div class="col-md-4">
-                            <div>
-                              <label><input type="checkbox" ng-model="$ctrl.data.adhoc" class="form-control">Adhoc</label>
+                          <div class="col-md-1">
+                            <div>&nbsp;</div>
+                          </div>
+                          <div class="col-md-1">
+                            <div class="row">
+                              <div class="col-md-8">
+                                <label>Adhoc</label>
+                                <input type="checkbox" ng-model="$ctrl.data.adhoc" class="form-control">
+                              </div>
                             </div>
                           </div>
                         </div>

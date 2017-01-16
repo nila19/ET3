@@ -26,7 +26,7 @@
 
 			// If menu is not loaded, load the default city.
 			ms.checkInit();
-			isFromSummary();
+			isDrillDown();
 
 			// Run default search.
 			loadExpenses();
@@ -34,15 +34,13 @@
 		}
 
 		// Check if sent from Summary page.
-		function isFromSummary() {
-			if ($routeParams.mth || $routeParams.cat) {
-				ss.data.expMonth = $routeParams.mth;
-				ss.data.catId = $routeParams.cat;
-				var cat = us.getById(V.categories, ss.data.catId);
-				if (cat) {
-					ss.data.category = cat.name;
+		function isDrillDown() {
+			if ($routeParams.drill && $routeParams.drill === 'Y') {
+				var category = us.getById(V.categories, ss.data.categoryId);
+				if (category) {
+					ss.data.category = category.name;
 				}
-				console.log('Routed from Summary :: ' + ss.data.catId + ' , ' + ss.data.expMonth);
+				console.log('Drill down :: ' + ss.data.categoryId + ' , ' + ss.data.expMonth);
 				els.data.filterApplied = true;
 			}
 		}

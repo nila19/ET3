@@ -13,7 +13,7 @@
 			template: '<dashboard></dashboard>'
 		}).when('/summary', {
 			template: '<summary></summary>'
-		}).when('/search/:cat/:mth', {
+		}).when('/search/:drill', {
 			template: '<search></search>'
 		}).when('/search', {
 			template: '<search></search>'

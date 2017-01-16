@@ -25,8 +25,9 @@
                         <th class="text-right">&nbsp;</th>
                         <th class="text-right">&nbsp;</th>
                         <th class="text-right">&nbsp;</th>
-                        <th ng-repeat="h2 in $ctrl.data.pgData.header2 track by $index" ng-click="$ctrl.listExpenses(0, $index, $ctrl.data.pgData.header[$index].aggr)" class="text-right sumTotalCell">
-                          <strong>{{$ctrl.data.pgData.header2[$index] | currency}}</strong>
+                        <th ng-repeat="h2 in $ctrl.data.pgData.header2 track by $index" ng-switch="$ctrl.data.pgData.header[$index].aggr.toString()" class="text-right" ng-class="{'sumTotalCell':!$ctrl.data.pgData.header[$index].aggr}">
+                          <span ng-switch-when="false" ng-click="$ctrl.listExpenses(0, $index)"><strong>{{$ctrl.data.pgData.header2[$index] | currency}}</strong></span>
+                          <span ng-switch-when="true" ><strong>{{$ctrl.data.pgData.header2[$index] | currency}}</strong></span>
                         </th>
                       </tr>
                     </thead>
@@ -36,7 +37,10 @@
                           <a class="btn btn-primary btn-simple btn-sm no-btn"><i class="material-icons">{{row.cat.icon}}</i></a></td>
                         <td>{{row.cat.main}}</td>
                         <td>{{row.cat.sub}}</td>
-                        <td ng-repeat="col in row.cols track by $index" ng-click="$ctrl.listExpenses(row.cat.id, $index, $ctrl.data.pgData.header[$index].aggr)" class="text-right sumDetailCell">{{row.cols[$index] | currency}}</td>
+                        <td ng-repeat="col in row.cols track by $index" ng-switch="$ctrl.data.pgData.header[$index].aggr.toString()" class="text-right" ng-class="{'sumDetailCell':!$ctrl.data.pgData.header[$index].aggr}">
+                          <span ng-switch-when="false" ng-click="$ctrl.listExpenses(row.cat.id, $index)">{{row.cols[$index] | currency}}</span>
+                          <span ng-switch-when="true">{{row.cols[$index] | currency}}</span>
+                        </td>
                       </tr>
                     </tbody>
                     <tfoot>
@@ -52,29 +56,26 @@
                             </button>
                           </div>
                         </td>
-                        <td colspan="2">
+                        <td colspan="1">
                           <div class="row">
-                            <div class="col-md-4">
+                            <div class="col-md-3">
                               <div class="form-group">
-                                <label class="control-label">Adhoc</label>
-                                <input type="checkbox" ng-model="$ctrl.data.adhoc" ng-click="$ctrl.loadSummary()" name="adhoc" class="form-control">
+                                <input type="checkbox" ng-model="$ctrl.data.adhoc" ng-click="$ctrl.loadSummary()" tooltip rel="tooltip" title="Adhoc" class="form-control">
                               </div>
                             </div>
-                            <div class="col-md-4">
+                            <div class="col-md-3">
                               <div class="form-group">
-                                <label class="control-label">Regular</label>
-                                <input type="checkbox" ng-model="$ctrl.data.regular" ng-click="$ctrl.loadSummary()" name="regular" class="form-control">
+                                <input type="checkbox" ng-model="$ctrl.data.regular" ng-click="$ctrl.loadSummary()" tooltip rel="tooltip" title="Regular" class="form-control">
                               </div>
                             </div>
-                            <div class="col-md-4">
+                            <div class="col-md-3">
                               <div class="form-group">
-                                <label class="control-label">Forecast</label>
-                                <input type="checkbox" ng-model="$ctrl.data.forecast" ng-click="$ctrl.loadSummary()" name="forecast" class="form-control">
+                                <input type="checkbox" ng-model="$ctrl.data.forecast" ng-click="$ctrl.loadSummary()" tooltip rel="tooltip" title="Forecast" class="form-control">
                               </div>
                             </div>
                           </div>
                         </td>
-                        <td colspan="11">&nbsp;</td>
+                        <td colspan="12">&nbsp;</td>
                       </tr>
                     </tfoot>
                   </table>

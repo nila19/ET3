@@ -52,8 +52,33 @@
 				}, {
 					mth: 'MAY-16',
 					aggr: false
+				}, {
+					mth: 'APR-16',
+					aggr: false
+				}, {
+					mth: 'MAR-16',
+					aggr: false
+				}, {
+					mth: 'FEB-16',
+					aggr: false
+				}, {
+					mth: 'JAN-16',
+					aggr: false
+				}, {
+					mth: '2015',
+					aggr: true
+				}, {
+					mth: 'DEC-15',
+					aggr: false
+				}, {
+					mth: 'NOV-15',
+					aggr: false
+				}, {
+					mth: 'OCT-15',
+					aggr: false
 				}],
 				header2: [1000.91, 12000.90, 1000.92, 1000.91, 1000.90, 1000.99, 1000.98, 1000.97,
+						1000.96, 1000.95, 1000.92, 1000.91, 1000.90, 1000.99, 1000.98, 1000.97,
 						1000.96, 1000.95],
 				rows: [
 						{
@@ -64,7 +89,8 @@
 								sub: 'Kroger Groceries',
 								icon: 'local_mall'
 							},
-							cols: [100.91, 1200.90, 100.92, 100.91, 100.90, 100.99, 100.98, 100.97,
+							cols: [100.91, 1200.90, 100.99, 100.99, 100.99, 100.99, 100.98, 100.97,
+									100.96, 100.95, 100.92, 100.91, 100.90, 100.99, 100.98, 100.97,
 									100.96, 100.95]
 						},
 						{
@@ -76,6 +102,79 @@
 								icon: 'local_gas_station'
 							},
 							cols: [100.91, 1200.90, 100.92, 100.91, 100.90, 100.99, 100.98, 100.97,
+									100.96, 100.95, 100.92, 100.91, 100.90, 100.99, 100.98, 100.97,
+									100.96, 100.95]
+						},
+						{
+							cat: {
+								id: 175,
+								name: 'Food ~ Kroger Groceries',
+								main: 'Food',
+								sub: 'Kroger Groceries',
+								icon: 'local_mall'
+							},
+							cols: [100.91, 1200.90, 100.92, 100.91, 100.90, 100.99, 100.98, 100.97,
+									100.96, 100.95, 100.92, 100.91, 100.90, 100.99, 100.98, 100.97,
+									100.96, 100.95]
+						},
+						{
+							cat: {
+								id: 179,
+								name: 'Transport ~ Car Gas',
+								main: 'Transport',
+								sub: 'Car Gas',
+								icon: 'local_gas_station'
+							},
+							cols: [100.91, 1200.90, 100.92, 100.91, 100.90, 100.99, 100.98, 100.97,
+									100.96, 100.95, 100.92, 100.91, 100.90, 100.99, 100.98, 100.97,
+									100.96, 100.95]
+						},
+						{
+							cat: {
+								id: 175,
+								name: 'Food ~ Kroger Groceries',
+								main: 'Food',
+								sub: 'Kroger Groceries',
+								icon: 'local_mall'
+							},
+							cols: [100.91, 1200.90, 100.92, 100.91, 100.90, 100.99, 100.98, 100.97,
+									100.96, 100.95, 100.92, 100.91, 100.90, 100.99, 100.98, 100.97,
+									100.96, 100.95]
+						},
+						{
+							cat: {
+								id: 179,
+								name: 'Transport ~ Car Gas',
+								main: 'Transport',
+								sub: 'Car Gas',
+								icon: 'local_gas_station'
+							},
+							cols: [100.91, 1200.90, 100.92, 100.91, 100.90, 100.99, 100.98, 100.97,
+									100.96, 100.95, 100.92, 100.91, 100.90, 100.99, 100.98, 100.97,
+									100.96, 100.95]
+						},
+						{
+							cat: {
+								id: 175,
+								name: 'Food ~ Kroger Groceries',
+								main: 'Food',
+								sub: 'Kroger Groceries',
+								icon: 'local_mall'
+							},
+							cols: [100.91, 1200.90, 100.92, 100.91, 100.90, 100.99, 100.98, 100.97,
+									100.96, 100.95, 100.92, 100.91, 100.90, 100.99, 100.98, 100.97,
+									100.96, 100.95]
+						},
+						{
+							cat: {
+								id: 179,
+								name: 'Transport ~ Car Gas',
+								main: 'Transport',
+								sub: 'Car Gas',
+								icon: 'local_gas_station'
+							},
+							cols: [100.91, 1200.90, 100.92, 100.91, 100.90, 100.99, 100.98, 100.97,
+									100.96, 100.95, 100.92, 100.91, 100.90, 100.99, 100.98, 100.97,
 									100.96, 100.95]
 						},
 						{
@@ -87,6 +186,7 @@
 								icon: 'home'
 							},
 							cols: [100.91, 1200.90, 100.92, 100.91, 100.90, 100.99, 100.98, 100.97,
+									100.96, 100.95, 100.92, 100.91, 100.90, 100.99, 100.98, 100.97,
 									100.96, 100.95]
 						}]
 			};
@@ -94,8 +194,8 @@
 
 		var loadSummary = function() {
 			// TODO Ajax generate Summary from DB
-			console.log('Loading Summary @ vDB :: ' + ms.data.city.name + ', ' +
-					JSON.stringify(this.data));
+			console.log('Loading Summary @ vDB :: ' + ms.data.city.name + ', ' + this.data.adhoc +
+					', ' + this.data.regular + ', ' + this.data.forecast);
 			this.loadData(dummyData());
 		};
 		var loadData = function(data) {
