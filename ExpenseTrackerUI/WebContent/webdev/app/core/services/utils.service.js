@@ -5,20 +5,13 @@
 
 	angular.module('core.services').factory('utilsService', utilsService);
 
-	utilsService.$inject = ['CONSTANTS', '$resource'];
-	function utilsService(C, $resource) {
+	utilsService.$inject = ['CONSTANTS'];
+	function utilsService(C) {
 		return {
-			getURL: getURL,
 			getById: getById,
 			showMsg: showMsg,
 			show: show
 		};
-		// /////////////////////
-		function getURL(func) {
-			var url = C.BASE_URL + C.URLs[func];
-			// return $http.post(url,obj);
-			return $resource(url);
-		}
 
 		function getById(arr, id) {
 			var o = null;
@@ -37,13 +30,12 @@
 		}
 
 		function show(msg, t) {
-			// var t = type ? C.MSG[type] : C.MSG.INFO;
 			$.notify({
 				icon: 'notifications',
 				message: msg
 			}, {
 				type: t,
-				delay: 1000,
+				delay: 2000,
 				placement: {
 					from: 'top',
 					align: 'center'

@@ -5,16 +5,26 @@
 
 	angular.module('core.services').factory('ajaxService', ajaxService);
 
-	ajaxService.$inject = ['CONSTANTS', '$resource'];
-	function ajaxService(C, $resource) {
+	ajaxService.$inject = ['utilsService', 'CONSTANTS', '$resource'];
+	function ajaxService(us, C, $resource) {
 		return {
-			getURL: getURL
+			url: url,
+			get: get,
+			post: post
 		};
-		// /////////////////////
-		function getURL(func) {
-			var url = C.BASE_URL + C.URLs[func];
-			// return $http.post(url,obj);
+		function url(path) {
+			var url = C.BASE_URL + path;
 			return $resource(url);
+		}
+		function get(path, data, ok) {
+			url(path).get(angular.toJson(data), ok, error);
+		}
+		function post(path, data, ok) {
+			url(path).save(angular.toJson(data), ok, error);
+		}
+
+		function error(resp) {
+			us.show('AJAX Error!!.. ' + resp.status + ' :: ' + resp.statusText, C.MSG.DANGER);
 		}
 	}
 

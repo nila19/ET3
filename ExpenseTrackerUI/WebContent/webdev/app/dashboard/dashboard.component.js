@@ -9,12 +9,14 @@
 	});
 
 	DashboardController.$inject = ['dashboardService', 'etmenuService', 'accountsService',
-			'billsService', 'addService', 'chartService', 'explistService', 'CONSTANTS'];
-	function DashboardController(ds, ms, acs, bs, as, cs, els, C) {
+			'billsService', 'addService', 'chartService', 'explistService', 'startupService',
+			'CONSTANTS'];
+	function DashboardController(ds, ms, acs, bs, as, cs, els, sus, C) {
 		var vm = this;
 		init();
 
 		function init() {
+			sus.loadAll();
 			ms.data.page = C.PAGES.DASHBOARD;
 			els.data.rowCount = C.SIZES.DASHBOARD_ROW;
 

@@ -25,7 +25,7 @@
 						icon: 'local_mall'
 					},
 					description: 'Costco Gas',
-					amount: 34.50,
+					amount: 34.55,
 					fromAcc: {
 						id: 620,
 						name: 'BOA - 7787',

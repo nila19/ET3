@@ -17,6 +17,7 @@
 		// ***** Exposed functions ******//
 		vm.saveExpense = saveExpense;
 		vm.deleteExpense = deleteExpense;
+		vm.getBills = getBills;
 
 		// ***** Function declarations *****//
 		function init() {

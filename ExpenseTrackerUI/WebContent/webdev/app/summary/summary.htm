@@ -39,7 +39,7 @@
                         <td>{{row.cat.sub}}</td>
                         <td ng-repeat="col in row.cols track by $index" ng-switch="$ctrl.data.pgData.header[$index].aggr.toString()" class="text-right" ng-class="{'sumDetailCell':!$ctrl.data.pgData.header[$index].aggr}">
                           <span ng-switch-when="false" ng-click="$ctrl.listExpenses(row.cat.id, $index)">{{row.cols[$index] | currency}}</span>
-                          <span ng-switch-when="true">{{row.cols[$index] | currency}}</span>
+                          <span ng-switch-when="true"><strong>{{row.cols[$index] | currency}}</strong></span>
                         </td>
                       </tr>
                     </tbody>

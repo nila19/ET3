@@ -9,8 +9,8 @@
 	});
 
 	SearchController.$inject = ['searchService', 'etmenuService', 'explistService', 'utilsService',
-			'CONSTANTS', 'VALUES', '$routeParams'];
-	function SearchController(ss, ms, els, us, C, V, $routeParams) {
+			'CONSTANTS', 'VALUES', '$routeParams', 'startupService'];
+	function SearchController(ss, ms, els, us, C, V, $routeParams, sus) {
 		var vm = this;
 		init();
 
@@ -54,8 +54,10 @@
 		}
 
 		function doSearch() {
+			sus.testAjax();
 			els.data.filterApplied = true;
-			loadExpenses();
+			// TODO - fix this back.
+			// loadExpenses();
 		}
 
 		function loadExpenses() {
