@@ -16,13 +16,13 @@
                       <div class="col-lg-2 col-md-3">
                         <div class="form-group label-floating">
                           <label class="control-label">Category</label>
-                          <input id="category" ng-model="$ctrl.data.category" type="text" class="form-control" data-provide="typeahead" autocomplete="off">
+                          <input ng-model="$ctrl.data.category" type="text" class="form-control" uib-typeahead="cat as cat.name for cat in $ctrl.ta.categories | filter:$viewValue" typeahead-show-hint="true" typeahead-min-length="0" typeahead-editable="false">
                         </div>
                       </div>
                       <div class="col-lg-2 col-md-3">
                         <div class="form-group label-floating">
                           <label class="control-label">Description</label>
-                          <input id="description" ng-model="$ctrl.data.description" type="text" class="form-control" data-provide="typeahead" autocomplete="off">
+                          <input ng-model="$ctrl.data.description" type="text" class="form-control" uib-typeahead="desc for desc in $ctrl.ta.descriptions | filter:$viewValue | limitTo:8">
                         </div>
                       </div>
                       <div class="col-lg-1 col-md-2">
@@ -34,19 +34,19 @@
                       <div class="col-lg-1 col-md-2">
                         <div class="form-group label-floating">
                           <label class="control-label">Exp Month</label>
-                          <input id="expMonth" ng-model="$ctrl.data.expMonth" type="text" class="form-control" data-provide="typeahead" autocomplete="off">
+                          <input ng-model="$ctrl.data.expMonth" type="text" class="form-control" uib-typeahead="month for month in $ctrl.ta.months | filter:$viewValue" typeahead-show-hint="true" typeahead-min-length="0" typeahead-editable="false">
                         </div>
                       </div>
                       <div class="col-lg-1 col-md-2">
                         <div class="form-group label-floating">
                           <label class="control-label">Entry Month</label>
-                          <input id="entryMonth" ng-model="$ctrl.data.entryMonth" type="text" class="form-control" data-provide="typeahead" autocomplete="off">
+                          <input ng-model="$ctrl.data.entryMonth" type="text" class="form-control" uib-typeahead="month for month in $ctrl.ta.months | filter:$viewValue" typeahead-show-hint="true" typeahead-min-length="0" typeahead-editable="false">
                         </div>
                       </div>
                       <div class="col-lg-2 col-md-3">
                         <div class="form-group label-floating">
                           <label class="control-label">Account</label>
-                          <input id="account" ng-model="$ctrl.data.account" type="text" class="form-control" data-provide="typeahead" autocomplete="off">
+                          <input ng-model="$ctrl.data.account" type="text" class="form-control" uib-typeahead="acc as acc.name for acc in $ctrl.ta.accounts | filter:$viewValue" typeahead-show-hint="true" typeahead-min-length="0" typeahead-editable="false">
                         </div>
                       </div>
                       <div class="col-lg-1 col-md-2">

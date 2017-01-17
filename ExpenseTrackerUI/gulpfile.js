@@ -113,10 +113,11 @@ gulp.task('app', function(done) {
 	})
 });
 
-gulp.task('watch', ['app'], function() {
+gulp.task('watch', ['app', 'bower'], function() {
 	gulp.watch(src.js, ['js']);
 	gulp.watch(src.less, ['css']);
 	gulp.watch(src.htm, ['htm']);
+	gulp.watch(src.bower, ['bower']);
 	plugins.util.log(plugins.util.colors.cyan('***** WATCHING FOR SOURCE CHANGES *****'));
 });
 

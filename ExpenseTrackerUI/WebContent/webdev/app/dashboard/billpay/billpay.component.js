@@ -19,25 +19,19 @@
 		// ***** Function declarations *****//
 		function init() {
 			vm.data = bps.data;
-
 			typeAheads();
 		}
 
 		function typeAheads() {
-			$('#bp_account').typeahead({
-				source: V.accounts,
-				minLength: 0,
-				updater: function(item) {
-					bps.data.pay.acct.id = item.id;
-					return item;
-				}
-			});
+			vm.ta = {};
+			vm.ta.accounts = V.accounts;
 		}
 
-		function payBill() {
-			// TODO Form validations.
-			bps.payBill();
-			$('#model_BillPay').modal('hide');
+		function payBill(valid) {
+			if (valid) {
+				bps.payBill();
+				$('#model_BillPay').modal('hide');
+			}
 		}
 	}
 })(window.angular);

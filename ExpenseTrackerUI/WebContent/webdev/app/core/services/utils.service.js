@@ -10,7 +10,8 @@
 		return {
 			getURL: getURL,
 			getById: getById,
-			showMsg: showMsg
+			showMsg: showMsg,
+			show: show
 		};
 		// /////////////////////
 		function getURL(func) {
@@ -30,13 +31,18 @@
 		}
 
 		// Popup message
-		function showMsg(action, type) {
+		function showMsg(action, t) {
+			var msg = '<b>' + action + '</b> - Completed successfully.';
+			show(msg, t);
+		}
+
+		function show(msg, t) {
 			// var t = type ? C.MSG[type] : C.MSG.INFO;
 			$.notify({
 				icon: 'notifications',
-				message: '<b>' + action + '</b> - Completed successfully.'
+				message: msg
 			}, {
-				type: 'success',
+				type: t,
 				delay: 1000,
 				placement: {
 					from: 'top',

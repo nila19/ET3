@@ -3,6 +3,7 @@
 (function(angular) {
 	'use strict';
 
-	angular.module('dashboard.edit', ['core', 'bootstrap3-typeahead', 'core.directives']);
+	angular.module('dashboard.edit', ['core', 'core.directives', 'ngAnimate', 'ui.bootstrap',
+			'ui.bootstrap.typeahead']);
 
 })(window.angular);

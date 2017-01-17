@@ -17,24 +17,26 @@
 					id: 2500,
 					entryDt: 1288323623006,
 					transDt: 1288323623006,
-					cat: {
+					category: {
 						id: 1750,
 						name: 'Food ~ Kroger Groceries',
 						main: 'Food',
 						sub: 'Kroger Groceries',
 						icon: 'local_mall'
 					},
-					desc: 'Costco Gas',
-					amt: 34.50,
-					fromAc: {
+					description: 'Costco Gas',
+					amount: 34.50,
+					fromAcc: {
 						id: 620,
-						name: 'BOA - 7787'
+						name: 'BOA - 7787',
+						doBills: true
 					},
 					fromFrom: 8944.60,
 					fromTo: 8910.10,
-					toAc: {
+					toAcc: {
 						id: 600,
-						name: 'BOA VISA'
+						name: 'BOA VISA',
+						doBills: false
 					},
 					toFrom: 1240.55,
 					toTo: 1206.05,
@@ -43,21 +45,23 @@
 					bill: {
 						id: 21,
 						name: 'BOA - 7787 - Bill #2'
-					},
-					bills: [{
-						id: 20,
-						name: 'BOA - 7787 - Bill #1'
-					}, {
-						id: 21,
-						name: 'BOA - 7787 - Bill #2'
-					}, {
-						id: 22,
-						name: 'BOA - 7787 - Bill #3'
-					}]
+					}
 				}
 			};
 		};
 
+		var dummyBills = function() {
+			return [{
+				id: 20,
+				name: 'BOA - 7787 - Bill #1'
+			}, {
+				id: 21,
+				name: 'BOA - 7787 - Bill #2'
+			}, {
+				id: 22,
+				name: 'BOA - 7787 - Bill #3'
+			}];
+		};
 		var loadExpense = function(id) {
 			// TODO Ajax to fetch
 			console.log('Fetching Exp data from @ vDB :: ' + id + ',' + ms.data.city.name);
@@ -81,6 +85,12 @@
 			// TODO Ajax save.
 			console.log('Swapped @ vDB :: ' + id1 + ',' + id2 + ',' + ms.data.city.name);
 		};
+		var getBillsForAcc = function() {
+			// TODO Ajax call to fetch Bills from DB.
+			console.log('Fetching Bills data from @ vDB :: ' + this.data.expense.fromAcc.id + ',' +
+					ms.data.city.name);
+			return dummyBills();
+		};
 
 		return {
 			data: data,
@@ -88,7 +98,8 @@
 			loadData: loadData,
 			saveExpense: saveExpense,
 			deleteExpense: deleteExpense,
-			swapExpense: swapExpense
+			swapExpense: swapExpense,
+			getBillsForAcc: getBillsForAcc
 		};
 	}
 

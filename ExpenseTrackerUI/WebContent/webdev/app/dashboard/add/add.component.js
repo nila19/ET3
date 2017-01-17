@@ -8,14 +8,13 @@
 		controller: AddController
 	});
 
-	AddController.$inject = ['addService', 'explistService', 'VALUES'];
-	function AddController(as, els, V) {
+	AddController.$inject = ['addService', 'explistService', 'utilsService', 'VALUES', 'CONSTANTS'];
+	function AddController(as, els, us, V, C) {
 		var vm = this;
 		init();
 
 		// ***** Exposed functions ******//
 		vm.addExpense = addExpense;
-		vm.switchTab = switchTab;
 
 		// ***** Function declarations *****//
 		function init() {
@@ -24,50 +23,21 @@
 		}
 
 		function typeAheads() {
-			$('#exp_category').typeahead({
-				source: V.categories,
-				minLength: 0,
-				updater: function(item) {
-					as.data.cat.id = item.id;
-					return item;
-				}
-			});
-			$('#exp_description, #adj_description').typeahead({
-				source: V.descriptions
-			});
-			$('#exp_fromAccount, #adj_fromAccount').typeahead({
-				source: V.accounts,
-				minLength: 0,
-				updater: function(item) {
-					as.data.fromAc.id = item.id;
-					return item;
-				}
-			});
-			$('#adj_toAccount').typeahead({
-				source: V.accounts,
-				minLength: 0,
-				updater: function(item) {
-					as.data.toAc.id = item.id;
-					return item;
-				}
-			});
+			vm.ta = {};
+			vm.ta.descriptions = V.descriptions;
+			vm.ta.categories = V.categories;
+			vm.ta.months = V.months;
+			vm.ta.accounts = V.accounts;
 		}
 
-		function addExpense() {
-			// TODO Validate form.
-			as.addExpense();
-			els.loadAllExpenses();
-		}
-
-		function switchTab(code) {
-			if (code === 'expense') {
-				as.data.adjust = false;
-				$('#' + as.data.tabs.adjustment).removeClass('active');
-				$('#' + as.data.tabs.expense).addClass('active');
-			} else {
-				vm.data.adjust = true;
-				$('#' + as.data.tabs.expense).removeClass('active');
-				$('#' + as.data.tabs.adjustment).addClass('active');
+		function addExpense(valid) {
+			if (valid) {
+				if (as.data.adjust && (!as.data.fromAcc.id && !as.data.toAcc.id)) {
+					us.show('Select at least one of From, To accounts!!', C.MSG.WARNING);
+					return false;
+				}
+				as.addExpense();
+				els.loadAllExpenses();
 			}
 		}
 	}

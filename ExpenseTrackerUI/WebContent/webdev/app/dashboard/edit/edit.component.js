@@ -8,8 +8,9 @@
 		controller: EditController
 	});
 
-	EditController.$inject = ['editService', 'explistService', 'VALUES'];
-	function EditController(es, els, V) {
+	EditController.$inject = ['editService', 'explistService', 'utilsService', 'VALUES',
+			'CONSTANTS'];
+	function EditController(es, els, us, V, C) {
 		var vm = this;
 		init();
 
@@ -24,40 +25,44 @@
 		}
 
 		function typeAheads() {
-			$('#m_category').typeahead({
-				source: V.categories,
-				minLength: 0,
-				updater: function(item) {
-					es.data.expense.cat.id = item.id;
-					return item;
-				}
-			});
-			$('#m_description').typeahead({
-				source: V.descriptions
-			});
-			$('#m_fromAccount').typeahead({
-				source: V.accounts,
-				minLength: 0,
-				updater: function(item) {
-					es.data.expense.fromAc.id = item.id;
-					return item;
-				}
-			});
-			$('#m_toAccount').typeahead({
-				source: V.accounts,
-				minLength: 0,
-				updater: function(item) {
-					es.data.expense.toAc.id = item.id;
-					return item;
-				}
-			});
+			vm.ta = {};
+			vm.ta.descriptions = V.descriptions;
+			vm.ta.categories = V.categories;
+			vm.ta.accounts = V.accounts;
 		}
 
-		function saveExpense() {
+		function saveExpense(valid) {
 			// TODO Validate the form.
-			es.saveExpense();
-			els.loadAllExpenses();
-			$('#model_Modify').modal('hide');
+			if (valid) {
+				if (es.data.expense.adjust &&
+						(isNull(es.data.expense.fromAcc) && isNull(es.data.expense.toAcc))) {
+					us.show('Mandatory fields are empty!!', C.MSG.WARNING);
+					return false;
+				}
+				if (!es.data.expense.adjust &&
+						(isNull(es.data.expense.fromAcc) || isNull(es.data.expense.category))) {
+					us.show('Mandatory fields are empty!!', C.MSG.WARNING);
+					return false;
+				}
+				if (!es.data.expense.adjust && es.data.expense.fromAcc.doBills &&
+						isNull(es.data.expense.bill)) {
+					us.show('Mandatory fields are empty!!', C.MSG.WARNING);
+					return false;
+				}
+				es.saveExpense();
+				els.loadAllExpenses();
+				$('#model_Modify').modal('hide');
+			}
+		}
+
+		function isNull(e) {
+			return !e || !e.id;
+		}
+
+		function getBills() {
+			if (!isNull(es.data.expense.fromAcc)) {
+				return es.getBillsForAcc();
+			}
 		}
 
 		function deleteExpense() {

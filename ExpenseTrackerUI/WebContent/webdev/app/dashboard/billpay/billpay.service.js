@@ -9,14 +9,17 @@
 	function billpayService(ms, us) {
 		var data = {
 			bill: null,
-			pay: null
+			pay: {
+				acc: '',
+				paidDt: ''
+			}
 		};
 
 		var dummyBill = function() {
 			return {
 				bill: {
 					id: 302,
-					acct: {
+					acc: {
 						id: 83,
 						name: 'Chase Freedom'
 					},
@@ -28,12 +31,16 @@
 					paidDt: null
 				},
 				pay: {
-					acct: {},
+					acc: '',
 					paidDt: ''
 				}
 			};
 		};
 
+		var initForm = function(d) {
+			d.pay.acc = '';
+			d.pay.paidDt = '';
+		};
 		var loadBill = function(id) {
 			console.log('Getting info for Bill @ vDB :: ' + id + ',' + ms.data.city.name);
 			// TODO Ajax fetch bill details.
@@ -48,6 +55,7 @@
 					JSON.stringify(this.data));
 			// TODO Ajax fetch bill details.
 			us.showMsg('Bill Pay', 'success');
+			initForm(this.data);
 		};
 
 		return {

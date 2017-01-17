@@ -10,35 +10,35 @@
             Modify {{$ctrl.data.expense.adjust?'Adjustment':'Expense'}}</h4>
         </div>
         <div class="modal-body">
-          <form>
+          <form name="modifyForm" novalidate="novalidate" ng-submit="$ctrl.saveExpense(modifyForm.$valid)">
             <div class="form-group">
               <label class="control-label">From Account</label>
-              <input id="m_fromAccount" ng-model="$ctrl.data.expense.fromAc.name" type="text" class="form-control" data-provide="typeahead" autocomplete="off">
+              <input ng-model="$ctrl.data.expense.fromAcc" type="text" class="form-control" uib-typeahead="acc as acc.name for acc in $ctrl.ta.accounts | filter:$viewValue" typeahead-show-hint="true" typeahead-min-length="0" typeahead-editable="false">
             </div>
             <div ng-if="$ctrl.data.expense.adjust" class="form-group">
               <label class="control-label">To Account</label>
-              <input id="m_toAccount" ng-model="$ctrl.data.expense.toAc.name" type="text" class="form-control" data-provide="typeahead" autocomplete="off">
+              <input ng-model="$ctrl.data.expense.toAcc" type="text" class="form-control" uib-typeahead="acc as acc.name for acc in $ctrl.ta.accounts | filter:$viewValue" typeahead-show-hint="true" typeahead-min-length="0" typeahead-editable="false">
             </div>
-            <div ng-if="!$ctrl.data.expense.adjust" class="form-group">
+            <div ng-if="!$ctrl.data.expense.adjust && $ctrl.data.expense.fromAcc.doBills" class="form-group">
               <label class="control-label">Bill</label>
-              <select ng-model="$ctrl.data.expense.bill" ng-options="bill as bill.name for bill in $ctrl.data.expense.bills track by bill.id" class="form-control"></select>
+              <input ng-model="$ctrl.data.expense.bill" type="text" class="form-control" uib-typeahead="bill as bill.name for bill in $ctrl.getBills() | filter:$viewValue" typeahead-show-hint="true" typeahead-min-length="0" typeahead-editable="false">
             </div>
             <div ng-if="!$ctrl.data.expense.adjust" class="form-group">
               <label class="control-label">Category</label>
-              <input id="m_category" ng-model="$ctrl.data.expense.cat.name" type="text" class="form-control" data-provide="typeahead" autocomplete="off">
+              <input ng-model="$ctrl.data.expense.category" type="text" class="form-control" uib-typeahead="cat as cat.name for cat in $ctrl.ta.categories | filter:$viewValue" typeahead-show-hint="true" typeahead-min-length="0" typeahead-editable="false">
             </div>
             <div class="form-group">
               <label class="control-label">Description</label>
-                <input id="m_description" ng-model="$ctrl.data.expense.desc" type="text" class="form-control" data-provide="typeahead" autocomplete="off">
+                <input ng-model="$ctrl.data.expense.description" type="text" class="form-control" required uib-typeahead="desc for desc in $ctrl.ta.descriptions | filter:$viewValue | limitTo:8">
             </div>
             <div class="form-group">
               <div class="col-md-4">
                 <label class="control-label">Amount</label>
-                <input ng-model="$ctrl.data.expense.amt" xx-amount type="text" class="form-control">
+                <input ng-model="$ctrl.data.expense.amount" xx-amount type="text" class="form-control" required>
               </div>
               <div class="col-md-4">
                 <label class="control-label">Date</label>
-                <input ng-model="$ctrl.data.expense.transDt" xx-date type="text" class="form-control" data-provide="datepicker">
+                <input ng-model="$ctrl.data.expense.transDt" xx-date type="text" class="form-control" required data-provide="datepicker">
               </div>
               <div class="col-md-4">
                 <div ng-if="!$ctrl.data.expense.adjust">
@@ -47,7 +47,7 @@
               </div>
             </div>
             <div class="form-group">
-              <button type="button" ng-click="$ctrl.saveExpense()" class="btn btn-warning pull-right" tooltip rel="tooltip" title="Save"><i class="material-icons">save</i></button>
+              <button type="submit" ng-disabled="modifyForm.$invalid" class="btn btn-warning pull-right" tooltip rel="tooltip" title="Save"><i class="material-icons">save</i></button>
             </div>
           </form>
         </div>
@@ -69,24 +69,24 @@
           <form>
             <div class="form-group">
               <label class="control-label">From Account</label>
-              <input ng-model="$ctrl.data.expense.fromAc.name" type="text" class="form-control" disabled="disabled">
+              <input ng-model="$ctrl.data.expense.fromAcc.name" type="text" class="form-control" disabled="disabled">
             </div>
             <div ng-if="$ctrl.data.expense.adjust" class="form-group">
               <label class="control-label">To Account</label>
-              <input ng-model="$ctrl.data.expense.toAc.name" type="text" class="form-control" disabled="disabled">
+              <input ng-model="$ctrl.data.expense.toAcc.name" type="text" class="form-control" disabled="disabled">
             </div>
             <div ng-if="!$ctrl.data.expense.adjust" class="form-group">
               <label class="control-label">Category</label>
-              <input ng-model="$ctrl.data.expense.cat.name" type="text" class="form-control" disabled="disabled">
+              <input ng-model="$ctrl.data.expense.category.name" type="text" class="form-control" disabled="disabled">
             </div>
             <div class="form-group">
               <label class="control-label">Description</label>
-              <input ng-model="$ctrl.data.expense.desc" type="text" class="form-control" disabled="disabled">
+              <input ng-model="$ctrl.data.expense.description" type="text" class="form-control" disabled="disabled">
             </div>
             <div class="form-group">
               <div class="col-md-4">
                 <label class="control-label">Amount</label>
-                <input ng-model="$ctrl.data.expense.amt" xx-amount type="text" class="form-control" disabled="disabled">
+                <input ng-model="$ctrl.data.expense.amount" xx-amount type="text" class="form-control" disabled="disabled">
               </div>
               <div class="col-md-4">
                 <label class="control-label">Date</label>

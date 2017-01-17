@@ -47,16 +47,20 @@
 						'CreditCard Bill', 'Cash', 'Walgreens'],
 				accounts: [{
 					id: 62,
-					name: 'BOA - 7787'
+					name: 'BOA - 7787',
+					doBills: false
 				}, {
 					id: 60,
-					name: 'BOA VISA'
+					name: 'BOA VISA',
+					doBills: false
 				}, {
 					id: 83,
-					name: 'Chase Freedom'
+					name: 'Chase Freedom',
+					doBills: false
 				}, {
 					id: 80,
-					name: 'Chase Checking'
+					name: 'Chase Checking',
+					doBills: false
 				}],
 				months: ['Dec-16', 'Oct-16', 'Sep-16', 'Aug-16', 'Jul-16', 'Jun-16']
 			});

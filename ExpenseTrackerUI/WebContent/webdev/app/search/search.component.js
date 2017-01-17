@@ -46,29 +46,11 @@
 		}
 
 		function typeAheads() {
-			$('#category').typeahead({
-				source: V.categories,
-				minLength: 0,
-				updater: function(item) {
-					ss.data.categoryId = item.id;
-					return item;
-				}
-			});
-			$('#description').typeahead({
-				source: V.descriptions
-			});
-			$('#expMonth, #entryMonth').typeahead({
-				source: V.months,
-				minLength: 0
-			});
-			$('#account').typeahead({
-				source: V.accounts,
-				minLength: 0,
-				updater: function(item) {
-					ss.data.accountId = item.id;
-					return item;
-				}
-			});
+			vm.ta = {};
+			vm.ta.descriptions = V.descriptions;
+			vm.ta.categories = V.categories;
+			vm.ta.months = V.months;
+			vm.ta.accounts = V.accounts;
 		}
 
 		function doSearch() {

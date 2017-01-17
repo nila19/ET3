@@ -8,11 +8,9 @@
 	searchService.$inject = ['etmenuService'];
 	function searchService(ms) {
 		var data = {
-			categoryId: '',
 			category: '',
 			description: '',
 			amount: '',
-			accountId: '',
 			account: '',
 			expMonth: '',
 			entryMonth: '',
