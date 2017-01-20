@@ -1,6 +1,5 @@
 package com.expense.mvc.service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -14,29 +13,16 @@ import com.expense.mvc.model.dao.TransactionDAO;
 import com.expense.mvc.model.entity.Transaction;
 import com.expense.mvc.model.ui.CategoryUI;
 import com.expense.mvc.model.ui.SummaryUI;
-import com.expense.mvc.model.ui.TransactionUI;
-import com.expense.utils.FormatUtils;
 import com.expense.utils.Mapper;
 
 @Service
 public class SummaryService {
 
 	@Autowired
-	private LoginService loginService;
+	private StartupService loginService;
 
 	@Autowired
 	private TransactionDAO transactionDAO;
-
-	@Transactional(propagation = Propagation.REQUIRED, readOnly = true)
-	public List<TransactionUI> search(TransactionUI ui, int dataKey) {
-		List<Transaction> trans = this.transactionDAO.findForSearch(dataKey, ui);
-
-		List<TransactionUI> uis = new ArrayList<TransactionUI>();
-		for (Transaction tran : trans) {
-			uis.add(new TransactionUI(tran));
-		}
-		return uis;
-	}
 
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = true)
 	public SummaryHelper getSummary(char adhoc, boolean forecast, int dataKey) {
@@ -66,13 +52,5 @@ public class SummaryService {
 		}
 
 		return map;
-	}
-
-	public String getTotals(List<TransactionUI> trans) {
-		double total = 0;
-		for (TransactionUI tui : trans) {
-			total += tui.getAmount();
-		}
-		return FormatUtils.AMOUNT.format(total);
 	}
 }

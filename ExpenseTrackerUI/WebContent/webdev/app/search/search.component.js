@@ -26,42 +26,29 @@
 
 			// If menu is not loaded, load the default city.
 			ms.checkInit();
+
 			isDrillDown();
 
-			// Run default search.
-			loadExpenses();
-			typeAheads();
+			vm.ta = V.data;
 		}
 
 		// Check if sent from Summary page.
 		function isDrillDown() {
 			if ($routeParams.drill && $routeParams.drill === 'Y') {
-				var category = us.getById(V.categories, ss.data.categoryId);
+				var category = us.getById(V.data.categories, ss.data.category.id);
 				if (category) {
-					ss.data.category = category.name;
+					ss.data.category = category;
 				}
-				console.log('Drill down :: ' + ss.data.categoryId + ' , ' + ss.data.expMonth);
-				els.data.filterApplied = true;
+				console.log('Drill down :: ' + ss.data.category.id + ' , ' + ss.data.expMonth);
+
+				// Run default search.
+				doSearch();
 			}
 		}
 
-		function typeAheads() {
-			vm.ta = {};
-			vm.ta.descriptions = V.descriptions;
-			vm.ta.categories = V.categories;
-			vm.ta.months = V.months;
-			vm.ta.accounts = V.accounts;
-		}
-
 		function doSearch() {
-			sus.testAjax();
 			els.data.filterApplied = true;
-			// TODO - fix this back.
-			// loadExpenses();
-		}
-
-		function loadExpenses() {
-			els.loadAllExpenses();
+			ss.doSearch();
 		}
 	}
 })(window.angular);

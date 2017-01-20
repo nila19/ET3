@@ -37,12 +37,4 @@ public class AccountDAO extends BaseDAO<Account, Integer> {
 		return findByParameters("from Account where dataKey = :dataKey and status = :status order by displayOrder",
 				parms);
 	}
-
-	public List<Account> find(int dataKey, int acctId) {
-		HashMap<String, Object> parms = new HashMap<String, Object>();
-		parms.put("dataKey", dataKey);
-		parms.put("acctId", acctId);
-
-		return findByParameters("from Account where dataKey = :dataKey and accountId = :acctId", parms);
-	}
 }

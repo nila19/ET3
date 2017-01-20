@@ -12,14 +12,13 @@
 		},
 		SIZES: {
 			SUMMARY_COL: 13,
-			SEARCH_ROW: 5, // # of Expense @ Search
+			SEARCH_ROW: 13, // # of Expense @ Search
 			DASHBOARD_ROW: 4, // # of Expense @ Dashboard
 			BILLS_ROW: 2, // # of Bills @ Dashboard
 			ACCTS_COL: 6
 		},
 		AMOUNT_REGEXP: /^-?\d+(?:\.\d{2}){0,1}$/,
-		BASE_URL: 'http://localhost:8080/TestWebServices/servlet',
-		// BASE_URL: './servlet',
+		BASE_URL: 'http://localhost:8080/ExpenseTrackerWS/servlet',
 		PAGES: {
 			DASHBOARD: 'DASHBOARD',
 			SUMMARY: 'SUMMARY',
@@ -28,10 +27,6 @@
 		CURRENCY: {
 			USD: 'USD',
 			INR: 'INR'
-		},
-		URLs: {
-			Login: '/access/in',
-			Forget: '/access/fgt'
 		}
 	});
 

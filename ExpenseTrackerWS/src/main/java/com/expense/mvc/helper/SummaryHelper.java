@@ -78,12 +78,12 @@ public class SummaryHelper implements java.io.Serializable {
 	private void synchCategories() {
 		HashMap<Integer, CategoryUI> cats = new HashMap<Integer, CategoryUI>();
 		for (CategoryUI cat : categories) {
-			cats.put(cat.getCategoryId(), cat);
+			cats.put(cat.getId(), cat);
 		}
 
 		for (Map<Integer, SummaryUI> map : master.values()) {
 			for (SummaryUI sui : map.values()) {
-				cats.put(sui.getCategory().getCategoryId(), sui.getCategory());
+				cats.put(sui.getCategory().getId(), sui.getCategory());
 			}
 		}
 
@@ -93,11 +93,11 @@ public class SummaryHelper implements java.io.Serializable {
 
 	private void forecast() {
 		for (CategoryUI cat : categories) {
-			Map<Integer, SummaryUI> map = master.get(cat.getCategoryId());
+			Map<Integer, SummaryUI> map = master.get(cat.getId());
 			if (map != null) {
 				MonthUI mui = new MonthUI(DateUtils.truncate(new Date(), Calendar.MONTH));
 				SummaryUI ui = map.get(mui.getSeq());
-				SummaryUI fui = forecast.get(cat.getCategoryId());
+				SummaryUI fui = forecast.get(cat.getId());
 
 				if (fui != null) {
 					if (ui != null) {
@@ -107,7 +107,7 @@ public class SummaryHelper implements java.io.Serializable {
 						}
 					} else {
 						fui.setMonth(mui);
-						fui.setTransMonth(mui.getTransMonth());
+						fui.setTransMonth(mui.getId());
 						map.put(mui.getSeq(), fui);
 					}
 				}
@@ -120,7 +120,7 @@ public class SummaryHelper implements java.io.Serializable {
 		MonthUI mui = new MonthUI(DateUtils.truncate(new Date(), Calendar.MONTH));
 		SummaryUI dui = new SummaryUI();
 		dui.setMonth(mui);
-		dui.setTransMonth(mui.getTransMonth());
+		dui.setTransMonth(mui.getId());
 		totals.put(mui.getSeq(), dui);
 
 		// Calculate totals
@@ -141,14 +141,14 @@ public class SummaryHelper implements java.io.Serializable {
 		Map<Integer, SummaryUI> ytotals = new HashMap<Integer, SummaryUI>();
 		for (int mseq : totals.keySet()) {
 			SummaryUI mui = totals.get(mseq);
-			if (mui.getMonth().getType() == MonthUI.Type.MONTH.type) {
+			if (!mui.getMonth().isAggregate()) {
 				Date year = DateUtils.truncate(mui.getTransMonth(), Calendar.YEAR);
-				MonthUI yui = new MonthUI(year, MonthUI.Type.YEAR);
+				MonthUI yui = new MonthUI(year, true);
 
 				SummaryUI ui = ytotals.containsKey(yui.getSeq()) ? ytotals.get(yui.getSeq()) : new SummaryUI();
 
 				ui.setMonth(yui);
-				ui.setTransMonth(yui.getTransMonth());
+				ui.setTransMonth(yui.getId());
 				ui.setAmount(ui.getAmount() + totals.get(mseq).getAmount());
 				ui.setCount(ui.getCount() + totals.get(mseq).getCount());
 				ytotals.put(yui.getSeq(), ui);
@@ -169,12 +169,12 @@ public class SummaryHelper implements java.io.Serializable {
 				SummaryUI mui = map.get(mseq);
 				Date year = DateUtils.truncate(mui.getTransMonth(), Calendar.YEAR);
 
-				MonthUI yui = new MonthUI(year, MonthUI.Type.YEAR);
+				MonthUI yui = new MonthUI(year, true);
 				SummaryUI ui = ymap.containsKey(yui.getSeq()) ? ymap.get(yui.getSeq()) : new SummaryUI();
 
 				ui.setMonth(yui);
 				ui.setCategory(mui.getCategory());
-				ui.setTransMonth(yui.getTransMonth());
+				ui.setTransMonth(yui.getId());
 				ui.setAmount(ui.getAmount() + map.get(mseq).getAmount());
 				ui.setCount(ui.getCount() + map.get(mseq).getCount());
 				ymap.put(yui.getSeq(), ui);

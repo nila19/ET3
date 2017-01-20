@@ -7,7 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-import com.expense.utils.FormatUtils;
+import com.expense.utils.FU;
 
 @Entity
 @Table(name = "DATAKEY")
@@ -131,26 +131,26 @@ public class DataKey extends com.expense.mvc.model.BaseEntity implements java.io
 
 	public Date getStartDt() {
 		try {
-			return FormatUtils.yyyyMMdd.parse(strStartDt);
+			return FU.date(FU.Date.yyyyMMdd).parse(strStartDt);
 		} catch (Exception e) {
 			return null;
 		}
 	}
 
 	public void setStartDt(Date startDt) {
-		strStartDt = FormatUtils.yyyyMMdd.format(startDt);
+		strStartDt = FU.date(FU.Date.yyyyMMdd).format(startDt);
 	}
 
 	public Date getEndDt() {
 		try {
-			return FormatUtils.yyyyMMdd.parse(strEndDt);
+			return FU.date(FU.Date.yyyyMMdd).parse(strEndDt);
 		} catch (Exception e) {
 			return null;
 		}
 	}
 
 	public void setEndDt(Date endDt) {
-		strEndDt = FormatUtils.yyyyMMdd.format(endDt);
+		strEndDt = FU.date(FU.Date.yyyyMMdd).format(endDt);
 	}
 
 	@Override

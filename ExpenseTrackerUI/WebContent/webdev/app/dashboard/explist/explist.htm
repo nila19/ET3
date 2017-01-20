@@ -27,30 +27,30 @@
                     <tbody>
                       <tr ng-repeat="row in $ctrl.data.pgData.rows">
                         <td class="td-actions text-right">
-                          <button type="button" ng-click="$ctrl.showModifyExpense(row.id)" tooltip rel="tooltip" title="Edit" class="btn btn-warning btn-simple btn-xs">
+                          <button type="button" ng-click="$ctrl.showModifyExpense(row.transId)" class="btn btn-warning btn-simple btn-xs">
                             <i class="material-icons">mode_edit</i>
                           </button>
-                          <button type="button" ng-click="$ctrl.showDeleteExpense(row.id)" tooltip rel="tooltip" title="Delete" class="btn btn-danger btn-simple btn-xs">
+                          <button type="button" ng-click="$ctrl.showDeleteExpense(row.transId)" class="btn btn-danger btn-simple btn-xs">
                             <i class="material-icons">delete</i>
                           </button>
-                          <button type="button" ng-click="$ctrl.changeSequence(row.id,-1)" tooltip rel="tooltip" title="Move Up" class="btn btn-primary btn-simple btn-xs">
+                          <button type="button" ng-click="$ctrl.swapExpense(row.transId,-1)" class="btn btn-primary btn-simple btn-xs">
                             <i class="material-icons">arrow_upward</i>
                           </button>
-                          <button type="button" ng-click="$ctrl.changeSequence(row.id,1)" tooltip rel="tooltip" title="Move Down" class="btn btn-primary btn-simple btn-xs">
+                          <button type="button" ng-click="$ctrl.swapExpense(row.transId,1)" class="btn btn-primary btn-simple btn-xs">
                             <i class="material-icons">arrow_downward</i>
                           </button>
                         </td>
-                        <td>{{row.entryDt | date:'dd-MMM-yy h:mm a'}}</td>
-                        <td>{{row.transDt | date:'dd-MMM'}}</td>
-                        <td>{{row.cat}}</td>
-                        <td>{{row.desc}}</td>
-                        <td class="text-right">{{row.amt | currency:''}}</td>
-                        <td class="text-right">{{row.fromAc}}</td>
-                        <td class="text-right">{{row.fromFrom | currency:''}}</td>
-                        <td class="text-right">{{row.fromTo | currency:''}}</td>
-                        <td class="text-right">{{row.toAc}}</td>
-                        <td class="text-right">{{row.toFrom | currency:''}}</td>
-                        <td class="text-right">{{row.toTo | currency:''}}</td>
+                        <td>{{row.entryDate | date:'dd-MMM-yy h:mm a'}}</td>
+                        <td>{{row.transDate | date:'dd-MMM'}}</td>
+                        <td>{{row.category}}</td>
+                        <td>{{row.description}}</td>
+                        <td class="text-right">{{row.amount | currency:''}}</td>
+                        <td class="text-right">{{row.fromAccountDesc}}</td>
+                        <td class="text-right">{{row.fromBalanceBf | currency:''}}</td>
+                        <td class="text-right">{{row.fromBalanceAf | currency:''}}</td>
+                        <td class="text-right">{{row.toAccountDesc}}</td>
+                        <td class="text-right">{{row.toBalanceBf | currency:''}}</td>
+                        <td class="text-right">{{row.toBalanceAf | currency:''}}</td>
                         <td class="td-actions text-right">
                           <span tooltip rel="tooltip" title="{{row.adhoc?'Adhoc Expense':row.adjust?'Adjustment':''}}" class="btn btn-primary btn-simple btn-xs no-btn">&nbsp;
                             <i ng-if="row.adhoc" class="material-icons">card_giftcard</i><i ng-if="row.adjust" class="material-icons">transform</i>
@@ -62,7 +62,8 @@
                       <tr>
                         <td colspan="5">&nbsp;</td>
                         <td class="text-right"><strong>{{$ctrl.data.total | currency:''}}</strong></td>
-                        <td colspan="4">&nbsp;</td>
+                        <td colspan="3">&nbsp;</td>
+                        <td><span ng-if="$ctrl.data.loading" class="btn btn-simple btn-xs no-btn"><img alt="loading..." style="width:20px;height:20px;" ng-src="loading.gif"></span>&nbsp;</td>
                         <td>
                           <div class="stats">
                             <button ng-if="$ctrl.data.filterApplied" ng-click="$ctrl.clearFilter()" type="button" tooltip rel="tooltip" title="Clear Filter" class="btn btn-primary btn-xs">

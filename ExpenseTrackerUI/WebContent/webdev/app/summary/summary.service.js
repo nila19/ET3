@@ -194,8 +194,8 @@
 
 		var loadSummary = function() {
 			// TODO Ajax generate Summary from DB
-			console.log('Loading Summary @ vDB :: ' + ms.data.city.name + ', ' + this.data.adhoc +
-					', ' + this.data.regular + ', ' + this.data.forecast);
+			console.log('Loading Summary @ vDB :: ' + ms.data.menu.city.name + ', ' +
+					this.data.adhoc + ', ' + this.data.regular + ', ' + this.data.forecast);
 			this.loadData(dummyData());
 		};
 		var loadData = function(data) {

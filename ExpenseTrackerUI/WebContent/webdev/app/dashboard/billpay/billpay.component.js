@@ -19,13 +19,14 @@
 		// ***** Function declarations *****//
 		function init() {
 			vm.data = bps.data;
-			typeAheads();
+			vm.ta = V.data;
+			// typeAheads();
 		}
 
-		function typeAheads() {
-			vm.ta = {};
-			vm.ta.accounts = V.accounts;
-		}
+		// function typeAheads() {
+		// vm.ta = {};
+		// vm.ta.accounts = V.data.accounts;
+		// }
 
 		function payBill(valid) {
 			if (valid) {

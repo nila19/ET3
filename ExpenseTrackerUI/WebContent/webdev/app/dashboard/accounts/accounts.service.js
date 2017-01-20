@@ -159,7 +159,7 @@
 
 		var loadAccountDetails = function() {
 			// TODO Ajax fetch account details from DB.
-			console.log('Getting account details @ vDB..' + JSON.stringify(ms.data.city));
+			console.log('Getting account details @ vDB..' + JSON.stringify(ms.data.menu.city));
 			this.loadData(dummyAccounts());
 		};
 		var loadData = function(data) {
@@ -177,7 +177,7 @@
 		};
 		var tallyAccount = function(id) {
 			// TODO - Ajax Tally id.
-			console.log('Tallying account @ vDB :: ' + id + ', ' + ms.data.city.name);
+			console.log('Tallying account @ vDB :: ' + id + ', ' + ms.data.menu.city.name);
 			us.showMsg('Tally', 'success');
 		};
 

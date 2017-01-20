@@ -102,7 +102,7 @@
 				// TODO Ajax query DB for all Bills, sort by Open at top & then by Account.
 				list = dummyBills();
 			}
-			console.log('Loading Bills @ vDB... ' + ms.data.city.name);
+			console.log('Loading Bills @ vDB... ' + ms.data.menu.city.name);
 			this.loadData(list);
 		};
 		var loadData = function(data) {

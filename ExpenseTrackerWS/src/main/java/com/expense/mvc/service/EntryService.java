@@ -24,8 +24,9 @@ import com.expense.mvc.model.entity.Account;
 import com.expense.mvc.model.entity.Bill;
 import com.expense.mvc.model.entity.Transaction;
 import com.expense.mvc.model.ui.BillUI;
+import com.expense.mvc.model.ui.SwapUI;
 import com.expense.mvc.model.ui.TransactionUI;
-import com.expense.utils.FormatUtils;
+import com.expense.utils.FU;
 import com.expense.utils.Utils;
 
 @Service
@@ -47,9 +48,8 @@ public class EntryService {
 	private MessageSource messages;
 
 	@Transactional(propagation = Propagation.REQUIRED)
-	public int addExpense(TransactionUI ui, int dataKey) {
+	public int addExpense(TransactionUI ui) {
 		Transaction t = new Transaction();
-		t.setDataKey(dataKey);
 		t.setEntryDate(new Date());
 		t.setEntryMonth(DateUtils.truncate(new Date(), Calendar.MONTH));
 		t.setTallyInd(Transaction.Tally.NO.status);
@@ -58,6 +58,9 @@ public class EntryService {
 
 		Account fr = t.getFromAccount();
 		Account to = t.getToAccount();
+
+		t.setDataKey((ui.getFromAccountId() > 0 ? t.getFromAccount():t.getToAccount()).getDataKey());
+
 		if (fr.doesBills() && fr.getOpenBill() != null) {
 			t.setFromBill(fr.getOpenBill());
 		}
@@ -67,7 +70,7 @@ public class EntryService {
 
 		transactionDAO.save(t);
 
-		DecimalFormat df = FormatUtils.AMOUNT_NOCOMMA;
+		DecimalFormat df = FU.number(FU.Number.NOCOMMA);
 
 		// Set From/To accounts' 'BEFORE' balances before cash movement.
 		if (t.getFromAccount().getAccountId() != 0) {
@@ -210,20 +213,20 @@ public class EntryService {
 	}
 
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = true)
-	public TransactionUI getById(int transId) {
+	public TransactionUI getTransaction(int transId) {
 		Transaction t = transactionDAO.findById(transId);
 		return new TransactionUI(t);
 	}
 
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = true)
-	public BillUI getBillById(int billId) {
+	public BillUI getBill(int billId) {
 		Bill b = billDAO.findById(billId);
 		return new BillUI(b);
 	}
 
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = true)
-	public List<BillUI> getBillsforAc(int dataKey, int accId) {
-		List<Bill> bills = billDAO.findForAcct(dataKey, accId);
+	public List<BillUI> getBillsforAccount(int accId) {
+		List<Bill> bills = billDAO.findForAcct(accId);
 
 		List<BillUI> uis = new ArrayList<BillUI>();
 		for (Bill bill : bills) {
@@ -239,7 +242,7 @@ public class EntryService {
 	}
 
 	@Transactional(propagation = Propagation.REQUIRED)
-	public int payBill(TransactionUI ui, int dataKey) {
+	public int payBill(TransactionUI ui) {
 		int billId = ui.getToBillId();
 		Bill bill = billDAO.findById(billId);
 
@@ -247,10 +250,10 @@ public class EntryService {
 		ui.setAdhocInd(Transaction.Adhoc.NO.type);
 		ui.setToAccountId(bill.getAccount().getAccountId());
 		ui.setCategoryId(0);
-		ui.setDescription(Utils.getMsg(messages, "billpay.description"));
+		ui.setDescription("CC Bill Payment");
 		ui.setAmount(bill.getBillBalance());
 
-		int tranId = addExpense(ui, dataKey);
+		int tranId = addExpense(ui);
 		Transaction t = transactionDAO.findById(tranId);
 		t.setToBill(bill);
 		transactionDAO.save(t);
@@ -264,7 +267,13 @@ public class EntryService {
 	}
 
 	@Transactional(propagation = Propagation.REQUIRED)
-	public void swapTransSeq(int transId_1, int transId_2) {
+	public void swapSequence(SwapUI[] uis) {
+		for (SwapUI ui : uis) {
+			processSwap(ui.getFromTrans(), ui.getToTrans());
+		}
+	}
+	
+	private void processSwap(int transId_1, int transId_2) {
 		Transaction t1 = transactionDAO.findById(transId_1);
 		Transaction t2 = transactionDAO.findById(transId_2);
 
@@ -392,7 +401,7 @@ public class EntryService {
 			amount = amount * -1;
 		}
 
-		ac.setBalanceAmt(Double.valueOf(FormatUtils.AMOUNT_NOCOMMA.format(ac.getBalanceAmt() + amount)));
+		ac.setBalanceAmt(Double.valueOf(FU.number(FU.Number.NOCOMMA).format(ac.getBalanceAmt() + amount)));
 		accountDAO.save(ac);
 
 		// Find all future trans post this & adjust the ac balance.

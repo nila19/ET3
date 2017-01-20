@@ -13,8 +13,8 @@ import org.springframework.stereotype.Repository;
 
 import com.expense.mvc.model.BaseDAO;
 import com.expense.mvc.model.entity.Transaction;
-import com.expense.mvc.model.ui.TransactionUI;
-import com.expense.utils.FormatUtils;
+import com.expense.mvc.model.ui.SearchUI;
+import com.expense.utils.FU;
 
 @Repository
 public class TransactionDAO extends BaseDAO<Transaction, Integer> {
@@ -61,53 +61,45 @@ public class TransactionDAO extends BaseDAO<Transaction, Integer> {
 		return findByParameters(query, parms);
 	}
 
-	public List<Transaction> findForSearch(int dataKey, TransactionUI ui) {
+	public List<Transaction> findForSearch(SearchUI ui) {
 		HashMap<String, Object> parms = new HashMap<String, Object>();
-		parms.put("dataKey", dataKey);
-		parms.put("accountId", ui.getFromAccountId());
+		parms.put("dataKey", ui.getCity());
+		parms.put("accountId", ui.getAccountId());
 		parms.put("categoryId", ui.getCategoryId());
 		parms.put("description", "%" + ui.getDescription() + "%");
 		parms.put("amount_75", ui.getAmount() * TransactionDAO.PCT_75);
 		parms.put("amount_125", ui.getAmount() * TransactionDAO.PCT_125);
-		if (ui.getEntryMonth() != null) {
-			parms.put("entryMonth", FormatUtils.yyyyMMdd.format(ui.getEntryMonth()));
+		if (ui.getDtEntryMonth() != null) {
+			parms.put("entryMonth", FU.date(FU.Date.yyyyMMdd).format(ui.getDtEntryMonth()));
 		}
-		if (ui.getTransMonth() != null) {
-			parms.put("transMonth", FormatUtils.yyyyMMdd.format(ui.getTransMonth()));
+		if (ui.getDtTransMonth() != null) {
+			parms.put("transMonth", FU.date(FU.Date.yyyyMMdd).format(ui.getDtTransMonth()));
 		}
 		parms.put("adhocInd", ui.getAdhocInd());
 		parms.put("adjustInd", ui.getAdjustInd());
 
 		String query = "from Transaction where dataKey = :dataKey";
-
-		if (ui.getFromAccountId() > 0) {
+		if (ui.getAccountId() > 0) {
 			query += " and (fromAccount.accountId = :accountId or toAccount.accountId = :accountId )";
 		}
-
 		if (ui.getCategoryId() > 0) {
 			query += " and category.categoryId = :categoryId";
 		}
-
 		if (StringUtils.isNotBlank(ui.getDescription())) {
 			query += " and description like :description";
 		}
-
 		if (ui.getAmount() > 0) {
 			query += " and (amount between :amount_75 and :amount_125)";
 		}
-
-		if (ui.getEntryMonth() != null) {
+		if (ui.getDtEntryMonth() != null) {
 			query += " and strEntryMonth = :entryMonth";
 		}
-
-		if (ui.getTransMonth() != null) {
+		if (ui.getDtTransMonth() != null) {
 			query += " and strTransMonth = :transMonth";
 		}
-
 		if (ui.getAdhocInd() == Transaction.Adhoc.YES.type || ui.getAdhocInd() == Transaction.Adhoc.NO.type) {
 			query += " and adhocInd = :adhocInd";
 		}
-
 		if (ui.getAdjustInd() == Transaction.Adjust.YES.type || ui.getAdjustInd() == Transaction.Adjust.NO.type) {
 			query += " and adjustInd = :adjustInd";
 		}
@@ -138,8 +130,8 @@ public class TransactionDAO extends BaseDAO<Transaction, Integer> {
 		parms.put("adhocInd", Transaction.Adhoc.NO.type);
 		// Get Transactions for the last 3 months excluding the current month.
 		Date curr_month = DateUtils.truncate(new Date(), Calendar.MONTH);
-		parms.put("beginMon", FormatUtils.yyyyMMdd.format(DateUtils.addMonths(curr_month, -3)));
-		parms.put("endMon", FormatUtils.yyyyMMdd.format(DateUtils.addMonths(curr_month, -1)));
+		parms.put("beginMon", FU.date(FU.Date.yyyyMMdd).format(DateUtils.addMonths(curr_month, -3)));
+		parms.put("endMon", FU.date(FU.Date.yyyyMMdd).format(DateUtils.addMonths(curr_month, -1)));
 
 		String query = "from Transaction where dataKey = :dataKey and adjustInd = :adjustInd and adhocInd = :adhocInd and strTransMonth between :beginMon and :endMon";
 		return findByParameters(query, parms);

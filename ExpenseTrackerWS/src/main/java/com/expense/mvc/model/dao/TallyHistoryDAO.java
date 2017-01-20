@@ -22,7 +22,7 @@ public class TallyHistoryDAO extends BaseDAO<TallyHistory, Integer> {
 		idType = Integer.class;
 	}
 
-	public List<TallyHistory> findAll(int accountId) {
+	public List<TallyHistory> findForAcct(int accountId) {
 		HashMap<String, Object> parms = new HashMap<String, Object>();
 		parms.put("accountId", accountId);
 

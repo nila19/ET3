@@ -9,8 +9,8 @@
 	});
 
 	ExplistController.$inject = ['explistService', 'editService', 'etmenuService', 'searchService',
-			'CONSTANTS'];
-	function ExplistController(els, es, ms, ss, C) {
+			'accountsService', 'billsService', 'CONSTANTS'];
+	function ExplistController(els, es, ms, ss, acs, bs, C) {
 		var vm = this;
 		init();
 
@@ -21,7 +21,7 @@
 		vm.nextPage = nextPage;
 		vm.showModifyExpense = showModifyExpense;
 		vm.showDeleteExpense = showDeleteExpense;
-		vm.changeSequence = changeSequence;
+		vm.swapExpense = swapExpense;
 		vm.clearFilter = clearFilter;
 
 		// ***** Function declarations *****//
@@ -47,25 +47,57 @@
 			els.loadDataForPage();
 		}
 
-		function showModifyExpense(id) {
-			es.loadExpense(id);
+		function showModifyExpense(transId) {
+			es.loadExpense(transId);
 			$('#model_Modify').modal('show');
 		}
 
-		function showDeleteExpense(id) {
-			es.loadExpense(id);
+		function showDeleteExpense(transId) {
+			es.loadExpense(transId);
 			$('#model_Delete').modal('show');
 		}
 
-		function changeSequence(id, diff) {
-			var idx = els.getIndexOf(id);
-			var id2 = els.data.rows[idx + diff].id;
-			es.swapExpense(id, id2);
-			els.loadAllExpenses();
+		function swapExpense(transId, diff) {
+			var idx = els.getIndexOf(transId);
+			els.swapExpense(idx, idx + diff);
 		}
 
 		function clearFilter() {
-			els.clearFilter();
+			els.data.filterApplied = false;
+			if (ms.data.page === C.PAGES.SEARCH) {
+				ss.initializeData();
+			} else if (ms.data.page === C.PAGES.DASHBOARD) {
+				// Clear filter for Bills
+				if (acs.data.filterBy) {
+					bs.clearFilter();
+				}
+				bs.data.filterBy = null;
+				acs.data.filterBy = null;
+			}
+			reloadExpenses();
+		}
+
+		function reloadExpenses() {
+			if (ms.data.page === C.PAGES.SEARCH) {
+				ss.doSearch();
+			} else if (ms.data.page === C.PAGES.DASHBOARD) {
+				var list = null;
+				if (bs.data.filterBy) {
+					console.log('Filtering expenses for Bill @ vDB :: ' + bs.data.filterBy);
+					// Filter by Bill
+					list = els.dummyExpenses();
+				} else if (acs.data.filterBy) {
+					console.log('Filtering expenses for Account @ vDB :: ' + acs.data.filterBy);
+					// Filter by Account
+					list = els.dummyExpenses();
+				} else {
+					console.log('Getting all expenses @ vDB');
+					list = els.dummyExpenses();
+				}
+				// TODO Ajax fetch all expenses.
+				els.loadData(list);
+				console.log('Loading Expenses @ vDB...' + ms.data.menu.city.name);
+			}
 		}
 	}
 })(window.angular);

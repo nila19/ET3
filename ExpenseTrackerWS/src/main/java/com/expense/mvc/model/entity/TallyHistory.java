@@ -13,7 +13,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import com.expense.utils.FormatUtils;
+import com.expense.utils.FU;
 
 @Entity
 @Table(name = "TALLY_HISTORY")
@@ -84,14 +84,14 @@ public class TallyHistory extends com.expense.mvc.model.BaseEntity implements ja
 
 	public Date getTallyDate() {
 		try {
-			return FormatUtils.yyyyMMddHHmmss.parse(strTallyDate);
+			return FU.date(FU.Date.yyyyMMddHHmmss).parse(strTallyDate);
 		} catch (Exception e) {
 			return new Date(0);
 		}
 	}
 
 	public void setTallyDate(Date tallyDate) {
-		strTallyDate = FormatUtils.yyyyMMddHHmmss.format(tallyDate);
+		strTallyDate = FU.date(FU.Date.yyyyMMddHHmmss).format(tallyDate);
 	}
 
 	@Override

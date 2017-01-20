@@ -25,7 +25,7 @@
 		};
 		var addExpense = function() {
 			// TODO Ajax add to database.
-			console.log('Adding expense @ vDB :: ' + ms.data.city.name + ',' +
+			console.log('Adding expense @ vDB :: ' + ms.data.menu.city.name + ',' +
 					JSON.stringify(this.data));
 			us.showMsg('Add Expense', C.MSG.SUCCESS);
 			initForm(this.data);

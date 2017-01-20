@@ -10,6 +10,7 @@
 		return {
 			url: url,
 			get: get,
+			query: query,
 			post: post
 		};
 		function url(path) {
@@ -17,10 +18,13 @@
 			return $resource(url);
 		}
 		function get(path, data, ok) {
-			url(path).get(angular.toJson(data), ok, error);
+			url(path).get(data, ok, error);
+		}
+		function query(path, data, ok) {
+			url(path).query(data, ok, error);
 		}
 		function post(path, data, ok) {
-			url(path).save(angular.toJson(data), ok, error);
+			url(path).save(data, ok, error);
 		}
 
 		function error(resp) {

@@ -20,7 +20,7 @@ import com.expense.mvc.model.entity.Account;
 import com.expense.mvc.model.entity.TallyHistory;
 import com.expense.mvc.model.entity.Transaction;
 import com.expense.mvc.model.ui.TransactionUI;
-import com.expense.utils.FormatUtils;
+import com.expense.utils.FU;
 import com.expense.utils.Props;
 
 @Service
@@ -47,7 +47,7 @@ public class TallyService {
 
 	@Transactional(propagation = Propagation.REQUIRED)
 	public void tallyAccount(int accountId) {
-		DecimalFormat df = FormatUtils.AMOUNT_NOCOMMA;
+		DecimalFormat df = FU.number(FU.Number.NOCOMMA);
 
 		Date dt = new Date();
 		Account ac = accountDAO.findById(accountId);
@@ -111,9 +111,9 @@ public class TallyService {
 			}
 		}
 
-		map.put(Portfolio.CREDITS.type, FormatUtils.AMOUNT.format(credits));
-		map.put(Portfolio.DEBITS.type, FormatUtils.AMOUNT.format(debits));
-		map.put(Portfolio.BALANCES.type, FormatUtils.AMOUNT.format(credits - debits));
+		map.put(Portfolio.CREDITS.type, FU.number(FU.Number.AMOUNT).format(credits));
+		map.put(Portfolio.DEBITS.type, FU.number(FU.Number.AMOUNT).format(debits));
+		map.put(Portfolio.BALANCES.type, FU.number(FU.Number.AMOUNT).format(credits - debits));
 		return map;
 	}
 }

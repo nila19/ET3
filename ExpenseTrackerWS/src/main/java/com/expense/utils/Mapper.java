@@ -19,8 +19,8 @@ public class Mapper {
 			MonthUI month = new MonthUI(t.getTransMonth());
 
 			SummaryUI sui = null;
-			if (map.containsKey(cat.getCategoryId())) {
-				Map<Integer, SummaryUI> map2 = map.get(cat.getCategoryId());
+			if (map.containsKey(cat.getId())) {
+				Map<Integer, SummaryUI> map2 = map.get(cat.getId());
 
 				if (map2.containsKey(month.getSeq())) {
 					sui = map2.get(month.getSeq());
@@ -34,7 +34,7 @@ public class Mapper {
 				Map<Integer, SummaryUI> map2 = new HashMap<Integer, SummaryUI>();
 				sui = new SummaryUI(cat, month, t);
 				map2.put(month.getSeq(), sui);
-				map.put(cat.getCategoryId(), map2);
+				map.put(cat.getId(), map2);
 			}
 		}
 		return map;
@@ -47,13 +47,13 @@ public class Mapper {
 			CategoryUI cat = new CategoryUI(t.getCategory());
 
 			SummaryUI sui = null;
-			if (map.containsKey(cat.getCategoryId())) {
-				sui = map.get(cat.getCategoryId());
+			if (map.containsKey(cat.getId())) {
+				sui = map.get(cat.getId());
 				sui.setAmount(sui.getAmount() + t.getAmount());
 				sui.setCount(sui.getCount() + 1);
 			} else {
 				sui = new SummaryUI(cat, null, t);
-				map.put(cat.getCategoryId(), sui);
+				map.put(cat.getId(), sui);
 			}
 		}
 		return map;

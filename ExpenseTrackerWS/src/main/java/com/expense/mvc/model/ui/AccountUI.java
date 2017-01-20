@@ -9,17 +9,16 @@ import org.apache.commons.lang3.time.DateUtils;
 import com.expense.mvc.model.entity.Account;
 import com.expense.mvc.model.entity.Bill;
 import com.expense.mvc.model.entity.Transaction;
-import com.expense.utils.FormatUtils;
 import com.expense.utils.Props;
 import com.expense.utils.Utils;
 
 public class AccountUI implements java.io.Serializable {
 	private static final long serialVersionUID = 1L;
 
-	private int accountId;
-	private String description = "";
+	private int id;
+	private String name = "";
 	private double tallyBalance;
-	private Date tallyDate2;
+	private Date tallyDate;
 	private double tallyExpenseAmt;
 	private int tallyExpenseCnt;
 	private double balanceAmt;
@@ -31,11 +30,6 @@ public class AccountUI implements java.io.Serializable {
 	private int closingDay;
 	private int dueDay;
 
-	private String fbalanceAmt = "";
-	private String ftallyExpenseAmt = "";
-	private String ftallyBalance = "";
-	private String ftallyDate = "";
-
 	// Bill Information
 	private boolean dueDtWarning = false;
 	private Date billDt;
@@ -45,40 +39,29 @@ public class AccountUI implements java.io.Serializable {
 	private Date billPaidDt;
 	private double openBillAmt;
 
-	private String fbillDt = "";
-	private String fdueDt = "";
-	private String fbillAmt = "";
-	private String fbillBalance = "";
-	private String fbillPaidDt = "";
-	private String fopenBillAmt = "";
-
 	public AccountUI() {
 	}
 
 	public AccountUI(Account ac) {
 		Utils.copyBean(this, ac);
 
-		setBalanceAmt(ac.getBalanceAmt());
-		setTallyBalance(ac.getTallyBalance());
-		setTallyDate2(ac.getTallyDate());
-
-		// TALLY COUNT, AMT
+		setId(ac.getAccountId());
+		setName(ac.getDescription());
 		setTallyExpenses(ac);
-
 		setBillInfo(ac);
 	}
 
 	private void setBillInfo(Account ac) {
 		if (ac.getLastBill() != null) {
-			Bill lbill = ac.getLastBill();
+			Bill bill = ac.getLastBill();
 
-			setBillDt(lbill.getBillDt());
-			setDueDt(lbill.getDueDt());
-			setBillAmt(lbill.getBillAmt());
-			setBillBalance(lbill.getBillBalance());
-			setBillPaidDt(lbill.getBillPaidDt());
+			setBillDt(bill.getBillDt());
+			setDueDt(bill.getDueDt());
+			setBillAmt(bill.getBillAmt());
+			setBillBalance(bill.getBillBalance());
+			setBillPaidDt(bill.getBillPaidDt());
 
-			checkDueDateWarning(lbill);
+			checkDueDateWarning(bill);
 		}
 
 		if (ac.getOpenBill() != null) {
@@ -119,24 +102,22 @@ public class AccountUI implements java.io.Serializable {
 		if (tallyExpenseAmt != 0 && ac.getType() == Account.Type.CASH.type) {
 			tallyExpenseAmt = tallyExpenseAmt * -1;
 		}
-
-		setTallyExpenseAmt(tallyExpenseAmt);
 	}
 
-	public int getAccountId() {
-		return accountId;
+	public int getId() {
+		return id;
 	}
 
-	public void setAccountId(int accountId) {
-		this.accountId = accountId;
+	public void setId(int id) {
+		this.id = id;
 	}
 
-	public String getDescription() {
-		return description;
+	public String getName() {
+		return name;
 	}
 
-	public void setDescription(String description) {
-		this.description = description;
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public double getBalanceAmt() {
@@ -145,7 +126,6 @@ public class AccountUI implements java.io.Serializable {
 
 	public void setBalanceAmt(double balanceAmt) {
 		this.balanceAmt = balanceAmt;
-		fbalanceAmt = FormatUtils.AMOUNT.format(this.balanceAmt);
 	}
 
 	public double getTallyBalance() {
@@ -154,16 +134,14 @@ public class AccountUI implements java.io.Serializable {
 
 	public void setTallyBalance(double tallyBalance) {
 		this.tallyBalance = tallyBalance;
-		ftallyBalance = FormatUtils.AMOUNT.format(this.tallyBalance);
 	}
 
-	public Date getTallyDate2() {
-		return tallyDate2;
+	public Date getTallyDate() {
+		return tallyDate;
 	}
 
-	public void setTallyDate2(Date tallyDate) {
-		tallyDate2 = tallyDate;
-		ftallyDate = FormatUtils.ddMMMyyhhmma.format(tallyDate2);
+	public void setTallyDate(Date tallyDate) {
+		this.tallyDate = tallyDate;
 	}
 
 	public double getTallyExpenseAmt() {
@@ -172,7 +150,6 @@ public class AccountUI implements java.io.Serializable {
 
 	public void setTallyExpenseAmt(double tallyExpenseAmt) {
 		this.tallyExpenseAmt = tallyExpenseAmt;
-		ftallyExpenseAmt = FormatUtils.AMOUNT.format(this.tallyExpenseAmt);
 	}
 
 	public int getTallyExpenseCnt() {
@@ -231,38 +208,6 @@ public class AccountUI implements java.io.Serializable {
 		this.dueDay = dueDay == null ? 0 : dueDay;
 	}
 
-	public String getFbalanceAmt() {
-		return fbalanceAmt;
-	}
-
-	public void setFbalanceAmt(String fbalanceAmt) {
-		this.fbalanceAmt = fbalanceAmt;
-	}
-
-	public String getFtallyExpenseAmt() {
-		return ftallyExpenseAmt;
-	}
-
-	public void setFtallyExpenseAmt(String ftallyExpenseAmt) {
-		this.ftallyExpenseAmt = ftallyExpenseAmt;
-	}
-
-	public String getFtallyBalance() {
-		return ftallyBalance;
-	}
-
-	public void setFtallyBalance(String ftallyBalance) {
-		this.ftallyBalance = ftallyBalance;
-	}
-
-	public String getFtallyDate() {
-		return ftallyDate;
-	}
-
-	public void setFtallyDate(String ftallyDate) {
-		this.ftallyDate = ftallyDate;
-	}
-
 	public boolean isActive() {
 		return status == Account.Status.ACTIVE.status;
 	}
@@ -283,19 +228,12 @@ public class AccountUI implements java.io.Serializable {
 		this.dueDtWarning = dueDtWarning;
 	}
 
-	// Custom methods.
-	@Override
-	public String toString() {
-		return ToStringBuilder.reflectionToString(this);
-	}
-
 	public Date getBillDt() {
 		return billDt;
 	}
 
 	public void setBillDt(Date billDt) {
 		this.billDt = billDt;
-		fbillDt = FormatUtils.ddMMM.format(billDt);
 	}
 
 	public Date getDueDt() {
@@ -304,7 +242,6 @@ public class AccountUI implements java.io.Serializable {
 
 	public void setDueDt(Date dueDt) {
 		this.dueDt = dueDt;
-		fdueDt = FormatUtils.ddMMM.format(dueDt);
 	}
 
 	public double getBillAmt() {
@@ -313,7 +250,6 @@ public class AccountUI implements java.io.Serializable {
 
 	public void setBillAmt(double billAmt) {
 		this.billAmt = billAmt;
-		fbillAmt = FormatUtils.AMOUNT.format(billAmt);
 	}
 
 	public double getBillBalance() {
@@ -322,7 +258,6 @@ public class AccountUI implements java.io.Serializable {
 
 	public void setBillBalance(double billBalance) {
 		this.billBalance = billBalance;
-		fbillBalance = FormatUtils.AMOUNT.format(billBalance);
 	}
 
 	public Date getBillPaidDt() {
@@ -331,7 +266,6 @@ public class AccountUI implements java.io.Serializable {
 
 	public void setBillPaidDt(Date billPaidDt) {
 		this.billPaidDt = billPaidDt;
-		fbillPaidDt = FormatUtils.ddMMM.format(billPaidDt);
 	}
 
 	public double getOpenBillAmt() {
@@ -340,54 +274,10 @@ public class AccountUI implements java.io.Serializable {
 
 	public void setOpenBillAmt(double openBillAmt) {
 		this.openBillAmt = openBillAmt;
-		fopenBillAmt = FormatUtils.AMOUNT.format(openBillAmt);
 	}
 
-	public String getFbillDt() {
-		return fbillDt;
-	}
-
-	public void setFbillDt(String fbillDt) {
-		this.fbillDt = fbillDt;
-	}
-
-	public String getFdueDt() {
-		return fdueDt;
-	}
-
-	public void setFdueDt(String fdueDt) {
-		this.fdueDt = fdueDt;
-	}
-
-	public String getFbillAmt() {
-		return fbillAmt;
-	}
-
-	public void setFbillAmt(String fbillAmt) {
-		this.fbillAmt = fbillAmt;
-	}
-
-	public String getFbillBalance() {
-		return fbillBalance;
-	}
-
-	public void setFbillBalance(String fbillBalance) {
-		this.fbillBalance = fbillBalance;
-	}
-
-	public String getFbillPaidDt() {
-		return fbillPaidDt;
-	}
-
-	public void setFbillPaidDt(String fbillPaidDt) {
-		this.fbillPaidDt = fbillPaidDt;
-	}
-
-	public String getFopenBillAmt() {
-		return fopenBillAmt;
-	}
-
-	public void setFopenBillAmt(String fopenBillAmt) {
-		this.fopenBillAmt = fopenBillAmt;
+	@Override
+	public String toString() {
+		return ToStringBuilder.reflectionToString(this);
 	}
 }

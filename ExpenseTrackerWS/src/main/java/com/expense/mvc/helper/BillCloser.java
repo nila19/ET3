@@ -17,24 +17,31 @@ import com.expense.mvc.model.entity.Bill;
 import com.expense.mvc.model.entity.Transaction;
 import com.expense.mvc.model.ui.AccountUI;
 import com.expense.mvc.model.ui.BillUI;
-import com.expense.mvc.service.LoginService;
+import com.expense.mvc.service.StartupService;
 
 public class BillCloser {
 	private static final Logger logger = LogManager.getLogger("log." + BillCloser.class);
 
 	@Autowired
-	private LoginService loginService;
+	private StartupService loginService;
 
 	private int dataKey = 0;
 
 	@Transactional(propagation = Propagation.REQUIRED)
 	public void init() {
+		//FIXME Reinstate old init..
+	}
+
+	@Transactional(propagation = Propagation.REQUIRED)
+	public void initOld() {
+		//FIXME Fix this later..
+
 		BillCloser.logger.info("BillCloser started...");
 
 		int billsClosed = 0;
 		int billsOpened = 0;
 		try {
-			dataKey = loginService.getDefaultDataKey().getDataKey();
+			dataKey = loginService.getDefaultDataKey().getId();
 
 			billsClosed = closeAllOpenBills();
 			billsOpened = createAllOpenBills();
@@ -62,7 +69,7 @@ public class BillCloser {
 
 	@Transactional(propagation = Propagation.REQUIRED)
 	private void closeBill(BillUI billUI) {
-		Bill bill = loginService.getBill(dataKey, billUI.getBillId());
+		Bill bill = loginService.getBill(dataKey, billUI.getId());
 
 		double billAmt = BillCloser.calcBillAmt(bill);
 
@@ -103,7 +110,7 @@ public class BillCloser {
 		List<AccountUI> accounts = loginService.getAllActiveAccounts(dataKey);
 		for (AccountUI ui : accounts) {
 			if (ui.isBilled()) {
-				Account ac = loginService.getAccount(dataKey, ui.getAccountId());
+				Account ac = loginService.getAccount(dataKey, ui.getId());
 				if (ac.getOpenBill() == null || !ac.getOpenBill().isOpen()) {
 					Bill openBill = createOpenBill(ac);
 					loginService.saveBill(openBill);

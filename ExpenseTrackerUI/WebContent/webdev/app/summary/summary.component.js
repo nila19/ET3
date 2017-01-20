@@ -40,7 +40,7 @@
 
 		function listExpenses(cat, mIdx) {
 			// TODO Set via Services.
-			ss.data.categoryId = cat;
+			ss.data.category.id = cat;
 			ss.data.expMonth = vm.data.header[mIdx].mth;
 			$location.path('/search/Y');
 		}

@@ -13,7 +13,7 @@
           <form name="modifyForm" novalidate="novalidate" ng-submit="$ctrl.saveExpense(modifyForm.$valid)">
             <div class="form-group">
               <label class="control-label">From Account</label>
-              <input ng-model="$ctrl.data.expense.fromAcc" type="text" class="form-control" uib-typeahead="acc as acc.name for acc in $ctrl.ta.accounts | filter:$viewValue" typeahead-show-hint="true" typeahead-min-length="0" typeahead-editable="false">
+              <input ng-model="$ctrl.data.expense.fromAccount" type="text" class="form-control" uib-typeahead="acc as acc.name for acc in $ctrl.ta.accounts | filter:$viewValue" typeahead-show-hint="true" typeahead-min-length="0" typeahead-editable="false">
             </div>
             <div ng-if="$ctrl.data.expense.adjust" class="form-group">
               <label class="control-label">To Account</label>

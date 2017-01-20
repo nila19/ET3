@@ -12,26 +12,25 @@
 			showButtons: false,
 			showingMoreAccounts: false,
 			showingChart: false,
-			city: null,
-			cities: null,
+			loading: false,
+			menu: {
+				city: {},
+				cities: [],
+			},
 			CURRENCY: C.CURRENCY
 		};
 
-		var checkInit = function() {
-			if (!this.data || !this.data.city || !this.data.cities) {
-				this.loadCities();
-			}
-		};
 		var loadCities = function() {
-			console.log('Loading cities @ vDB...');
-			// TODO - Ajax load city list from DB
-			this.data.cities = V.cities;
-			this.data.city = V.defaultCity;
+			data.menu = V.data;
+		};
+		var checkInit = function() {
+			if (!this.data.menu || !this.data.menu.city || !this.data.menu.city.name) {
+				loadCities();
+			}
 		};
 		return {
 			data: data,
-			checkInit: checkInit,
-			loadCities: loadCities
+			checkInit: checkInit
 		};
 	}
 

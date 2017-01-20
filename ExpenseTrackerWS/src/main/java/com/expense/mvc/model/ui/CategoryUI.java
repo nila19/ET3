@@ -10,7 +10,8 @@ public class CategoryUI implements java.io.Serializable, Comparable<CategoryUI> 
 
 	private static final String SEP = " ~ ";
 
-	private int categoryId;
+	private int id;
+	private String name = "";
 	private String mainCategory = new String("");
 	private String subCategory = new String("");
 	private char status;
@@ -19,21 +20,24 @@ public class CategoryUI implements java.io.Serializable, Comparable<CategoryUI> 
 	public CategoryUI() {
 	}
 
-	public CategoryUI(Category category) {
-		Utils.copyBean(this, category);
+	public CategoryUI(Category cat) {
+		Utils.copyBean(this, cat);
+		setId(cat.getCategoryId());
+		setName(cat.getMainCategory() + SEP + cat.getSubCategory());
 	}
 
 	public CategoryUI(String category) {
+		this.name = category;
 		this.mainCategory = category.split(SEP)[0];
 		this.subCategory = category.split(SEP)[1];
 	}
 
-	public int getCategoryId() {
-		return categoryId;
+	public int getId() {
+		return id;
 	}
 
-	public void setCategoryId(int categoryId) {
-		this.categoryId = categoryId;
+	public void setId(int id) {
+		this.id = id;
 	}
 
 	public String getMainCategory() {
@@ -68,13 +72,17 @@ public class CategoryUI implements java.io.Serializable, Comparable<CategoryUI> 
 		this.displayOrder = displayOrder;
 	}
 
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
 	@Override
 	public String toString() {
 		return ToStringBuilder.reflectionToString(this);
-	}
-
-	public String getCategoryDesc() {
-		return this.mainCategory + SEP + this.subCategory;
 	}
 
 	@Override
@@ -84,7 +92,7 @@ public class CategoryUI implements java.io.Serializable, Comparable<CategoryUI> 
 
 	@Override
 	public int hashCode() {
-		return categoryId;
+		return id;
 	}
 
 	@Override
@@ -92,6 +100,6 @@ public class CategoryUI implements java.io.Serializable, Comparable<CategoryUI> 
 		if (o == null) {
 			return false;
 		}
-		return categoryId == ((CategoryUI) o).categoryId;
+		return id == ((CategoryUI) o).id;
 	}
 }

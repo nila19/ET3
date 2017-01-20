@@ -5,70 +5,117 @@
 
 	angular.module('core.services').factory('startupService', startupService);
 
-	startupService.$inject = ['ajaxService', 'CONSTANTS', 'VALUES', '$resource'];
-	function startupService(aj, C, V, $resource) {
+	startupService.$inject = ['ajaxService', 'etmenuService', 'CONSTANTS', 'VALUES', '$resource'];
+	function startupService(aj, ms, C, V, $resource) {
 		var loaded = false;
 		return {
-			loadAll: loadAll,
-			getAllCities: getAllCities,
-			getDefaultCity: getDefaultCity,
-			getCategories: getCategories,
-			getDescriptions: getDescriptions,
-			getAccounts: getAccounts,
-			getMonths: getMonths
+			loadCity: loadCity,
+			loadAll: loadAll
 		};
 
-		function loadAll() {
+		function loadCity() {
 			if (!loaded) {
-				getAllCities();
+				ms.data.loading = true;
+				console.log('@ StartupService: Loading init app components...');
 				getDefaultCity();
-				getCategories();
-				getDescriptions();
-				getAccounts();
-				getMonths();
 				loaded = true;
 			}
 		}
-		function getAllCities() {
-			aj.get('values/cities', {}, loadCities);
-		}
-		function getDefaultCity() {
-			aj.get('values/city', {}, loadDefaultCity);
-		}
-		function getCategories() {
-			aj.get('values/categories', {}, loadCategories);
-		}
-		function getDescriptions() {
-			aj.get('values/descriptions', {}, loadDescriptions);
-		}
-		function getAccounts() {
-			aj.get('values/accounts', {}, loadAccounts);
-		}
-		function getMonths() {
-			aj.get('values/months', {}, loadMonths);
+		function loadAll() {
+			ms.data.loading = true;
+			console.log('@ StartupService: Loading other items...');
+			getCategories(V.data.city);
 		}
 
-		function loadCities(cities) {
-			V.cities = cities.toJSON();
+		function getAllCities() {
+			aj.query('/startup/cities', {}, loadCities);
 		}
+		function getDefaultCity() {
+			aj.get('/startup/city/default', {}, loadDefaultCity);
+		}
+		function getCategories(city) {
+			aj.query('/startup/categories', {
+				city: city.id
+			}, loadCategories);
+		}
+		function getDescriptions(city) {
+			aj.query('/startup/descriptions', {
+				city: city.id
+			}, loadDescriptions);
+		}
+		function getAccounts(city) {
+			aj.query('/startup/accounts', {
+				city: city.id
+			}, loadAccounts);
+		}
+		function getTransMonths(city) {
+			aj.query('/startup/months/trans', {
+				city: city.id
+			}, loadTransMonths);
+		}
+		function getEntryMonths(city) {
+			aj.query('/startup/months/entry', {
+				city: city.id
+			}, loadEntryMonths);
+		}
+
 		function loadDefaultCity(city) {
-			V.defaultCity = city.toJSON();
+			V.data.city = city.toJSON();
+
+			getAllCities();
+		}
+		function loadCities(cities) {
+			V.data.cities = [];
+			angular.forEach(cities, function(city) {
+				V.data.cities.push(city.toJSON());
+			});
+
+			getCategories(V.data.city);
 		}
 		function loadCategories(categories) {
-			V.categories = categories.toJSON();
+			V.data.categories = [];
+			angular.forEach(categories, function(category) {
+				V.data.categories.push(category.toJSON());
+			});
+
+			getDescriptions(V.data.city);
 		}
 		function loadDescriptions(descriptions) {
-			V.descriptions = descriptions.toJSON();
+			V.data.descriptions = [];
+			angular.forEach(descriptions, function(description) {
+				V.data.descriptions.push(description);
+			});
+
+			getAccounts(V.data.city);
 		}
 		function loadAccounts(accounts) {
-			V.accounts = accounts.toJSON();
+			V.data.accounts = [];
+			angular.forEach(accounts, function(account) {
+				V.data.accounts.push(account.toJSON());
+			});
+
+			getTransMonths(V.data.city);
 		}
-		function loadMonths(months) {
-			V.months = months.toJSON();
+		function loadTransMonths(transMonths) {
+			V.data.transMonths = [];
+			angular.forEach(transMonths, function(transMonth) {
+				V.data.transMonths.push(transMonth.toJSON());
+			});
+
+			getEntryMonths(V.data.city);
+		}
+		function loadEntryMonths(entryMonths) {
+			V.data.entryMonths = [];
+			angular.forEach(entryMonths, function(entryMonth) {
+				V.data.entryMonths.push(entryMonth.toJSON());
+			});
+			console.log('@ StartupService: Loading init app components COMPLETED...');
+			ms.data.loading = false;
 		}
 
 		/** **************** Test Methods ****************** */
 		function testAjax() {
+			// get();
 			getAll();
 		}
 

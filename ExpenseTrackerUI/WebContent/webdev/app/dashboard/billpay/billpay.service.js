@@ -42,7 +42,7 @@
 			d.pay.paidDt = '';
 		};
 		var loadBill = function(id) {
-			console.log('Getting info for Bill @ vDB :: ' + id + ',' + ms.data.city.name);
+			console.log('Getting info for Bill @ vDB :: ' + id + ',' + ms.data.menu.city.name);
 			// TODO Ajax fetch bill details.
 			this.loadData(dummyBill());
 		};
@@ -51,7 +51,7 @@
 			this.data.pay = data.pay;
 		};
 		var payBill = function() {
-			console.log('Paying Bill @ vDB :: ' + ms.data.city.name + ',' +
+			console.log('Paying Bill @ vDB :: ' + ms.data.menu.city.name + ',' +
 					JSON.stringify(this.data));
 			// TODO Ajax fetch bill details.
 			us.showMsg('Bill Pay', 'success');

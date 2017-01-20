@@ -5,7 +5,7 @@ import java.util.Date;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import com.expense.mvc.model.entity.Transaction;
-import com.expense.utils.FormatUtils;
+import com.expense.utils.FU;
 
 public class SummaryUI implements java.io.Serializable, Comparable<SummaryUI> {
 	private static final long serialVersionUID = 1L;
@@ -25,7 +25,7 @@ public class SummaryUI implements java.io.Serializable, Comparable<SummaryUI> {
 		this.month = month;
 		this.transMonth = t.getTransMonth();
 		this.amount = t.getAmount();
-		this.fAmount = FormatUtils.AMOUNT.format(this.amount);
+		this.fAmount = FU.number(FU.Number.AMOUNT).format(this.amount);
 		this.count = 1;
 	}
 
@@ -51,7 +51,7 @@ public class SummaryUI implements java.io.Serializable, Comparable<SummaryUI> {
 
 	public void setAmount(double amount) {
 		this.amount = amount;
-		this.fAmount = FormatUtils.AMOUNT.format(this.amount);
+		this.fAmount = FU.number(FU.Number.AMOUNT).format(this.amount);
 	}
 
 	public MonthUI getMonth() {

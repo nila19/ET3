@@ -22,7 +22,7 @@
                       <div class="col-lg-2 col-md-3">
                         <div class="form-group label-floating">
                           <label class="control-label">Description</label>
-                          <input ng-model="$ctrl.data.description" type="text" class="form-control" uib-typeahead="desc for desc in $ctrl.ta.descriptions | filter:$viewValue | limitTo:8">
+                          <input ng-model="$ctrl.data.description" type="text" class="form-control" uib-typeahead="desc for desc in $ctrl.ta.descriptions | filter:$viewValue | limitTo:12">
                         </div>
                       </div>
                       <div class="col-lg-1 col-md-2">
@@ -34,13 +34,13 @@
                       <div class="col-lg-1 col-md-2">
                         <div class="form-group label-floating">
                           <label class="control-label">Exp Month</label>
-                          <input ng-model="$ctrl.data.expMonth" type="text" class="form-control" uib-typeahead="month for month in $ctrl.ta.months | filter:$viewValue" typeahead-show-hint="true" typeahead-min-length="0" typeahead-editable="false">
+                          <input ng-model="$ctrl.data.transMonth" type="text" class="form-control" uib-typeahead="month as month.name for month in $ctrl.ta.transMonths | filter:$viewValue" typeahead-show-hint="true" typeahead-min-length="0" typeahead-editable="false">
                         </div>
                       </div>
                       <div class="col-lg-1 col-md-2">
                         <div class="form-group label-floating">
                           <label class="control-label">Entry Month</label>
-                          <input ng-model="$ctrl.data.entryMonth" type="text" class="form-control" uib-typeahead="month for month in $ctrl.ta.months | filter:$viewValue" typeahead-show-hint="true" typeahead-min-length="0" typeahead-editable="false">
+                          <input ng-model="$ctrl.data.entryMonth" type="text" class="form-control" uib-typeahead="month as month.name for month in $ctrl.ta.entryMonths | filter:$viewValue" typeahead-show-hint="true" typeahead-min-length="0" typeahead-editable="false">
                         </div>
                       </div>
                       <div class="col-lg-2 col-md-3">
@@ -52,20 +52,20 @@
                       <div class="col-lg-1 col-md-2">
                         <div class="form-group label-floating">
                           <label class="control-label">Adjust</label> 
-                          <select ng-model="$ctrl.data.adjust" class="form-control">
+                          <select ng-model="$ctrl.data.adjustInd" class="form-control">
                             <option></option>
-                            <option value="Yes">Yes</option>
-                            <option value="No">No</option>
+                            <option value="Y">Yes</option>
+                            <option value="N">No</option>
                           </select>
                         </div>
                       </div>
                       <div class="col-lg-1 col-md-2">
                         <div class="form-group label-floating">
                           <label class="control-label">Adhoc</label> 
-                          <select ng-model="$ctrl.data.adhoc" class="form-control">
+                          <select ng-model="$ctrl.data.adhocInd" class="form-control">
                             <option></option>
-                            <option value="Yes">Yes</option>
-                            <option value="No">No</option>
+                            <option value="Y">Yes</option>
+                            <option value="N">No</option>
                           </select>
                         </div>
                       </div>

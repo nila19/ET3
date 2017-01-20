@@ -21,16 +21,16 @@
             </div>
             <div class="navbar-right">
               <span class="btn btn-success no-btn">
-                <i ng-if="$ctrl.data.city.curr === $ctrl.data.CURRENCY.USD" class="material-icons">attach_money</i> 
-                <i ng-if="$ctrl.data.city.curr === $ctrl.data.CURRENCY.INR" class="material-icons">euro_symbol</i>
+                <i ng-if="$ctrl.data.menu.city.currency === $ctrl.data.CURRENCY.USD" class="material-icons">attach_money</i> 
+                <i ng-if="$ctrl.data.menu.city.currency === $ctrl.data.CURRENCY.INR" class="material-icons">euro_symbol</i>
               </span>
             </div>
             <div class="dropdown navbar-right">
               <a class="btn btn-primary dropdown-toggle" data-toggle="dropdown"> 
-                <span>{{$ctrl.data.city.name}}</span>&nbsp;<b class="caret"></b>
+                <span>{{$ctrl.data.menu.city.name}}</span>&nbsp;<b class="caret"></b>
               </a>
               <ul class="dropdown-menu">
-                <li ng-repeat="city in $ctrl.data.cities">
+                <li ng-repeat="city in $ctrl.data.menu.cities">
                   <a ng-click="$ctrl.changeCity(city.id)">{{city.name}}</a>
                 </li>
               </ul>
@@ -48,6 +48,9 @@
                   <i ng-switch-when="false" class="material-icons">insert_chart</i>
                 </a>
               </div>
+            </div>
+            <div class="navbar-right">
+              <span ng-if="$ctrl.data.loading" class="btn btn-simple no-btn"><img alt="loading..." style="width:20px;height:20px;" ng-src="loading.gif"></span>
             </div>
           </div>
         </div>

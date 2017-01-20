@@ -38,12 +38,11 @@ public class BillDAO extends BaseDAO<Bill, Integer> {
 				parms);
 	}
 
-	public List<Bill> findForAcct(int dataKey, int accId) {
+	public List<Bill> findForAcct(int accId) {
 		HashMap<String, Object> parms = new HashMap<String, Object>();
-		parms.put("dataKey", dataKey);
 		parms.put("accId", accId);
 
 		return findByParameters(
-				"from Bill where dataKey = :dataKey and account.accountId = :accId order by strBillDt desc", parms);
+				"from Bill where account.accountId = :accId order by strBillDt desc", parms);
 	}
 }

@@ -16,7 +16,7 @@
 		init();
 
 		function init() {
-			sus.loadAll();
+			sus.loadCity();
 			ms.data.page = C.PAGES.DASHBOARD;
 			els.data.rowCount = C.SIZES.DASHBOARD_ROW;
 

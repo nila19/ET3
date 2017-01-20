@@ -8,8 +8,9 @@
 		controller: ETMenuController
 	});
 
-	ETMenuController.$inject = ['etmenuService', 'dashboardService', 'utilsService', 'CONSTANTS'];
-	function ETMenuController(ms, ds, us, C) {
+	ETMenuController.$inject = ['etmenuService', 'dashboardService', 'startupService',
+			'utilsService', 'CONSTANTS', 'VALUES'];
+	function ETMenuController(ms, ds, sus, us, C, V) {
 		var vm = this;
 		init();
 
@@ -20,6 +21,7 @@
 
 		// ***** Function declarations *****//
 		function init() {
+			sus.loadCity();
 			vm.data = ms.data;
 
 			ms.checkInit();
@@ -37,7 +39,9 @@
 		}
 
 		function changeCity(id) {
-			ms.data.city = us.getById(ms.data.cities, id);
+			V.data.city = us.getById(ms.data.menu.cities, id);
+			// Refresh all items for city.
+			sus.loadAll();
 		}
 	}
 })(window.angular);

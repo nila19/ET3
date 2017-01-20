@@ -19,16 +19,16 @@
 		// ***** Function declarations *****//
 		function init() {
 			vm.data = as.data;
-			typeAheads();
+			vm.ta = V.data;
+			// typeAheads();
 		}
 
-		function typeAheads() {
-			vm.ta = {};
-			vm.ta.descriptions = V.descriptions;
-			vm.ta.categories = V.categories;
-			vm.ta.months = V.months;
-			vm.ta.accounts = V.accounts;
-		}
+		// function typeAheads() {
+		// vm.ta = {};
+		// vm.ta.descriptions = V.data.descriptions;
+		// vm.ta.categories = V.data.categories;
+		// vm.ta.accounts = V.data.accounts;
+		// }
 
 		function addExpense(valid) {
 			if (valid) {

@@ -5,8 +5,8 @@
 
 	angular.module('dashboard.edit').factory('editService', editService);
 
-	editService.$inject = ['etmenuService', 'utilsService'];
-	function editService(ms, us) {
+	editService.$inject = ['etmenuService', 'ajaxService', 'utilsService'];
+	function editService(ms, aj, us) {
 		var data = {
 			expense: {}
 		};
@@ -62,33 +62,32 @@
 				name: 'BOA - 7787 - Bill #3'
 			}];
 		};
-		var loadExpense = function(id) {
-			// TODO Ajax to fetch
-			console.log('Fetching Exp data from @ vDB :: ' + id + ',' + ms.data.city.name);
-			this.loadData(dummyExpense());
+		var loadExpense = function(transId) {
+			console.log('Fetching Exp :: ' + transId);
+			aj.get('/entry/transaction/' + transId, {}, loadData);
 		};
 		var loadData = function(data) {
-			this.data.expense = data.expense;
+			this.data.expense = data;
 		};
 		var saveExpense = function() {
 			// TODO Ajax save.
-			console.log('Changes saved @ vDB :: ' + ms.data.city.name + ',' +
+			console.log('Changes saved @ vDB :: ' + ms.data.menu.city.name + ',' +
 					JSON.stringify(this.data.expense));
 			us.showMsg('Modify Expense', 'success');
 		};
 		var deleteExpense = function() {
 			// TODO Ajax save.
-			console.log('Deleted @ vDB :: ' + this.data.expense.id + ',' + ms.data.city.name);
+			console.log('Deleted @ vDB :: ' + this.data.expense.id + ',' + ms.data.menu.city.name);
 			us.showMsg('Delete Expense', 'success');
 		};
-		var swapExpense = function(id1, id2) {
-			// TODO Ajax save.
-			console.log('Swapped @ vDB :: ' + id1 + ',' + id2 + ',' + ms.data.city.name);
+		var loadResults = function() {
+			console.log('Swapped @ vDB :: ' + ms.data.menu.city.name);
+			ss.doSearch();
 		};
 		var getBillsForAcc = function() {
 			// TODO Ajax call to fetch Bills from DB.
 			console.log('Fetching Bills data from @ vDB :: ' + this.data.expense.fromAcc.id + ',' +
-					ms.data.city.name);
+					ms.data.menu.city.name);
 			return dummyBills();
 		};
 
@@ -98,7 +97,6 @@
 			loadData: loadData,
 			saveExpense: saveExpense,
 			deleteExpense: deleteExpense,
-			swapExpense: swapExpense,
 			getBillsForAcc: getBillsForAcc
 		};
 	}

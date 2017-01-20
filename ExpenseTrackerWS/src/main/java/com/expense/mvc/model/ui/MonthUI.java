@@ -4,63 +4,51 @@ import java.util.Date;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
-import com.expense.utils.FormatUtils;
+import com.expense.utils.FU;
 
 public class MonthUI implements java.io.Serializable, Comparable<MonthUI> {
 	private static final long serialVersionUID = 1L;
 
-	private Date transMonth;
-	private String fTransMonth;
-	private char type;
-	private String desc;
-
-	public enum Type {
-		MONTH('M'), YEAR('Y');
-
-		public char type;
-
-		private Type(char type) {
-			this.type = type;
-		}
-	}
-
+	private Date id;
+	private String name;
+	private boolean aggregate;
 	private Integer seq;
 
-	public MonthUI(Date transMonth) {
-		this(transMonth, Type.MONTH);
+	public MonthUI() {
 	}
 
-	public MonthUI(Date transMonth, Type type) {
-		this.transMonth = transMonth;
-		this.setfTransMonth(FormatUtils.yyyyMM.format(this.transMonth));
-		this.type = type.type;
+	public MonthUI(Date transMonth) {
+		this(transMonth, false);
+	}
+
+	public MonthUI(Date id, boolean aggregate) {
+		this.id = id;
+		this.setAggregate(aggregate);
+		this.name = FU.date(FU.Date.MMMyy).format(id);
 
 		// If year, transMonth will have 01 as month. Make it 13, so it gets sorted ahead of all
 		// months in desc order.
-		if (type == Type.YEAR) {
-			this.desc = FormatUtils.yyyy.format(transMonth);
-			this.seq = (Integer.valueOf(FormatUtils.yyyy.format(transMonth)) * 100) + 13;
+		if (this.isAggregate()) {
+			this.seq = (Integer.valueOf(FU.date(FU.Date.yyyy).format(id)) * 100) + 13;
 		} else {
-			this.desc = FormatUtils.MMMyy.format(transMonth);
-			this.seq = Integer.valueOf(FormatUtils.yyyyMM.format(transMonth));
+			this.seq = Integer.valueOf(FU.date(FU.Date.yyyyMM).format(id));
 		}
 	}
 
-	public Date getTransMonth() {
-		return this.transMonth;
+	public Date getId() {
+		return this.id;
 	}
 
-	public void setTransMonth(Date transMonth) {
-		this.transMonth = transMonth;
-		this.setfTransMonth(FormatUtils.yyyyMM.format(this.transMonth));
+	public void setId(Date id) {
+		this.id = id;
 	}
 
-	public char getType() {
-		return this.type;
+	public String getName() {
+		return name;
 	}
 
-	public void setType(char type) {
-		this.type = type;
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public int getSeq() {
@@ -71,20 +59,12 @@ public class MonthUI implements java.io.Serializable, Comparable<MonthUI> {
 		this.seq = seq;
 	}
 
-	public String getDesc() {
-		return this.desc;
+	public boolean isAggregate() {
+		return aggregate;
 	}
 
-	public void setDesc(String desc) {
-		this.desc = desc;
-	}
-
-	public String getfTransMonth() {
-		return this.fTransMonth;
-	}
-
-	public void setfTransMonth(String fTransMonth) {
-		this.fTransMonth = fTransMonth;
+	public void setAggregate(boolean aggregate) {
+		this.aggregate = aggregate;
 	}
 
 	@Override
