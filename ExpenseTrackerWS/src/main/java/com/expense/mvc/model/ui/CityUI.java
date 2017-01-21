@@ -17,11 +17,10 @@ public class CityUI implements java.io.Serializable {
 	}
 
 	public CityUI(DataKey dk) {
-		Utils.copyBean(this, dk);
-		
-		setId(dk.getDataKey());
-		setName(dk.getDescription());
-		setCurrency(dk.getCurrency());
+		id = dk.getDataKey();
+		name = dk.getDescription();
+		currency = dk.getCurrency();
+		status = dk.getStatus();
 	}
 
 	public int getId() {

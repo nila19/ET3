@@ -17,43 +17,33 @@
 		// ***** Exposed functions ******//
 		vm.saveExpense = saveExpense;
 		vm.deleteExpense = deleteExpense;
-		vm.getBills = getBills;
+		vm.loadBills = loadBills;
+		vm.clearBills = clearBills;
 
 		// ***** Function declarations *****//
 		function init() {
 			vm.data = es.data;
 			vm.ta = V.data;
-			// typeAheads();
 		}
 
-		// function typeAheads() {
-		// vm.ta = {};
-		// vm.ta.descriptions = V.data.descriptions;
-		// vm.ta.categories = V.data.categories;
-		// vm.ta.accounts = V.data.accounts;
-		// }
-
 		function saveExpense(valid) {
-			// TODO Validate the form.
 			if (valid) {
 				if (es.data.expense.adjust &&
-						(isNull(es.data.expense.fromAcc) && isNull(es.data.expense.toAcc))) {
-					us.show('Mandatory fields are empty!!', C.MSG.WARNING);
+						(isNull(es.data.expense.fromAccount) && isNull(es.data.expense.toAccount))) {
+					us.show('1 - Mandatory fields are empty!!', C.MSG.WARNING);
 					return false;
 				}
 				if (!es.data.expense.adjust &&
-						(isNull(es.data.expense.fromAcc) || isNull(es.data.expense.category))) {
-					us.show('Mandatory fields are empty!!', C.MSG.WARNING);
+						(isNull(es.data.expense.fromAccount) || isNull(es.data.expense.category))) {
+					us.show('2 - Mandatory fields are empty!!', C.MSG.WARNING);
 					return false;
 				}
-				if (!es.data.expense.adjust && es.data.expense.fromAcc.doBills &&
-						isNull(es.data.expense.bill)) {
-					us.show('Mandatory fields are empty!!', C.MSG.WARNING);
+				if (!es.data.expense.adjust && es.data.expense.fromAccount.billed &&
+						isNull(es.data.expense.fromBill)) {
+					us.show('3 - Mandatory fields are empty!!', C.MSG.WARNING);
 					return false;
 				}
 				es.saveExpense();
-				els.loadAllExpenses();
-				$('#model_Modify').modal('hide');
 			}
 		}
 
@@ -61,16 +51,18 @@
 			return !e || !e.id;
 		}
 
-		function getBills() {
-			if (!isNull(es.data.expense.fromAcc)) {
-				return es.getBillsForAcc();
+		function loadBills() {
+			if (!isNull(es.data.expense.fromAccount)) {
+				es.loadBills();
 			}
+		}
+
+		function clearBills() {
+			V.data.bills = [];
 		}
 
 		function deleteExpense() {
 			es.deleteExpense();
-			els.loadAllExpenses();
-			$('#model_Delete').modal('hide');
 		}
 	}
 })(window.angular);

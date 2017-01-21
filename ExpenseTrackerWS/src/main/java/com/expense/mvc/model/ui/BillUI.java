@@ -9,15 +9,13 @@ import org.apache.commons.lang3.time.DateUtils;
 import com.expense.mvc.model.entity.Bill;
 import com.expense.utils.FU;
 import com.expense.utils.Props;
-import com.expense.utils.Utils;
 
 public class BillUI implements java.io.Serializable {
 	private static final long serialVersionUID = 1L;
 
 	private int id;
 	private String name;
-	private int accountId;
-	private String accountDesc;
+	private AccountUI account;
 	private Date createdDt;
 	private Date billDt;
 	private Date dueDt;
@@ -25,8 +23,7 @@ public class BillUI implements java.io.Serializable {
 	private double billAmt;
 	private double billBalance;
 	private Date billPaidDt;
-
-	private Character status;
+	private char status;
 
 	private boolean dueDateWarning = false;
 	private boolean open = true;
@@ -35,13 +32,17 @@ public class BillUI implements java.io.Serializable {
 	}
 
 	public BillUI(Bill bill) {
-		Utils.copyBean(this, bill);
-		setAccountId(bill.getAccount().getAccountId());
-		setAccountDesc(bill.getAccount().getDescription());
-		
-		setName(this.getAccountDesc() + " - #" + this.getId());
-		setOpen(this.status == Bill.Status.OPEN.status);
+		id = bill.getBillId();
+		account = (new AccountUI(bill.getAccount()));
+		createdDt = bill.getCreatedDt();
+		billDt = bill.getBillDt();
+		billAmt = bill.getBillAmt();
+		billBalance = bill.getBillBalance();
+		billPaidDt = bill.getBillPaidDt();
+		status = bill.getStatus();
+		open = (this.status == Bill.Status.OPEN.status);
 
+		name =  FU.date(FU.Date.ddMMMyy).format(billDt) + " - #" + id;
 		checkDueDateWarning();
 	}
 
@@ -73,20 +74,12 @@ public class BillUI implements java.io.Serializable {
 		this.name = name;
 	}
 
-	public int getAccountId() {
-		return accountId;
+	public AccountUI getAccount() {
+		return account;
 	}
 
-	public void setAccountId(int accountId) {
-		this.accountId = accountId;
-	}
-
-	public String getAccountDesc() {
-		return accountDesc;
-	}
-
-	public void setAccountDesc(String accountDesc) {
-		this.accountDesc = accountDesc;
+	public void setAccount(AccountUI account) {
+		this.account = account;
 	}
 
 	public Date getCreatedDt() {
@@ -145,11 +138,11 @@ public class BillUI implements java.io.Serializable {
 		this.dueDateWarning = dueDateWarning;
 	}
 
-	public Character getStatus() {
+	public char getStatus() {
 		return status;
 	}
 
-	public void setStatus(Character status) {
+	public void setStatus(char status) {
 		this.status = status;
 	}
 

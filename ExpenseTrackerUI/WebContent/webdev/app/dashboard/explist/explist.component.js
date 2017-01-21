@@ -8,9 +8,8 @@
 		controller: ExplistController
 	});
 
-	ExplistController.$inject = ['explistService', 'editService', 'etmenuService', 'searchService',
-			'accountsService', 'billsService', 'CONSTANTS'];
-	function ExplistController(els, es, ms, ss, acs, bs, C) {
+	ExplistController.$inject = ['explistwrapperService', 'explistService', 'CONSTANTS'];
+	function ExplistController(elws, els, C) {
 		var vm = this;
 		init();
 
@@ -48,56 +47,23 @@
 		}
 
 		function showModifyExpense(transId) {
-			es.loadExpense(transId);
+			elws.editExpense(transId);
 			$('#model_Modify').modal('show');
 		}
 
 		function showDeleteExpense(transId) {
-			es.loadExpense(transId);
+			elws.editExpense(transId);
 			$('#model_Delete').modal('show');
 		}
 
 		function swapExpense(transId, diff) {
 			var idx = els.getIndexOf(transId);
-			els.swapExpense(idx, idx + diff);
+			elws.swapExpense(idx, idx + diff);
 		}
 
 		function clearFilter() {
 			els.data.filterApplied = false;
-			if (ms.data.page === C.PAGES.SEARCH) {
-				ss.initializeData();
-			} else if (ms.data.page === C.PAGES.DASHBOARD) {
-				// Clear filter for Bills
-				if (acs.data.filterBy) {
-					bs.clearFilter();
-				}
-				bs.data.filterBy = null;
-				acs.data.filterBy = null;
-			}
-			reloadExpenses();
-		}
-
-		function reloadExpenses() {
-			if (ms.data.page === C.PAGES.SEARCH) {
-				ss.doSearch();
-			} else if (ms.data.page === C.PAGES.DASHBOARD) {
-				var list = null;
-				if (bs.data.filterBy) {
-					console.log('Filtering expenses for Bill @ vDB :: ' + bs.data.filterBy);
-					// Filter by Bill
-					list = els.dummyExpenses();
-				} else if (acs.data.filterBy) {
-					console.log('Filtering expenses for Account @ vDB :: ' + acs.data.filterBy);
-					// Filter by Account
-					list = els.dummyExpenses();
-				} else {
-					console.log('Getting all expenses @ vDB');
-					list = els.dummyExpenses();
-				}
-				// TODO Ajax fetch all expenses.
-				els.loadData(list);
-				console.log('Loading Expenses @ vDB...' + ms.data.menu.city.name);
-			}
+			elws.clearFilter();
 		}
 	}
 })(window.angular);

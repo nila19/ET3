@@ -23,7 +23,7 @@ public class BillCloser {
 	private static final Logger logger = LogManager.getLogger("log." + BillCloser.class);
 
 	@Autowired
-	private StartupService loginService;
+	private StartupService ss;
 
 	private int dataKey = 0;
 
@@ -41,7 +41,7 @@ public class BillCloser {
 		int billsClosed = 0;
 		int billsOpened = 0;
 		try {
-			dataKey = loginService.getDefaultDataKey().getId();
+			dataKey = ss.getDefaultDataKey().getId();
 
 			billsClosed = closeAllOpenBills();
 			billsOpened = createAllOpenBills();
@@ -57,7 +57,7 @@ public class BillCloser {
 		int billsClosed = 0;
 		Date today = Calendar.getInstance().getTime();
 
-		List<BillUI> openBills = loginService.getAllOpenBills(dataKey);
+		List<BillUI> openBills = ss.getAllOpenBills(dataKey);
 		for (BillUI billUI : openBills) {
 			if (DateUtils.truncatedCompareTo(billUI.getBillDt(), today, Calendar.DATE) < 0) {
 				closeBill(billUI);
@@ -69,18 +69,18 @@ public class BillCloser {
 
 	@Transactional(propagation = Propagation.REQUIRED)
 	private void closeBill(BillUI billUI) {
-		Bill bill = loginService.getBill(dataKey, billUI.getId());
+		Bill bill = ss.getBill(dataKey, billUI.getId());
 
 		double billAmt = BillCloser.calcBillAmt(bill);
 
 		bill.setBillAmt(billAmt);
 		bill.setBillBalance(billAmt);
 		bill.setStatus(Bill.Status.CLOSED.status);
-		loginService.saveBill(bill);
+		ss.saveBill(bill);
 
 		Account ac = bill.getAccount();
 		ac.setLastBill(bill);
-		loginService.saveAccount(ac);
+		ss.saveAccount(ac);
 	}
 
 	@Transactional(propagation = Propagation.REQUIRED)
@@ -107,15 +107,15 @@ public class BillCloser {
 	private int createAllOpenBills() {
 		int billsOpened = 0;
 
-		List<AccountUI> accounts = loginService.getAllActiveAccounts(dataKey);
+		List<AccountUI> accounts = ss.getAllActiveAccounts(dataKey);
 		for (AccountUI ui : accounts) {
 			if (ui.isBilled()) {
-				Account ac = loginService.getAccount(dataKey, ui.getId());
+				Account ac = ss.getAccount(ui.getId());
 				if (ac.getOpenBill() == null || !ac.getOpenBill().isOpen()) {
 					Bill openBill = createOpenBill(ac);
-					loginService.saveBill(openBill);
+					ss.saveBill(openBill);
 					ac.setOpenBill(openBill);
-					loginService.saveAccount(ac);
+					ss.saveAccount(ac);
 
 					billsOpened++;
 				}

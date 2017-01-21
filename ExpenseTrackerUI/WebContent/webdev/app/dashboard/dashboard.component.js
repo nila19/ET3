@@ -9,9 +9,9 @@
 	});
 
 	DashboardController.$inject = ['dashboardService', 'etmenuService', 'accountsService',
-			'billsService', 'addService', 'chartService', 'explistService', 'startupService',
-			'CONSTANTS'];
-	function DashboardController(ds, ms, acs, bs, as, cs, els, sus, C) {
+			'billsService', 'addService', 'chartService', 'explistwrapperService',
+			'explistService', 'startupService', 'CONSTANTS'];
+	function DashboardController(ds, ms, acs, bs, as, cs, elws, els, sus, C) {
 		var vm = this;
 		init();
 
@@ -44,7 +44,7 @@
 		function loadPage() {
 			acs.loadAccountDetails();
 			bs.loadAllBills();
-			els.loadAllExpenses();
+			elws.reloadExpenses();
 		}
 	}
 })(window.angular);

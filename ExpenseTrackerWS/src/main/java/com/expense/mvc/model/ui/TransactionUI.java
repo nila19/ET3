@@ -13,46 +13,27 @@ public class TransactionUI implements java.io.Serializable {
 	private static final long serialVersionUID = 1L;
 
 	private int transId = 0;
-	private int categoryId;
-	private String mainCategory = "";
-	private String subCategory = "";
-	private String category = "";
+	private CategoryUI category;
 	private String description = "";
 	private double amount;
 	private Date entryDate;
-	private Date entryMonth;
 	private Date transDate;
-	private Date transMonth;
-	private char adhocInd;
-	private char adjustInd;
+	private boolean adhoc;
+	private boolean adjust;
 	
-	private int fromAccountId;
-	private String fromAccountDesc = "";
-	private int toAccountId;
-	private String toAccountDesc = "";
-	private double fromBalanceAf;
-	private double toBalanceAf;
+	private AccountUI fromAccount;
 	private double fromBalanceBf;
+	private double fromBalanceAf;
+	private AccountUI toAccount;
 	private double toBalanceBf;
+	private double toBalanceAf;
 
 	private Integer transSeq;
 	private Character tallyInd;
 	private Date tallyDate;
 	private Character status;
 
-	private int fromBillId;
-	private Date fromBillDt;
-	private int toBillId;
-	private Date toBillDt;
-
-	private char flag;
-	public enum FLAG {
-		ADHOC('H'), ADJUST('J');
-		public char ind;
-		private FLAG(char ind) {
-			this.ind = ind;
-		}
-	}
+	private BillUI fromBill;
 
 	public TransactionUI() {
 	}
@@ -61,60 +42,39 @@ public class TransactionUI implements java.io.Serializable {
 		transId = t.getTransId();
 		description = t.getDescription();
 		amount = t.getAmount();
-		if (t.getCategory() != null) {
-			categoryId = t.getCategory().getCategoryId();
-			mainCategory = t.getCategory().getMainCategory();
-			subCategory = t.getCategory().getSubCategory();
-			category = mainCategory + " ~ " + subCategory;
-		}
-		adhocInd = t.getAdhocInd();
-		adjustInd = t.getAdjustInd();
-		calculateFlag();
+		category = new CategoryUI(t.getCategory());
+		adhoc = t.getAdhocInd() == 'Y' ? true: false;
+		adjust = t.getAdjustInd() == 'Y' ? true: false;
 		setEntryDate(t.getEntryDate());
-		setEntryMonth(t.getEntryMonth());
 		setTransDate(t.getTransDate());
-		setTransMonth(t.getTransMonth());
-		fromAccountId = t.getFromAccount().getAccountId();
-		fromAccountDesc = t.getFromAccount().getDescription();
-		toAccountId = t.getToAccount().getAccountId();
-		toAccountDesc = t.getToAccount().getDescription();
-		fromBalanceAf = t.getFromBalanceAf();
-		toBalanceAf = t.getToBalanceAf();
+		fromAccount = new AccountUI(t.getFromAccount());
 		fromBalanceBf = t.getFromBalanceBf();
+		fromBalanceAf = t.getFromBalanceAf();
+		toAccount = new AccountUI(t.getToAccount());
 		toBalanceBf = t.getToBalanceBf();
+		toBalanceAf = t.getToBalanceAf();
 		status = t.getStatus();
 		transSeq = t.getTransSeq();
 		tallyInd = t.getTallyInd();
 		setTallyDate(t.getTallyDate());
 		if (t.getFromBill() != null) {
-			fromBillId = t.getFromBill().getBillId();
-			fromBillDt = t.getFromBill().getBillDt();
-		}
-		if (t.getToBill() != null) {
-			toBillId = t.getToBill().getBillId();
-			toBillDt = t.getToBill().getBillDt();
-		}
-	}
-
-	public void calculateFlag() {
-		if (adhocInd == 'Y') {
-			flag = FLAG.ADHOC.ind;
-		} else if (adjustInd == 'Y') {
-			flag = FLAG.ADJUST.ind;
+			fromBill = new BillUI();
+			fromBill.setId(t.getFromBill().getBillId());
+			fromBill.setName(FU.date(FU.Date.ddMMMyy).format(t.getFromBill().getBillDt()) + " - #" + fromBill.getId());
 		}
 	}
 
 	public boolean isAdhoc() {
-		return adhocInd == 'Y';
+		return adhoc;
 	}
 	public void setAdhoc(boolean adhoc) {
-		this.adhocInd = adhoc ? 'Y' : 'N';
+		this.adhoc = adhoc;
 	}
 	public boolean isAdjust() {
-		return adjustInd == 'Y';
+		return adjust;
 	}
 	public void setAdjust(boolean adjust) {
-		this.adjustInd = adjust ? 'Y' : 'N';
+		this.adjust = adjust;
 	}
 	
 	public int getTransId() {
@@ -125,35 +85,11 @@ public class TransactionUI implements java.io.Serializable {
 		this.transId = transId;
 	}
 
-	public int getCategoryId() {
-		return categoryId;
-	}
-
-	public void setCategoryId(int categoryId) {
-		this.categoryId = categoryId;
-	}
-
-	public String getMainCategory() {
-		return mainCategory;
-	}
-
-	public void setMainCategory(String mainCategory) {
-		this.mainCategory = mainCategory;
-	}
-
-	public String getSubCategory() {
-		return subCategory;
-	}
-
-	public void setSubCategory(String subCategory) {
-		this.subCategory = subCategory;
-	}
-
-	public String getCategory() {
+	public CategoryUI getCategory() {
 		return category;
 	}
 
-	public void setCategory(String category) {
+	public void setCategory(CategoryUI category) {
 		this.category = category;
 	}
 
@@ -177,18 +113,6 @@ public class TransactionUI implements java.io.Serializable {
 		}
 	}
 
-	public Date getEntryMonth() {
-		return entryMonth;
-	}
-
-	public void setEntryMonth(Date entryMonth) {
-		try {
-			this.entryMonth = FU.date(FU.Date.yyyyMMdd).parse(FU.date(FU.Date.yyyyMMdd).format(entryMonth));
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
-	}
-
 	public Date getTransDate() {
 		return transDate;
 	}
@@ -197,60 +121,20 @@ public class TransactionUI implements java.io.Serializable {
 		this.transDate = transDate;
 	}
 
-	public Date getTransMonth() {
-		return transMonth;
+	public AccountUI getFromAccount() {
+		return fromAccount;
 	}
 
-	public void setTransMonth(Date transMonth) {
-		this.transMonth = transMonth;
+	public void setFromAccount(AccountUI fromAccount) {
+		this.fromAccount = fromAccount;
 	}
 
-	public int getFromAccountId() {
-		return fromAccountId;
+	public AccountUI getToAccount() {
+		return toAccount;
 	}
 
-	public void setFromAccountId(int fromAccountId) {
-		this.fromAccountId = fromAccountId;
-	}
-
-	public String getFromAccountDesc() {
-		return fromAccountDesc;
-	}
-
-	public void setFromAccountDesc(String fromAccountDesc) {
-		this.fromAccountDesc = fromAccountDesc;
-	}
-
-	public int getToAccountId() {
-		return toAccountId;
-	}
-
-	public void setToAccountId(int toAccountId) {
-		this.toAccountId = toAccountId;
-	}
-
-	public String getToAccountDesc() {
-		return toAccountDesc;
-	}
-
-	public void setToAccountDesc(String toAccountDesc) {
-		this.toAccountDesc = toAccountDesc;
-	}
-
-	public char getAdhocInd() {
-		return adhocInd;
-	}
-
-	public void setAdhocInd(char adhocInd) {
-		this.adhocInd = adhocInd;
-	}
-
-	public char getAdjustInd() {
-		return adjustInd;
-	}
-
-	public void setAdjustInd(char adjustInd) {
-		this.adjustInd = adjustInd;
+	public void setToAccount(AccountUI toAccount) {
+		this.toAccount = toAccount;
 	}
 
 	public String getDescription() {
@@ -329,44 +213,12 @@ public class TransactionUI implements java.io.Serializable {
 		}
 	}
 
-	public char getFlag() {
-		return flag;
+	public BillUI getFromBill() {
+		return fromBill;
 	}
 
-	public void setFlag(char flag) {
-		this.flag = flag;
-	}
-
-	public int getFromBillId() {
-		return fromBillId;
-	}
-
-	public void setFromBillId(int fromBillId) {
-		this.fromBillId = fromBillId;
-	}
-
-	public Date getFromBillDt() {
-		return fromBillDt;
-	}
-
-	public void setFromBillDt(Date fromBillDt) {
-		this.fromBillDt = fromBillDt;
-	}
-
-	public int getToBillId() {
-		return toBillId;
-	}
-
-	public void setToBillId(int toBillId) {
-		this.toBillId = toBillId;
-	}
-
-	public Date getToBillDt() {
-		return toBillDt;
-	}
-
-	public void setToBillDt(Date toBillDt) {
-		this.toBillDt = toBillDt;
+	public void setFromBill(BillUI fromBill) {
+		this.fromBill = fromBill;
 	}
 
 	@Override

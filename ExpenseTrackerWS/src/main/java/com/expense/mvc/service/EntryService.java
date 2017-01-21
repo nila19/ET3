@@ -23,6 +23,7 @@ import com.expense.mvc.model.dao.TransactionDAO;
 import com.expense.mvc.model.entity.Account;
 import com.expense.mvc.model.entity.Bill;
 import com.expense.mvc.model.entity.Transaction;
+import com.expense.mvc.model.ui.AccountUI;
 import com.expense.mvc.model.ui.BillUI;
 import com.expense.mvc.model.ui.SwapUI;
 import com.expense.mvc.model.ui.TransactionUI;
@@ -59,7 +60,7 @@ public class EntryService {
 		Account fr = t.getFromAccount();
 		Account to = t.getToAccount();
 
-		t.setDataKey((ui.getFromAccountId() > 0 ? t.getFromAccount():t.getToAccount()).getDataKey());
+		t.setDataKey((ui.getFromAccount().getId() > 0 ? t.getFromAccount():t.getToAccount()).getDataKey());
 
 		if (fr.doesBills() && fr.getOpenBill() != null) {
 			t.setFromBill(fr.getOpenBill());
@@ -96,16 +97,16 @@ public class EntryService {
 	}
 
 	@Transactional(propagation = Propagation.REQUIRED)
-	public boolean modifyExpense(int transId, TransactionUI ui) {
-		Transaction t = transactionDAO.findById(transId);
+	public boolean modifyExpense(TransactionUI ui) {
+		Transaction t = transactionDAO.findById(ui.getTransId());
 		Account from = t.getFromAccount();
 		Account to = t.getToAccount();
 
 		// Financial Impact - Identify if there is any change in Amount or Accounts.
 		// Check Amount / FromAccount / ToAccount has changed.
 		boolean finImpact = false;
-		if (t.getAmount() != ui.getAmount() || from.getAccountId() != ui.getFromAccountId()
-				|| to.getAccountId() != ui.getToAccountId()) {
+		if (t.getAmount() != ui.getAmount() || from.getAccountId() != ui.getFromAccount().getId()
+				|| to.getAccountId() != ui.getToAccount().getId()) {
 			finImpact = true;
 		}
 
@@ -243,13 +244,13 @@ public class EntryService {
 
 	@Transactional(propagation = Propagation.REQUIRED)
 	public int payBill(TransactionUI ui) {
-		int billId = ui.getToBillId();
+		int billId = ui.getFromBill().getId();
 		Bill bill = billDAO.findById(billId);
 
-		ui.setAdjustInd(Transaction.Adjust.YES.type);
-		ui.setAdhocInd(Transaction.Adhoc.NO.type);
-		ui.setToAccountId(bill.getAccount().getAccountId());
-		ui.setCategoryId(0);
+		ui.setAdjust(true);
+		ui.setAdhoc(false);
+		ui.setToAccount(new AccountUI(bill.getAccount()));
+		ui.getCategory().setId(0);
 		ui.setDescription("CC Bill Payment");
 		ui.setAmount(bill.getBillBalance());
 
@@ -367,23 +368,15 @@ public class EntryService {
 		t.setTransMonth(DateUtils.truncate(ui.getTransDate(), Calendar.MONTH));
 		t.setDescription(WordUtils.capitalize(ui.getDescription()));
 		t.setAmount(ui.getAmount());
+		t.setAdjustInd(ui.isAdjust()?'Y':'N');
+		t.setAdhocInd(ui.isAdhoc()?'Y':'N');
+		t.setCategory(categoryDAO.findById(ui.getCategory().getId()));
+		t.setFromAccount(accountDAO.findById(ui.getFromAccount().getId()));
+		t.setToAccount(accountDAO.findById(ui.getToAccount().getId()));
 
-		t.setAdjustInd(ui.getAdjustInd());
-		if (ui.getAdjustInd() != Transaction.Adjust.YES.type) {
-			t.setAdjustInd(Transaction.Adjust.NO.type);
+		if(ui.getFromBill() != null) {
+			t.setFromBill(t.getFromAccount().doesBills() ? billDAO.findById(ui.getFromBill().getId()) : null);
 		}
-
-		t.setAdhocInd(ui.getAdhocInd());
-		if (ui.getAdhocInd() != Transaction.Adhoc.YES.type) {
-			t.setAdhocInd(Transaction.Adhoc.NO.type);
-		}
-
-		t.setCategory(categoryDAO.findById(ui.getCategoryId()));
-		t.setFromAccount(accountDAO.findById(ui.getFromAccountId()));
-		t.setToAccount(accountDAO.findById(ui.getToAccountId()));
-
-		t.setFromBill(t.getFromAccount().doesBills() ? billDAO.findById(ui.getFromBillId()) : null);
-		t.setToBill(t.getToAccount().doesBills() ? billDAO.findById(ui.getToBillId()) : null);
 		// TODO If bill is already closed, bill-balance is not getting adjusted...
 	}
 

@@ -3,7 +3,6 @@ package com.expense.mvc.model.ui;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import com.expense.mvc.model.entity.Category;
-import com.expense.utils.Utils;
 
 public class CategoryUI implements java.io.Serializable, Comparable<CategoryUI> {
 	private static final long serialVersionUID = 1L;
@@ -21,9 +20,12 @@ public class CategoryUI implements java.io.Serializable, Comparable<CategoryUI> 
 	}
 
 	public CategoryUI(Category cat) {
-		Utils.copyBean(this, cat);
-		setId(cat.getCategoryId());
-		setName(cat.getMainCategory() + SEP + cat.getSubCategory());
+		id = cat.getCategoryId();
+		name = cat.getMainCategory() + SEP + cat.getSubCategory();
+		mainCategory = cat.getMainCategory();
+		subCategory = cat.getSubCategory();
+		status = cat.getStatus();
+		displayOrder = cat.getDisplayOrder();
 	}
 
 	public CategoryUI(String category) {

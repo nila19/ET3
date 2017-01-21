@@ -5,50 +5,14 @@
 
 	angular.module('dashboard.edit').factory('editService', editService);
 
-	editService.$inject = ['etmenuService', 'ajaxService', 'utilsService'];
-	function editService(ms, aj, us) {
+	editService.$inject = ['explistService', 'ajaxService', 'utilsService', 'VALUES', 'CONSTANTS',
+			'$http'];
+	function editService(els, aj, us, V, C, $http) {
 		var data = {
-			expense: {}
+			expense: {},
+			loading: false
 		};
-
-		var dummyExpense = function() {
-			return {
-				expense: {
-					id: 2500,
-					entryDt: 1288323623006,
-					transDt: 1288323623006,
-					category: {
-						id: 1750,
-						name: 'Food ~ Kroger Groceries',
-						main: 'Food',
-						sub: 'Kroger Groceries',
-						icon: 'local_mall'
-					},
-					description: 'Costco Gas',
-					amount: 34.55,
-					fromAcc: {
-						id: 620,
-						name: 'BOA - 7787',
-						doBills: true
-					},
-					fromFrom: 8944.60,
-					fromTo: 8910.10,
-					toAcc: {
-						id: 600,
-						name: 'BOA VISA',
-						doBills: false
-					},
-					toFrom: 1240.55,
-					toTo: 1206.05,
-					adhoc: true,
-					adjust: false,
-					bill: {
-						id: 21,
-						name: 'BOA - 7787 - Bill #2'
-					}
-				}
-			};
-		};
+		var ta = {};
 
 		var dummyBills = function() {
 			return [{
@@ -62,42 +26,48 @@
 				name: 'BOA - 7787 - Bill #3'
 			}];
 		};
-		var loadExpense = function(transId) {
-			console.log('Fetching Exp :: ' + transId);
-			aj.get('/entry/transaction/' + transId, {}, loadData);
-		};
 		var loadData = function(data) {
 			this.data.expense = data;
 		};
-		var saveExpense = function() {
-			// TODO Ajax save.
-			console.log('Changes saved @ vDB :: ' + ms.data.menu.city.name + ',' +
-					JSON.stringify(this.data.expense));
+
+		// Modify Expense
+		var loadModifyData = function() {
+			data.loading = false;
 			us.showMsg('Modify Expense', 'success');
+			$('#model_Modify').modal('hide');
+		};
+		var saveExpense = function() {
+			aj.post('/entry/modify', this.data.expense, loadModifyData);
+			this.data.loading = true;
+			// TODO Ajax save.
+			console.log('Changes saving @ DB :: ' + JSON.stringify(this.data.expense));
+		};
+
+		// Delete Expense
+		var loadDeleteData = function() {
+			data.loading = false;
+			els.reloadListAfterDelete(data.expense.transId);
+			us.showMsg('Delete Expense', 'success');
+			$('#model_Delete').modal('hide');
 		};
 		var deleteExpense = function() {
-			// TODO Ajax save.
-			console.log('Deleted @ vDB :: ' + this.data.expense.id + ',' + ms.data.menu.city.name);
-			us.showMsg('Delete Expense', 'success');
+			aj.post('/entry/delete/' + this.data.expense.transId, {}, loadDeleteData);
+			this.data.loading = true;
 		};
-		var loadResults = function() {
-			console.log('Swapped @ vDB :: ' + ms.data.menu.city.name);
-			ss.doSearch();
+
+		var loadBills = function() {
+			aj.query('/entry/bills/' + this.data.expense.fromAccount.id, {}, loadResults);
 		};
-		var getBillsForAcc = function() {
-			// TODO Ajax call to fetch Bills from DB.
-			console.log('Fetching Bills data from @ vDB :: ' + this.data.expense.fromAcc.id + ',' +
-					ms.data.menu.city.name);
-			return dummyBills();
+		var loadResults = function(data) {
+			V.data.bills = data;
 		};
 
 		return {
 			data: data,
-			loadExpense: loadExpense,
 			loadData: loadData,
 			saveExpense: saveExpense,
 			deleteExpense: deleteExpense,
-			getBillsForAcc: getBillsForAcc
+			loadBills: loadBills
 		};
 	}
 

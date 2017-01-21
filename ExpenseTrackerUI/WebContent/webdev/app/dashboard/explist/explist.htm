@@ -42,13 +42,13 @@
                         </td>
                         <td>{{row.entryDate | date:'dd-MMM-yy h:mm a'}}</td>
                         <td>{{row.transDate | date:'dd-MMM'}}</td>
-                        <td>{{row.category}}</td>
+                        <td>{{row.category.name}}</td>
                         <td>{{row.description}}</td>
                         <td class="text-right">{{row.amount | currency:''}}</td>
-                        <td class="text-right">{{row.fromAccountDesc}}</td>
+                        <td class="text-right">{{row.fromAccount.name}}</td>
                         <td class="text-right">{{row.fromBalanceBf | currency:''}}</td>
                         <td class="text-right">{{row.fromBalanceAf | currency:''}}</td>
-                        <td class="text-right">{{row.toAccountDesc}}</td>
+                        <td class="text-right">{{row.toAccount.name}}</td>
                         <td class="text-right">{{row.toBalanceBf | currency:''}}</td>
                         <td class="text-right">{{row.toBalanceAf | currency:''}}</td>
                         <td class="td-actions text-right">

@@ -74,10 +74,10 @@ public class EntryController {
 		es.addExpense(tui);
 	}
 
-	@RequestMapping(value = "/modify/{transId}", method = RequestMethod.POST)
-	public void modifyExpense(@PathVariable int transId,@RequestBody TransactionUI tui) {
+	@RequestMapping(value = "/modify", method = RequestMethod.POST)
+	public void modifyExpense(@RequestBody TransactionUI tui) {
 		//TODO checkDataKeyActive(cityId);
-		es.modifyExpense(transId, tui);
+		es.modifyExpense(tui);
 	}
 
 	@RequestMapping(value = "/delete/{transId}", method = RequestMethod.POST)

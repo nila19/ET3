@@ -13,15 +13,22 @@
           <form name="modifyForm" novalidate="novalidate" ng-submit="$ctrl.saveExpense(modifyForm.$valid)">
             <div class="form-group">
               <label class="control-label">From Account</label>
-              <input ng-model="$ctrl.data.expense.fromAccount" type="text" class="form-control" uib-typeahead="acc as acc.name for acc in $ctrl.ta.accounts | filter:$viewValue" typeahead-show-hint="true" typeahead-min-length="0" typeahead-editable="false">
+              <input ng-model="$ctrl.data.expense.fromAccount" ng-change="$ctrl.clearBills()" type="text" class="form-control" uib-typeahead="acc as acc.name for acc in $ctrl.ta.accounts | filter:$viewValue" typeahead-show-hint="true" typeahead-min-length="0" typeahead-editable="false">
             </div>
             <div ng-if="$ctrl.data.expense.adjust" class="form-group">
               <label class="control-label">To Account</label>
-              <input ng-model="$ctrl.data.expense.toAcc" type="text" class="form-control" uib-typeahead="acc as acc.name for acc in $ctrl.ta.accounts | filter:$viewValue" typeahead-show-hint="true" typeahead-min-length="0" typeahead-editable="false">
+              <input ng-model="$ctrl.data.expense.toAccount" type="text" class="form-control" uib-typeahead="acc as acc.name for acc in $ctrl.ta.accounts | filter:$viewValue" typeahead-show-hint="true" typeahead-min-length="0" typeahead-editable="false">
             </div>
-            <div ng-if="!$ctrl.data.expense.adjust && $ctrl.data.expense.fromAcc.doBills" class="form-group">
-              <label class="control-label">Bill</label>
-              <input ng-model="$ctrl.data.expense.bill" type="text" class="form-control" uib-typeahead="bill as bill.name for bill in $ctrl.getBills() | filter:$viewValue" typeahead-show-hint="true" typeahead-min-length="0" typeahead-editable="false">
+            <div ng-if="!$ctrl.data.expense.adjust && $ctrl.data.expense.fromAccount.billed" class="form-group">
+              <div class="row">
+                <div class="col-md-11">
+                  <label class="control-label">Bill</label>
+                  <input ng-model="$ctrl.data.expense.fromBill" type="text" class="form-control" uib-typeahead="bill as bill.name for bill in $ctrl.ta.bills | filter:$viewValue" typeahead-show-hint="true" typeahead-min-length="0" typeahead-editable="false">
+                </div>
+                <div class="col-md-1">
+                  <button type="button" ng-click="$ctrl.loadBills()" class="btn btn-primary btn-xs"><i class="material-icons">list</i></button>
+                </div>
+              </div>
             </div>
             <div ng-if="!$ctrl.data.expense.adjust" class="form-group">
               <label class="control-label">Category</label>
@@ -32,21 +39,24 @@
                 <input ng-model="$ctrl.data.expense.description" type="text" class="form-control" required uib-typeahead="desc for desc in $ctrl.ta.descriptions | filter:$viewValue | limitTo:8">
             </div>
             <div class="form-group">
-              <div class="col-md-4">
-                <label class="control-label">Amount</label>
-                <input ng-model="$ctrl.data.expense.amount" xx-amount type="text" class="form-control" required>
-              </div>
-              <div class="col-md-4">
-                <label class="control-label">Date</label>
-                <input ng-model="$ctrl.data.expense.transDt" xx-date type="text" class="form-control" required data-provide="datepicker">
-              </div>
-              <div class="col-md-4">
-                <div ng-if="!$ctrl.data.expense.adjust">
-                  <label> <input type="checkbox" ng-model="$ctrl.data.expense.adhoc" class="form-control">Adhoc</label>
+              <div class="row">
+                <div class="col-md-4">
+                  <label class="control-label">Amount</label>
+                  <input ng-model="$ctrl.data.expense.amount" xx-amount type="text" class="form-control" required>
+                </div>
+                <div class="col-md-4">
+                  <label class="control-label">Date</label>
+                  <input ng-model="$ctrl.data.expense.transDate" xx-date type="text" class="form-control" required data-provide="datepicker" data-date-format="yyyy-mm-dd">
+                </div>
+                <div class="col-md-4">
+                  <div ng-if="!$ctrl.data.expense.adjust">
+                    <label> <input type="checkbox" ng-model="$ctrl.data.expense.adhoc" class="form-control">Adhoc</label>
+                  </div>
                 </div>
               </div>
             </div>
             <div class="form-group">
+              <span ng-if="$ctrl.data.loading" class="btn btn-simple btn-xs no-btn"><img alt="loading..." style="width:20px;height:20px;" ng-src="loading.gif"></span>&nbsp;
               <button type="submit" ng-disabled="modifyForm.$invalid" class="btn btn-warning pull-right" tooltip rel="tooltip" title="Save"><i class="material-icons">save</i></button>
             </div>
           </form>
@@ -69,11 +79,11 @@
           <form>
             <div class="form-group">
               <label class="control-label">From Account</label>
-              <input ng-model="$ctrl.data.expense.fromAcc.name" type="text" class="form-control" disabled="disabled">
+              <input ng-model="$ctrl.data.expense.fromAccount.name" type="text" class="form-control" disabled="disabled">
             </div>
             <div ng-if="$ctrl.data.expense.adjust" class="form-group">
               <label class="control-label">To Account</label>
-              <input ng-model="$ctrl.data.expense.toAcc.name" type="text" class="form-control" disabled="disabled">
+              <input ng-model="$ctrl.data.expense.toAccount.name" type="text" class="form-control" disabled="disabled">
             </div>
             <div ng-if="!$ctrl.data.expense.adjust" class="form-group">
               <label class="control-label">Category</label>
@@ -84,22 +94,25 @@
               <input ng-model="$ctrl.data.expense.description" type="text" class="form-control" disabled="disabled">
             </div>
             <div class="form-group">
-              <div class="col-md-4">
-                <label class="control-label">Amount</label>
-                <input ng-model="$ctrl.data.expense.amount" xx-amount type="text" class="form-control" disabled="disabled">
-              </div>
-              <div class="col-md-4">
-                <label class="control-label">Date</label>
-                <input ng-model="$ctrl.data.expense.transDt" xx-date type="text" class="form-control" disabled="disabled">
-              </div>
-              <div class="col-md-4">
-                <div ng-if="!$ctrl.data.expense.adjust">
-                  <label> <input type="checkbox" ng-model="$ctrl.data.expense.adhoc" class="form-control" disabled="disabled">Adhoc</label>
+              <div class="row">
+                <div class="col-md-4">
+                  <label class="control-label">Amount</label>
+                  <input ng-model="$ctrl.data.expense.amount" xx-amount type="text" class="form-control" disabled="disabled">
+                </div>
+                <div class="col-md-4">
+                  <label class="control-label">Date</label>
+                  <input ng-model="$ctrl.data.expense.transDate" xx-date type="text" class="form-control" disabled="disabled">
+                </div>
+                <div class="col-md-4">
+                  <div ng-if="!$ctrl.data.expense.adjust">
+                    <label> <input type="checkbox" ng-model="$ctrl.data.expense.adhoc" class="form-control" disabled="disabled">Adhoc</label>
+                  </div>
                 </div>
               </div>
             </div>
             <div class="form-group">
-                <button type="button" ng-click="$ctrl.deleteExpense()" class="btn btn-danger pull-right" tooltip rel="tooltip" title="Delete Expense"><i class="material-icons">delete</i></button>
+              <span ng-if="$ctrl.data.loading" class="btn btn-simple btn-xs no-btn"><img alt="loading..." style="width:20px;height:20px;" ng-src="loading.gif"></span>&nbsp;
+              <button type="button" ng-click="$ctrl.deleteExpense()" class="btn btn-danger pull-right" tooltip rel="tooltip" title="Delete Expense"><i class="material-icons">delete</i></button>
             </div>
           </form>
         </div>

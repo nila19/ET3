@@ -10,25 +10,25 @@ import com.expense.mvc.model.entity.Account;
 import com.expense.mvc.model.entity.Bill;
 import com.expense.mvc.model.entity.Transaction;
 import com.expense.utils.Props;
-import com.expense.utils.Utils;
 
 public class AccountUI implements java.io.Serializable {
 	private static final long serialVersionUID = 1L;
 
 	private int id;
 	private String name = "";
-	private double tallyBalance;
-	private Date tallyDate;
-	private double tallyExpenseAmt;
-	private int tallyExpenseCnt;
 	private double balanceAmt;
 	private char type;
-	private String imageCode;
 	private char status;
+	private String imageCode;
 
 	private char billOption;
 	private int closingDay;
 	private int dueDay;
+
+	private double tallyBalance;
+	private Date tallyDate;
+	private double tallyExpenseAmt;
+	private int tallyExpenseCnt;
 
 	// Bill Information
 	private boolean dueDtWarning = false;
@@ -43,10 +43,16 @@ public class AccountUI implements java.io.Serializable {
 	}
 
 	public AccountUI(Account ac) {
-		Utils.copyBean(this, ac);
+		id = ac.getAccountId();
+		name = ac.getDescription();
+		balanceAmt = ac.getBalanceAmt();
+		status = ac.getStatus();
+		type = ac.getType();
+		imageCode = ac.getImageCode();
+		billOption = ac.getBillOption();
+		setClosingDay(ac.getClosingDay());
+		setDueDay(ac.getDueDay());
 
-		setId(ac.getAccountId());
-		setName(ac.getDescription());
 		setTallyExpenses(ac);
 		setBillInfo(ac);
 	}
@@ -54,29 +60,24 @@ public class AccountUI implements java.io.Serializable {
 	private void setBillInfo(Account ac) {
 		if (ac.getLastBill() != null) {
 			Bill bill = ac.getLastBill();
-
-			setBillDt(bill.getBillDt());
-			setDueDt(bill.getDueDt());
-			setBillAmt(bill.getBillAmt());
-			setBillBalance(bill.getBillBalance());
-			setBillPaidDt(bill.getBillPaidDt());
-
+			billDt = bill.getBillDt();
+			dueDt = bill.getDueDt();
+			billAmt = bill.getBillAmt();
+			billBalance = bill.getBillBalance();
+			billPaidDt = bill.getBillPaidDt();
 			checkDueDateWarning(bill);
 		}
-
 		if (ac.getOpenBill() != null) {
-			setOpenBillAmt(ac.getOpenBill().getBillBalance());
+			openBillAmt = ac.getOpenBill().getBillBalance();
 		}
 	}
 
 	private void checkDueDateWarning(Bill lastBill) {
 		if (lastBill.getBillBalance() > 0) {
 			Date dueDt = lastBill.getDueDt();
-
 			int DUE_DATE_WARNING = Integer.valueOf(Props.expense.getString("DUE.DATE.WARNING"));
 			Date now = Calendar.getInstance().getTime();
 			now = DateUtils.addDays(now, DUE_DATE_WARNING);
-
 			if (DateUtils.truncatedCompareTo(dueDt, now, Calendar.DATE) <= 0) {
 				setDueDtWarning(true);
 			}
@@ -84,6 +85,8 @@ public class AccountUI implements java.io.Serializable {
 	}
 
 	private void setTallyExpenses(Account ac) {
+		tallyBalance = ac.getTallyBalance();
+		tallyDate = ac.getTallyDate();
 		tallyExpenseCnt = 0;
 		tallyExpenseAmt = 0;
 		for (Transaction t : ac.getTransForFromAccount()) {
@@ -98,7 +101,6 @@ public class AccountUI implements java.io.Serializable {
 				tallyExpenseAmt -= t.getAmount();
 			}
 		}
-
 		if (tallyExpenseAmt != 0 && ac.getType() == Account.Type.CASH.type) {
 			tallyExpenseAmt = tallyExpenseAmt * -1;
 		}
