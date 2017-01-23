@@ -8,9 +8,9 @@
 		controller: ETMenuController
 	});
 
-	ETMenuController.$inject = ['etmenuService', 'dashboardService', 'startupService',
+	ETMenuController.$inject = ['etmenuService', 'dashboardFlagsService', 'startupService',
 			'utilsService', 'CONSTANTS', 'VALUES'];
-	function ETMenuController(ms, ds, sus, us, C, V) {
+	function ETMenuController(ms, dfs, sus, us, C, V) {
 		var vm = this;
 		init();
 
@@ -21,7 +21,7 @@
 
 		// ***** Function declarations *****//
 		function init() {
-			sus.loadCity();
+			sus.loadAll();
 			vm.data = ms.data;
 
 			ms.checkInit();
@@ -29,19 +29,16 @@
 		}
 
 		function toggleMoreAccounts() {
-			console.log('Toggling more accounts..');
-			ds.toggleMoreAccounts();
+			dfs.toggleMoreAccounts();
 		}
 
 		function toggleChart() {
-			console.log('Toggling chart..');
-			ds.toggleChart();
+			dfs.toggleChart();
 		}
 
 		function changeCity(id) {
 			V.data.city = us.getById(ms.data.menu.cities, id);
-			// Refresh all items for city.
-			sus.loadAll();
+			sus.loadOthers();
 		}
 	}
 })(window.angular);

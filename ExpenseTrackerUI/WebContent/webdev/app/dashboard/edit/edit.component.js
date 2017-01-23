@@ -39,7 +39,7 @@
 					return false;
 				}
 				if (!es.data.expense.adjust && es.data.expense.fromAccount.billed &&
-						isNull(es.data.expense.fromBill)) {
+						isNull(es.data.expense.bill)) {
 					us.show('3 - Mandatory fields are empty!!', C.MSG.WARNING);
 					return false;
 				}

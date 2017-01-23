@@ -10,11 +10,9 @@ import java.util.List;
 import org.apache.commons.lang3.text.WordUtils;
 import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-
 import com.expense.mvc.helper.BillCloser;
 import com.expense.mvc.model.dao.AccountDAO;
 import com.expense.mvc.model.dao.BillDAO;
@@ -24,11 +22,12 @@ import com.expense.mvc.model.entity.Account;
 import com.expense.mvc.model.entity.Bill;
 import com.expense.mvc.model.entity.Transaction;
 import com.expense.mvc.model.ui.AccountUI;
+import com.expense.mvc.model.ui.BillPayUI;
 import com.expense.mvc.model.ui.BillUI;
+import com.expense.mvc.model.ui.CategoryUI;
 import com.expense.mvc.model.ui.SwapUI;
 import com.expense.mvc.model.ui.TransactionUI;
 import com.expense.utils.FU;
-import com.expense.utils.Utils;
 
 @Service
 public class EntryService {
@@ -44,9 +43,6 @@ public class EntryService {
 
 	@Autowired
 	private BillDAO billDAO;
-
-	@Autowired
-	private MessageSource messages;
 
 	@Transactional(propagation = Propagation.REQUIRED)
 	public int addExpense(TransactionUI ui) {
@@ -243,23 +239,30 @@ public class EntryService {
 	}
 
 	@Transactional(propagation = Propagation.REQUIRED)
-	public int payBill(TransactionUI ui) {
-		int billId = ui.getFromBill().getId();
+	public int payBill(int billId, BillPayUI bpui) {
 		Bill bill = billDAO.findById(billId);
 
-		ui.setAdjust(true);
-		ui.setAdhoc(false);
+		TransactionUI ui = new TransactionUI();
+		ui.setFromAccount(bpui.getAccount());
 		ui.setToAccount(new AccountUI(bill.getAccount()));
+		ui.setTransDate(bpui.getPaidDt());
+		ui.setCategory(new CategoryUI());
 		ui.getCategory().setId(0);
 		ui.setDescription("CC Bill Payment");
 		ui.setAmount(bill.getBillBalance());
+		ui.setAdjust(true);
+		ui.setAdhoc(false);
 
 		int tranId = addExpense(ui);
 		Transaction t = transactionDAO.findById(tranId);
 		t.setToBill(bill);
 		transactionDAO.save(t);
 
-		bill.setBillBalance(bill.getBillBalance() - t.getAmount());
+		double bal = bill.getBillBalance() - t.getAmount();
+		if(bal > -0.01 && bal < 0.01) {
+			bal = 0;
+		}
+		bill.setBillBalance(bal);
 		bill.setBillPaidDt(t.getTransDate());
 		bill.setPayTran(t);
 		billDAO.save(bill);
@@ -374,8 +377,8 @@ public class EntryService {
 		t.setFromAccount(accountDAO.findById(ui.getFromAccount().getId()));
 		t.setToAccount(accountDAO.findById(ui.getToAccount().getId()));
 
-		if(ui.getFromBill() != null) {
-			t.setFromBill(t.getFromAccount().doesBills() ? billDAO.findById(ui.getFromBill().getId()) : null);
+		if(ui.getBill() != null) {
+			t.setFromBill(t.getFromAccount().doesBills() ? billDAO.findById(ui.getBill().getId()) : null);
 		}
 		// TODO If bill is already closed, bill-balance is not getting adjusted...
 	}

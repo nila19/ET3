@@ -5,21 +5,35 @@
 
 	angular.module('dashboard').factory('dashboardService', dashboardService);
 
-	dashboardService.$inject = ['etmenuService', 'accountsService', 'addService', 'chartService'];
-	function dashboardService(ms, acs, as, cs) {
-		var toggleMoreAccounts = function() {
-			ms.data.showingMoreAccounts = !ms.data.showingMoreAccounts;
-			acs.data.showAcctsMore = !acs.data.showAcctsMore;
+	dashboardService.$inject = ['etmenuService', 'accountsService', 'searchService',
+			'explistwrapperService', 'billsService', 'ajaxService'];
+	function dashboardService(ms, acs, ss, elws, bs, aj) {
+		var getPageThree = function() {
+			ss.data.account = null;
+			ss.data.bill = null;
+			elws.reloadExpenses();
+			ms.data.loading = false;
 		};
-		var toggleChart = function() {
-			ms.data.showingChart = !ms.data.showingChart;
-			as.data.showAdd = !as.data.showAdd;
-			cs.data.showChart = !cs.data.showChart;
-			cs.renderChart();
+		var getPageTwo = function() {
+			bs.loadAllBills();
+			getPageThree();
+		};
+		var loadPageOne = function(data) {
+			acs.loadData(data);
+			getPageTwo();
+		};
+		var getPageOne = function() {
+			var input = {
+				city: ms.data.menu.city.id,
+			};
+			aj.query('/startup/accounts', input, loadPageOne);
+		};
+		var loadPage = function() {
+			ms.data.loading = true;
+			getPageOne();
 		};
 		return {
-			toggleMoreAccounts: toggleMoreAccounts,
-			toggleChart: toggleChart
+			loadPage: loadPage,
 		};
 	}
 

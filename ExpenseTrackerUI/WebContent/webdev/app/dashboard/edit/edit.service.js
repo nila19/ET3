@@ -14,20 +14,21 @@
 		};
 		var ta = {};
 
-		var dummyBills = function() {
-			return [{
-				id: 20,
-				name: 'BOA - 7787 - Bill #1'
-			}, {
-				id: 21,
-				name: 'BOA - 7787 - Bill #2'
-			}, {
-				id: 22,
-				name: 'BOA - 7787 - Bill #3'
-			}];
+		// Load Bills
+		var loadBillData = function(data) {
+			V.data.bills = data;
 		};
+		var loadBills = function() {
+			aj.query('/entry/bills/' + data.expense.fromAccount.id, {}, loadBillData);
+		};
+
+		// Load Page Data
 		var loadData = function(data) {
 			this.data.expense = data;
+			// Initialize Bills TA.
+			if (this.data.expense.fromAccount.id) {
+				loadBills();
+			}
 		};
 
 		// Modify Expense
@@ -39,8 +40,6 @@
 		var saveExpense = function() {
 			aj.post('/entry/modify', this.data.expense, loadModifyData);
 			this.data.loading = true;
-			// TODO Ajax save.
-			console.log('Changes saving @ DB :: ' + JSON.stringify(this.data.expense));
 		};
 
 		// Delete Expense
@@ -53,13 +52,6 @@
 		var deleteExpense = function() {
 			aj.post('/entry/delete/' + this.data.expense.transId, {}, loadDeleteData);
 			this.data.loading = true;
-		};
-
-		var loadBills = function() {
-			aj.query('/entry/bills/' + this.data.expense.fromAccount.id, {}, loadResults);
-		};
-		var loadResults = function(data) {
-			V.data.bills = data;
 		};
 
 		return {

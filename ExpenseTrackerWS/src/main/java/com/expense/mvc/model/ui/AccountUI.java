@@ -1,5 +1,6 @@
 package com.expense.mvc.model.ui;
 
+import java.text.ParseException;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -9,6 +10,7 @@ import org.apache.commons.lang3.time.DateUtils;
 import com.expense.mvc.model.entity.Account;
 import com.expense.mvc.model.entity.Bill;
 import com.expense.mvc.model.entity.Transaction;
+import com.expense.utils.FU;
 import com.expense.utils.Props;
 
 public class AccountUI implements java.io.Serializable {
@@ -20,24 +22,32 @@ public class AccountUI implements java.io.Serializable {
 	private char type;
 	private char status;
 	private String imageCode;
+	//TODO Add to DB.
+	private String bgColor = "blue";
+	private String icon = "account_balance";
 
 	private char billOption;
 	private int closingDay;
 	private int dueDay;
-
+	
 	private double tallyBalance;
 	private Date tallyDate;
 	private double tallyExpenseAmt;
 	private int tallyExpenseCnt;
 
 	// Bill Information
-	private boolean dueDtWarning = false;
 	private Date billDt;
 	private Date dueDt;
 	private double billAmt;
 	private double billBalance;
 	private Date billPaidDt;
-	private double openBillAmt;
+	private double unbilledAmt;
+	private Date nextBillDt;
+
+	//Flags
+	private boolean tallyToday = false;
+	private boolean billDue = false;
+	private boolean dueDtWarning = false;
 
 	public AccountUI() {
 	}
@@ -50,11 +60,14 @@ public class AccountUI implements java.io.Serializable {
 		type = ac.getType();
 		imageCode = ac.getImageCode();
 		billOption = ac.getBillOption();
+
 		setClosingDay(ac.getClosingDay());
 		setDueDay(ac.getDueDay());
 
 		setTallyExpenses(ac);
-		setBillInfo(ac);
+		if(this.isBilled()) {
+			setBillInfo(ac);
+		}
 	}
 
 	private void setBillInfo(Account ac) {
@@ -68,18 +81,26 @@ public class AccountUI implements java.io.Serializable {
 			checkDueDateWarning(bill);
 		}
 		if (ac.getOpenBill() != null) {
-			openBillAmt = ac.getOpenBill().getBillBalance();
+			unbilledAmt = ac.getOpenBill().getBillBalance();
+		}
+		
+		Date today = Calendar.getInstance().getTime();
+		nextBillDt = DateUtils.setDays(today, closingDay);
+		if (DateUtils.truncatedCompareTo(nextBillDt, today, Calendar.DATE) <= 0) {
+			nextBillDt = DateUtils.addMonths(nextBillDt, 1);
 		}
 	}
 
 	private void checkDueDateWarning(Bill lastBill) {
 		if (lastBill.getBillBalance() > 0) {
+			billDue = true;
+			
 			Date dueDt = lastBill.getDueDt();
 			int DUE_DATE_WARNING = Integer.valueOf(Props.expense.getString("DUE.DATE.WARNING"));
 			Date now = Calendar.getInstance().getTime();
 			now = DateUtils.addDays(now, DUE_DATE_WARNING);
 			if (DateUtils.truncatedCompareTo(dueDt, now, Calendar.DATE) <= 0) {
-				setDueDtWarning(true);
+				dueDtWarning = true;
 			}
 		}
 	}
@@ -104,6 +125,9 @@ public class AccountUI implements java.io.Serializable {
 		if (tallyExpenseAmt != 0 && ac.getType() == Account.Type.CASH.type) {
 			tallyExpenseAmt = tallyExpenseAmt * -1;
 		}
+		if(tallyDate != null) {
+			tallyToday = DateUtils.isSameDay(tallyDate, new Date());
+		}
 	}
 
 	public int getId() {
@@ -123,7 +147,7 @@ public class AccountUI implements java.io.Serializable {
 	}
 
 	public double getBalanceAmt() {
-		return balanceAmt;
+		return FU.amt(balanceAmt);
 	}
 
 	public void setBalanceAmt(double balanceAmt) {
@@ -131,7 +155,7 @@ public class AccountUI implements java.io.Serializable {
 	}
 
 	public double getTallyBalance() {
-		return tallyBalance;
+		return FU.amt(tallyBalance);
 	}
 
 	public void setTallyBalance(double tallyBalance) {
@@ -147,7 +171,7 @@ public class AccountUI implements java.io.Serializable {
 	}
 
 	public double getTallyExpenseAmt() {
-		return tallyExpenseAmt;
+		return FU.amt(tallyExpenseAmt);
 	}
 
 	public void setTallyExpenseAmt(double tallyExpenseAmt) {
@@ -160,6 +184,14 @@ public class AccountUI implements java.io.Serializable {
 
 	public void setTallyExpenseCnt(int tallyExpenseCnt) {
 		this.tallyExpenseCnt = tallyExpenseCnt;
+	}
+
+	public boolean isTallyToday() {
+		return tallyToday;
+	}
+
+	public void setTallyToday(boolean tallyToday) {
+		this.tallyToday = tallyToday;
 	}
 
 	public char getType() {
@@ -176,6 +208,22 @@ public class AccountUI implements java.io.Serializable {
 
 	public void setImageCode(String imageCode) {
 		this.imageCode = imageCode;
+	}
+
+	public String getBgColor() {
+		return bgColor;
+	}
+
+	public void setBgColor(String bgColor) {
+		this.bgColor = bgColor;
+	}
+
+	public String getIcon() {
+		return icon;
+	}
+
+	public void setIcon(String icon) {
+		this.icon = icon;
 	}
 
 	public char getStatus() {
@@ -199,7 +247,7 @@ public class AccountUI implements java.io.Serializable {
 	}
 
 	public void setClosingDay(Integer closingDay) {
-		this.closingDay = closingDay == null ? 0 : closingDay;
+		this.closingDay = (closingDay == null ? 0 : closingDay);
 	}
 
 	public int getDueDay() {
@@ -207,19 +255,19 @@ public class AccountUI implements java.io.Serializable {
 	}
 
 	public void setDueDay(Integer dueDay) {
-		this.dueDay = dueDay == null ? 0 : dueDay;
+		this.dueDay = (dueDay == null ? 0 : dueDay);
 	}
 
 	public boolean isActive() {
-		return status == Account.Status.ACTIVE.status;
+		return (this.status == Account.Status.ACTIVE.status);
 	}
 
 	public boolean isBilled() {
-		return billOption == Account.BillOption.YES.billOption;
+		return (this.billOption == Account.BillOption.YES.billOption);
 	}
 
 	public boolean isCash() {
-		return type == Account.Type.CASH.type;
+		return (this.type == Account.Type.CASH.type);
 	}
 
 	public boolean isDueDtWarning() {
@@ -247,7 +295,7 @@ public class AccountUI implements java.io.Serializable {
 	}
 
 	public double getBillAmt() {
-		return billAmt;
+		return FU.amt(billAmt);
 	}
 
 	public void setBillAmt(double billAmt) {
@@ -255,7 +303,7 @@ public class AccountUI implements java.io.Serializable {
 	}
 
 	public double getBillBalance() {
-		return billBalance;
+		return FU.amt(billBalance);
 	}
 
 	public void setBillBalance(double billBalance) {
@@ -270,12 +318,28 @@ public class AccountUI implements java.io.Serializable {
 		this.billPaidDt = billPaidDt;
 	}
 
-	public double getOpenBillAmt() {
-		return openBillAmt;
+	public double getUnbilledAmt() {
+		return FU.amt(unbilledAmt);
 	}
 
-	public void setOpenBillAmt(double openBillAmt) {
-		this.openBillAmt = openBillAmt;
+	public void setUnbilledAmt(double unbilledAmt) {
+		this.unbilledAmt = unbilledAmt;
+	}
+
+	public boolean isBillDue() {
+		return billDue;
+	}
+
+	public void setBillDue(boolean billDue) {
+		this.billDue = billDue;
+	}
+
+	public Date getNextBillDt() {
+		return nextBillDt;
+	}
+
+	public void setNextBillDt(Date nextBillDt) {
+		this.nextBillDt = nextBillDt;
 	}
 
 	@Override

@@ -17,6 +17,7 @@ public class SearchUI implements java.io.Serializable {
 	private Date dtTransMonth;
 	private Date dtEntryMonth;
 	private int accountId;
+	private int billId;
 	private char adjustInd;
 	private char adhocInd;
 
@@ -92,6 +93,14 @@ public class SearchUI implements java.io.Serializable {
 
 	public void setAccountId(int accountId) {
 		this.accountId = accountId;
+	}
+
+	public int getBillId() {
+		return billId;
+	}
+
+	public void setBillId(int billId) {
+		this.billId = billId;
 	}
 
 	public char getAdjustInd() {

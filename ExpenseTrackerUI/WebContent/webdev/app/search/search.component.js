@@ -8,9 +8,9 @@
 		controller: SearchController
 	});
 
-	SearchController.$inject = ['searchService', 'etmenuService', 'explistService', 'utilsService',
-			'CONSTANTS', 'VALUES', '$routeParams', 'startupService'];
-	function SearchController(ss, ms, els, us, C, V, $routeParams, sus) {
+	SearchController.$inject = ['searchService', 'etmenuService', 'startupService',
+			'explistService', 'utilsService', 'CONSTANTS', 'VALUES', '$routeParams', '$timeout'];
+	function SearchController(ss, ms, sus, els, us, C, V, $routeParams, $timeout) {
 		var vm = this;
 		init();
 
@@ -20,29 +20,38 @@
 		// ***** Function declarations *****//
 		function init() {
 			vm.data = ss.data;
+			vm.ta = V.data;
+
 			ms.data.page = C.PAGES.SEARCH;
 			els.data.rowCount = C.SIZES.SEARCH_ROW;
 			els.data.filterApplied = false;
 
-			// If menu is not loaded, load the default city.
+			// If menu is not loaded, load the default city from V.
 			ms.checkInit();
 
 			isDrillDown();
+			initSearch();
+		}
 
-			vm.ta = V.data;
+		function initSearch() {
+			if (!V.data.city.id || ms.data.loading) {
+				$timeout(function() {
+					initSearch();
+				}, 500);
+			} else {
+				ss.doSearch();
+			}
 		}
 
 		// Check if sent from Summary page.
 		function isDrillDown() {
 			if ($routeParams.drill && $routeParams.drill === 'Y') {
+				els.data.filterApplied = true;
 				var category = us.getById(V.data.categories, ss.data.category.id);
 				if (category) {
 					ss.data.category = category;
 				}
 				console.log('Drill down :: ' + ss.data.category.id + ' , ' + ss.data.expMonth);
-
-				// Run default search.
-				doSearch();
 			}
 		}
 

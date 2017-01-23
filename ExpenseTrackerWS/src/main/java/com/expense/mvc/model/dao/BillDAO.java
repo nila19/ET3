@@ -25,8 +25,9 @@ public class BillDAO extends BaseDAO<Bill, Integer> {
 	public List<Bill> findAll(int dataKey) {
 		HashMap<String, Object> parms = new HashMap<String, Object>();
 		parms.put("dataKey", dataKey);
+		parms.put("status", Bill.Status.CLOSED.status);
 
-		return findByParameters("from Bill where dataKey = :dataKey order by strBillDt desc", parms);
+		return findByParameters("from Bill where dataKey = :dataKey and status = :status order by strBillDt desc", parms);
 	}
 
 	public List<Bill> findAllOpen(int dataKey) {
@@ -41,8 +42,9 @@ public class BillDAO extends BaseDAO<Bill, Integer> {
 	public List<Bill> findForAcct(int accId) {
 		HashMap<String, Object> parms = new HashMap<String, Object>();
 		parms.put("accId", accId);
+		parms.put("status", Bill.Status.CLOSED.status);
 
 		return findByParameters(
-				"from Bill where account.accountId = :accId order by strBillDt desc", parms);
+				"from Bill where account.accountId = :accId and status = :status order by strBillDt desc", parms);
 	}
 }

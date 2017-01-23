@@ -9,8 +9,8 @@
 	});
 
 	AccountsController.$inject = ['accountsService', 'dashboardService', 'billsService',
-			'explistService'];
-	function AccountsController(acs, ds, bs, els) {
+			'explistwrapperService', 'explistService', 'searchService'];
+	function AccountsController(acs, ds, bs, elws, els, ss) {
 		var vm = this;
 		init();
 
@@ -26,13 +26,8 @@
 		function filterAccount(id) {
 			// If same account is already selected, do nothing.
 			if (acs.data.filterBy !== id) {
-				acs.data.filterBy = id;
-
-				bs.data.filterApplied = true;
-				bs.loadAllBills();
-
-				els.data.filterApplied = true;
-				els.loadAllExpenses();
+				acs.filterAccount(id);
+				elws.reloadExpenses();
 			}
 		}
 

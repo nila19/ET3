@@ -9,11 +9,11 @@
 	function startupService(aj, ms, C, V, $resource) {
 		var loaded = false;
 		return {
-			loadCity: loadCity,
-			loadAll: loadAll
+			loadAll: loadAll,
+			loadOthers: loadOthers,
 		};
 
-		function loadCity() {
+		function loadAll() {
 			if (!loaded) {
 				ms.data.loading = true;
 				console.log('@ StartupService: Loading init app components...');
@@ -21,13 +21,13 @@
 				loaded = true;
 			}
 		}
-		function loadAll() {
+		function loadOthers() {
 			ms.data.loading = true;
 			console.log('@ StartupService: Loading other items...');
 			getCategories(V.data.city);
 		}
 
-		function getAllCities() {
+		function getCities() {
 			aj.query('/startup/cities', {}, loadCities);
 		}
 		function getDefaultCity() {
@@ -62,7 +62,7 @@
 		function loadDefaultCity(city) {
 			V.data.city = city.toJSON();
 
-			getAllCities();
+			getCities();
 		}
 		function loadCities(cities) {
 			V.data.cities = [];

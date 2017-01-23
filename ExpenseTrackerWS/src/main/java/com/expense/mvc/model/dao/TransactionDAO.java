@@ -65,6 +65,7 @@ public class TransactionDAO extends BaseDAO<Transaction, Integer> {
 		HashMap<String, Object> parms = new HashMap<String, Object>();
 		parms.put("dataKey", ui.getCity());
 		parms.put("accountId", ui.getAccountId());
+		parms.put("billId", ui.getBillId());
 		parms.put("categoryId", ui.getCategoryId());
 		parms.put("description", "%" + ui.getDescription() + "%");
 		parms.put("amount_75", ui.getAmount() * TransactionDAO.PCT_75);
@@ -81,6 +82,9 @@ public class TransactionDAO extends BaseDAO<Transaction, Integer> {
 		String query = "from Transaction where dataKey = :dataKey";
 		if (ui.getAccountId() > 0) {
 			query += " and (fromAccount.accountId = :accountId or toAccount.accountId = :accountId )";
+		}
+		if (ui.getBillId() > 0) {
+			query += " and (fromBill.billId = :billId or toBill.billId = :billId )";
 		}
 		if (ui.getCategoryId() > 0) {
 			query += " and category.categoryId = :categoryId";

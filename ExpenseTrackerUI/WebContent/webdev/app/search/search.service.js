@@ -19,25 +19,36 @@
 			this.data.adjustInd = '';
 			this.data.adhocInd = '';
 		};
+		var addProp = function(input, ip, dp) {
+			var prop = data[dp];
+			if (prop && prop.id) {
+				input[ip] = prop.id;
+			}
+		};
 		var buildSearchInput = function() {
 			var input = {
 				city: ms.data.menu.city.id,
-				description: data.description,
-				amount: data.amount,
-				adjustInd: data.adjustInd,
-				adhocInd: data.adhocInd
 			};
-			if (data.category && data.category.id) {
-				input.categoryId = data.category.id;
+			if (data.description && data.description !== '') {
+				input.description = data.description;
 			}
-			if (data.account && data.account.id) {
-				input.accountId = data.account.id;
+			if (data.amount && data.amount !== '' && data.amount !== 0) {
+				input.amount = data.amount;
 			}
+			addProp(input, 'categoryId', 'category');
+			addProp(input, 'accountId', 'account');
+			addProp(input, 'billId', 'bill');
 			if (data.transMonth && data.transMonth.id) {
 				input.transMonth = data.transMonth.id;
 			}
 			if (data.entryMonth && data.entryMonth.id) {
 				input.entryMonth = data.entryMonth.id;
+			}
+			if (data.adjustInd) {
+				input.adjustInd = data.adjustInd;
+			}
+			if (data.adhocInd) {
+				input.adhocInd = data.adhocInd;
 			}
 			return input;
 		};

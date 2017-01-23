@@ -11,7 +11,7 @@
 
               <div class="card">
                 <div class="card-content">
-                  <form>
+                  <form ng-submit="$ctrl.doSearch()">
                     <div class="row">
                       <div class="col-lg-2 col-md-3">
                         <div class="form-group label-floating">
@@ -70,7 +70,7 @@
                         </div>
                       </div>
                       <div class="col-lg-1 col-md-2">
-                        <button type="button" ng-click="$ctrl.doSearch()" class="btn btn-danger btn-lg pull-right">Search</button>
+                        <button type="submit" class="btn btn-danger btn-lg pull-right">Search</button>
                       </div>
                     </div>
                     <!-- /.row -->

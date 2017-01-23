@@ -8,19 +8,18 @@
 		controller: DashboardController
 	});
 
-	DashboardController.$inject = ['dashboardService', 'etmenuService', 'accountsService',
-			'billsService', 'addService', 'chartService', 'explistwrapperService',
-			'explistService', 'startupService', 'CONSTANTS'];
-	function DashboardController(ds, ms, acs, bs, as, cs, elws, els, sus, C) {
+	DashboardController.$inject = ['dashboardService', 'dashboardFlagsService', 'etmenuService',
+			'explistService', 'startupService', 'CONSTANTS', 'VALUES', '$timeout'];
+	function DashboardController(ds, dfs, ms, els, sus, C, V, $timeout) {
 		var vm = this;
 		init();
 
 		function init() {
-			sus.loadCity();
+			sus.loadAll();
 			ms.data.page = C.PAGES.DASHBOARD;
 			els.data.rowCount = C.SIZES.DASHBOARD_ROW;
 
-			// Menu is not loaded yet; load the default city.
+			// Menu is not loaded yet; load the default city from V.
 			ms.checkInit();
 
 			setFlags();
@@ -28,23 +27,18 @@
 		}
 
 		function setFlags() {
-			els.data.filterApplied = false;
-
-			acs.data.showAcctsRowOne = true;
-			as.data.showAdd = true;
-			bs.data.showBills = true;
-
-			ms.data.showingMoreAccounts = false;
-			acs.data.showAcctsMore = false;
-			ms.data.showingChart = false;
-			cs.data.showChart = false;
+			dfs.setFlags();
 		}
 
-		// Load default bills & expenses.
+		// Load default bills & expenses once menu is loaded.
 		function loadPage() {
-			acs.loadAccountDetails();
-			bs.loadAllBills();
-			elws.reloadExpenses();
+			if (!V.data.city.id || ms.data.loading) {
+				$timeout(function() {
+					loadPage();
+				}, 100);
+			} else {
+				ds.loadPage();
+			}
 		}
 	}
 })(window.angular);

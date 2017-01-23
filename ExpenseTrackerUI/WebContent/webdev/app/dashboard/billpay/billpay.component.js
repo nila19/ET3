@@ -8,8 +8,8 @@
 		controller: BillPayController
 	});
 
-	BillPayController.$inject = ['billpayService', 'VALUES'];
-	function BillPayController(bps, V) {
+	BillPayController.$inject = ['billpayService', 'billsService', 'VALUES'];
+	function BillPayController(bps, bs, V) {
 		var vm = this;
 		init();
 
@@ -20,18 +20,14 @@
 		function init() {
 			vm.data = bps.data;
 			vm.ta = V.data;
-			// typeAheads();
 		}
-
-		// function typeAheads() {
-		// vm.ta = {};
-		// vm.ta.accounts = V.data.accounts;
-		// }
 
 		function payBill(valid) {
 			if (valid) {
+				bs.data.loading = true;
 				bps.payBill();
 				$('#model_BillPay').modal('hide');
+				// TODO Refresh bill list - honor filters.
 			}
 		}
 	}

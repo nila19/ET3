@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.expense.mvc.model.entity.DataKey;
+import com.expense.mvc.model.ui.BillPayUI;
 import com.expense.mvc.model.ui.BillUI;
 import com.expense.mvc.model.ui.CityUI;
 import com.expense.mvc.model.ui.SwapUI;
@@ -93,8 +94,9 @@ public class EntryController {
 	}
 
 	@RequestMapping(value = "/paybill/{billId}", method = RequestMethod.POST)
-	public void payBill(@PathVariable int billId,@RequestBody TransactionUI tui) {
+	public void payBill(@PathVariable int billId,@RequestBody BillPayUI bpui) {
 		//TODO checkDataKeyActive(cityId);
-		es.payBill(tui);
+		System.out.println(bpui.getPaidDt());
+		es.payBill(billId, bpui);
 	}
 }

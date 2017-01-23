@@ -8,9 +8,9 @@
 		controller: BillsController
 	});
 
-	BillsController.$inject = ['billsService', 'dashboardService', 'explistService',
-			'billpayService'];
-	function BillsController(bs, ds, els, bps) {
+	BillsController.$inject = ['billswrapperService', 'billsService', 'explistwrapperService',
+			'explistService', 'searchService'];
+	function BillsController(bws, bs, elws, els, ss) {
 		var vm = this;
 		init();
 
@@ -47,7 +47,7 @@
 		}
 
 		function showBillPay(id) {
-			bps.loadBill(id);
+			bws.showBillPay(id);
 			$('#model_BillPay').modal('show');
 		}
 
@@ -56,14 +56,16 @@
 			if (bs.data.filterBy !== id) {
 				bs.data.filterBy = id;
 				els.data.filterApplied = true;
-				els.loadAllExpenses();
+				ss.data.bill = {
+					id: id
+				};
+				ss.data.account = null;
+				elws.reloadExpenses();
 			}
 		}
 
 		function clearFilter() {
-			bs.clearFilter();
-			// Clear filter on Expenses..
-			els.clearFilter();
+			elws.clearFilter();
 		}
 	}
 })(window.angular);

@@ -33,7 +33,7 @@ public class TransactionUI implements java.io.Serializable {
 	private Date tallyDate;
 	private Character status;
 
-	private BillUI fromBill;
+	private BillUI bill;
 
 	public TransactionUI() {
 	}
@@ -46,7 +46,7 @@ public class TransactionUI implements java.io.Serializable {
 		adhoc = t.getAdhocInd() == 'Y' ? true: false;
 		adjust = t.getAdjustInd() == 'Y' ? true: false;
 		setEntryDate(t.getEntryDate());
-		setTransDate(t.getTransDate());
+		transDate = t.getTransDate();
 		fromAccount = new AccountUI(t.getFromAccount());
 		fromBalanceBf = t.getFromBalanceBf();
 		fromBalanceAf = t.getFromBalanceAf();
@@ -58,9 +58,10 @@ public class TransactionUI implements java.io.Serializable {
 		tallyInd = t.getTallyInd();
 		setTallyDate(t.getTallyDate());
 		if (t.getFromBill() != null) {
-			fromBill = new BillUI();
-			fromBill.setId(t.getFromBill().getBillId());
-			fromBill.setName(FU.date(FU.Date.ddMMMyy).format(t.getFromBill().getBillDt()) + " - #" + fromBill.getId());
+			bill = new BillUI();
+			bill.setId(t.getFromBill().getBillId());
+			bill.setBillDt(t.getFromBill().getBillDt());
+			bill.buildName();
 		}
 	}
 
@@ -94,7 +95,7 @@ public class TransactionUI implements java.io.Serializable {
 	}
 
 	public double getAmount() {
-		return amount;
+		return FU.amt(amount);
 	}
 
 	public void setAmount(double amount) {
@@ -117,8 +118,12 @@ public class TransactionUI implements java.io.Serializable {
 		return transDate;
 	}
 
-	public void setTransDate(Date transDate) {
-		this.transDate = transDate;
+	public void setTransDate(String transDate) {
+		try {
+			this.transDate = FU.date(FU.Date.ddMMMyy).parse(transDate);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
 	}
 
 	public AccountUI getFromAccount() {
@@ -146,7 +151,7 @@ public class TransactionUI implements java.io.Serializable {
 	}
 
 	public double getFromBalanceAf() {
-		return fromBalanceAf;
+		return FU.amt(fromBalanceAf);
 	}
 
 	public void setFromBalanceAf(double fromBalanceAf) {
@@ -154,7 +159,7 @@ public class TransactionUI implements java.io.Serializable {
 	}
 
 	public double getToBalanceAf() {
-		return toBalanceAf;
+		return FU.amt(toBalanceAf);
 	}
 
 	public void setToBalanceAf(double toBalanceAf) {
@@ -162,7 +167,7 @@ public class TransactionUI implements java.io.Serializable {
 	}
 
 	public double getFromBalanceBf() {
-		return fromBalanceBf;
+		return FU.amt(fromBalanceBf);
 	}
 
 	public void setFromBalanceBf(double fromBalanceBf) {
@@ -170,7 +175,7 @@ public class TransactionUI implements java.io.Serializable {
 	}
 
 	public double getToBalanceBf() {
-		return toBalanceBf;
+		return FU.amt(toBalanceBf);
 	}
 
 	public void setToBalanceBf(double toBalanceBf) {
@@ -213,12 +218,12 @@ public class TransactionUI implements java.io.Serializable {
 		}
 	}
 
-	public BillUI getFromBill() {
-		return fromBill;
+	public BillUI getBill() {
+		return bill;
 	}
 
-	public void setFromBill(BillUI fromBill) {
-		this.fromBill = fromBill;
+	public void setBill(BillUI bill) {
+		this.bill = bill;
 	}
 
 	@Override

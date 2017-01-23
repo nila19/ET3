@@ -26,24 +26,27 @@ public class BillUI implements java.io.Serializable {
 	private char status;
 
 	private boolean dueDateWarning = false;
-	private boolean open = true;
 
 	public BillUI() {
 	}
 
 	public BillUI(Bill bill) {
 		id = bill.getBillId();
-		account = (new AccountUI(bill.getAccount()));
+		account = new AccountUI(bill.getAccount());
 		createdDt = bill.getCreatedDt();
 		billDt = bill.getBillDt();
+		dueDt = bill.getDueDt();
 		billAmt = bill.getBillAmt();
 		billBalance = bill.getBillBalance();
 		billPaidDt = bill.getBillPaidDt();
 		status = bill.getStatus();
-		open = (this.status == Bill.Status.OPEN.status);
 
-		name =  FU.date(FU.Date.ddMMMyy).format(billDt) + " - #" + id;
+		buildName();
 		checkDueDateWarning();
+	}
+	
+	public void buildName() {
+		name = FU.date(FU.Date.yyyyMMMdd).format(billDt) + " - #" + id;
 	}
 
 	private void checkDueDateWarning() {
@@ -107,7 +110,7 @@ public class BillUI implements java.io.Serializable {
 	}
 
 	public double getBillAmt() {
-		return billAmt;
+		return FU.amt(billAmt);
 	}
 
 	public void setBillAmt(double billAmt) {
@@ -115,7 +118,7 @@ public class BillUI implements java.io.Serializable {
 	}
 
 	public double getBillBalance() {
-		return billBalance;
+		return FU.amt(billBalance);
 	}
 
 	public void setBillBalance(double billBalance) {
@@ -147,11 +150,11 @@ public class BillUI implements java.io.Serializable {
 	}
 
 	public boolean isOpen() {
-		return open;
+		return (status == Bill.Status.OPEN.status);
 	}
 
-	public void setOpen(boolean open) {
-		this.open = open;
+	public boolean isPaid() {
+		return (billBalance == 0);
 	}
 
 	@Override

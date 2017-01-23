@@ -21,7 +21,7 @@
                             <th>&nbsp;</th>
                             <th>Account</th>
                             <th>Bill Date</th>
-                            <th>Bill Amount</th>
+                            <th>Bill Balance</th>
                             <th>Due Date</th>
                             <th>Paid Date</th>
                           </tr>
@@ -33,25 +33,26 @@
                                 <i class="material-icons">list</i>
                               </button>
                             </td>
-                            <td>{{row.acct.name}}</td>
+                            <td>{{row.account.name}}</td>
                             <td>{{row.billDt | date:'dd-MMM-yy'}}</td>
-                            <td>{{row.billAmt | currency:''}}</td>
+                            <td>{{row.billBalance | currency:''}}</td>
                             <td>{{row.dueDt | date:'dd-MMM-yy'}}</td>
                             <td ng-switch="row.paid.toString()" class="td-actions">
-                              <span ng-switch-when="true">{{row.paidDt | date:'dd-MMM-yy'}}</span>
+                              <span ng-switch-when="true">{{row.billPaidDt | date:'dd-MMM-yy'}}</span>
                               <button ng-switch-when="false" type="button" ng-click="$ctrl.showBillPay(row.id)" tooltip rel="tooltip" title="Pay Now" class="btn btn-primary btn-xs">
                                 <i class="material-icons">payment</i>
                               </button>
                             </td>
                           </tr>
                           <tr>
-                            <td colspan="4">
+                            <td colspan="3">
                               <div class="stats">
                                 <button type="button" class="btn btn-simple btn-xs">
                                   <i class="material-icons">schedule</i>
                                 </button>
                               </div>
                             </td>
+                            <td><span ng-if="$ctrl.data.loading" class="btn btn-simple btn-xs no-btn"><img alt="loading..." style="width:20px;height:20px;" ng-src="loading.gif"></span>&nbsp;</td>
                             <td>
                               <div class="stats">
                                 <button type="button" ng-if="$ctrl.data.filterApplied" ng-click="$ctrl.clearFilter()" tooltip rel="tooltip" title="Clear Filter" class="btn btn-primary btn-xs">

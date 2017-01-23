@@ -10,36 +10,23 @@
 			'$timeout'];
 	function explistwrapperService(els, ms, ss, acs, bs, es, aj, C, $timeout) {
 
+		// TODO Eliminate this..
 		var reloadExpenses = function() {
 			if (ms.data.page === C.PAGES.SEARCH) {
 				ss.doSearch();
 			} else if (ms.data.page === C.PAGES.DASHBOARD) {
-				var list = null;
-				if (bs.data.filterBy) {
-					console.log('Filtering expenses for Bill @ vDB :: ' + bs.data.filterBy);
-					// Filter by Bill
-					list = [];
-				} else if (acs.data.filterBy) {
-					console.log('Filtering expenses for Account @ vDB :: ' + acs.data.filterBy);
-					// Filter by Account
-					list = [];
-				} else {
-					console.log('Getting all expenses @ vDB');
-					list = [];
-				}
-				// TODO Ajax fetch all expenses.
-				els.loadData(list);
-				console.log('Loading Expenses @ vDB...' + ms.data.menu.city.name);
+				ss.doSearch();
 			}
 		};
 
 		var clearFilter = function() {
-			if (ms.data.page === C.PAGES.SEARCH) {
-				ss.initializeData();
-			} else if (ms.data.page === C.PAGES.DASHBOARD) {
+			els.data.filterApplied = false;
+			ss.initializeData();
+			if (ms.data.page === C.PAGES.DASHBOARD) {
 				// Clear filter for Bills
 				if (acs.data.filterBy) {
-					bs.clearFilter();
+					bs.data.filterApplied = false;
+					bs.loadAllBills();
 				}
 				bs.data.filterBy = null;
 				acs.data.filterBy = null;

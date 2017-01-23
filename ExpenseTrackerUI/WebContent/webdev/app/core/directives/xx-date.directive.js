@@ -15,7 +15,7 @@
 		function date($scope, $element, $attrs, ctrl) {
 			// Runs when model gets updated on the scope directly; Keeps view in sync
 			ctrl.$render = function() {
-				$element.val($filter('date')(ctrl.$viewValue, 'yyyy-MM-dd'));
+				$element.val($filter('date')(ctrl.$viewValue, 'dd-MMM-yyyy'));
 			};
 		}
 	}

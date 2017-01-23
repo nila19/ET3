@@ -1,31 +1,31 @@
         <!-- Accounts Cards -->
           <div class="row" ng-repeat="row in $ctrl.data.rows track by $index" ng-if="(($index == 0 && $ctrl.data.showAcctsRowOne) || ($index > 0 && $ctrl.data.showAcctsMore))">
-            <div class="col-lg-2 col-md-4 col-sm-6" ng-repeat="col in row.cols">
+            <div class="col-lg-2 col-md-4 col-sm-6" ng-repeat="acct in row.cols">
               <div class="card card-stats">
-                <div class="card-header" data-background-color="{{$ctrl.data.filterBy === col.id? 'orange' : col.bgColor}}">
-                  <a href="" ng-click="$ctrl.filterAccount(col.id)"><i class="material-icons">{{col.icon}}</i></a>
+                <div class="card-header" data-background-color="{{$ctrl.data.filterBy === acct.id? 'orange' : acct.bgColor}}">
+                  <a href="" ng-click="$ctrl.filterAccount(acct.id)"><i class="material-icons">{{acct.icon}}</i></a>
                 </div>
                 <div class="card-content">
-                  <p class="category">{{col.name}}</p>
-                  <h3 class="title">{{col.balance | currency:''}}</h3>
+                  <p class="category">{{acct.name}}</p>
+                  <h3 class="title">{{acct.balanceAmt | currency:''}}</h3>
                 </div>
                 <div class="card-footer">
-                  <div class="stats">
-                    <i class="material-icons {{col.tallyToday?'text-success':'text-warning'}}">check_circle</i> {{col.tallyAmt | currency:'$ '}} @ {{col.tallyDt | date:'dd-MMM-yy hh:mm a'}}
+                  <div ng-if="acct.billed && !acct.billDue" class="stats">
+                    <i class="material-icons">schedule</i> &nbsp;Next Bill on {{acct.nextBillDt | date:'dd-MMM'}}
                   </div>
-                  <div ng-if="col.doBills && !col.billDue" class="stats">
-                    <i class="material-icons">schedule</i> &nbsp;Next Bill on {{col.nextBillDt | date:'dd-MMM'}}
+                  <div ng-if="acct.billed && acct.billDue" class="stats">
+                    <i class="material-icons text-warning">local_offer</i> {{acct.billAmt | currency:'$ '}} (Due on {{acct.dueDt | date:'dd-MMM'}})
                   </div>
-                  <div ng-if="col.doBills && col.billDue" class="stats">
-                    <i class="material-icons text-warning">local_offer</i> {{col.billAmt | currency:'$ '}} (Due on {{col.billDueDt | date:'dd-MMM'}})
-                  </div>
-                  <div ng-if="!col.doBills" class="stats">
+                  <div ng-if="!acct.billed" class="stats">
                     <i class="material-icons">block</i> &nbsp; No bills.
+                  </div>
+                  <div class="stats">
+                    <i class="material-icons {{acct.tallyToday?'text-success':'text-warning'}}">check_circle</i> {{acct.tallyBalance | currency:''}} @ {{acct.tallyDate | date:'dd-MMM-yy hh:mm a'}}
                   </div>
                 </div>
                 <div class="card-footer" align="center">
                   <div class="stats">
-                    <span ng-click="$ctrl.tallyAccount(col.id)" class="btn btn-success btn-sm">Tally &nbsp;<span ng-if="col.untallyCnt > 0"  class="badge">{{col.untallyCnt}}</span></span>
+                    <span ng-click="$ctrl.tallyAccount(acct.id)" class="btn btn-success btn-sm">Tally &nbsp;<span ng-if="acct.tallyExpenseCnt > 0"  class="badge">{{acct.tallyExpenseCnt}}</span></span>
                   </div>
                 </div>
               </div>

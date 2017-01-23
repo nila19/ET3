@@ -62,7 +62,6 @@
 		}
 
 		function clearFilter() {
-			els.data.filterApplied = false;
 			elws.clearFilter();
 		}
 	}

@@ -5,123 +5,72 @@
 
 	angular.module('dashboard.bills').factory('billsService', billsService);
 
-	billsService.$inject = ['etmenuService', 'accountsService', 'CONSTANTS'];
-	function billsService(ms, acs, C) {
+	billsService.$inject = ['etmenuService', 'ajaxService', 'CONSTANTS'];
+	function billsService(ms, aj, C) {
 		var data = {
 			showBills: false,
+			rows: [],
 			pgData: {},
 			currPageNo: 0,
 			maxPageNo: 0,
 			filterApplied: false,
 			filterBy: null,
-			rows: []
+			loading: false
 		};
-		var rowCount = C.SIZES.BILLS_ROW;
+		var rows = C.SIZES.BILLS_ROW;
 
-		var dummyBills = function() {
-			return {
-				filterApplied: false,
-				rows: [{
-					id: 301,
-					acct: {
-						id: 60,
-						name: 'BOA VISA'
-					},
-					name: '24-Dec-16 #0065',
-					billDt: 1288323623006,
-					billAmt: 1250.45,
-					dueDt: 1298323623006,
-					paid: false,
-					paidDt: null
-				}, {
-					id: 302,
-					acct: {
-						id: 83,
-						name: 'Chase Freedom'
-					},
-					name: '24-Dec-16 #0065',
-					billDt: 1288323623006,
-					billAmt: 150.45,
-					dueDt: 1228323623006,
-					paid: false,
-					paidDt: null
-				}, {
-					id: 303,
-					acct: {
-						id: 60,
-						name: 'BOA VISA'
-					},
-					name: '24-Dec-16 #0065',
-					billDt: 1288323623006,
-					billAmt: 250.45,
-					dueDt: 1598323623006,
-					paid: true,
-					paidDt: 1298543623006
-				}, {
-					id: 304,
-					acct: {
-						id: 60,
-						name: 'BOA VISA'
-					},
-					name: '24-Dec-16 #0065',
-					billDt: 1288453623006,
-					billAmt: 80,
-					dueDt: 1198323623006,
-					paid: true,
-					paidDt: 1283423623006
-				}, {
-					id: 305,
-					acct: {
-						id: 83,
-						name: 'Chase Freedom'
-					},
-					name: '24-Dec-16 #0065',
-					billDt: 1267323623006,
-					billAmt: 12785.89,
-					dueDt: 1297823623006,
-					paid: true,
-					paidDt: 1284523623006
-				}]
-			};
+		var getIndexOf = function(id) {
+			var idx;
+			data.rows.forEach(function(row, i) {
+				if (row.id === id) {
+					idx = i;
+				}
+			});
+			return idx;
 		};
-
-		var clearFilter = function() {
-			console.log('Clearing filter on Bills....');
-			this.data.filterApplied = false;
-			acs.data.filterBy = null;
-			this.loadAllBills();
+		var loadBill = function(dt) {
+			var idx = getIndexOf(dt.id);
+			// data.rows[idx].billBalance = dt.billBalance;
+			// data.rows[idx].billPaidDt = dt.billPaidDt;
+			// data.rows[idx].paid = dt.paid;
+			data.rows[idx] = dt;
+			loadDataForPage();
+			data.loading = false;
 		};
-		var loadAllBills = function() {
-			var list = null;
-			if (acs.data.filterBy) {
-				console.log('Filtering bills for Account @ vDB :: ' + acs.data.filterBy);
-				// TODO Ajax query DB for all Bills for the account, sort by Open at top.
-				list = dummyBills();
-			} else {
-				console.log('Getting all bills @ vDB...');
-				// TODO Ajax query DB for all Bills, sort by Open at top & then by Account.
-				list = dummyBills();
-			}
-			console.log('Loading Bills @ vDB... ' + ms.data.menu.city.name);
-			this.loadData(list);
-		};
-		var loadData = function(data) {
-			this.data.rows = data.rows;
-			this.data.maxPageNo = Math.ceil(this.data.rows.length / rowCount) - 1;
-			this.data.pgData.filterApplied = this.data.filterApplied;
-			this.data.currPageNo = 0;
-			this.loadDataForPage();
+		var refreshBill = function(id) {
+			data.loading = true;
+			aj.get('/entry/bill/' + id, {}, loadBill);
 		};
 		var loadDataForPage = function() {
-			var pg = this.data.currPageNo;
-			this.data.pgData.rows = this.data.rows.slice(pg * rowCount, (pg + 1) * rowCount);
+			var pg = data.currPageNo;
+			data.pgData.rows = data.rows.slice(pg * rows, (pg + 1) * rows);
+		};
+		var loadData = function(dt) {
+			data.rows = dt;
+			data.maxPageNo = Math.ceil(data.rows.length / rows) - 1;
+			data.currPageNo = 0;
+			loadDataForPage();
+			data.loading = false;
+		};
+		var loadBillsForAcct = function(id) {
+			data.loading = true;
+			aj.query('/entry/bills/' + id, {}, loadData);
+		};
+		var loadAllBills = function() {
+			data.loading = true;
+			var input = {
+				city: ms.data.menu.city.id,
+			};
+			aj.query('/startup/bills', input, loadData);
 		};
 		return {
 			data: data,
-			clearFilter: clearFilter,
-			loadAllBills: loadAllBills,
+			getIndexOf: getIndexOf,
 			loadData: loadData,
-			loadDataForPage: loadDataForPage
+			loadDataForPage: loadDataForPage,
+			loadBillsForAcct: loadBillsForAcct,
+			loadAllBills: loadAllBills,
+			refreshBill: refreshBill
 		};
 	}
 

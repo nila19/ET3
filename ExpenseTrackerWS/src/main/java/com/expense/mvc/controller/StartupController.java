@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.expense.mvc.model.ui.AccountUI;
+import com.expense.mvc.model.ui.BillUI;
 import com.expense.mvc.model.ui.CategoryUI;
 import com.expense.mvc.model.ui.CityUI;
 import com.expense.mvc.model.ui.MonthUI;
@@ -61,6 +62,11 @@ public class StartupController {
 	@RequestMapping(value = "/account/{account}", method = RequestMethod.GET)
 	public AccountUI getAccount(@PathVariable int account) {
 		return ss.getAccountUI(account);
+	}
+
+	@RequestMapping(value = "/bills", method = RequestMethod.GET)
+	public List<BillUI> getBills(@RequestParam int city) {
+		return ss.getAllBills(city);
 	}
 
 	@RequestMapping(value = "/months/entry", method = RequestMethod.GET)
