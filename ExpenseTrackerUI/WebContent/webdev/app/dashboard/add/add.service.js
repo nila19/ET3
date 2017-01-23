@@ -5,11 +5,12 @@
 
 	angular.module('dashboard.add').factory('addService', addService);
 
-	addService.$inject = ['accountsService', 'explistwrapperService', 'ajaxService',
-			'utilsService', 'CONSTANTS'];
-	function addService(acs, elws, aj, us, C) {
+	addService.$inject = ['etmenuService', 'accountsService', 'explistwrapperService',
+			'ajaxService', 'utilsService', 'CONSTANTS'];
+	function addService(ms, acs, elws, aj, us, C) {
 		var data = {
 			showAdd: false,
+			city: null,
 			adjust: false,
 			adhoc: false,
 			category: null,
@@ -36,6 +37,7 @@
 			initForm();
 		};
 		var addExpense = function() {
+			data.city = ms.data.menu.city;
 			aj.post('/entry/add', this.data, loadData);
 		};
 

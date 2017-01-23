@@ -1,26 +1,29 @@
 package com.expense.mvc.model.ui;
 
-import java.text.ParseException;
-import java.util.Date;
-
 import org.apache.commons.lang3.builder.ToStringBuilder;
-
-import com.expense.utils.FU;
 
 public class BillPayUI implements java.io.Serializable {
 	private static final long serialVersionUID = 1L;
 
-	private int billId;
+	private CityUI city = null;
+	private BillUI bill = null;
 	private AccountUI account;
 	private String paidDt;
-	private Date dtPaidDt;
 
-	public int getBillId() {
-		return billId;
+	public CityUI getCity() {
+		return city;
 	}
 
-	public void setBillId(int billId) {
-		this.billId = billId;
+	public void setCity(CityUI city) {
+		this.city = city;
+	}
+
+	public BillUI getBill() {
+		return bill;
+	}
+
+	public void setBill(BillUI bill) {
+		this.bill = bill;
 	}
 
 	public AccountUI getAccount() {
@@ -37,15 +40,6 @@ public class BillPayUI implements java.io.Serializable {
 
 	public void setPaidDt(String paidDt) {
 		this.paidDt = paidDt;
-	}
-
-	public Date getDtPaidDt() {
-		try {
-			return FU.date(FU.Date.ddMMMyy).parse(paidDt);
-		} catch (ParseException e) {
-			e.printStackTrace();
-			return null;
-		}
 	}
 
 	@Override

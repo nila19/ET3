@@ -1,6 +1,5 @@
 package com.expense.mvc.model.ui;
 
-import java.text.ParseException;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -22,14 +21,12 @@ public class AccountUI implements java.io.Serializable {
 	private char type;
 	private char status;
 	private String imageCode;
-	//TODO Add to DB.
-	private String bgColor = "blue";
-	private String icon = "account_balance";
+	private String bgColor;
 
 	private char billOption;
 	private int closingDay;
 	private int dueDay;
-	
+
 	private double tallyBalance;
 	private Date tallyDate;
 	private double tallyExpenseAmt;
@@ -44,7 +41,7 @@ public class AccountUI implements java.io.Serializable {
 	private double unbilledAmt;
 	private Date nextBillDt;
 
-	//Flags
+	// Flags
 	private boolean tallyToday = false;
 	private boolean billDue = false;
 	private boolean dueDtWarning = false;
@@ -59,13 +56,14 @@ public class AccountUI implements java.io.Serializable {
 		status = ac.getStatus();
 		type = ac.getType();
 		imageCode = ac.getImageCode();
+		bgColor = ac.getBgColor();
 		billOption = ac.getBillOption();
 
 		setClosingDay(ac.getClosingDay());
 		setDueDay(ac.getDueDay());
 
 		setTallyExpenses(ac);
-		if(this.isBilled()) {
+		if (this.isBilled()) {
 			setBillInfo(ac);
 		}
 	}
@@ -83,7 +81,7 @@ public class AccountUI implements java.io.Serializable {
 		if (ac.getOpenBill() != null) {
 			unbilledAmt = ac.getOpenBill().getBillBalance();
 		}
-		
+
 		Date today = Calendar.getInstance().getTime();
 		nextBillDt = DateUtils.setDays(today, closingDay);
 		if (DateUtils.truncatedCompareTo(nextBillDt, today, Calendar.DATE) <= 0) {
@@ -94,7 +92,7 @@ public class AccountUI implements java.io.Serializable {
 	private void checkDueDateWarning(Bill lastBill) {
 		if (lastBill.getBillBalance() > 0) {
 			billDue = true;
-			
+
 			Date dueDt = lastBill.getDueDt();
 			int DUE_DATE_WARNING = Integer.valueOf(Props.expense.getString("DUE.DATE.WARNING"));
 			Date now = Calendar.getInstance().getTime();
@@ -125,7 +123,7 @@ public class AccountUI implements java.io.Serializable {
 		if (tallyExpenseAmt != 0 && ac.getType() == Account.Type.CASH.type) {
 			tallyExpenseAmt = tallyExpenseAmt * -1;
 		}
-		if(tallyDate != null) {
+		if (tallyDate != null) {
 			tallyToday = DateUtils.isSameDay(tallyDate, new Date());
 		}
 	}
@@ -216,14 +214,6 @@ public class AccountUI implements java.io.Serializable {
 
 	public void setBgColor(String bgColor) {
 		this.bgColor = bgColor;
-	}
-
-	public String getIcon() {
-		return icon;
-	}
-
-	public void setIcon(String icon) {
-		this.icon = icon;
 	}
 
 	public char getStatus() {

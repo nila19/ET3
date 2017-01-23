@@ -21,7 +21,6 @@ var navEventMapper = {
 
 			navFunctions.changeCity(name, currency);
 			appUtils.msg.show('City Change');
-			// TODO Refresh the page.
 		});
 	}
 };

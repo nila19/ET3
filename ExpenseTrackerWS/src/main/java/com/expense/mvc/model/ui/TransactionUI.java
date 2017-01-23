@@ -12,15 +12,16 @@ import com.expense.utils.FU;
 public class TransactionUI implements java.io.Serializable {
 	private static final long serialVersionUID = 1L;
 
+	private CityUI city = null;
 	private int transId = 0;
 	private CategoryUI category;
 	private String description = "";
 	private double amount;
 	private Date entryDate;
-	private Date transDate;
+	private String transDate;
 	private boolean adhoc;
 	private boolean adjust;
-	
+
 	private AccountUI fromAccount;
 	private double fromBalanceBf;
 	private double fromBalanceAf;
@@ -39,14 +40,15 @@ public class TransactionUI implements java.io.Serializable {
 	}
 
 	public TransactionUI(Transaction t) {
+		city = new CityUI(t.getDataKey());
 		transId = t.getTransId();
 		description = t.getDescription();
 		amount = t.getAmount();
 		category = new CategoryUI(t.getCategory());
-		adhoc = t.getAdhocInd() == 'Y' ? true: false;
-		adjust = t.getAdjustInd() == 'Y' ? true: false;
+		adhoc = t.getAdhocInd() == 'Y' ? true : false;
+		adjust = t.getAdjustInd() == 'Y' ? true : false;
 		setEntryDate(t.getEntryDate());
-		transDate = t.getTransDate();
+		setDtTransDate(t.getTransDate());
 		fromAccount = new AccountUI(t.getFromAccount());
 		fromBalanceBf = t.getFromBalanceBf();
 		fromBalanceAf = t.getFromBalanceAf();
@@ -68,16 +70,27 @@ public class TransactionUI implements java.io.Serializable {
 	public boolean isAdhoc() {
 		return adhoc;
 	}
+
 	public void setAdhoc(boolean adhoc) {
 		this.adhoc = adhoc;
 	}
+
 	public boolean isAdjust() {
 		return adjust;
 	}
+
 	public void setAdjust(boolean adjust) {
 		this.adjust = adjust;
 	}
-	
+
+	public CityUI getCity() {
+		return city;
+	}
+
+	public void setCity(CityUI city) {
+		this.city = city;
+	}
+
 	public int getTransId() {
 		return transId;
 	}
@@ -114,16 +127,25 @@ public class TransactionUI implements java.io.Serializable {
 		}
 	}
 
-	public Date getTransDate() {
+	public String getTransDate() {
 		return transDate;
 	}
 
 	public void setTransDate(String transDate) {
+		this.transDate = transDate;
+	}
+
+	public Date getDtTransDate() {
 		try {
-			this.transDate = FU.date(FU.Date.ddMMMyy).parse(transDate);
+			return FU.date(FU.Date.ddMMMyy).parse(transDate);
 		} catch (ParseException e) {
 			e.printStackTrace();
+			return null;
 		}
+	}
+
+	public void setDtTransDate(Date dtTransDate) {
+		this.transDate = FU.date(FU.Date.ddMMMyy).format(dtTransDate);
 	}
 
 	public AccountUI getFromAccount() {

@@ -27,7 +27,8 @@ public class BillDAO extends BaseDAO<Bill, Integer> {
 		parms.put("dataKey", dataKey);
 		parms.put("status", Bill.Status.CLOSED.status);
 
-		return findByParameters("from Bill where dataKey = :dataKey and status = :status order by strBillDt desc", parms);
+		return findByParameters("from Bill where dataKey = :dataKey and status = :status order by strBillDt desc",
+				parms);
 	}
 
 	public List<Bill> findAllOpen(int dataKey) {

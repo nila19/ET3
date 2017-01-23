@@ -5,9 +5,9 @@
 
 	angular.module('dashboard.edit').factory('editService', editService);
 
-	editService.$inject = ['explistService', 'ajaxService', 'utilsService', 'VALUES', 'CONSTANTS',
-			'$http'];
-	function editService(els, aj, us, V, C, $http) {
+	editService.$inject = ['etmenuService', 'explistService', 'ajaxService', 'utilsService',
+			'VALUES', 'CONSTANTS'];
+	function editService(ms, els, aj, us, V, C) {
 		var data = {
 			expense: {},
 			loading: false
@@ -50,7 +50,8 @@
 			$('#model_Delete').modal('hide');
 		};
 		var deleteExpense = function() {
-			aj.post('/entry/delete/' + this.data.expense.transId, {}, loadDeleteData);
+			aj.post('/entry/delete/' + ms.data.menu.city.id + '/' + this.data.expense.transId, {},
+					loadDeleteData);
 			this.data.loading = true;
 		};
 

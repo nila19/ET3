@@ -22,9 +22,9 @@ public class SummaryController {
 	public String summary(@RequestParam int city, @RequestParam String forecast, @RequestParam char adhoc) {
 		boolean fc = BooleanUtils.toBoolean(forecast);
 
-		//FIXME fix this.
+		// FIXME fix this.
 		summaryService.getSummary(adhoc, fc, city);
-		
+
 		return "All OK";
 	}
 }

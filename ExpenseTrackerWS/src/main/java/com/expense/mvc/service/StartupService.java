@@ -2,7 +2,6 @@ package com.expense.mvc.service;
 
 import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
@@ -11,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+
 import com.expense.mvc.model.dao.AccountDAO;
 import com.expense.mvc.model.dao.BillDAO;
 import com.expense.mvc.model.dao.CategoryDAO;
@@ -62,7 +62,7 @@ public class StartupService {
 		return true;
 	}
 
-	//**************************** DataKey ****************************// 
+	// **************************** DataKey ****************************//
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = true)
 	public List<CityUI> getAllDataKeys() {
 		List<DataKey> dkeys = dataKeyDAO.findAll();
@@ -84,7 +84,7 @@ public class StartupService {
 		return new CityUI(dataKeyDAO.findById(dataKey));
 	}
 
-	//**************************** Account ****************************// 
+	// **************************** Account ****************************//
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = true)
 	public List<AccountUI> getAllActiveAccounts(int dataKey) {
 		List<Account> accts = accountDAO.findAllActive(dataKey);
@@ -116,7 +116,7 @@ public class StartupService {
 	public Account getAccount(int acctId) {
 		Account acct = accountDAO.findById(acctId);
 
-		//Load the lazy loaded attributes.
+		// Load the lazy loaded attributes.
 		if (acct.getLastBill() != null) {
 			acct.getLastBill().getBillId();
 		}
@@ -132,7 +132,7 @@ public class StartupService {
 		accountDAO.save(account);
 	}
 
-	//**************************** Category ****************************// 
+	// **************************** Category ****************************//
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = true)
 	public List<CategoryUI> getAllCategories(int dataKey) {
 		List<Category> cats = categoryDAO.findAllActive(dataKey);
@@ -144,7 +144,7 @@ public class StartupService {
 		return uis;
 	}
 
-	//**************************** Month ****************************// 
+	// **************************** Month ****************************//
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = true)
 	public List<MonthUI> getAllEntryMonths(int dataKey) {
 		return toDateList(transactionDAO.findAllEntryMonths(dataKey));
@@ -166,13 +166,13 @@ public class StartupService {
 		return dates;
 	}
 
-	//**************************** Description ****************************// 
+	// **************************** Description ****************************//
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = true)
 	public List<String> getAllDescription(int dataKey) {
 		return transactionDAO.findAllDescription(dataKey);
 	}
 
-	//**************************** Bill ****************************// 
+	// **************************** Bill ****************************//
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = true)
 	public List<BillUI> getAllBills(int dataKey) {
 		List<Bill> bills = billDAO.findAll(dataKey);

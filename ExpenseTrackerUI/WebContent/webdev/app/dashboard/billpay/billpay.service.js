@@ -5,23 +5,22 @@
 
 	angular.module('dashboard.billpay').factory('billpayService', billpayService);
 
-	billpayService.$inject = ['billsService', 'accountsService', 'explistwrapperService',
-			'ajaxService', 'utilsService'];
-	function billpayService(bs, acs, elws, aj, us) {
+	billpayService.$inject = ['etmenuService', 'billsService', 'accountsService',
+			'explistwrapperService', 'ajaxService', 'utilsService'];
+	function billpayService(ms, bs, acs, elws, aj, us) {
 		var data = {
 			bill: null,
-			pay: {
-				account: '',
-				paidDt: ''
-			}
+			city: null,
+			account: '',
+			paidDt: ''
 		};
 
 		var initForm = function() {
-			data.pay.account = '';
-			data.pay.paidDt = '';
+			data.account = '';
+			data.paidDt = '';
 		};
-		var loadData = function(data) {
-			this.data.bill = data;
+		var loadData = function(dt) {
+			this.data.bill = dt;
 			initForm();
 		};
 		var loadPayBill = function() {
@@ -29,11 +28,12 @@
 			bs.refreshBill(data.bill.id);
 
 			acs.refreshAccount(data.bill.account.id);
-			acs.refreshAccount(data.pay.account.id);
+			acs.refreshAccount(data.account.id);
 			elws.reloadExpenses();
 		};
 		var payBill = function() {
-			aj.post('/entry/paybill/' + data.bill.id, this.data.pay, loadPayBill);
+			data.city = ms.data.menu.city;
+			aj.post('/entry/paybill', this.data, loadPayBill);
 		};
 
 		return {

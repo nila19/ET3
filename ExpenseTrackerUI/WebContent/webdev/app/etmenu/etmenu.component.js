@@ -39,6 +39,7 @@
 		function changeCity(id) {
 			V.data.city = us.getById(ms.data.menu.cities, id);
 			sus.loadOthers();
+			// TODO Reload the current page
 		}
 	}
 })(window.angular);

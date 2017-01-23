@@ -16,6 +16,7 @@
 			rowCount: 1,
 			loading: false,
 			filterApplied: false,
+			thinList: true,
 			total: 0,
 			rows: []
 		};

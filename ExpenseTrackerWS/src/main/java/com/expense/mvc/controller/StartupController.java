@@ -1,6 +1,7 @@
 package com.expense.mvc.controller;
 
 import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -38,7 +39,7 @@ public class StartupController {
 	public CityUI getCity(@PathVariable int city) {
 		return ss.getDataKeyById(city);
 	}
-	
+
 	@RequestMapping(value = "/categories", method = RequestMethod.GET)
 	public List<CategoryUI> getCategories(@RequestParam int city) {
 		return ss.getAllCategories(city);

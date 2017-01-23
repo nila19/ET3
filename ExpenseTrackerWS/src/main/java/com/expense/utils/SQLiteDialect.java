@@ -47,7 +47,8 @@ public class SQLiteDialect extends Dialect {
 
 		// registerFunction( "abs", new StandardSQLFunction("abs") );
 		registerFunction("concat", new VarArgsSQLFunction(StandardBasicTypes.STRING, "", "||", ""));
-		// registerFunction( "length", new StandardSQLFunction("length", StandardBasicTypes.LONG) );
+		// registerFunction( "length", new StandardSQLFunction("length",
+		// StandardBasicTypes.LONG) );
 		// registerFunction( "lower", new StandardSQLFunction("lower") );
 		registerFunction("mod", new SQLFunctionTemplate(StandardBasicTypes.INTEGER, "?1 % ?2"));
 		registerFunction("quote", new StandardSQLFunction("quote", StandardBasicTypes.STRING));
@@ -100,8 +101,8 @@ public class SQLiteDialect extends Dialect {
 	}
 
 	/*
-	 * public boolean supportsInsertSelectIdentity() { return true; // As specify in NHibernate
-	 * dialect }
+	 * public boolean supportsInsertSelectIdentity() { return true; // As
+	 * specify in NHibernate dialect }
 	 */
 
 	@Override
@@ -110,9 +111,10 @@ public class SQLiteDialect extends Dialect {
 	}
 
 	/*
-	 * public String appendIdentitySelectToInsert(String insertString) { return new
-	 * StringBuffer(insertString.length()+30). // As specify in NHibernate dialect
-	 * append(insertString). append("; ").append(getIdentitySelectString()). toString(); }
+	 * public String appendIdentitySelectToInsert(String insertString) { return
+	 * new StringBuffer(insertString.length()+30). // As specify in NHibernate
+	 * dialect append(insertString). append("; "
+	 * ).append(getIdentitySelectString()). toString(); }
 	 */
 
 	@Override
@@ -228,8 +230,8 @@ public class SQLiteDialect extends Dialect {
 	}
 
 	/*
-	 * not case insensitive for unicode characters by default (ICU extension needed) public boolean
-	 * supportsCaseInsensitiveLike() { return true; }
+	 * not case insensitive for unicode characters by default (ICU extension
+	 * needed) public boolean supportsCaseInsensitiveLike() { return true; }
 	 */
 
 	@Override

@@ -7,17 +7,20 @@
 
 	searchService.$inject = ['ajaxService', 'explistService', 'etmenuService'];
 	function searchService(aj, els, ms) {
-		var data = {};
+		var data = {
+			thinList: true
+		};
 
 		var initializeData = function() {
-			this.data.category = '';
-			this.data.description = '';
-			this.data.amount = '';
-			this.data.account = '';
-			this.data.transMonth = '';
-			this.data.entryMonth = '';
-			this.data.adjustInd = '';
-			this.data.adhocInd = '';
+			data.category = '';
+			data.description = '';
+			data.amount = '';
+			data.account = '';
+			data.transMonth = '';
+			data.entryMonth = '';
+			data.adjustInd = '';
+			data.adhocInd = '';
+			data.thinList = true;
 		};
 		var addProp = function(input, ip, dp) {
 			var prop = data[dp];
@@ -28,6 +31,7 @@
 		var buildSearchInput = function() {
 			var input = {
 				city: ms.data.menu.city.id,
+				thinList: data.thinList
 			};
 			if (data.description && data.description !== '') {
 				input.description = data.description;
@@ -35,25 +39,22 @@
 			if (data.amount && data.amount !== '' && data.amount !== 0) {
 				input.amount = data.amount;
 			}
-			addProp(input, 'categoryId', 'category');
-			addProp(input, 'accountId', 'account');
-			addProp(input, 'billId', 'bill');
-			if (data.transMonth && data.transMonth.id) {
-				input.transMonth = data.transMonth.id;
-			}
-			if (data.entryMonth && data.entryMonth.id) {
-				input.entryMonth = data.entryMonth.id;
-			}
 			if (data.adjustInd) {
 				input.adjustInd = data.adjustInd;
 			}
 			if (data.adhocInd) {
 				input.adhocInd = data.adhocInd;
 			}
+			addProp(input, 'categoryId', 'category');
+			addProp(input, 'accountId', 'account');
+			addProp(input, 'billId', 'bill');
+			addProp(input, 'transMonth', 'transMonth');
+			addProp(input, 'entryMonth', 'entryMonth');
 			return input;
 		};
-		var loadResults = function(data) {
-			els.loadData(data);
+		var loadResults = function(dt) {
+			els.loadData(dt);
+			els.data.thinList = data.thinList;
 		};
 		var doSearch = function() {
 			var input = buildSearchInput();

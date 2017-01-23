@@ -3,7 +3,7 @@
             <div class="col-lg-2 col-md-4 col-sm-6" ng-repeat="acct in row.cols">
               <div class="card card-stats">
                 <div class="card-header" data-background-color="{{$ctrl.data.filterBy === acct.id? 'orange' : acct.bgColor}}">
-                  <a href="" ng-click="$ctrl.filterAccount(acct.id)"><i class="material-icons">{{acct.icon}}</i></a>
+                  <a href="" ng-click="$ctrl.filterAccount(acct.id)"><i class="material-icons">{{acct.imageCode}}</i></a>
                 </div>
                 <div class="card-content">
                   <p class="category">{{acct.name}}</p>

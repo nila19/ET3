@@ -29,12 +29,12 @@ public class BillCloser {
 
 	@Transactional(propagation = Propagation.REQUIRED)
 	public void init() {
-		//FIXME Reinstate old init..
+		// FIXME Reinstate old init..
 	}
 
 	@Transactional(propagation = Propagation.REQUIRED)
 	public void initOld() {
-		//FIXME Fix this later..
+		// FIXME Fix this later..
 
 		BillCloser.logger.info("BillCloser started...");
 

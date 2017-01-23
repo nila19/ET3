@@ -20,6 +20,7 @@ public class SearchUI implements java.io.Serializable {
 	private int billId;
 	private char adjustInd;
 	private char adhocInd;
+	private boolean thinList = true;
 
 	public int getCity() {
 		return city;
@@ -122,14 +123,25 @@ public class SearchUI implements java.io.Serializable {
 	public boolean isAdhoc() {
 		return adhocInd == 'Y';
 	}
+
 	public void setAdhoc(boolean adhoc) {
 		this.adhocInd = adhoc ? 'Y' : 'N';
 	}
+
 	public boolean isAdjust() {
 		return adjustInd == 'Y';
 	}
+
 	public void setAdjust(boolean adjust) {
 		this.adjustInd = adjust ? 'Y' : 'N';
+	}
+
+	public boolean isThinList() {
+		return thinList;
+	}
+
+	public void setThinList(boolean thinList) {
+		this.thinList = thinList;
 	}
 
 	@Override

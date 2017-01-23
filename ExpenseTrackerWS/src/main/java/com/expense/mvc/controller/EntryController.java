@@ -1,6 +1,7 @@
 package com.expense.mvc.controller;
 
 import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -34,18 +35,18 @@ public class EntryController {
 	@Autowired
 	private TallyService ts;
 
-	@SuppressWarnings("unused")
 	private void checkDataKeyActive(int city) throws Exception {
 		CityUI ui = sus.getDataKeyById(city);
 		if (ui.getStatus() != DataKey.Status.ACTIVE.status) {
-			throw new Exception("City inactive");
+			throw new Exception("City is inactive. Cannot modify data.");
 		}
 	}
 
 	@RequestMapping(value = "/transactions", method = RequestMethod.GET)
-	public List<TransactionUI> getTransactions(@RequestParam int city, @RequestParam int account, @RequestParam int bill) {
-		//Defaulting the 'pending' flag to FALSE. Future TODO.
-		return ts.getTransactions(account, false, bill,city);
+	public List<TransactionUI> getTransactions(@RequestParam int city, @RequestParam int account,
+			@RequestParam int bill) {
+		//TODO Defaulting the 'pending' flag to FALSE. Future enhancement to fetch Tally expense list.
+		return ts.getTransactions(account, false, bill, city);
 	}
 
 	@RequestMapping(value = "/transaction/{transId}", method = RequestMethod.GET)
@@ -63,39 +64,39 @@ public class EntryController {
 		return es.getBill(billId);
 	}
 
-	@RequestMapping(value = "/tally/{accountId}", method = RequestMethod.POST)
-	public void tallyAccount(@PathVariable int accountId) {
-		//TODO checkDataKeyActive(city);
+	@RequestMapping(value = "/tally/{cityId}/{accountId}", method = RequestMethod.POST)
+	public void tallyAccount(@PathVariable int cityId, @PathVariable int accountId) throws Exception {
+		checkDataKeyActive(cityId);
 		ts.tallyAccount(accountId);
 	}
 
 	@RequestMapping(value = "/add", method = RequestMethod.POST)
-	public void addExpense(@RequestBody TransactionUI tui) {
-		//TODO checkDataKeyActive(cityId);
+	public void addExpense(@RequestBody TransactionUI tui) throws Exception {
+		checkDataKeyActive(tui.getCity().getId());
 		es.addExpense(tui);
 	}
 
 	@RequestMapping(value = "/modify", method = RequestMethod.POST)
-	public void modifyExpense(@RequestBody TransactionUI tui) {
-		//TODO checkDataKeyActive(cityId);
+	public void modifyExpense(@RequestBody TransactionUI tui) throws Exception {
+		checkDataKeyActive(tui.getCity().getId());
 		es.modifyExpense(tui);
 	}
 
-	@RequestMapping(value = "/delete/{transId}", method = RequestMethod.POST)
-	public void deleteExpense(@PathVariable int transId) {
-		//TODO checkDataKeyActive(cityId);
+	@RequestMapping(value = "/delete/{cityId}/{transId}", method = RequestMethod.POST)
+	public void deleteExpense(@PathVariable int cityId, @PathVariable int transId) throws Exception {
+		checkDataKeyActive(cityId);
 		es.deleteExpense(transId);
 	}
 
-	@RequestMapping(value = "/swap", method = RequestMethod.POST)
-	public void swapSequence(@RequestBody SwapUI[] uis) {
-		//TODO checkDataKeyActive(cityId);
+	@RequestMapping(value = "/swap/{cityId}", method = RequestMethod.POST)
+	public void swapSequence(@PathVariable int cityId, @RequestBody SwapUI[] uis) throws Exception {
+		checkDataKeyActive(cityId);
 		es.swapSequence(uis);
 	}
 
-	@RequestMapping(value = "/paybill/{billId}", method = RequestMethod.POST)
-	public void payBill(@PathVariable int billId,@RequestBody BillPayUI bpui) {
-		//TODO checkDataKeyActive(cityId);
-		es.payBill(billId, bpui);
+	@RequestMapping(value = "/paybill", method = RequestMethod.POST)
+	public void payBill(@RequestBody BillPayUI bpui) throws Exception {
+		checkDataKeyActive(bpui.getCity().getId());
+		es.payBill(bpui);
 	}
 }

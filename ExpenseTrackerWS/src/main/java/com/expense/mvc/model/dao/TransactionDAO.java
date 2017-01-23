@@ -109,7 +109,7 @@ public class TransactionDAO extends BaseDAO<Transaction, Integer> {
 		}
 		query += " order by transSeq desc";
 
-		return findByParameters(query, parms);
+		return ui.isThinList() ? findByParametersThin(query, parms) : findByParameters(query, parms);
 	}
 
 	public List<Transaction> findForMonthlySummary(int dataKey, char adhoc) {

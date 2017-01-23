@@ -8,6 +8,8 @@ import java.util.List;
 import org.hibernate.SessionFactory;
 import org.hibernate.type.Type;
 
+import com.expense.utils.Props;
+
 public abstract class BaseDAO<T, ID extends Serializable> {
 
 	protected Class<T> entityType;
@@ -32,7 +34,8 @@ public abstract class BaseDAO<T, ID extends Serializable> {
 	protected abstract void setSessionFactory(SessionFactory sessionFactory);
 
 	// ********************************************************************************************
-	// ************************************** DELETE METHODS **************************************
+	// ************************************** DELETE METHODS
+	// **************************************
 
 	public void delete(T entity) {
 		sessionFactory.getCurrentSession().delete(entity);
@@ -56,7 +59,8 @@ public abstract class BaseDAO<T, ID extends Serializable> {
 	}
 
 	// ********************************************************************************************
-	// *************************************** SAVE METHODS ***************************************
+	// *************************************** SAVE METHODS
+	// ***************************************
 
 	public T save(T entity) {
 		sessionFactory.getCurrentSession().saveOrUpdate(entity);
@@ -73,7 +77,8 @@ public abstract class BaseDAO<T, ID extends Serializable> {
 	}
 
 	// ********************************************************************************************
-	// *************************************** FIND METHODS ***************************************
+	// *************************************** FIND METHODS
+	// ***************************************
 
 	@SuppressWarnings("unchecked")
 	public List<T> findAll() {
@@ -88,6 +93,12 @@ public abstract class BaseDAO<T, ID extends Serializable> {
 	@SuppressWarnings("unchecked")
 	public List<T> findByParameters(String query, HashMap<String, Object> parms) {
 		return sessionFactory.getCurrentSession().createQuery(query).setProperties(parms).list();
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<T> findByParametersThin(String query, HashMap<String, Object> parms) {
+		int maxRows = Integer.valueOf(Props.expense.getString("LIST.EXPENSES.LIMIT"));
+		return sessionFactory.getCurrentSession().createQuery(query).setProperties(parms).setMaxResults(maxRows).list();
 	}
 
 	@SuppressWarnings("unchecked")

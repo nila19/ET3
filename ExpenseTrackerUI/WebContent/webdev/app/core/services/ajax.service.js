@@ -28,6 +28,7 @@
 		}
 
 		function error(resp) {
+			console.log(resp);
 			us.show('AJAX Error!!.. ' + resp.status + ' :: ' + resp.statusText, C.MSG.DANGER);
 		}
 	}

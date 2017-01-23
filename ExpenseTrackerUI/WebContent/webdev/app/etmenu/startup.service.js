@@ -112,56 +112,6 @@
 			console.log('@ StartupService: Loading init app components COMPLETED...');
 			ms.data.loading = false;
 		}
-
-		/** **************** Test Methods ****************** */
-		function testAjax() {
-			// get();
-			getAll();
-		}
-
-		function add() {
-			var parm = {
-				login: 'User_2',
-				email: 'google',
-				age: 15
-			};
-			$resource(C.BASE_URL + '/users/add').save(parm, function(user) {
-				console.log('add -> Out from WS.. = ' + JSON.stringify(user.toJSON()));
-			});
-		}
-
-		function remove() {
-			var parm = {
-				login: 'User_2',
-				email: 'google',
-				age: 15
-			};
-			$resource(C.BASE_URL + '/users/delete').save(parm, function(user) {
-				console.log('remove -> Out from WS.. = ' + JSON.stringify(user.toJSON()));
-			});
-		}
-
-		function get() {
-			var parm = {
-				age: 5
-			};
-			var id = 'User_2';
-			$resource(C.BASE_URL + '/users/get/' + id).get(parm, function(user) {
-				console.log('get -> Out from WS.. = ' + JSON.stringify(user.toJSON()));
-			});
-		}
-
-		function getAll() {
-			var parm = {
-				id: 'User_2',
-				age: 5
-			};
-			$resource(C.BASE_URL + '/users/get').query(parm, function(users) {
-				angular.forEach(users, function(user) {
-					console.log('getAll -> Out from WS.. = ' + JSON.stringify(user.toJSON()));
-				});
-			});
-		}
 	}
 
 })(window.angular);

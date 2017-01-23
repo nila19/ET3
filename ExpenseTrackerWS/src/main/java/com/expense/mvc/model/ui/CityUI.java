@@ -3,7 +3,6 @@ package com.expense.mvc.model.ui;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import com.expense.mvc.model.entity.DataKey;
-import com.expense.utils.Utils;
 
 public class CityUI implements java.io.Serializable {
 	private static final long serialVersionUID = 1L;
@@ -14,6 +13,10 @@ public class CityUI implements java.io.Serializable {
 	private char status = 0;
 
 	public CityUI() {
+	}
+
+	public CityUI(int id) {
+		this.id = id;
 	}
 
 	public CityUI(DataKey dk) {

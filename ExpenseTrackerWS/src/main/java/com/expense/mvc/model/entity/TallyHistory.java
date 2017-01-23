@@ -17,8 +17,8 @@ import com.expense.utils.FU;
 
 @Entity
 @Table(name = "TALLY_HISTORY")
-public class TallyHistory extends com.expense.mvc.model.BaseEntity implements java.io.Serializable,
-		Comparable<TallyHistory> {
+public class TallyHistory extends com.expense.mvc.model.BaseEntity
+		implements java.io.Serializable, Comparable<TallyHistory> {
 	private static final long serialVersionUID = 1L;
 
 	@Id

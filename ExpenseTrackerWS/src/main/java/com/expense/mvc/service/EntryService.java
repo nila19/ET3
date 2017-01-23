@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+
 import com.expense.mvc.helper.BillCloser;
 import com.expense.mvc.model.dao.AccountDAO;
 import com.expense.mvc.model.dao.BillDAO;
@@ -209,8 +210,7 @@ public class EntryService {
 			t.getToAccount().getTransForToAccount().remove(t);
 		}
 
-		// TODO If bill is already closed, bill-balance is not getting
-		// adjusted...
+		// TODO If bill is already closed, bill-balance is not getting adjusted...
 		transactionDAO.delete(t);
 	}
 
@@ -244,8 +244,8 @@ public class EntryService {
 	}
 
 	@Transactional(propagation = Propagation.REQUIRED)
-	public int payBill(int billId, BillPayUI bpui) {
-		Bill bill = billDAO.findById(billId);
+	public int payBill(BillPayUI bpui) {
+		Bill bill = billDAO.findById(bpui.getBill().getId());
 
 		TransactionUI ui = new TransactionUI();
 		ui.setFromAccount(bpui.getAccount());
@@ -373,8 +373,8 @@ public class EntryService {
 	// **************************************
 
 	private void copyTransFields(TransactionUI ui, Transaction t) {
-		t.setTransDate(ui.getTransDate());
-		t.setTransMonth(DateUtils.truncate(ui.getTransDate(), Calendar.MONTH));
+		t.setTransDate(ui.getDtTransDate());
+		t.setTransMonth(DateUtils.truncate(ui.getDtTransDate(), Calendar.MONTH));
 		t.setDescription(WordUtils.capitalize(ui.getDescription()));
 		t.setAmount(ui.getAmount());
 		t.setAdjustInd(ui.isAdjust() ? 'Y' : 'N');
@@ -386,8 +386,7 @@ public class EntryService {
 		if (ui.getBill() != null) {
 			t.setFromBill(t.getFromAccount().doesBills() ? billDAO.findById(ui.getBill().getId()) : null);
 		}
-		// TODO If bill is already closed, bill-balance is not getting
-		// adjusted...
+		// TODO If bill is already closed, bill-balance is not getting adjusted...
 	}
 
 	private void moveCash(Transaction t, double amount) {

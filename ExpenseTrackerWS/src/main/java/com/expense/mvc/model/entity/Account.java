@@ -66,18 +66,11 @@ public class Account extends com.expense.mvc.model.BaseEntity implements java.io
 		}
 	}
 
-	@Column(name = "IMAGE_CODE", length = 4)
+	@Column(name = "IMAGE_CODE", length = 25)
 	private String imageCode;
 
-	public enum ImageCode {
-		VISA("VISA"), MCARD("MCARD"), AMEX("AMEX"), CASH("CASH"), NONE("NONE");
-
-		public String code;
-
-		private ImageCode(String code) {
-			this.code = code;
-		}
-	}
+	@Column(name = "BG_COLOR", length = 10)
+	private String bgColor;
 
 	@Column(name = "STATUS", length = 1)
 	private Character status;
@@ -219,6 +212,14 @@ public class Account extends com.expense.mvc.model.BaseEntity implements java.io
 
 	public void setImageCode(String imageCode) {
 		this.imageCode = imageCode;
+	}
+
+	public String getBgColor() {
+		return bgColor;
+	}
+
+	public void setBgColor(String bgColor) {
+		this.bgColor = bgColor;
 	}
 
 	public Character getStatus() {

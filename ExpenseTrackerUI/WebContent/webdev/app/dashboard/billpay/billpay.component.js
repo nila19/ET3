@@ -27,7 +27,6 @@
 				bs.data.loading = true;
 				bps.payBill();
 				$('#model_BillPay').modal('hide');
-				// TODO Refresh bill list - honor filters.
 			}
 		}
 	}

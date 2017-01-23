@@ -26,7 +26,8 @@ public class MonthUI implements java.io.Serializable, Comparable<MonthUI> {
 		this.setAggregate(aggregate);
 		this.name = FU.date(FU.Date.MMMyy).format(id);
 
-		// If year, transMonth will have 01 as month. Make it 13, so it gets sorted ahead of all
+		// If year, transMonth will have 01 as month. Make it 13, so it gets
+		// sorted ahead of all
 		// months in desc order.
 		if (this.isAggregate()) {
 			this.seq = (Integer.valueOf(FU.date(FU.Date.yyyy).format(id)) * 100) + 13;

@@ -62,7 +62,8 @@ public class SummaryHelper implements java.io.Serializable {
 	}
 
 	// ********************************************************************************************
-	// ************************************** Process Methods *************************************
+	// ************************************** Process Methods
+	// *************************************
 
 	private void processData() {
 		synchCategories();
@@ -191,7 +192,8 @@ public class SummaryHelper implements java.io.Serializable {
 			months.add(totals.get(mseq).getMonth());
 		}
 
-		// Sort in Desc order. Years will get aligned ahead of the corresponding months.
+		// Sort in Desc order. Years will get aligned ahead of the corresponding
+		// months.
 		Collections.sort(months);
 		Collections.reverse(months);
 
@@ -199,7 +201,8 @@ public class SummaryHelper implements java.io.Serializable {
 	}
 
 	// ********************************************************************************************
-	// ************************************ Pagination Methods ************************************
+	// ************************************ Pagination Methods
+	// ************************************
 
 	public boolean isPageValid(int page) {
 		return page >= 0 && page < this.pages;
@@ -227,7 +230,8 @@ public class SummaryHelper implements java.io.Serializable {
 	}
 
 	// ********************************************************************************************
-	// ************************************ Formatting Methods ************************************
+	// ************************************ Formatting Methods
+	// ************************************
 
 	public String[] getColorSet(CategoryUI cat) {
 		if (!cat.getMainCategory().trim().equalsIgnoreCase(prevCategory)) {

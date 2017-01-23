@@ -46,7 +46,6 @@
 
 		var loadChartData = function() {
 			console.log('Getting chart data @ vDB... ' + ms.data.menu.city.name);
-			// TODO Ajax query DB for chart data.
 			this.loadData(dummyChart());
 		};
 		var loadData = function(data) {

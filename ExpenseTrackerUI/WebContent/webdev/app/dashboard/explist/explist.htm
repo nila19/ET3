@@ -62,7 +62,12 @@
                       <tr>
                         <td colspan="5">&nbsp;</td>
                         <td class="text-right"><strong>{{$ctrl.data.total | currency:''}}</strong></td>
-                        <td colspan="3">&nbsp;</td>
+                        <td>
+                          <span ng-switch="$ctrl.data.thinList.toString()" class="btn btn-simple btn-xs btn-warning no-btn">
+                            <i ng-switch-when="true" class="material-icons">visibility_off</i>
+                            <i ng-switch-when="false" class="material-icons">visibility</i>
+                          </span></td>
+                        <td colspan="2">&nbsp;</td>
                         <td><span ng-if="$ctrl.data.loading" class="btn btn-simple btn-xs no-btn"><img alt="loading..." style="width:20px;height:20px;" ng-src="loading.gif"></span>&nbsp;</td>
                         <td>
                           <div class="stats">

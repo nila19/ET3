@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+
 import com.expense.mvc.model.dao.TransactionDAO;
 import com.expense.mvc.model.entity.Transaction;
 import com.expense.mvc.model.ui.SearchUI;
@@ -32,7 +33,7 @@ public class SearchService {
 		return uis;
 	}
 
-	private SearchUI toSearchUI (Map<String, String> input) {
+	private SearchUI toSearchUI(Map<String, String> input) {
 		SearchUI ui = new SearchUI();
 		try {
 			BeanUtils.populate(ui, input);

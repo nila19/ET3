@@ -44,7 +44,7 @@ public class BillUI implements java.io.Serializable {
 		buildName();
 		checkDueDateWarning();
 	}
-	
+
 	public void buildName() {
 		name = FU.date(FU.Date.yyyyMMMdd).format(billDt) + " - #" + id;
 	}

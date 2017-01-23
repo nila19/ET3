@@ -10,13 +10,8 @@
 			'$timeout'];
 	function explistwrapperService(els, ms, ss, acs, bs, es, aj, C, $timeout) {
 
-		// TODO Eliminate this..
 		var reloadExpenses = function() {
-			if (ms.data.page === C.PAGES.SEARCH) {
-				ss.doSearch();
-			} else if (ms.data.page === C.PAGES.DASHBOARD) {
-				ss.doSearch();
-			}
+			ss.doSearch();
 		};
 
 		var clearFilter = function() {
@@ -69,7 +64,7 @@
 
 			console.log('Publishing swaps...' + tempPool.length);
 			els.data.loading = true;
-			aj.post('/entry/swap', tempPool, resetSwapPool);
+			aj.post('/entry/swap/' + ms.data.menu.city.id, tempPool, resetSwapPool);
 		};
 		var looper = function() {
 			if (swapPool.length > 0) {
