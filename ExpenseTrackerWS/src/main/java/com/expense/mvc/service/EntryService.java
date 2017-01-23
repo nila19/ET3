@@ -56,7 +56,8 @@ public class EntryService {
 		Account fr = t.getFromAccount();
 		Account to = t.getToAccount();
 
-		t.setDataKey((ui.getFromAccount().getId() > 0 ? t.getFromAccount():t.getToAccount()).getDataKey());
+		Account dkAcc = (ui.getFromAccount() != null && ui.getFromAccount().getId() > 0) ? fr : to;
+		t.setDataKey(dkAcc.getDataKey());
 
 		if (fr.doesBills() && fr.getOpenBill() != null) {
 			t.setFromBill(fr.getOpenBill());
@@ -70,21 +71,21 @@ public class EntryService {
 		DecimalFormat df = FU.number(FU.Number.NOCOMMA);
 
 		// Set From/To accounts' 'BEFORE' balances before cash movement.
-		if (t.getFromAccount().getAccountId() != 0) {
-			t.setFromBalanceBf(Double.valueOf(df.format(t.getFromAccount().getBalanceAmt())));
+		if (fr.getAccountId() != 0) {
+			t.setFromBalanceBf(Double.valueOf(df.format(fr.getBalanceAmt())));
 		}
-		if (t.getToAccount().getAccountId() != 0) {
-			t.setToBalanceBf(Double.valueOf(df.format(t.getToAccount().getBalanceAmt())));
+		if (to.getAccountId() != 0) {
+			t.setToBalanceBf(Double.valueOf(df.format(to.getBalanceAmt())));
 		}
 
 		moveCash(t, t.getAmount());
 
 		// Set From/To accounts' 'AFTER' balances after cash movement.
-		if (t.getFromAccount().getAccountId() != 0) {
-			t.setFromBalanceAf(Double.valueOf(df.format(t.getFromAccount().getBalanceAmt())));
+		if (fr.getAccountId() != 0) {
+			t.setFromBalanceAf(Double.valueOf(df.format(fr.getBalanceAmt())));
 		}
-		if (t.getToAccount().getAccountId() != 0) {
-			t.setToBalanceAf(Double.valueOf(df.format(t.getToAccount().getBalanceAmt())));
+		if (to.getAccountId() != 0) {
+			t.setToBalanceAf(Double.valueOf(df.format(to.getBalanceAmt())));
 		}
 
 		t.setTransSeq(t.getTransId());
@@ -98,7 +99,8 @@ public class EntryService {
 		Account from = t.getFromAccount();
 		Account to = t.getToAccount();
 
-		// Financial Impact - Identify if there is any change in Amount or Accounts.
+		// Financial Impact - Identify if there is any change in Amount or
+		// Accounts.
 		// Check Amount / FromAccount / ToAccount has changed.
 		boolean finImpact = false;
 		if (t.getAmount() != ui.getAmount() || from.getAccountId() != ui.getFromAccount().getId()
@@ -106,7 +108,8 @@ public class EntryService {
 			finImpact = true;
 		}
 
-		// If Financial Impact : for ADJUST both Accounts should be Active, else just FromAccount
+		// If Financial Impact : for ADJUST both Accounts should be Active, else
+		// just FromAccount
 		// should be Active.
 		if (finImpact) {
 			if (t.getAdjustInd() == Transaction.Adjust.YES.type) {
@@ -140,7 +143,8 @@ public class EntryService {
 		return true;
 	}
 
-	// Find previous trans for the same Fr/To accounts to get the Ac balance at that time period.
+	// Find previous trans for the same Fr/To accounts to get the Ac balance at
+	// that time period.
 	private void adjustTransBalances(Transaction t) {
 		// Setting FromAccount Bf/Af balances
 		int fr = t.getFromAccount().getAccountId();
@@ -157,8 +161,8 @@ public class EntryService {
 					if (fr == t2.getToAccount().getAccountId()) {
 						t.setFromBalanceBf(t2.getToBalanceAf());
 					}
-					double transamt = (t.getFromAccount().getType() == Account.Type.CASH.type) ? t.getAmount() : t
-							.getAmount() * -1;
+					double transamt = (t.getFromAccount().getType() == Account.Type.CASH.type) ? t.getAmount()
+							: t.getAmount() * -1;
 					t.setFromBalanceAf(t.getFromBalanceBf() - transamt);
 					break;
 				}
@@ -180,8 +184,8 @@ public class EntryService {
 					if (to == t2.getToAccount().getAccountId()) {
 						t.setToBalanceBf(t2.getToBalanceAf());
 					}
-					double transamt = (t.getToAccount().getType() == Account.Type.CASH.type) ? t.getAmount() : t
-							.getAmount() * -1;
+					double transamt = (t.getToAccount().getType() == Account.Type.CASH.type) ? t.getAmount()
+							: t.getAmount() * -1;
 					t.setToBalanceAf(t.getToBalanceBf() + transamt);
 					break;
 				}
@@ -205,7 +209,8 @@ public class EntryService {
 			t.getToAccount().getTransForToAccount().remove(t);
 		}
 
-		// TODO If bill is already closed, bill-balance is not getting adjusted...
+		// TODO If bill is already closed, bill-balance is not getting
+		// adjusted...
 		transactionDAO.delete(t);
 	}
 
@@ -259,7 +264,7 @@ public class EntryService {
 		transactionDAO.save(t);
 
 		double bal = bill.getBillBalance() - t.getAmount();
-		if(bal > -0.01 && bal < 0.01) {
+		if (bal > -0.01 && bal < 0.01) {
 			bal = 0;
 		}
 		bill.setBillBalance(bal);
@@ -276,7 +281,7 @@ public class EntryService {
 			processSwap(ui.getFromTrans(), ui.getToTrans());
 		}
 	}
-	
+
 	private void processSwap(int transId_1, int transId_2) {
 		Transaction t1 = transactionDAO.findById(transId_1);
 		Transaction t2 = transactionDAO.findById(transId_2);
@@ -364,23 +369,25 @@ public class EntryService {
 	}
 
 	// ********************************************************************************************
-	// ************************************** Common Methods **************************************
+	// ************************************** Common Methods
+	// **************************************
 
 	private void copyTransFields(TransactionUI ui, Transaction t) {
 		t.setTransDate(ui.getTransDate());
 		t.setTransMonth(DateUtils.truncate(ui.getTransDate(), Calendar.MONTH));
 		t.setDescription(WordUtils.capitalize(ui.getDescription()));
 		t.setAmount(ui.getAmount());
-		t.setAdjustInd(ui.isAdjust()?'Y':'N');
-		t.setAdhocInd(ui.isAdhoc()?'Y':'N');
-		t.setCategory(categoryDAO.findById(ui.getCategory().getId()));
-		t.setFromAccount(accountDAO.findById(ui.getFromAccount().getId()));
-		t.setToAccount(accountDAO.findById(ui.getToAccount().getId()));
+		t.setAdjustInd(ui.isAdjust() ? 'Y' : 'N');
+		t.setAdhocInd(ui.isAdhoc() ? 'Y' : 'N');
+		t.setCategory(categoryDAO.findById(ui.getCategory() != null ? ui.getCategory().getId() : 0));
+		t.setFromAccount(accountDAO.findById(ui.getFromAccount() != null ? ui.getFromAccount().getId() : 0));
+		t.setToAccount(accountDAO.findById(ui.getToAccount() != null ? ui.getToAccount().getId() : 0));
 
-		if(ui.getBill() != null) {
+		if (ui.getBill() != null) {
 			t.setFromBill(t.getFromAccount().doesBills() ? billDAO.findById(ui.getBill().getId()) : null);
 		}
-		// TODO If bill is already closed, bill-balance is not getting adjusted...
+		// TODO If bill is already closed, bill-balance is not getting
+		// adjusted...
 	}
 
 	private void moveCash(Transaction t, double amount) {
@@ -401,7 +408,8 @@ public class EntryService {
 		accountDAO.save(ac);
 
 		// Find all future trans post this & adjust the ac balance.
-		// If Seq = null, it is an ADD. Don't do this for ADD, as Add does not have future trans.
+		// If Seq = null, it is an ADD. Don't do this for ADD, as Add does not
+		// have future trans.
 		if (t.getTransSeq() != null) {
 			updateTransItemBalances(ac, amount, t);
 		}

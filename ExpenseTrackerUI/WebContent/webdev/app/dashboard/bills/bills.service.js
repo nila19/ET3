@@ -28,11 +28,12 @@
 			});
 			return idx;
 		};
+		var loadDataForPage = function() {
+			var pg = data.currPageNo;
+			data.pgData.rows = data.rows.slice(pg * rows, (pg + 1) * rows);
+		};
 		var loadBill = function(dt) {
 			var idx = getIndexOf(dt.id);
-			// data.rows[idx].billBalance = dt.billBalance;
-			// data.rows[idx].billPaidDt = dt.billPaidDt;
-			// data.rows[idx].paid = dt.paid;
 			data.rows[idx] = dt;
 			loadDataForPage();
 			data.loading = false;
@@ -40,10 +41,6 @@
 		var refreshBill = function(id) {
 			data.loading = true;
 			aj.get('/entry/bill/' + id, {}, loadBill);
-		};
-		var loadDataForPage = function() {
-			var pg = data.currPageNo;
-			data.pgData.rows = data.rows.slice(pg * rows, (pg + 1) * rows);
 		};
 		var loadData = function(dt) {
 			data.rows = dt;

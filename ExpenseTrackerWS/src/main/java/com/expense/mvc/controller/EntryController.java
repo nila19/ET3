@@ -96,7 +96,6 @@ public class EntryController {
 	@RequestMapping(value = "/paybill/{billId}", method = RequestMethod.POST)
 	public void payBill(@PathVariable int billId,@RequestBody BillPayUI bpui) {
 		//TODO checkDataKeyActive(cityId);
-		System.out.println(bpui.getPaidDt());
 		es.payBill(billId, bpui);
 	}
 }

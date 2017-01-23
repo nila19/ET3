@@ -5,30 +5,38 @@
 
 	angular.module('dashboard.add').factory('addService', addService);
 
-	addService.$inject = ['etmenuService', 'utilsService', 'CONSTANTS'];
-	function addService(ms, us, C) {
+	addService.$inject = ['accountsService', 'explistwrapperService', 'ajaxService',
+			'utilsService', 'CONSTANTS'];
+	function addService(acs, elws, aj, us, C) {
 		var data = {
 			showAdd: false,
 			adjust: false,
 			adhoc: false,
-			category: '',
-			fromAcc: '',
-			toAcc: '',
+			category: null,
+			fromAccount: null,
+			toAccount: null,
 			description: '',
 			amount: '',
-			transDt: '',
+			transDate: '',
 		};
 
-		var initForm = function(d) {
-			d.amount = '';
-			d.description = '';
+		var initForm = function() {
+			data.amount = '';
+			data.description = '';
+		};
+		var loadData = function() {
+			if (data.fromAccount && data.fromAccount.id) {
+				acs.refreshAccount(data.fromAccount.id);
+			}
+			if (data.toAccount && data.toAccount.id) {
+				acs.refreshAccount(data.toAccount.id);
+			}
+			elws.reloadExpenses();
+			us.showMsg('Add Expense', C.MSG.SUCCESS);
+			initForm();
 		};
 		var addExpense = function() {
-			// TODO Ajax add to database.
-			console.log('Adding expense @ vDB :: ' + ms.data.menu.city.name + ',' +
-					JSON.stringify(this.data));
-			us.showMsg('Add Expense', C.MSG.SUCCESS);
-			initForm(this.data);
+			aj.post('/entry/add', this.data, loadData);
 		};
 
 		return {
