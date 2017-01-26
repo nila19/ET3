@@ -27,6 +27,7 @@ import com.expense.mvc.model.ui.BillPayUI;
 import com.expense.mvc.model.ui.BillUI;
 import com.expense.mvc.model.ui.CategoryUI;
 import com.expense.mvc.model.ui.SwapUI;
+import com.expense.mvc.model.ui.TransMinUI;
 import com.expense.mvc.model.ui.TransactionUI;
 import com.expense.utils.FU;
 
@@ -46,7 +47,7 @@ public class EntryService {
 	private BillDAO billDAO;
 
 	@Transactional(propagation = Propagation.REQUIRED)
-	public int addExpense(TransactionUI ui) {
+	public TransMinUI addExpense(TransactionUI ui) {
 		Transaction t = new Transaction();
 		t.setEntryDate(new Date());
 		t.setEntryMonth(DateUtils.truncate(new Date(), Calendar.MONTH));
@@ -91,12 +92,12 @@ public class EntryService {
 
 		t.setTransSeq(t.getTransId());
 		transactionDAO.save(t);
-		return t.getTransId();
+		return new TransMinUI(t.getTransId());
 	}
 
 	@Transactional(propagation = Propagation.REQUIRED)
 	public boolean modifyExpense(TransactionUI ui) {
-		Transaction t = transactionDAO.findById(ui.getTransId());
+		Transaction t = transactionDAO.findById(ui.getId());
 		Account from = t.getFromAccount();
 		Account to = t.getToAccount();
 
@@ -244,7 +245,7 @@ public class EntryService {
 	}
 
 	@Transactional(propagation = Propagation.REQUIRED)
-	public int payBill(BillPayUI bpui) {
+	public TransMinUI payBill(BillPayUI bpui) {
 		Bill bill = billDAO.findById(bpui.getBill().getId());
 
 		TransactionUI ui = new TransactionUI();
@@ -258,8 +259,8 @@ public class EntryService {
 		ui.setAdjust(true);
 		ui.setAdhoc(false);
 
-		int tranId = addExpense(ui);
-		Transaction t = transactionDAO.findById(tranId);
+		TransMinUI tui = addExpense(ui);
+		Transaction t = transactionDAO.findById(tui.getId());
 		t.setToBill(bill);
 		transactionDAO.save(t);
 
@@ -272,7 +273,7 @@ public class EntryService {
 		bill.setPayTran(t);
 		billDAO.save(bill);
 
-		return t.getTransId();
+		return tui;
 	}
 
 	@Transactional(propagation = Propagation.REQUIRED)

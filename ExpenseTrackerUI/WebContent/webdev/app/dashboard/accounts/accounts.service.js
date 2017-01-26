@@ -35,17 +35,8 @@
 			buildRows();
 		};
 
-		var getIndexOf = function(id) {
-			var idx;
-			data.accts.forEach(function(acct, i) {
-				if (acct.id === id) {
-					idx = i;
-				}
-			});
-			return idx;
-		};
 		var loadAccount = function(dt) {
-			data.accts[getIndexOf(dt.id)] = dt;
+			data.accts[us.getIndexOf(data.accts, dt.id)] = dt;
 			buildRows();
 			ms.data.loading = false;
 		};
@@ -69,7 +60,6 @@
 			bs.data.filterApplied = true;
 			bs.loadBillsForAcct(id);
 
-			els.data.filterApplied = true;
 			ss.data.account = {
 				id: id
 			};

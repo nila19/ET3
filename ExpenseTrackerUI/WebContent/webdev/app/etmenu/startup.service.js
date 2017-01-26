@@ -48,6 +48,11 @@
 				city: city.id
 			}, loadAccounts);
 		}
+		function getAllAccounts(city) {
+			aj.query('/startup/accounts/all', {
+				city: city.id
+			}, loadAllAccounts);
+		}
 		function getTransMonths(city) {
 			aj.query('/startup/months/trans', {
 				city: city.id
@@ -92,6 +97,14 @@
 			V.data.accounts = [];
 			angular.forEach(accounts, function(account) {
 				V.data.accounts.push(account.toJSON());
+			});
+
+			getAllAccounts(V.data.city);
+		}
+		function loadAllAccounts(accounts) {
+			V.data.allAccounts = [];
+			angular.forEach(accounts, function(account) {
+				V.data.allAccounts.push(account.toJSON());
 			});
 
 			getTransMonths(V.data.city);

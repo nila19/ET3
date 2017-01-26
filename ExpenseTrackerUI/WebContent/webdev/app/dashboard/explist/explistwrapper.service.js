@@ -6,16 +6,16 @@
 	angular.module('dashboard.explist').factory('explistwrapperService', explistwrapperService);
 
 	explistwrapperService.$inject = ['explistService', 'etmenuService', 'searchService',
-			'accountsService', 'billsService', 'editService', 'ajaxService', 'CONSTANTS',
+			'accountsService', 'billsService', 'ajaxService', 'utilsService', 'CONSTANTS',
 			'$timeout'];
-	function explistwrapperService(els, ms, ss, acs, bs, es, aj, C, $timeout) {
+	function explistwrapperService(els, ms, ss, acs, bs, aj, us, C, $timeout) {
 
 		var reloadExpenses = function() {
+			ss.data.thinList = els.data.thinList;
 			ss.doSearch();
 		};
 
 		var clearFilter = function() {
-			els.data.filterApplied = false;
 			ss.initializeData();
 			if (ms.data.page === C.PAGES.DASHBOARD) {
 				// Clear filter for Bills
@@ -29,10 +29,20 @@
 			reloadExpenses();
 		};
 
-		var editExpense = function(transId) {
-			// No need to fetch from DB. Fetch from local & show in popup.
-			var trans = els.data.rows[els.getIndexOf(transId)];
-			es.loadData(trans);
+		var loadAddItem = function(dt) {
+			els.addItem(dt);
+		};
+		var addItem = function(id) {
+			aj.get('/entry/transaction/' + id, {}, loadAddItem);
+		};
+		var loadModifyItem = function(dt) {
+			els.modifyItem(dt);
+		};
+		var modifyItem = function(id) {
+			aj.get('/entry/transaction/' + id, {}, loadModifyItem);
+		};
+		var deleteItem = function(id) {
+			els.deleteItem(id);
 		};
 
 		// Swap Expenses.
@@ -80,21 +90,21 @@
 			}
 		};
 		var swapExpense = function(idx1, idx2) {
-			var transId1 = els.data.rows[idx1].transId;
-			var transId2 = els.data.rows[idx2].transId;
+			var id1 = els.data.rows[idx1].id;
+			var id2 = els.data.rows[idx2].id;
 
-			var code = transId1 * 10 + transId2; // Unique code to identify.
+			var code = id1 * 10 + id2; // Unique code to identify.
 			swapPool.push({
 				code: code,
-				fromTrans: transId1,
-				toTrans: transId2
+				fromTrans: id1,
+				toTrans: id2
 			});
 
 			// Swap them in the $view.
 			var trans1 = els.data.rows[idx1];
 			els.data.rows[idx1] = els.data.rows[idx2];
 			els.data.rows[idx2] = trans1;
-			els.loadDataForPage();
+			els.loadCurrentPage();
 
 			if (!looperOn) {
 				looperOn = true;
@@ -107,7 +117,9 @@
 		return {
 			clearFilter: clearFilter,
 			reloadExpenses: reloadExpenses,
-			editExpense: editExpense,
+			addItem: addItem,
+			modifyItem: modifyItem,
+			deleteItem: deleteItem,
 			swapExpense: swapExpense
 		};
 	}

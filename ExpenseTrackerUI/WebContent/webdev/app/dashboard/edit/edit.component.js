@@ -15,7 +15,7 @@
 		init();
 
 		// ***** Exposed functions ******//
-		vm.saveExpense = saveExpense;
+		vm.modifyExpense = modifyExpense;
 		vm.deleteExpense = deleteExpense;
 		vm.loadBills = loadBills;
 		vm.clearBills = clearBills;
@@ -26,7 +26,7 @@
 			vm.ta = V.data;
 		}
 
-		function saveExpense(valid) {
+		function modifyExpense(valid) {
 			if (valid) {
 				if (es.data.expense.adjust &&
 						(isNull(es.data.expense.fromAccount) && isNull(es.data.expense.toAccount))) {
@@ -43,7 +43,7 @@
 					us.show('3 - Mandatory fields are empty!!', C.MSG.WARNING);
 					return false;
 				}
-				es.saveExpense();
+				es.modifyExpense();
 			}
 		}
 

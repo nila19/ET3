@@ -24,11 +24,12 @@
 
 			ms.data.page = C.PAGES.SEARCH;
 			els.data.rowCount = C.SIZES.SEARCH_ROW;
-			els.data.filterApplied = false;
+			els.data.thinListToggle = true;
 
 			// If menu is not loaded, load the default city from V.
 			ms.checkInit();
 
+			ss.initializeData();
 			isDrillDown();
 			initSearch();
 		}
@@ -46,8 +47,7 @@
 		// Check if sent from Summary page.
 		function isDrillDown() {
 			if ($routeParams.drill && $routeParams.drill === 'Y') {
-				els.data.filterApplied = true;
-				var category = us.getById(V.data.categories, ss.data.category.id);
+				var category = us.getObjectOf(V.data.categories, ss.data.category.id);
 				if (category) {
 					ss.data.category = category;
 				}
@@ -56,7 +56,6 @@
 		}
 
 		function doSearch() {
-			els.data.filterApplied = true;
 			ss.doSearch();
 		}
 	}

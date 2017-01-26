@@ -9,8 +9,6 @@
 			'chartService', 'explistService', 'billsService'];
 	function dashboardFlagsService(ms, acs, as, cs, els, bs) {
 		var setFlags = function() {
-			els.data.filterApplied = false;
-
 			acs.data.showAcctsRowOne = true;
 			as.data.showAdd = true;
 			bs.data.showBills = true;

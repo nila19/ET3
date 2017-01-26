@@ -12,10 +12,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.expense.mvc.model.entity.DataKey;
+import com.expense.mvc.model.entity.Transaction;
 import com.expense.mvc.model.ui.BillPayUI;
 import com.expense.mvc.model.ui.BillUI;
 import com.expense.mvc.model.ui.CityUI;
 import com.expense.mvc.model.ui.SwapUI;
+import com.expense.mvc.model.ui.TransMinUI;
 import com.expense.mvc.model.ui.TransactionUI;
 import com.expense.mvc.service.EntryService;
 import com.expense.mvc.service.StartupService;
@@ -71,9 +73,9 @@ public class EntryController {
 	}
 
 	@RequestMapping(value = "/add", method = RequestMethod.POST)
-	public void addExpense(@RequestBody TransactionUI tui) throws Exception {
+	public TransMinUI addExpense(@RequestBody TransactionUI tui) throws Exception {
 		checkDataKeyActive(tui.getCity().getId());
-		es.addExpense(tui);
+		return es.addExpense(tui);
 	}
 
 	@RequestMapping(value = "/modify", method = RequestMethod.POST)
@@ -95,8 +97,8 @@ public class EntryController {
 	}
 
 	@RequestMapping(value = "/paybill", method = RequestMethod.POST)
-	public void payBill(@RequestBody BillPayUI bpui) throws Exception {
+	public TransMinUI payBill(@RequestBody BillPayUI bpui) throws Exception {
 		checkDataKeyActive(bpui.getCity().getId());
-		es.payBill(bpui);
+		return es.payBill(bpui);
 	}
 }

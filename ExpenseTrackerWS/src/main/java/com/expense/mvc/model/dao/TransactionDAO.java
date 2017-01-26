@@ -84,7 +84,7 @@ public class TransactionDAO extends BaseDAO<Transaction, Integer> {
 			query += " and (fromAccount.accountId = :accountId or toAccount.accountId = :accountId )";
 		}
 		if (ui.getBillId() > 0) {
-			query += " and (fromBill.billId = :billId or toBill.billId = :billId )";
+			query += " and fromBill.billId = :billId";
 		}
 		if (ui.getCategoryId() > 0) {
 			query += " and category.categoryId = :categoryId";

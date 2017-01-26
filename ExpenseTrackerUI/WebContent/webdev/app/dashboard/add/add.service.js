@@ -18,27 +18,29 @@
 			toAccount: null,
 			description: '',
 			amount: '',
-			transDate: '',
+			transDate: ''
 		};
 
 		var initForm = function() {
 			data.amount = '';
 			data.description = '';
 		};
-		var loadData = function() {
+		var loadData = function(dt) {
+			initForm();
+			us.showMsg('Add Expense', C.MSG.SUCCESS);
+			// Add the newly added Expense to the top of the Expenselist..
+			elws.addItem(dt.id);
+
 			if (data.fromAccount && data.fromAccount.id) {
 				acs.refreshAccount(data.fromAccount.id);
 			}
 			if (data.toAccount && data.toAccount.id) {
 				acs.refreshAccount(data.toAccount.id);
 			}
-			elws.reloadExpenses();
-			us.showMsg('Add Expense', C.MSG.SUCCESS);
-			initForm();
 		};
 		var addExpense = function() {
 			data.city = ms.data.menu.city;
-			aj.post('/entry/add', this.data, loadData);
+			aj.post('/entry/add', data, loadData);
 		};
 
 		return {

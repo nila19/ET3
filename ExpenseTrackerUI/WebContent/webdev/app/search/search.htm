@@ -46,7 +46,7 @@
                       <div class="col-lg-2 col-md-3">
                         <div class="form-group label-floating">
                           <label class="control-label">Account</label>
-                          <input ng-model="$ctrl.data.account" type="text" class="form-control" uib-typeahead="acc as acc.name for acc in $ctrl.ta.accounts | filter:$viewValue" typeahead-show-hint="true" typeahead-min-length="0" typeahead-editable="false">
+                          <input ng-model="$ctrl.data.account" type="text" class="form-control" uib-typeahead="acc as acc.name for acc in $ctrl.ta.allAccounts | filter:$viewValue" typeahead-show-hint="true" typeahead-min-length="0" typeahead-editable="false">
                         </div>
                       </div>
                       <div class="col-lg-1 col-md-2">

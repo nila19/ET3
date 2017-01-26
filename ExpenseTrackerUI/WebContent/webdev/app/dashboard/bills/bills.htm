@@ -21,31 +21,33 @@
                             <th>&nbsp;</th>
                             <th>Account</th>
                             <th>Bill Date</th>
-                            <th>Bill Balance</th>
-                            <th>Due Date</th>
-                            <th>Paid Date</th>
+                            <th class="text-right">Bill Amount</th>
+                            <th class="text-right">Balance</th>
+                            <th class="text-right">Due Date</th>
+                            <th>Payment</th>
                           </tr>
                         </thead>
                         <tbody>
-                          <tr ng-repeat="row in $ctrl.data.pgData.rows">
+                          <tr ng-repeat="bill in $ctrl.data.pgData.rows">
                             <td class="td-actions text-right">
-                              <button type="button" ng-click="$ctrl.filterExpenses(row.id)" tooltip rel="tooltip" title="View Expenses" class="btn btn-primary btn-simple btn-xs" ng-class="{'btn-warning': ($ctrl.data.filterBy === row.id)}">
+                              <button type="button" ng-click="$ctrl.filterExpenses(bill.id)" tooltip rel="tooltip" title="View Expenses" class="btn btn-primary btn-simple btn-xs" ng-class="{'btn-warning': ($ctrl.data.filterBy === bill.id)}">
                                 <i class="material-icons">list</i>
                               </button>
                             </td>
-                            <td>{{row.account.name}}</td>
-                            <td>{{row.billDt | date:'dd-MMM-yy'}}</td>
-                            <td>{{row.billBalance | currency:''}}</td>
-                            <td>{{row.dueDt | date:'dd-MMM-yy'}}</td>
-                            <td ng-switch="row.paid.toString()" class="td-actions">
-                              <span ng-switch-when="true">{{row.billPaidDt | date:'dd-MMM-yy'}}</span>
-                              <button ng-switch-when="false" type="button" ng-click="$ctrl.showBillPay(row.id)" tooltip rel="tooltip" title="Pay Now" class="btn btn-primary btn-xs">
+                            <td>{{bill.account.name}}</td>
+                            <td>{{bill.billDt | date:'dd-MMM-yy'}}</td>
+                            <td class="text-right">{{bill.billAmt | currency:''}}</td>
+                            <td class="text-right">{{bill.billBalance | currency:''}}</td>
+                            <td class="text-right">{{bill.dueDt | date:'dd-MMM-yy'}}</td>
+                            <td ng-if="bill.paid">{{bill.billPaidDt | date:'dd-MMM-yy'}}</td>
+                            <td ng-if="!bill.paid" class="td-actions">
+                              <span ng-click="$ctrl.showBillPay(bill.id)" class="btn btn-primary btn-xs">
                                 <i class="material-icons">payment</i>
-                              </button>
+                              </span>
                             </td>
                           </tr>
                           <tr>
-                            <td colspan="3">
+                            <td colspan="4">
                               <div class="stats">
                                 <button type="button" class="btn btn-simple btn-xs">
                                   <i class="material-icons">schedule</i>
@@ -62,11 +64,11 @@
                             </td>
                             <td>
                               <div class="stats">
-                                <button type="button" ng-disabled="!$ctrl.hasPrevPage()" ng-click="$ctrl.prevPage()" class="btn btn-primary btn-xs">
-                                  <i class="material-icons">skip_previous</i>
-                                </button>
-                                <button type="button" ng-disabled="!$ctrl.hasNextPage()" ng-click="$ctrl.nextPage()" class="btn btn-primary btn-xs">
+                                <button type="button" ng-disabled="!$ctrl.hasNextPage()" ng-click="$ctrl.nextPage()" class="btn btn-primary btn-xs pull-right">
                                   <i class="material-icons">skip_next</i>
+                                </button>
+                                <button type="button" ng-disabled="!$ctrl.hasPrevPage()" ng-click="$ctrl.prevPage()" class="btn btn-primary btn-xs pull-right">
+                                  <i class="material-icons">skip_previous</i>
                                 </button>
                               </div>
                             </td>

@@ -5,8 +5,8 @@
 
 	angular.module('dashboard.bills').factory('billsService', billsService);
 
-	billsService.$inject = ['etmenuService', 'ajaxService', 'CONSTANTS'];
-	function billsService(ms, aj, C) {
+	billsService.$inject = ['etmenuService', 'ajaxService', 'utilsService', 'CONSTANTS'];
+	function billsService(ms, aj, us, C) {
 		var data = {
 			showBills: false,
 			rows: [],
@@ -19,21 +19,12 @@
 		};
 		var rows = C.SIZES.BILLS_ROW;
 
-		var getIndexOf = function(id) {
-			var idx;
-			data.rows.forEach(function(row, i) {
-				if (row.id === id) {
-					idx = i;
-				}
-			});
-			return idx;
-		};
 		var loadDataForPage = function() {
 			var pg = data.currPageNo;
 			data.pgData.rows = data.rows.slice(pg * rows, (pg + 1) * rows);
 		};
 		var loadBill = function(dt) {
-			var idx = getIndexOf(dt.id);
+			var idx = us.getIndexOf(data.rows, dt.id);
 			data.rows[idx] = dt;
 			loadDataForPage();
 			data.loading = false;
@@ -62,7 +53,6 @@
 		};
 		return {
 			data: data,
-			getIndexOf: getIndexOf,
 			loadData: loadData,
 			loadDataForPage: loadDataForPage,
 			loadBillsForAcct: loadBillsForAcct,

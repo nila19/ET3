@@ -55,7 +55,6 @@
 			// If same bill is already selected, do nothing.
 			if (bs.data.filterBy !== id) {
 				bs.data.filterBy = id;
-				els.data.filterApplied = true;
 				ss.data.bill = {
 					id: id
 				};

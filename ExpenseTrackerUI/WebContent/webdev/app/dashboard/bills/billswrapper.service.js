@@ -5,10 +5,10 @@
 
 	angular.module('dashboard.bills').factory('billswrapperService', billswrapperService);
 
-	billswrapperService.$inject = ['billsService', 'billpayService'];
-	function billswrapperService(bs, bps) {
+	billswrapperService.$inject = ['billsService', 'billpayService', 'utilsService'];
+	function billswrapperService(bs, bps, us) {
 		var showBillPay = function(id) {
-			var bill = bs.data.rows[bs.getIndexOf(id)];
+			var bill = us.getObjectOf(bs.data.rows, id);
 			bps.loadData(bill);
 		};
 		return {

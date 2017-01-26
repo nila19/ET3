@@ -13,7 +13,7 @@ public class TransactionUI implements java.io.Serializable {
 	private static final long serialVersionUID = 1L;
 
 	private CityUI city = null;
-	private int transId = 0;
+	private int id = 0;
 	private CategoryUI category;
 	private String description = "";
 	private double amount;
@@ -41,7 +41,7 @@ public class TransactionUI implements java.io.Serializable {
 
 	public TransactionUI(Transaction t) {
 		city = new CityUI(t.getDataKey());
-		transId = t.getTransId();
+		id = t.getTransId();
 		description = t.getDescription();
 		amount = t.getAmount();
 		category = new CategoryUI(t.getCategory());
@@ -91,12 +91,12 @@ public class TransactionUI implements java.io.Serializable {
 		this.city = city;
 	}
 
-	public int getTransId() {
-		return transId;
+	public int getId() {
+		return id;
 	}
 
-	public void setTransId(int transId) {
-		this.transId = transId;
+	public void setId(int id) {
+		this.id = id;
 	}
 
 	public CategoryUI getCategory() {
@@ -137,7 +137,7 @@ public class TransactionUI implements java.io.Serializable {
 
 	public Date getDtTransDate() {
 		try {
-			return FU.date(FU.Date.ddMMMyy).parse(transDate);
+			return FU.date(FU.Date.ddMMMyyyy).parse(transDate);
 		} catch (ParseException e) {
 			e.printStackTrace();
 			return null;
@@ -145,7 +145,7 @@ public class TransactionUI implements java.io.Serializable {
 	}
 
 	public void setDtTransDate(Date dtTransDate) {
-		this.transDate = FU.date(FU.Date.ddMMMyy).format(dtTransDate);
+		this.transDate = FU.date(FU.Date.ddMMMyyyy).format(dtTransDate);
 	}
 
 	public AccountUI getFromAccount() {

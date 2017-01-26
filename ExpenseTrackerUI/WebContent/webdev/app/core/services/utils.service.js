@@ -7,21 +7,26 @@
 
 	utilsService.$inject = ['CONSTANTS'];
 	function utilsService(C) {
-		return {
-			getById: getById,
-			showMsg: showMsg,
-			show: show
-		};
-
-		function getById(arr, id) {
+		var getObjectOf = function(arr, id) {
 			var o = null;
-			arr.forEach(function(obj) {
-				if (obj.id === Number(id)) {
-					o = obj;
+			for (var i = 0; i < arr.length; i++) {
+				if (arr[i].id === Number(id)) {
+					o = arr[i];
+					break;
 				}
-			});
+			}
 			return o;
-		}
+		};
+		var getIndexOf = function(arr, id) {
+			var idx = null;
+			for (var i = 0; i < arr.length; i++) {
+				if (arr[i].id === Number(id)) {
+					idx = i;
+					break;
+				}
+			}
+			return idx;
+		};
 
 		// Popup message
 		function showMsg(action, t) {
@@ -43,6 +48,12 @@
 			});
 		}
 
+		return {
+			getObjectOf: getObjectOf,
+			getIndexOf: getIndexOf,
+			showMsg: showMsg,
+			show: show
+		};
 	}
 
 })(window.angular);

@@ -8,8 +8,9 @@
 		controller: ExplistController
 	});
 
-	ExplistController.$inject = ['explistwrapperService', 'explistService', 'CONSTANTS'];
-	function ExplistController(elws, els, C) {
+	ExplistController.$inject = ['explistwrapperService', 'explistService', 'editService',
+			'utilsService', 'CONSTANTS'];
+	function ExplistController(elws, els, es, us, C) {
 		var vm = this;
 		init();
 
@@ -22,6 +23,7 @@
 		vm.showDeleteExpense = showDeleteExpense;
 		vm.swapExpense = swapExpense;
 		vm.clearFilter = clearFilter;
+		vm.toggleThinList = toggleThinList;
 
 		// ***** Function declarations *****//
 		function init() {
@@ -38,31 +40,44 @@
 
 		function prevPage() {
 			els.data.currPageNo -= 1;
-			els.loadDataForPage();
+			els.loadCurrentPage();
 		}
 
 		function nextPage() {
 			els.data.currPageNo += 1;
-			els.loadDataForPage();
+			els.loadCurrentPage();
 		}
 
-		function showModifyExpense(transId) {
-			elws.editExpense(transId);
+		function showModifyExpense(id) {
+			editExpense(id);
 			$('#model_Modify').modal('show');
 		}
 
-		function showDeleteExpense(transId) {
-			elws.editExpense(transId);
+		function showDeleteExpense(id) {
+			editExpense(id);
 			$('#model_Delete').modal('show');
 		}
 
-		function swapExpense(transId, diff) {
-			var idx = els.getIndexOf(transId);
+		function editExpense(id) {
+			// No need to fetch from DB. Fetch from local, clone & show in popup.
+			var trans = jQuery.extend({}, us.getObjectOf(els.data.rows, id));
+			es.loadData(trans);
+		}
+
+		function swapExpense(id, diff) {
+			var idx = us.getIndexOf(els.data.rows, id);
 			elws.swapExpense(idx, idx + diff);
 		}
 
 		function clearFilter() {
 			elws.clearFilter();
+		}
+
+		function toggleThinList() {
+			if (els.data.thinListToggle) {
+				els.data.thinList = !els.data.thinList;
+				elws.reloadExpenses();
+			}
 		}
 	}
 })(window.angular);

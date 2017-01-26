@@ -23,13 +23,14 @@
 			this.data.bill = dt;
 			initForm();
 		};
-		var loadPayBill = function() {
+		var loadPayBill = function(dt) {
 			us.showMsg('Bill Pay', 'success');
 			bs.refreshBill(data.bill.id);
+			// Add the newly added Expense to the top of the Expenselist..
+			elws.addItem(dt.id);
 
 			acs.refreshAccount(data.bill.account.id);
 			acs.refreshAccount(data.account.id);
-			elws.reloadExpenses();
 		};
 		var payBill = function() {
 			data.city = ms.data.menu.city;

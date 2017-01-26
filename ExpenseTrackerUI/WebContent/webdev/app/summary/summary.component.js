@@ -39,7 +39,9 @@
 		}
 
 		function listExpenses(cat, mIdx) {
-			ss.data.category.id = cat;
+			ss.data.category = {
+				id: cat
+			};
 			ss.data.expMonth = vm.data.header[mIdx].mth;
 			$location.path('/search/Y');
 		}

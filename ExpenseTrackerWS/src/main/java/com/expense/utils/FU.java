@@ -6,9 +6,8 @@ import java.text.SimpleDateFormat;
 
 public class FU {
 	public enum Date {
-		ddMMMyyyyhhmmssa("dd-MMM-yyyy hh:mm:ss a"), ddMMMyyhhmma("dd-MMM-yy hh:mm a"), ddMMM("dd-MMM"), yyyyMMdd(
-				"yyyy-MM-dd"), yyyyMM("yyyyMM"), yyyy("yyyy"), ddMMMyy("dd-MMM-yy"), MMMyy("MMM-yy"), MMMyyyy(
-						"MMM-yyyy"), yyyyMMddHHmmss("yyyy-MM-dd HH:mm:ss"), yyyyMMMdd("yyyy-MMM-dd");
+		yyyyMMdd("yyyy-MM-dd"), yyyyMM("yyyyMM"), yyyy("yyyy"), ddMMMyyyy("dd-MMM-yyyy"), 
+		MMMyy("MMM-yy"), yyyyMMddHHmmss("yyyy-MM-dd HH:mm:ss"), yyyyMMMdd("yyyy-MMM-dd");
 		public String format;
 
 		private Date(String format) {
@@ -17,7 +16,7 @@ public class FU {
 	}
 
 	public enum Number {
-		AMOUNT("#,##0.00"), NOCOMMA("###0.00"), N0000("0000");
+		AMOUNT("#,##0.00"), NOCOMMA("###0.00");
 		public String format;
 
 		private Number(String format) {

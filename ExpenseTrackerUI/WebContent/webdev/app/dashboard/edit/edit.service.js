@@ -5,9 +5,9 @@
 
 	angular.module('dashboard.edit').factory('editService', editService);
 
-	editService.$inject = ['etmenuService', 'explistService', 'ajaxService', 'utilsService',
+	editService.$inject = ['etmenuService', 'explistwrapperService', 'ajaxService', 'utilsService',
 			'VALUES', 'CONSTANTS'];
-	function editService(ms, els, aj, us, V, C) {
+	function editService(ms, elws, aj, us, V, C) {
 		var data = {
 			expense: {},
 			loading: false
@@ -34,10 +34,11 @@
 		// Modify Expense
 		var loadModifyData = function() {
 			data.loading = false;
+			elws.modifyItem(data.expense.id);
 			us.showMsg('Modify Expense', 'success');
 			$('#model_Modify').modal('hide');
 		};
-		var saveExpense = function() {
+		var modifyExpense = function() {
 			aj.post('/entry/modify', this.data.expense, loadModifyData);
 			this.data.loading = true;
 		};
@@ -45,12 +46,12 @@
 		// Delete Expense
 		var loadDeleteData = function() {
 			data.loading = false;
-			els.reloadListAfterDelete(data.expense.transId);
+			elws.deleteItem(data.expense.id);
 			us.showMsg('Delete Expense', 'success');
 			$('#model_Delete').modal('hide');
 		};
 		var deleteExpense = function() {
-			aj.post('/entry/delete/' + ms.data.menu.city.id + '/' + this.data.expense.transId, {},
+			aj.post('/entry/delete/' + ms.data.menu.city.id + '/' + this.data.expense.id, {},
 					loadDeleteData);
 			this.data.loading = true;
 		};
@@ -58,7 +59,7 @@
 		return {
 			data: data,
 			loadData: loadData,
-			saveExpense: saveExpense,
+			modifyExpense: modifyExpense,
 			deleteExpense: deleteExpense,
 			loadBills: loadBills
 		};

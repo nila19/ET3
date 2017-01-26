@@ -5,8 +5,8 @@
 
 	angular.module('dashboard.explist').factory('explistService', explistService);
 
-	explistService.$inject = ['CONSTANTS'];
-	function explistService(C) {
+	explistService.$inject = ['utilsService', 'CONSTANTS'];
+	function explistService(us, C) {
 		var data = {
 			pgData: {
 				rows: []
@@ -17,6 +17,7 @@
 			loading: false,
 			filterApplied: false,
 			thinList: true,
+			thinListToggle: false,
 			total: 0,
 			rows: []
 		};
@@ -28,41 +29,45 @@
 			});
 			data.total = tot;
 		};
-		var loadData = function(data) {
-			this.data.rows = data;
-
-			this.data.maxPageNo = Math.ceil(this.data.rows.length / this.data.rowCount) - 1;
-			this.data.currPageNo = 0;
-			this.loadDataForPage();
-			calTotal();
-			this.data.loading = false;
-		};
-		var loadDataForPage = function() {
+		var loadCurrentPage = function() {
 			var pg = data.currPageNo;
 			data.pgData.rows = data.rows.slice(pg * data.rowCount, (pg + 1) * data.rowCount);
 		};
-		var getIndexOf = function(transId) {
-			var idx;
-			data.rows.forEach(function(row, i) {
-				if (row.transId === transId) {
-					idx = i;
-				}
-			});
-			return idx;
+		var paginate = function() {
+			data.maxPageNo = Math.ceil(data.rows.length / data.rowCount) - 1;
+			calTotal();
+			loadCurrentPage();
+		};
+		var loadData = function(data) {
+			this.data.rows = data;
+			this.data.currPageNo = 0;
+			this.data.loading = false;
+
+			paginate();
 		};
 
-		var reloadListAfterDelete = function(transId) {
-			var idx = getIndexOf(transId);
-			data.rows.splice(idx, 1);
-			loadDataForPage();
+		var addItem = function(item) {
+			data.rows.unshift(item);
+			paginate();
+		};
+		var modifyItem = function(item) {
+			var idx = us.getIndexOf(data.rows, item.id);
+			data.rows[idx] = item;
+			paginate();
+		};
+		var deleteItem = function(id) {
+			data.rows.splice(us.getIndexOf(data.rows, id), 1);
+			paginate();
 		};
 
 		return {
 			data: data,
 			loadData: loadData,
-			loadDataForPage: loadDataForPage,
-			getIndexOf: getIndexOf,
-			reloadListAfterDelete: reloadListAfterDelete,
+			paginate: paginate,
+			loadCurrentPage: loadCurrentPage,
+			addItem: addItem,
+			modifyItem: modifyItem,
+			deleteItem: deleteItem
 		};
 	}
 

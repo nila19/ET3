@@ -12,14 +12,15 @@
 		};
 
 		var initializeData = function() {
-			data.category = '';
-			data.description = '';
-			data.amount = '';
-			data.account = '';
-			data.transMonth = '';
-			data.entryMonth = '';
-			data.adjustInd = '';
-			data.adhocInd = '';
+			data.category = null;
+			data.description = null;
+			data.amount = null;
+			data.account = null;
+			data.bill = null;
+			data.transMonth = null;
+			data.entryMonth = null;
+			data.adjustInd = null;
+			data.adhocInd = null;
 			data.thinList = true;
 		};
 		var addProp = function(input, ip, dp) {
@@ -57,9 +58,11 @@
 			els.data.thinList = data.thinList;
 		};
 		var doSearch = function() {
-			var input = buildSearchInput();
-			console.log('Search :: ' + JSON.stringify(input));
 			els.data.loading = true;
+			var input = buildSearchInput();
+
+			// If at least one criteria (excluding city, thinList), set 'Filter applied' flag.
+			els.data.filterApplied = (Object.keys(input).length > 2) ? true : false;
 
 			aj.query('/search/go', input, loadResults);
 		};

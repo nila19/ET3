@@ -10,6 +10,7 @@
 			categories: [],
 			descriptions: [],
 			accounts: [],
+			allAccounts: [],
 			transMonths: [],
 			entryMonths: [],
 			bills: []
