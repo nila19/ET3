@@ -13,10 +13,15 @@ public class CategoryUI implements java.io.Serializable, Comparable<CategoryUI> 
 	private String name = "";
 	private String mainCategory = new String("");
 	private String subCategory = new String("");
+	private String imageCode;
 	private char status;
 	private Short displayOrder;
 
 	public CategoryUI() {
+	}
+
+	public CategoryUI(int id) {
+		this.id = id;
 	}
 
 	public CategoryUI(Category cat) {
@@ -24,6 +29,7 @@ public class CategoryUI implements java.io.Serializable, Comparable<CategoryUI> 
 		name = cat.getMainCategory() + SEP + cat.getSubCategory();
 		mainCategory = cat.getMainCategory();
 		subCategory = cat.getSubCategory();
+		imageCode = cat.getImageCode();
 		status = cat.getStatus();
 		displayOrder = cat.getDisplayOrder();
 	}
@@ -58,12 +64,24 @@ public class CategoryUI implements java.io.Serializable, Comparable<CategoryUI> 
 		this.subCategory = subCategory;
 	}
 
+	public String getImageCode() {
+		return imageCode;
+	}
+
+	public void setImageCode(String imageCode) {
+		this.imageCode = imageCode;
+	}
+
 	public char getStatus() {
 		return status;
 	}
 
 	public void setStatus(char status) {
 		this.status = status;
+	}
+
+	public boolean isActive() {
+		return (this.status == Category.Status.ACTIVE.status);
 	}
 
 	public Short getDisplayOrder() {

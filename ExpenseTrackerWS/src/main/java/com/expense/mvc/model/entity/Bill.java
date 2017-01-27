@@ -218,43 +218,43 @@ public class Bill extends com.expense.mvc.model.BaseEntity implements java.io.Se
 
 	public Date getCreatedDt() {
 		try {
-			return FU.date(FU.Date.yyyyMMddHHmmss).parse(strCreatedDt);
+			return FU.df(FU.DATE.yyyyMMddHHmmss).parse(strCreatedDt);
 		} catch (Exception e) {
 			return new Date(0);
 		}
 	}
 
 	public void setCreatedDt(Date createdDt) {
-		strCreatedDt = FU.date(FU.Date.yyyyMMddHHmmss).format(createdDt);
+		strCreatedDt = FU.df(FU.DATE.yyyyMMddHHmmss).format(createdDt);
 	}
 
 	public Date getBillDt() {
 		try {
-			return FU.date(FU.Date.yyyyMMdd).parse(strBillDt);
+			return FU.df(FU.DATE.yyyyMMdd).parse(strBillDt);
 		} catch (Exception e) {
 			return new Date(0);
 		}
 	}
 
 	public void setBillDt(Date billDt) {
-		strBillDt = FU.date(FU.Date.yyyyMMdd).format(billDt);
+		strBillDt = FU.df(FU.DATE.yyyyMMdd).format(billDt);
 	}
 
 	public Date getDueDt() {
 		try {
-			return FU.date(FU.Date.yyyyMMdd).parse(strDueDt);
+			return FU.df(FU.DATE.yyyyMMdd).parse(strDueDt);
 		} catch (Exception e) {
 			return new Date(0);
 		}
 	}
 
 	public void setDueDt(Date dueDt) {
-		strDueDt = FU.date(FU.Date.yyyyMMdd).format(dueDt);
+		strDueDt = FU.df(FU.DATE.yyyyMMdd).format(dueDt);
 	}
 
 	public Date getBillPaidDt() {
 		try {
-			return FU.date(FU.Date.yyyyMMdd).parse(strBillPaidDt);
+			return FU.df(FU.DATE.yyyyMMdd).parse(strBillPaidDt);
 		} catch (Exception e) {
 			return new Date(0);
 		}
@@ -262,7 +262,7 @@ public class Bill extends com.expense.mvc.model.BaseEntity implements java.io.Se
 
 	public void setBillPaidDt(Date billPaidDt) {
 		if (billPaidDt != null) {
-			strBillPaidDt = FU.date(FU.Date.yyyyMMdd).format(billPaidDt);
+			strBillPaidDt = FU.df(FU.DATE.yyyyMMdd).format(billPaidDt);
 		}
 	}
 

@@ -21,7 +21,6 @@ import com.expense.mvc.model.entity.TallyHistory;
 import com.expense.mvc.model.entity.Transaction;
 import com.expense.mvc.model.ui.TransactionUI;
 import com.expense.utils.FU;
-import com.expense.utils.Props;
 
 @Service
 public class TallyService {
@@ -47,7 +46,7 @@ public class TallyService {
 
 	@Transactional(propagation = Propagation.REQUIRED)
 	public void tallyAccount(int accountId) {
-		DecimalFormat df = FU.number(FU.Number.NOCOMMA);
+		DecimalFormat df = FU.nf(FU.NUMBER.NOCOMMA);
 
 		Date dt = new Date();
 		Account ac = accountDAO.findById(accountId);
@@ -81,7 +80,7 @@ public class TallyService {
 	public List<TransactionUI> getTransactions(int accountId, boolean pending, int billId, int dataKey) {
 		List<Transaction> trans = transactionDAO.findByAccount(dataKey, accountId, pending, billId);
 
-		int LIST_EXPENSES_LIMIT = Integer.valueOf(Props.expense.getString("LIST.EXPENSES.LIMIT"));
+		int LIST_EXPENSES_LIMIT = Integer.valueOf(FU.expense.getString("LIST.EXPENSES.LIMIT"));
 		int i = 0;
 
 		List<TransactionUI> uis = new ArrayList<TransactionUI>();
@@ -111,9 +110,9 @@ public class TallyService {
 			}
 		}
 
-		map.put(Portfolio.CREDITS.type, FU.number(FU.Number.AMOUNT).format(credits));
-		map.put(Portfolio.DEBITS.type, FU.number(FU.Number.AMOUNT).format(debits));
-		map.put(Portfolio.BALANCES.type, FU.number(FU.Number.AMOUNT).format(credits - debits));
+		map.put(Portfolio.CREDITS.type, FU.nf(FU.NUMBER.AMOUNT).format(credits));
+		map.put(Portfolio.DEBITS.type, FU.nf(FU.NUMBER.AMOUNT).format(debits));
+		map.put(Portfolio.BALANCES.type, FU.nf(FU.NUMBER.AMOUNT).format(credits - debits));
 		return map;
 	}
 }

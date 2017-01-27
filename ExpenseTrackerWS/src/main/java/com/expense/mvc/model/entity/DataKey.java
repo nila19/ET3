@@ -131,26 +131,26 @@ public class DataKey extends com.expense.mvc.model.BaseEntity implements java.io
 
 	public Date getStartDt() {
 		try {
-			return FU.date(FU.Date.yyyyMMdd).parse(strStartDt);
+			return FU.df(FU.DATE.yyyyMMdd).parse(strStartDt);
 		} catch (Exception e) {
 			return null;
 		}
 	}
 
 	public void setStartDt(Date startDt) {
-		strStartDt = FU.date(FU.Date.yyyyMMdd).format(startDt);
+		strStartDt = FU.df(FU.DATE.yyyyMMdd).format(startDt);
 	}
 
 	public Date getEndDt() {
 		try {
-			return FU.date(FU.Date.yyyyMMdd).parse(strEndDt);
+			return FU.df(FU.DATE.yyyyMMdd).parse(strEndDt);
 		} catch (Exception e) {
 			return null;
 		}
 	}
 
 	public void setEndDt(Date endDt) {
-		strEndDt = FU.date(FU.Date.yyyyMMdd).format(endDt);
+		strEndDt = FU.df(FU.DATE.yyyyMMdd).format(endDt);
 	}
 
 	@Override

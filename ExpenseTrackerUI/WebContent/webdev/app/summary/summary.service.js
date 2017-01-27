@@ -5,226 +5,58 @@
 
 	angular.module('summary').factory('summaryService', summaryService);
 
-	summaryService.$inject = ['etmenuService', 'CONSTANTS'];
-	function summaryService(ms, C) {
+	summaryService.$inject = ['etmenuService', 'ajaxService', 'CONSTANTS'];
+	function summaryService(ms, aj, C) {
 		var data = {
-			header: [],
-			header2: [],
+			months: [],
+			totalrow: {},
 			rows: [],
-			maxPageNo: 0,
 			pgData: {},
+			maxPageNo: 0,
 			currPageNo: 0,
-			adhoc: false,
-			regular: false,
-			forecast: false
-		};
-		var cols = C.SIZES.SUMMARY_COL;
-
-		var dummyData = function() {
-			return {
-				header: [{
-					mth: 'JAN-17',
-					aggr: false
-				}, {
-					mth: '2016',
-					aggr: true
-				}, {
-					mth: 'DEC-16',
-					aggr: false
-				}, {
-					mth: 'NOV-16',
-					aggr: false
-				}, {
-					mth: 'OCT-16',
-					aggr: false
-				}, {
-					mth: 'SEP-16',
-					aggr: false
-				}, {
-					mth: 'AUG-16',
-					aggr: false
-				}, {
-					mth: 'JUL-16',
-					aggr: false
-				}, {
-					mth: 'JUN-16',
-					aggr: false
-				}, {
-					mth: 'MAY-16',
-					aggr: false
-				}, {
-					mth: 'APR-16',
-					aggr: false
-				}, {
-					mth: 'MAR-16',
-					aggr: false
-				}, {
-					mth: 'FEB-16',
-					aggr: false
-				}, {
-					mth: 'JAN-16',
-					aggr: false
-				}, {
-					mth: '2015',
-					aggr: true
-				}, {
-					mth: 'DEC-15',
-					aggr: false
-				}, {
-					mth: 'NOV-15',
-					aggr: false
-				}, {
-					mth: 'OCT-15',
-					aggr: false
-				}],
-				header2: [1000.91, 12000.90, 1000.92, 1000.91, 1000.90, 1000.99, 1000.98, 1000.97,
-						1000.96, 1000.95, 1000.92, 1000.91, 1000.90, 1000.99, 1000.98, 1000.97,
-						1000.96, 1000.95],
-				rows: [
-						{
-							cat: {
-								id: 175,
-								name: 'Food ~ Kroger Groceries',
-								main: 'Food',
-								sub: 'Kroger Groceries',
-								icon: 'local_mall'
-							},
-							cols: [100.91, 1200.90, 100.99, 100.99, 100.99, 100.99, 100.98, 100.97,
-									100.96, 100.95, 100.92, 100.91, 100.90, 100.99, 100.98, 100.97,
-									100.96, 100.95]
-						},
-						{
-							cat: {
-								id: 179,
-								name: 'Transport ~ Car Gas',
-								main: 'Transport',
-								sub: 'Car Gas',
-								icon: 'local_gas_station'
-							},
-							cols: [100.91, 1200.90, 100.92, 100.91, 100.90, 100.99, 100.98, 100.97,
-									100.96, 100.95, 100.92, 100.91, 100.90, 100.99, 100.98, 100.97,
-									100.96, 100.95]
-						},
-						{
-							cat: {
-								id: 175,
-								name: 'Food ~ Kroger Groceries',
-								main: 'Food',
-								sub: 'Kroger Groceries',
-								icon: 'local_mall'
-							},
-							cols: [100.91, 1200.90, 100.92, 100.91, 100.90, 100.99, 100.98, 100.97,
-									100.96, 100.95, 100.92, 100.91, 100.90, 100.99, 100.98, 100.97,
-									100.96, 100.95]
-						},
-						{
-							cat: {
-								id: 179,
-								name: 'Transport ~ Car Gas',
-								main: 'Transport',
-								sub: 'Car Gas',
-								icon: 'local_gas_station'
-							},
-							cols: [100.91, 1200.90, 100.92, 100.91, 100.90, 100.99, 100.98, 100.97,
-									100.96, 100.95, 100.92, 100.91, 100.90, 100.99, 100.98, 100.97,
-									100.96, 100.95]
-						},
-						{
-							cat: {
-								id: 175,
-								name: 'Food ~ Kroger Groceries',
-								main: 'Food',
-								sub: 'Kroger Groceries',
-								icon: 'local_mall'
-							},
-							cols: [100.91, 1200.90, 100.92, 100.91, 100.90, 100.99, 100.98, 100.97,
-									100.96, 100.95, 100.92, 100.91, 100.90, 100.99, 100.98, 100.97,
-									100.96, 100.95]
-						},
-						{
-							cat: {
-								id: 179,
-								name: 'Transport ~ Car Gas',
-								main: 'Transport',
-								sub: 'Car Gas',
-								icon: 'local_gas_station'
-							},
-							cols: [100.91, 1200.90, 100.92, 100.91, 100.90, 100.99, 100.98, 100.97,
-									100.96, 100.95, 100.92, 100.91, 100.90, 100.99, 100.98, 100.97,
-									100.96, 100.95]
-						},
-						{
-							cat: {
-								id: 175,
-								name: 'Food ~ Kroger Groceries',
-								main: 'Food',
-								sub: 'Kroger Groceries',
-								icon: 'local_mall'
-							},
-							cols: [100.91, 1200.90, 100.92, 100.91, 100.90, 100.99, 100.98, 100.97,
-									100.96, 100.95, 100.92, 100.91, 100.90, 100.99, 100.98, 100.97,
-									100.96, 100.95]
-						},
-						{
-							cat: {
-								id: 179,
-								name: 'Transport ~ Car Gas',
-								main: 'Transport',
-								sub: 'Car Gas',
-								icon: 'local_gas_station'
-							},
-							cols: [100.91, 1200.90, 100.92, 100.91, 100.90, 100.99, 100.98, 100.97,
-									100.96, 100.95, 100.92, 100.91, 100.90, 100.99, 100.98, 100.97,
-									100.96, 100.95]
-						},
-						{
-							cat: {
-								id: 170,
-								name: 'House ~ Rent',
-								main: 'House',
-								sub: 'Rent',
-								icon: 'home'
-							},
-							cols: [100.91, 1200.90, 100.92, 100.91, 100.90, 100.99, 100.98, 100.97,
-									100.96, 100.95, 100.92, 100.91, 100.90, 100.99, 100.98, 100.97,
-									100.96, 100.95]
-						}]
-			};
+			columns: 0,
+			input: {
+				city: 0,
+				forecast: false,
+				adhoc: true,
+				regular: true
+			}
 		};
 
-		var loadSummary = function() {
-			console.log('Loading Summary @ vDB :: ' + ms.data.menu.city.name + ', ' +
-					this.data.adhoc + ', ' + this.data.regular + ', ' + this.data.forecast);
-			this.loadData(dummyData());
-		};
-		var loadData = function(data) {
-			this.data.header = data.header;
-			this.data.header2 = data.header2;
-			this.data.rows = data.rows;
-			this.data.maxPageNo = Math.ceil(this.data.header.length / cols) - 1;
-			this.data.currPageNo = 0;
-			this.loadDataForPage();
-		};
-		var loadDataForPage = function() {
-			var pageno = this.data.currPageNo;
-			this.data.pgData.header = this.data.header.slice(pageno * cols, (pageno + 1) * cols);
-			this.data.pgData.header2 = this.data.header2.slice(pageno * cols, (pageno + 1) * cols);
+		var loadCurrentPage = function() {
+			var pg = data.currPageNo;
+			var cols = data.columns;
+			data.pgData.months = data.months.slice(pg * cols, (pg + 1) * cols);
+			data.pgData.totalrow = data.totalrow.amount.slice(pg * cols, (pg + 1) * cols);
 
 			var pgRows = [];
-			this.data.rows.forEach(function(row) {
+			data.rows.forEach(function(row) {
 				var pgRow = {};
-				pgRow.cat = row.cat;
-				pgRow.cols = row.cols.slice(pageno * cols, (pageno + 1) * cols);
+				pgRow.category = row.category;
+				pgRow.amount = row.amount.slice(pg * cols, (pg + 1) * cols);
+				pgRow.count = row.count.slice(pg * cols, (pg + 1) * cols);
 				pgRows.push(pgRow);
 			});
-			this.data.pgData.rows = pgRows;
+			data.pgData.rows = pgRows;
+		};
+		var loadData = function(dt) {
+			data.totalrow = dt.splice(0, 1)[0];
+			data.rows = dt;
+			data.maxPageNo = Math.ceil(data.months.length / data.columns) - 1;
+			data.currPageNo = 0;
+			loadCurrentPage();
+			ms.data.loading = false;
+		};
+		var loadSummary = function() {
+			ms.data.loading = true;
+			data.input.city = ms.data.menu.city.id;
+			aj.query('/summary/go', data.input, loadData);
 		};
 
 		return {
 			data: data,
 			loadSummary: loadSummary,
-			loadData: loadData,
-			loadDataForPage: loadDataForPage
+			loadCurrentPage: loadCurrentPage
 		};
 	}
 

@@ -13,7 +13,9 @@ public class SearchUI implements java.io.Serializable {
 	private String description = "";
 	private double amount;
 	private long transMonth;
+	private boolean transMonthAggr;
 	private long entryMonth;
+	private boolean entryMonthAggr;
 	private Date dtTransMonth;
 	private Date dtEntryMonth;
 	private int accountId;
@@ -61,6 +63,15 @@ public class SearchUI implements java.io.Serializable {
 	public void setTransMonth(long transMonth) {
 		this.transMonth = transMonth;
 		this.dtTransMonth = new Date(this.transMonth);
+		System.out.println(this.dtTransMonth);
+	}
+
+	public boolean isTransMonthAggr() {
+		return transMonthAggr;
+	}
+
+	public void setTransMonthAggr(boolean transMonthAggr) {
+		this.transMonthAggr = transMonthAggr;
 	}
 
 	public long getEntryMonth() {
@@ -70,6 +81,14 @@ public class SearchUI implements java.io.Serializable {
 	public void setEntryMonth(long entryMonth) {
 		this.entryMonth = entryMonth;
 		this.dtEntryMonth = new Date(this.entryMonth);
+	}
+
+	public boolean isEntryMonthAggr() {
+		return entryMonthAggr;
+	}
+
+	public void setEntryMonthAggr(boolean entryMonthAggr) {
+		this.entryMonthAggr = entryMonthAggr;
 	}
 
 	public Date getDtTransMonth() {

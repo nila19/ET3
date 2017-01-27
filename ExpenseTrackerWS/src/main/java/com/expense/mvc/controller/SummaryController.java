@@ -1,6 +1,8 @@
 package com.expense.mvc.controller;
 
-import org.apache.commons.lang3.BooleanUtils;
+import java.text.ParseException;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -8,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.expense.mvc.model.ui.SummaryUI;
 import com.expense.mvc.service.SummaryService;
 
 @RestController
@@ -19,12 +22,8 @@ public class SummaryController {
 	private SummaryService summaryService;
 
 	@RequestMapping(value = "/go", method = RequestMethod.GET)
-	public String summary(@RequestParam int city, @RequestParam String forecast, @RequestParam char adhoc) {
-		boolean fc = BooleanUtils.toBoolean(forecast);
-
-		// FIXME fix this.
-		summaryService.getSummary(adhoc, fc, city);
-
-		return "All OK";
+	public List<SummaryUI> summary(@RequestParam int city, @RequestParam boolean regular, @RequestParam boolean adhoc,
+			@RequestParam boolean forecast) throws ParseException {
+		return summaryService.getSummary(city, regular, adhoc, forecast);
 	}
 }

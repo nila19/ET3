@@ -29,8 +29,10 @@
 			// If menu is not loaded, load the default city from V.
 			ms.checkInit();
 
-			ss.initializeData();
-			isDrillDown();
+			// Don't initialize if sent from Summary page.
+			if (!$routeParams.drill) {
+				ss.initializeData();
+			}
 			initSearch();
 		}
 
@@ -41,17 +43,6 @@
 				}, 500);
 			} else {
 				ss.doSearch();
-			}
-		}
-
-		// Check if sent from Summary page.
-		function isDrillDown() {
-			if ($routeParams.drill && $routeParams.drill === 'Y') {
-				var category = us.getObjectOf(V.data.categories, ss.data.category.id);
-				if (category) {
-					ss.data.category = category;
-				}
-				console.log('Drill down :: ' + ss.data.category.id + ' , ' + ss.data.expMonth);
 			}
 		}
 

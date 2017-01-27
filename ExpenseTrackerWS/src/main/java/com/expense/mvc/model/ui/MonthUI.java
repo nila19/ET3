@@ -17,22 +17,21 @@ public class MonthUI implements java.io.Serializable, Comparable<MonthUI> {
 	public MonthUI() {
 	}
 
-	public MonthUI(Date transMonth) {
-		this(transMonth, false);
+	public MonthUI(Date id) {
+		this(id, false);
 	}
 
 	public MonthUI(Date id, boolean aggregate) {
 		this.id = id;
-		this.setAggregate(aggregate);
-		this.name = FU.date(FU.Date.MMMyy).format(id);
+		this.aggregate = aggregate;
 
-		// If year, transMonth will have 01 as month. Make it 13, so it gets
-		// sorted ahead of all
-		// months in desc order.
-		if (this.isAggregate()) {
-			this.seq = (Integer.valueOf(FU.date(FU.Date.yyyy).format(id)) * 100) + 13;
+		// If year, make the month 13, so it gets sorted ahead of all months in desc order.
+		if (aggregate) {
+			this.name = FU.df(FU.DATE.yyyy).format(id);
+			this.seq = (Integer.valueOf(FU.df(FU.DATE.yyyy).format(id)) * 100) + 13;
 		} else {
-			this.seq = Integer.valueOf(FU.date(FU.Date.yyyyMM).format(id));
+			this.name = FU.df(FU.DATE.MMMyy).format(id);
+			this.seq = Integer.valueOf(FU.df(FU.DATE.yyyyMM).format(id));
 		}
 	}
 

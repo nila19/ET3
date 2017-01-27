@@ -71,10 +71,22 @@ public class TransactionDAO extends BaseDAO<Transaction, Integer> {
 		parms.put("amount_75", ui.getAmount() * TransactionDAO.PCT_75);
 		parms.put("amount_125", ui.getAmount() * TransactionDAO.PCT_125);
 		if (ui.getDtEntryMonth() != null) {
-			parms.put("entryMonth", FU.date(FU.Date.yyyyMMdd).format(ui.getDtEntryMonth()));
+			if (ui.isEntryMonthAggr()) {
+				Date dt = ui.getDtEntryMonth();
+				parms.put("entryYearBegin", FU.df(FU.DATE.yyyyMMdd).format(FU.getYearBegin(dt).getTime()));
+				parms.put("entryYearEnd", FU.df(FU.DATE.yyyyMMdd).format(FU.getYearEnd(dt).getTime()));
+			} else {
+				parms.put("entryMonth", FU.df(FU.DATE.yyyyMMdd).format(ui.getDtEntryMonth()));
+			}
 		}
 		if (ui.getDtTransMonth() != null) {
-			parms.put("transMonth", FU.date(FU.Date.yyyyMMdd).format(ui.getDtTransMonth()));
+			if (ui.isTransMonthAggr()) {
+				Date dt = ui.getDtTransMonth();
+				parms.put("transYearBegin", FU.df(FU.DATE.yyyyMMdd).format(FU.getYearBegin(dt).getTime()));
+				parms.put("transYearEnd", FU.df(FU.DATE.yyyyMMdd).format(FU.getYearEnd(dt).getTime()));
+			} else {
+				parms.put("transMonth", FU.df(FU.DATE.yyyyMMdd).format(ui.getDtTransMonth()));
+			}
 		}
 		parms.put("adhocInd", ui.getAdhocInd());
 		parms.put("adjustInd", ui.getAdjustInd());
@@ -96,10 +108,18 @@ public class TransactionDAO extends BaseDAO<Transaction, Integer> {
 			query += " and (amount between :amount_75 and :amount_125)";
 		}
 		if (ui.getDtEntryMonth() != null) {
-			query += " and strEntryMonth = :entryMonth";
+			if (ui.isEntryMonthAggr()) {
+				query += " and strEntryMonth between :entryYearBegin and :entryYearEnd";
+			} else {
+				query += " and strEntryMonth = :entryMonth";
+			}
 		}
 		if (ui.getDtTransMonth() != null) {
-			query += " and strTransMonth = :transMonth";
+			if (ui.isTransMonthAggr()) {
+				query += " and strTransMonth between :transYearBegin and :transYearEnd";
+			} else {
+				query += " and strTransMonth = :transMonth";
+			}
 		}
 		if (ui.getAdhocInd() == Transaction.Adhoc.YES.type || ui.getAdhocInd() == Transaction.Adhoc.NO.type) {
 			query += " and adhocInd = :adhocInd";
@@ -112,14 +132,14 @@ public class TransactionDAO extends BaseDAO<Transaction, Integer> {
 		return ui.isThinList() ? findByParametersThin(query, parms) : findByParameters(query, parms);
 	}
 
-	public List<Transaction> findForMonthlySummary(int dataKey, char adhoc) {
+	public List<Transaction> findForMonthlySummary(int dataKey, boolean regular, boolean adhoc) {
 		HashMap<String, Object> parms = new HashMap<String, Object>();
 		parms.put("dataKey", dataKey);
 		parms.put("adjustInd", Transaction.Adjust.NO.type);
-		parms.put("adhocInd", adhoc);
+		parms.put("adhocInd", (regular && !adhoc) ? 'N' : (adhoc && !regular) ? 'Y' : ' ');
 
 		String query = "from Transaction where dataKey = :dataKey and adjustInd = :adjustInd";
-		if (adhoc == Transaction.Adhoc.YES.type || adhoc == Transaction.Adhoc.NO.type) {
+		if (!(regular && adhoc)) {
 			query += " and adhocInd = :adhocInd";
 		}
 		query += " order by transSeq desc";
@@ -134,8 +154,8 @@ public class TransactionDAO extends BaseDAO<Transaction, Integer> {
 		parms.put("adhocInd", Transaction.Adhoc.NO.type);
 		// Get Transactions for the last 3 months excluding the current month.
 		Date curr_month = DateUtils.truncate(new Date(), Calendar.MONTH);
-		parms.put("beginMon", FU.date(FU.Date.yyyyMMdd).format(DateUtils.addMonths(curr_month, -3)));
-		parms.put("endMon", FU.date(FU.Date.yyyyMMdd).format(DateUtils.addMonths(curr_month, -1)));
+		parms.put("beginMon", FU.df(FU.DATE.yyyyMMdd).format(DateUtils.addMonths(curr_month, -3)));
+		parms.put("endMon", FU.df(FU.DATE.yyyyMMdd).format(DateUtils.addMonths(curr_month, -1)));
 
 		String query = "from Transaction where dataKey = :dataKey and adjustInd = :adjustInd and adhocInd = :adhocInd and strTransMonth between :beginMon and :endMon";
 		return findByParameters(query, parms);

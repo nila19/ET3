@@ -59,6 +59,6 @@
         "md": false,
         "Chartist": false,
         "appUtils": false,
-        "toastr": false
+        "jQuery": false
     }
 }

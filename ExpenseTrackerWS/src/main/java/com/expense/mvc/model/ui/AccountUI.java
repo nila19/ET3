@@ -10,7 +10,6 @@ import com.expense.mvc.model.entity.Account;
 import com.expense.mvc.model.entity.Bill;
 import com.expense.mvc.model.entity.Transaction;
 import com.expense.utils.FU;
-import com.expense.utils.Props;
 
 public class AccountUI implements java.io.Serializable {
 	private static final long serialVersionUID = 1L;
@@ -94,7 +93,7 @@ public class AccountUI implements java.io.Serializable {
 			billDue = true;
 
 			Date dueDt = lastBill.getDueDt();
-			int DUE_DATE_WARNING = Integer.valueOf(Props.expense.getString("DUE.DATE.WARNING"));
+			int DUE_DATE_WARNING = Integer.valueOf(FU.expense.getString("DUE.DATE.WARNING"));
 			Date now = Calendar.getInstance().getTime();
 			now = DateUtils.addDays(now, DUE_DATE_WARNING);
 			if (DateUtils.truncatedCompareTo(dueDt, now, Calendar.DATE) <= 0) {
@@ -145,7 +144,7 @@ public class AccountUI implements java.io.Serializable {
 	}
 
 	public double getBalanceAmt() {
-		return FU.amt(balanceAmt);
+		return FU.toAmount(balanceAmt);
 	}
 
 	public void setBalanceAmt(double balanceAmt) {
@@ -153,7 +152,7 @@ public class AccountUI implements java.io.Serializable {
 	}
 
 	public double getTallyBalance() {
-		return FU.amt(tallyBalance);
+		return FU.toAmount(tallyBalance);
 	}
 
 	public void setTallyBalance(double tallyBalance) {
@@ -169,7 +168,7 @@ public class AccountUI implements java.io.Serializable {
 	}
 
 	public double getTallyExpenseAmt() {
-		return FU.amt(tallyExpenseAmt);
+		return FU.toAmount(tallyExpenseAmt);
 	}
 
 	public void setTallyExpenseAmt(double tallyExpenseAmt) {
@@ -285,7 +284,7 @@ public class AccountUI implements java.io.Serializable {
 	}
 
 	public double getBillAmt() {
-		return FU.amt(billAmt);
+		return FU.toAmount(billAmt);
 	}
 
 	public void setBillAmt(double billAmt) {
@@ -293,7 +292,7 @@ public class AccountUI implements java.io.Serializable {
 	}
 
 	public double getBillBalance() {
-		return FU.amt(billBalance);
+		return FU.toAmount(billBalance);
 	}
 
 	public void setBillBalance(double billBalance) {
@@ -309,7 +308,7 @@ public class AccountUI implements java.io.Serializable {
 	}
 
 	public double getUnbilledAmt() {
-		return FU.amt(unbilledAmt);
+		return FU.toAmount(unbilledAmt);
 	}
 
 	public void setUnbilledAmt(double unbilledAmt) {

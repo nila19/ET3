@@ -215,26 +215,26 @@ public class Transaction extends com.expense.mvc.model.BaseEntity
 
 	public Date getEntryDate() {
 		try {
-			return FU.date(FU.Date.yyyyMMddHHmmss).parse(strEntryDate);
+			return FU.df(FU.DATE.yyyyMMddHHmmss).parse(strEntryDate);
 		} catch (ParseException e) {
 			return new Date(0);
 		}
 	}
 
 	public void setEntryDate(Date entryDate) {
-		strEntryDate = FU.date(FU.Date.yyyyMMddHHmmss).format(entryDate);
+		strEntryDate = FU.df(FU.DATE.yyyyMMddHHmmss).format(entryDate);
 	}
 
 	public Date getEntryMonth() {
 		try {
-			return FU.date(FU.Date.yyyyMMdd).parse(strEntryMonth);
+			return FU.df(FU.DATE.yyyyMMdd).parse(strEntryMonth);
 		} catch (ParseException e) {
 			return new Date(0);
 		}
 	}
 
 	public void setEntryMonth(Date entryMonth) {
-		strEntryMonth = FU.date(FU.Date.yyyyMMdd).format(entryMonth);
+		strEntryMonth = FU.df(FU.DATE.yyyyMMdd).format(entryMonth);
 	}
 
 	public String getDescription() {
@@ -271,26 +271,26 @@ public class Transaction extends com.expense.mvc.model.BaseEntity
 
 	public Date getTransDate() {
 		try {
-			return FU.date(FU.Date.yyyyMMdd).parse(strTransDate);
+			return FU.df(FU.DATE.yyyyMMdd).parse(strTransDate);
 		} catch (ParseException e) {
 			return new Date(0);
 		}
 	}
 
 	public void setTransDate(Date transDate) {
-		strTransDate = FU.date(FU.Date.yyyyMMdd).format(transDate);
+		strTransDate = FU.df(FU.DATE.yyyyMMdd).format(transDate);
 	}
 
 	public Date getTransMonth() {
 		try {
-			return FU.date(FU.Date.yyyyMMdd).parse(strTransMonth);
+			return FU.df(FU.DATE.yyyyMMdd).parse(strTransMonth);
 		} catch (ParseException e) {
 			return new Date(0);
 		}
 	}
 
 	public void setTransMonth(Date transMonth) {
-		strTransMonth = FU.date(FU.Date.yyyyMMdd).format(transMonth);
+		strTransMonth = FU.df(FU.DATE.yyyyMMdd).format(transMonth);
 	}
 
 	public Character getAdhocInd() {
@@ -351,14 +351,14 @@ public class Transaction extends com.expense.mvc.model.BaseEntity
 
 	public Date getTallyDate() {
 		try {
-			return FU.date(FU.Date.yyyyMMddHHmmss).parse(strTallyDate);
+			return FU.df(FU.DATE.yyyyMMddHHmmss).parse(strTallyDate);
 		} catch (Exception e) {
 			return new Date(0);
 		}
 	}
 
 	public void setTallyDate(Date tallyDate) {
-		strTallyDate = FU.date(FU.Date.yyyyMMddHHmmss).format(tallyDate);
+		strTallyDate = FU.df(FU.DATE.yyyyMMddHHmmss).format(tallyDate);
 	}
 
 	public boolean isAdjust() {

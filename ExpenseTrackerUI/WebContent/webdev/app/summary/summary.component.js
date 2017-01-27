@@ -9,8 +9,8 @@
 	});
 
 	SummaryController.$inject = ['summaryService', 'searchService', 'etmenuService', 'CONSTANTS',
-			'$location'];
-	function SummaryController(sms, ss, ms, C, $location) {
+			'VALUES', '$location', '$timeout'];
+	function SummaryController(sms, ss, ms, C, V, $location, $timeout) {
 		var vm = this;
 		init();
 
@@ -26,23 +26,42 @@
 		function init() {
 			vm.data = sms.data;
 			ms.data.page = C.PAGES.SUMMARY;
+			sms.data.columns = C.SIZES.SUMMARY_COL;
 
 			// If menu is not loaded, load the default city.
 			ms.checkInit();
 
 			// Run default Summary.
-			loadSummary();
+			initialLoad();
+		}
+
+		function initialLoad() {
+			if (!V.data.city.id || ms.data.loading) {
+				$timeout(function() {
+					initialLoad();
+				}, 500);
+			} else {
+				sms.data.months = V.data.transMonths;
+				loadSummary();
+			}
 		}
 
 		function loadSummary() {
 			sms.loadSummary();
 		}
 
-		function listExpenses(cat, mIdx) {
-			ss.data.category = {
-				id: cat
-			};
-			ss.data.expMonth = vm.data.header[mIdx].mth;
+		function listExpenses(category, idx, adhoc, regular) {
+			// Initialize
+			ss.initializeData();
+
+			if (category.id > 0) {
+				ss.data.category = category;
+			}
+			ss.data.transMonth = vm.data.months[idx];
+			ss.data.adjustInd = 'N';
+			if (!(adhoc && regular)) {
+				ss.data.adhocInd = (adhoc && !regular) ? 'Y' : 'N';
+			}
 			$location.path('/search/Y');
 		}
 
@@ -56,12 +75,12 @@
 
 		function prevPage() {
 			sms.data.currPageNo -= 1;
-			sms.loadDataForPage();
+			sms.loadCurrentPage();
 		}
 
 		function nextPage() {
 			sms.data.currPageNo += 1;
-			sms.loadDataForPage();
+			sms.loadCurrentPage();
 		}
 	}
 })(window.angular);

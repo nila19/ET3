@@ -38,8 +38,8 @@
 			calTotal();
 			loadCurrentPage();
 		};
-		var loadData = function(data) {
-			this.data.rows = data;
+		var loadData = function(dt) {
+			this.data.rows = dt;
 			this.data.currPageNo = 0;
 			this.data.loading = false;
 

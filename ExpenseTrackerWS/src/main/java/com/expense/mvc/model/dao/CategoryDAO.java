@@ -30,4 +30,11 @@ public class CategoryDAO extends BaseDAO<Category, Integer> {
 		return findByParameters("from Category where dataKey = :dataKey and status = :status order by displayOrder",
 				parms);
 	}
+
+	public List<Category> findAll(int dataKey) {
+		HashMap<String, Object> parms = new HashMap<String, Object>();
+		parms.put("dataKey", dataKey);
+
+		return findByParameters("from Category where dataKey = :dataKey order by displayOrder", parms);
+	}
 }

@@ -2,6 +2,10 @@ package com.expense.mvc.service;
 
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collections;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
@@ -134,8 +138,19 @@ public class StartupService {
 
 	// **************************** Category ****************************//
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = true)
-	public List<CategoryUI> getAllCategories(int dataKey) {
+	public List<CategoryUI> getCategories(int dataKey) {
 		List<Category> cats = categoryDAO.findAllActive(dataKey);
+
+		List<CategoryUI> uis = new ArrayList<CategoryUI>();
+		for (Category cat : cats) {
+			uis.add(new CategoryUI(cat));
+		}
+		return uis;
+	}
+
+	@Transactional(propagation = Propagation.REQUIRED, readOnly = true)
+	public List<CategoryUI> getAllCategories(int dataKey) {
+		List<Category> cats = categoryDAO.findAll(dataKey);
 
 		List<CategoryUI> uis = new ArrayList<CategoryUI>();
 		for (Category cat : cats) {
@@ -146,24 +161,35 @@ public class StartupService {
 
 	// **************************** Month ****************************//
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = true)
-	public List<MonthUI> getAllEntryMonths(int dataKey) {
+	public List<MonthUI> getAllEntryMonths(int dataKey) throws ParseException {
 		return toDateList(transactionDAO.findAllEntryMonths(dataKey));
 	}
 
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = true)
-	public List<MonthUI> getAllTransMonths(int dataKey) {
+	public List<MonthUI> getAllTransMonths(int dataKey) throws ParseException {
 		return toDateList(transactionDAO.findAllTransMonths(dataKey));
 	}
 
-	private List<MonthUI> toDateList(List<String> strs) {
-		List<MonthUI> dates = new ArrayList<MonthUI>();
+	private List<MonthUI> toDateList(List<String> strs) throws ParseException {
+		List<MonthUI> months = new ArrayList<MonthUI>();
 		for (String str : strs) {
-			try {
-				dates.add(new MonthUI(FU.date(FU.Date.yyyyMMdd).parse(str)));
-			} catch (ParseException e) {
-			}
+			months.add(new MonthUI(FU.df(FU.DATE.yyyyMMdd).parse(str), false));
 		}
-		return dates;
+		addYears(months);
+		return months;
+	}
+
+	private void addYears(List<MonthUI> months) throws ParseException {
+		HashMap<Integer, Date> years = new HashMap<Integer, Date>();
+		for (MonthUI month : months) {
+			Calendar c = FU.getYearEnd(month.getId());
+			years.put(c.get(Calendar.YEAR), c.getTime());
+		}
+		for (int yr : years.keySet()) {
+			months.add(new MonthUI(years.get(yr), true));
+		}
+		Collections.sort(months);
+		Collections.reverse(months);
 	}
 
 	// **************************** Description ****************************//

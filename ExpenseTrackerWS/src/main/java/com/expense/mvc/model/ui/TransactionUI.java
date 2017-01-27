@@ -108,7 +108,7 @@ public class TransactionUI implements java.io.Serializable {
 	}
 
 	public double getAmount() {
-		return FU.amt(amount);
+		return FU.toAmount(amount);
 	}
 
 	public void setAmount(double amount) {
@@ -121,7 +121,7 @@ public class TransactionUI implements java.io.Serializable {
 
 	public void setEntryDate(Date entryDate) {
 		try {
-			this.entryDate = FU.date(FU.Date.yyyyMMddHHmmss).parse(FU.date(FU.Date.yyyyMMddHHmmss).format(entryDate));
+			this.entryDate = FU.df(FU.DATE.yyyyMMddHHmmss).parse(FU.df(FU.DATE.yyyyMMddHHmmss).format(entryDate));
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
@@ -137,7 +137,7 @@ public class TransactionUI implements java.io.Serializable {
 
 	public Date getDtTransDate() {
 		try {
-			return FU.date(FU.Date.ddMMMyyyy).parse(transDate);
+			return FU.df(FU.DATE.ddMMMyyyy).parse(transDate);
 		} catch (ParseException e) {
 			e.printStackTrace();
 			return null;
@@ -145,7 +145,7 @@ public class TransactionUI implements java.io.Serializable {
 	}
 
 	public void setDtTransDate(Date dtTransDate) {
-		this.transDate = FU.date(FU.Date.ddMMMyyyy).format(dtTransDate);
+		this.transDate = FU.df(FU.DATE.ddMMMyyyy).format(dtTransDate);
 	}
 
 	public AccountUI getFromAccount() {
@@ -173,7 +173,7 @@ public class TransactionUI implements java.io.Serializable {
 	}
 
 	public double getFromBalanceAf() {
-		return FU.amt(fromBalanceAf);
+		return FU.toAmount(fromBalanceAf);
 	}
 
 	public void setFromBalanceAf(double fromBalanceAf) {
@@ -181,7 +181,7 @@ public class TransactionUI implements java.io.Serializable {
 	}
 
 	public double getToBalanceAf() {
-		return FU.amt(toBalanceAf);
+		return FU.toAmount(toBalanceAf);
 	}
 
 	public void setToBalanceAf(double toBalanceAf) {
@@ -189,7 +189,7 @@ public class TransactionUI implements java.io.Serializable {
 	}
 
 	public double getFromBalanceBf() {
-		return FU.amt(fromBalanceBf);
+		return FU.toAmount(fromBalanceBf);
 	}
 
 	public void setFromBalanceBf(double fromBalanceBf) {
@@ -197,7 +197,7 @@ public class TransactionUI implements java.io.Serializable {
 	}
 
 	public double getToBalanceBf() {
-		return FU.amt(toBalanceBf);
+		return FU.toAmount(toBalanceBf);
 	}
 
 	public void setToBalanceBf(double toBalanceBf) {
@@ -234,7 +234,7 @@ public class TransactionUI implements java.io.Serializable {
 
 	public void setTallyDate(Date tallyDate) {
 		try {
-			this.tallyDate = FU.date(FU.Date.yyyyMMddHHmmss).parse(FU.date(FU.Date.yyyyMMddHHmmss).format(tallyDate));
+			this.tallyDate = FU.df(FU.DATE.yyyyMMddHHmmss).parse(FU.df(FU.DATE.yyyyMMddHHmmss).format(tallyDate));
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}

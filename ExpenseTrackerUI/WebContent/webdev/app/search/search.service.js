@@ -23,10 +23,13 @@
 			data.adhocInd = null;
 			data.thinList = true;
 		};
-		var addProp = function(input, ip, dp) {
+		var addProp = function(input, dp, ip, ip2) {
 			var prop = data[dp];
 			if (prop && prop.id) {
 				input[ip] = prop.id;
+				if (ip2) {
+					input[ip2] = prop.aggregate;
+				}
 			}
 		};
 		var buildSearchInput = function() {
@@ -46,11 +49,11 @@
 			if (data.adhocInd) {
 				input.adhocInd = data.adhocInd;
 			}
-			addProp(input, 'categoryId', 'category');
-			addProp(input, 'accountId', 'account');
-			addProp(input, 'billId', 'bill');
-			addProp(input, 'transMonth', 'transMonth');
-			addProp(input, 'entryMonth', 'entryMonth');
+			addProp(input, 'category', 'categoryId');
+			addProp(input, 'account', 'accountId');
+			addProp(input, 'bill', 'billId');
+			addProp(input, 'transMonth', 'transMonth', 'transMonthAggr');
+			addProp(input, 'entryMonth', 'entryMonth', 'entryMonthAggr');
 			return input;
 		};
 		var loadResults = function(dt) {

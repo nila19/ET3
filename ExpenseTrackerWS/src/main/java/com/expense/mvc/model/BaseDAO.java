@@ -8,7 +8,7 @@ import java.util.List;
 import org.hibernate.SessionFactory;
 import org.hibernate.type.Type;
 
-import com.expense.utils.Props;
+import com.expense.utils.FU;
 
 public abstract class BaseDAO<T, ID extends Serializable> {
 
@@ -97,7 +97,7 @@ public abstract class BaseDAO<T, ID extends Serializable> {
 
 	@SuppressWarnings("unchecked")
 	public List<T> findByParametersThin(String query, HashMap<String, Object> parms) {
-		int maxRows = Integer.valueOf(Props.expense.getString("LIST.EXPENSES.LIMIT"));
+		int maxRows = Integer.valueOf(FU.expense.getString("LIST.EXPENSES.LIMIT"));
 		return sessionFactory.getCurrentSession().createQuery(query).setProperties(parms).setMaxResults(maxRows).list();
 	}
 

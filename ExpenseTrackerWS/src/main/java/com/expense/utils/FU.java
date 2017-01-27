@@ -3,38 +3,50 @@ package com.expense.utils;
 import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.PropertyResourceBundle;
+import java.util.ResourceBundle;
+
+import org.apache.commons.beanutils.BeanUtils;
 
 public class FU {
-	public enum Date {
-		yyyyMMdd("yyyy-MM-dd"), yyyyMM("yyyyMM"), yyyy("yyyy"), ddMMMyyyy("dd-MMM-yyyy"), 
-		MMMyy("MMM-yy"), yyyyMMddHHmmss("yyyy-MM-dd HH:mm:ss"), yyyyMMMdd("yyyy-MMM-dd");
+	public static PropertyResourceBundle expense;
+
+	static {
+		FU.expense = (PropertyResourceBundle) ResourceBundle.getBundle("expense");
+	}
+
+	public enum DATE {
+		yyyyMMdd("yyyy-MM-dd"), yyyyMM("yyyyMM"), yyyy("yyyy"), ddMMMyyyy("dd-MMM-yyyy"), MMMyy(
+				"MMM-yy"), yyyyMMddHHmmss("yyyy-MM-dd HH:mm:ss"), yyyyMMMdd("yyyy-MMM-dd");
 		public String format;
 
-		private Date(String format) {
+		private DATE(String format) {
 			this.format = format;
 		}
 	}
 
-	public enum Number {
+	public enum NUMBER {
 		AMOUNT("#,##0.00"), NOCOMMA("###0.00");
 		public String format;
 
-		private Number(String format) {
+		private NUMBER(String format) {
 			this.format = format;
 		}
 	}
 
-	public static DateFormat date(Date d) {
+	public static DateFormat df(DATE d) {
 		return new SimpleDateFormat(d.format);
 	}
 
-	public static DecimalFormat number(Number n) {
+	public static DecimalFormat nf(NUMBER n) {
 		return new DecimalFormat(n.format);
 	}
 
-	public static double amt(double d) {
+	public static double toAmount(double d) {
 		try {
-			java.lang.Number number = number(Number.NOCOMMA).parse(number(Number.NOCOMMA).format(d));
+			java.lang.Number number = nf(NUMBER.NOCOMMA).parse(nf(NUMBER.NOCOMMA).format(d));
 			if (number instanceof Double) {
 				return (double) number;
 			} else if (number instanceof Long) {
@@ -47,5 +59,31 @@ public class FU {
 			e.printStackTrace();
 			return 0;
 		}
+	}
+
+	public static void copyBean(Object dest, Object src) {
+		try {
+			BeanUtils.copyProperties(dest, src);
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	public static Calendar getYearEnd(Date d) {
+		Calendar c = Calendar.getInstance();
+		c.setTime(d);
+		c.set(Calendar.MONTH, Calendar.DECEMBER);
+		c.set(Calendar.DAY_OF_MONTH, 31);
+		return c;
+	}
+
+	public static Calendar getYearBegin(Date d) {
+		Calendar c = Calendar.getInstance();
+		c.setTime(d);
+		c.set(Calendar.MONTH, Calendar.JANUARY);
+		c.set(Calendar.DAY_OF_MONTH, 1);
+		return c;
 	}
 }

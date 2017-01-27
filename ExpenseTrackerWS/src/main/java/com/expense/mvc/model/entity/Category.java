@@ -43,6 +43,9 @@ public class Category extends com.expense.mvc.model.BaseEntity implements java.i
 	@Column(name = "SUB_CATEGORY", length = 25)
 	private String subCategory;
 
+	@Column(name = "IMAGE_CODE", length = 25)
+	private String imageCode;
+
 	@Column(name = "STATUS", length = 1)
 	private Character status;
 
@@ -97,6 +100,14 @@ public class Category extends com.expense.mvc.model.BaseEntity implements java.i
 
 	public void setSubCategory(String subCategory) {
 		this.subCategory = subCategory;
+	}
+
+	public String getImageCode() {
+		return imageCode;
+	}
+
+	public void setImageCode(String imageCode) {
+		this.imageCode = imageCode;
 	}
 
 	public Character getStatus() {

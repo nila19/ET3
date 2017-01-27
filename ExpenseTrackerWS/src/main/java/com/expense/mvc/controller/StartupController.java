@@ -1,5 +1,6 @@
 package com.expense.mvc.controller;
 
+import java.text.ParseException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,7 +43,7 @@ public class StartupController {
 
 	@RequestMapping(value = "/categories", method = RequestMethod.GET)
 	public List<CategoryUI> getCategories(@RequestParam int city) {
-		return ss.getAllCategories(city);
+		return ss.getCategories(city);
 	}
 
 	@RequestMapping(value = "/descriptions", method = RequestMethod.GET)
@@ -71,12 +72,12 @@ public class StartupController {
 	}
 
 	@RequestMapping(value = "/months/entry", method = RequestMethod.GET)
-	public List<MonthUI> getEntryMonths(@RequestParam int city) {
+	public List<MonthUI> getEntryMonths(@RequestParam int city) throws ParseException {
 		return ss.getAllEntryMonths(city);
 	}
 
 	@RequestMapping(value = "/months/trans", method = RequestMethod.GET)
-	public List<MonthUI> getTransMonths(@RequestParam int city) {
+	public List<MonthUI> getTransMonths(@RequestParam int city) throws ParseException {
 		return ss.getAllTransMonths(city);
 	}
 }

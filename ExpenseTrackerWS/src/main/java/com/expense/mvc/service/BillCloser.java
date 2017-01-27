@@ -1,4 +1,4 @@
-package com.expense.mvc.helper;
+package com.expense.mvc.service;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -17,7 +17,6 @@ import com.expense.mvc.model.entity.Bill;
 import com.expense.mvc.model.entity.Transaction;
 import com.expense.mvc.model.ui.AccountUI;
 import com.expense.mvc.model.ui.BillUI;
-import com.expense.mvc.service.StartupService;
 
 public class BillCloser {
 	private static final Logger logger = LogManager.getLogger("log." + BillCloser.class);

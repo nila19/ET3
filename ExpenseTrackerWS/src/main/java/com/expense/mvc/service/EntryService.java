@@ -14,7 +14,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.expense.mvc.helper.BillCloser;
 import com.expense.mvc.model.dao.AccountDAO;
 import com.expense.mvc.model.dao.BillDAO;
 import com.expense.mvc.model.dao.CategoryDAO;
@@ -70,7 +69,7 @@ public class EntryService {
 
 		transactionDAO.save(t);
 
-		DecimalFormat df = FU.number(FU.Number.NOCOMMA);
+		DecimalFormat df = FU.nf(FU.NUMBER.NOCOMMA);
 
 		// Set From/To accounts' 'BEFORE' balances before cash movement.
 		if (fr.getAccountId() != 0) {
@@ -404,7 +403,7 @@ public class EntryService {
 			amount = amount * -1;
 		}
 
-		ac.setBalanceAmt(Double.valueOf(FU.number(FU.Number.NOCOMMA).format(ac.getBalanceAmt() + amount)));
+		ac.setBalanceAmt(Double.valueOf(FU.nf(FU.NUMBER.NOCOMMA).format(ac.getBalanceAmt() + amount)));
 		accountDAO.save(ac);
 
 		// Find all future trans post this & adjust the ac balance.

@@ -84,14 +84,14 @@ public class TallyHistory extends com.expense.mvc.model.BaseEntity
 
 	public Date getTallyDate() {
 		try {
-			return FU.date(FU.Date.yyyyMMddHHmmss).parse(strTallyDate);
+			return FU.df(FU.DATE.yyyyMMddHHmmss).parse(strTallyDate);
 		} catch (Exception e) {
 			return new Date(0);
 		}
 	}
 
 	public void setTallyDate(Date tallyDate) {
-		strTallyDate = FU.date(FU.Date.yyyyMMddHHmmss).format(tallyDate);
+		strTallyDate = FU.df(FU.DATE.yyyyMMddHHmmss).format(tallyDate);
 	}
 
 	@Override

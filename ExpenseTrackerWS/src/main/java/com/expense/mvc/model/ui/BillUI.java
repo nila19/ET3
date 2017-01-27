@@ -8,7 +8,6 @@ import org.apache.commons.lang3.time.DateUtils;
 
 import com.expense.mvc.model.entity.Bill;
 import com.expense.utils.FU;
-import com.expense.utils.Props;
 
 public class BillUI implements java.io.Serializable {
 	private static final long serialVersionUID = 1L;
@@ -46,12 +45,12 @@ public class BillUI implements java.io.Serializable {
 	}
 
 	public void buildName() {
-		name = FU.date(FU.Date.yyyyMMMdd).format(billDt) + " - #" + id;
+		name = FU.df(FU.DATE.yyyyMMMdd).format(billDt) + " - #" + id;
 	}
 
 	private void checkDueDateWarning() {
 		if (this.billBalance > 0 && this.dueDt != null) {
-			int DUE_DATE_WARNING = Integer.valueOf(Props.expense.getString("DUE.DATE.WARNING"));
+			int DUE_DATE_WARNING = Integer.valueOf(FU.expense.getString("DUE.DATE.WARNING"));
 			Date now = Calendar.getInstance().getTime();
 			now = DateUtils.addDays(now, DUE_DATE_WARNING);
 
@@ -110,7 +109,7 @@ public class BillUI implements java.io.Serializable {
 	}
 
 	public double getBillAmt() {
-		return FU.amt(billAmt);
+		return FU.toAmount(billAmt);
 	}
 
 	public void setBillAmt(double billAmt) {
@@ -118,7 +117,7 @@ public class BillUI implements java.io.Serializable {
 	}
 
 	public double getBillBalance() {
-		return FU.amt(billBalance);
+		return FU.toAmount(billBalance);
 	}
 
 	public void setBillBalance(double billBalance) {
