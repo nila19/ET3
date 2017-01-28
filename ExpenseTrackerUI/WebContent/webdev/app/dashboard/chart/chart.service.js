@@ -44,24 +44,22 @@
 			};
 		};
 
+		var loadData = function(dt) {
+			data.labels = dt.labels;
+			data.series = dt.series;
+		};
 		var loadChartData = function() {
 			console.log('Getting chart data @ vDB... ' + ms.data.menu.city.name);
-			this.loadData(dummyChart());
-		};
-		var loadData = function(data) {
-			this.data.labels = data.labels;
-			this.data.series = data.series;
+			loadData(dummyChart());
 		};
 		var renderChart = function() {
-			var chart = Chartist.Bar('#' + this.data.tagId, this.data, chartOptions,
-					responsiveOptions);
+			var chart = Chartist.Bar('#' + data.tagId, data, chartOptions, responsiveOptions);
 			md.startAnimationForBarChart(chart);
 		};
 
 		return {
 			data: data,
 			loadChartData: loadChartData,
-			loadData: loadData,
 			renderChart: renderChart
 		};
 	}

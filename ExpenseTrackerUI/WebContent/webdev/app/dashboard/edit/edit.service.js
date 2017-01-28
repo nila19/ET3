@@ -15,18 +15,18 @@
 		var ta = {};
 
 		// Load Bills
-		var loadBillData = function(data) {
-			V.data.bills = data;
+		var loadBillData = function(dt) {
+			V.data.bills = dt;
 		};
 		var loadBills = function() {
 			aj.query('/entry/bills/' + data.expense.fromAccount.id, {}, loadBillData);
 		};
 
 		// Load Page Data
-		var loadData = function(data) {
-			this.data.expense = data;
+		var loadData = function(dt) {
+			data.expense = dt;
 			// Initialize Bills TA.
-			if (this.data.expense.fromAccount.id) {
+			if (data.expense.fromAccount.id) {
 				loadBills();
 			}
 		};
@@ -39,8 +39,8 @@
 			$('#model_Modify').modal('hide');
 		};
 		var modifyExpense = function() {
-			aj.post('/entry/modify', this.data.expense, loadModifyData);
-			this.data.loading = true;
+			aj.post('/entry/modify', data.expense, loadModifyData);
+			data.loading = true;
 		};
 
 		// Delete Expense
@@ -51,9 +51,9 @@
 			$('#model_Delete').modal('hide');
 		};
 		var deleteExpense = function() {
-			aj.post('/entry/delete/' + ms.data.menu.city.id + '/' + this.data.expense.id, {},
+			aj.post('/entry/delete/' + ms.data.menu.city.id + '/' + data.expense.id, {},
 					loadDeleteData);
-			this.data.loading = true;
+			data.loading = true;
 		};
 
 		return {

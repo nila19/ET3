@@ -25,6 +25,9 @@
 			ms.data.page = C.PAGES.SEARCH;
 			els.data.rowCount = C.SIZES.SEARCH_ROW;
 			els.data.thinListToggle = true;
+			// Temporarily resize the EXPLIST to fit the page, until the search reloads the list.
+			els.data.currPageNo = 0;
+			els.loadCurrentPage();
 
 			// If menu is not loaded, load the default city from V.
 			ms.checkInit();

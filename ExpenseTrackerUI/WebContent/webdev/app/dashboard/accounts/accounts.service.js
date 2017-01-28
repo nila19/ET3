@@ -29,9 +29,9 @@
 				data.rows.push(row);
 			}
 		};
-		var loadData = function(data) {
-			this.data.accts = data;
-			this.data.maxRows = Math.ceil(this.data.accts.length / cols);
+		var loadData = function(dt) {
+			data.accts = dt;
+			data.maxRows = Math.ceil(data.accts.length / cols);
 			buildRows();
 		};
 
@@ -51,11 +51,11 @@
 		};
 		var tallyAccount = function(id) {
 			ms.data.loading = true;
-			this.data.tallyOn = id;
+			data.tallyOn = id;
 			aj.post('/entry/tally/' + id, {}, loadTally);
 		};
 		var filterAccount = function(id) {
-			this.data.filterBy = id;
+			data.filterBy = id;
 
 			bs.data.filterApplied = true;
 			bs.loadBillsForAcct(id);

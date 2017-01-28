@@ -24,7 +24,7 @@
 			data.menu = V.data;
 		};
 		var checkInit = function() {
-			if (!this.data.menu || !this.data.menu.city || !this.data.menu.city.name) {
+			if (!data.menu || !data.menu.city || !data.menu.city.name) {
 				loadCities();
 			}
 		};

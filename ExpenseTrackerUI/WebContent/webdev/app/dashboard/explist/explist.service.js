@@ -39,9 +39,9 @@
 			loadCurrentPage();
 		};
 		var loadData = function(dt) {
-			this.data.rows = dt;
-			this.data.currPageNo = 0;
-			this.data.loading = false;
+			data.rows = dt;
+			data.currPageNo = 0;
+			data.loading = false;
 
 			paginate();
 		};

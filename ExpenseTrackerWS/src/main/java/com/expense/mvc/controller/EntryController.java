@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.expense.mvc.model.entity.DataKey;
-import com.expense.mvc.model.entity.Transaction;
 import com.expense.mvc.model.ui.BillPayUI;
 import com.expense.mvc.model.ui.BillUI;
 import com.expense.mvc.model.ui.CityUI;
@@ -47,7 +46,7 @@ public class EntryController {
 	@RequestMapping(value = "/transactions", method = RequestMethod.GET)
 	public List<TransactionUI> getTransactions(@RequestParam int city, @RequestParam int account,
 			@RequestParam int bill) {
-		//TODO Defaulting the 'pending' flag to FALSE. Future enhancement to fetch Tally expense list.
+		// TODO Defaulting the 'pending' flag to FALSE. Future enhancement to fetch Tally expense list.
 		return ts.getTransactions(account, false, bill, city);
 	}
 

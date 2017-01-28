@@ -9,8 +9,8 @@
 	});
 
 	ETMenuController.$inject = ['etmenuService', 'dashboardFlagsService', 'startupService',
-			'utilsService', 'CONSTANTS', 'VALUES'];
-	function ETMenuController(ms, dfs, sus, us, C, V) {
+			'utilsService', 'CONSTANTS', 'VALUES', '$location', '$timeout'];
+	function ETMenuController(ms, dfs, sus, us, C, V, $location, $timeout) {
 		var vm = this;
 		init();
 
@@ -23,6 +23,7 @@
 		function init() {
 			sus.loadAll();
 			vm.data = ms.data;
+			vm.data.href = C.HREF;
 
 			ms.checkInit();
 			ms.data.showButtons = (ms.data.page === C.PAGES.DASHBOARD);
@@ -39,7 +40,31 @@
 		function changeCity(id) {
 			V.data.city = us.getObjectOf(ms.data.menu.cities, id);
 			sus.loadOthers();
-			// TODO Reload the current page
+			$timeout(function() {
+				checkReloadPage();
+			}, 500);
+		}
+
+		function checkReloadPage() {
+			if (!V.data.city.id || ms.data.loading) {
+				$timeout(function() {
+					checkReloadPage();
+				}, 500);
+			} else {
+				$location.path(C.HREF[ms.data.page]);
+			}
+		}
+
+		function reloadCurrentPage() {
+			if (ms.data.page === C.PAGES.DASHBOARD) {
+				$location.path('/dashboard');
+			}
+			if (ms.data.page === C.PAGES.SUMMARY) {
+				$location.path('/summary');
+			}
+			if (ms.data.page === C.PAGES.SEARCH) {
+				$location.path('/search');
+			}
 		}
 	}
 })(window.angular);

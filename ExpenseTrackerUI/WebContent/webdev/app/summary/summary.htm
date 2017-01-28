@@ -54,8 +54,7 @@
                         <th class="text-right">&nbsp;</th>
                         <th ng-repeat="total in $ctrl.data.pgData.totalrow track by $index" ng-switch="$ctrl.data.pgData.months[$index].aggregate.toString()" class="text-right" ng-class="{'sumTotalCell':!$ctrl.data.pgData.months[$index].aggregate}">
                           <span ng-switch-when="false" ng-click="$ctrl.listExpenses(0, $index, $ctrl.data.input.adhoc, $ctrl.data.input.regular)"><strong>{{$ctrl.data.pgData.totalrow[$index] | currency}}</strong></span>
-                          <span ng-switch-when="true" ng-click="$ctrl.listExpenses(0, $index, $ctrl.data.input.adhoc, $ctrl.data.input.regular)"><strong>{{$ctrl.data.pgData.totalrow[$index] | currency}}</strong></span>
-                          <span ng-switch-when="trueOld" ><strong>{{$ctrl.data.pgData.totalrow[$index] | currency}}</strong></span>
+                          <span ng-switch-when="true"><strong>{{$ctrl.data.pgData.totalrow[$index] | currency}}</strong></span>
                         </th>
                       </tr>
                     </thead>
@@ -73,8 +72,7 @@
                         </td>
                         <td ng-repeat="amt in row.amount track by $index" ng-switch="$ctrl.data.pgData.months[$index].aggregate.toString()" class="text-right" ng-class="{'sumDetailCell':!$ctrl.data.pgData.months[$index].aggregate}">
                           <span ng-switch-when="false" ng-click="$ctrl.listExpenses(row.category, $index, $ctrl.data.input.adhoc, $ctrl.data.input.regular)">{{row.amount[$index] | currency}}</span>
-                          <span ng-switch-when="true" ng-click="$ctrl.listExpenses(row.category, $index, $ctrl.data.input.adhoc, $ctrl.data.input.regular)">{{row.amount[$index] | currency}}</span>
-                          <span ng-switch-when="trueOld"><strong>{{row.amount[$index] | currency}}</strong></span>
+                          <span ng-switch-when="true"><strong>{{row.amount[$index] | currency}}</strong></span>
                         </td>
                       </tr>
                     </tbody>

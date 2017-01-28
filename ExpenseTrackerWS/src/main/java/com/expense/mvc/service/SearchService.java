@@ -2,6 +2,7 @@ package com.expense.mvc.service;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -24,12 +25,15 @@ public class SearchService {
 
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = true)
 	public List<TransactionUI> search(Map<String, String> input) {
+		System.out.println(new Date() + " :: 1");
 		List<Transaction> trans = this.transactionDAO.findForSearch(toSearchUI(input));
+		System.out.println(new Date() + " :: 2");
 
 		List<TransactionUI> uis = new ArrayList<TransactionUI>();
 		for (Transaction tran : trans) {
 			uis.add(new TransactionUI(tran));
 		}
+		System.out.println(new Date() + " :: 3");
 		return uis;
 	}
 

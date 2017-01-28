@@ -20,7 +20,7 @@
 			data.paidDt = '';
 		};
 		var loadData = function(dt) {
-			this.data.bill = dt;
+			data.bill = dt;
 			initForm();
 		};
 		var loadPayBill = function(dt) {
@@ -34,7 +34,7 @@
 		};
 		var payBill = function() {
 			data.city = ms.data.menu.city;
-			aj.post('/entry/paybill', this.data, loadPayBill);
+			aj.post('/entry/paybill', data, loadPayBill);
 		};
 
 		return {

@@ -24,6 +24,11 @@
 			SUMMARY: 'SUMMARY',
 			SEARCH: 'SEARCH'
 		},
+		HREF: {
+			DASHBOARD: '/dashboard',
+			SUMMARY: '/summary',
+			SEARCH: '/search'
+		},
 		CURRENCY: {
 			USD: 'USD',
 			INR: 'INR'

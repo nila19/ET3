@@ -5,8 +5,9 @@
 
 	angular.module('dashboard.bills').factory('billsService', billsService);
 
-	billsService.$inject = ['etmenuService', 'ajaxService', 'utilsService', 'CONSTANTS'];
-	function billsService(ms, aj, us, C) {
+	billsService.$inject = ['etmenuService', 'dashboardService', 'ajaxService', 'utilsService',
+			'CONSTANTS'];
+	function billsService(ms, ds, aj, us, C) {
 		var data = {
 			showBills: false,
 			rows: [],
@@ -39,6 +40,7 @@
 			data.currPageNo = 0;
 			loadDataForPage();
 			data.loading = false;
+			ds.data.loading.donestep = 2;
 		};
 		var loadBillsForAcct = function(id) {
 			data.loading = true;

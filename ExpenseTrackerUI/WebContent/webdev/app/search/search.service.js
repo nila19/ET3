@@ -5,8 +5,8 @@
 
 	angular.module('search').factory('searchService', searchService);
 
-	searchService.$inject = ['ajaxService', 'explistService', 'etmenuService'];
-	function searchService(aj, els, ms) {
+	searchService.$inject = ['dashboardService', 'explistService', 'etmenuService', 'ajaxService'];
+	function searchService(ds, els, ms, aj) {
 		var data = {
 			thinList: true
 		};
@@ -59,6 +59,7 @@
 		var loadResults = function(dt) {
 			els.loadData(dt);
 			els.data.thinList = data.thinList;
+			ds.data.loading.donestep = 3;
 		};
 		var doSearch = function() {
 			els.data.loading = true;

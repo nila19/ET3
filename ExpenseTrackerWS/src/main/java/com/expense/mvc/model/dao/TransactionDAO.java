@@ -79,6 +79,7 @@ public class TransactionDAO extends BaseDAO<Transaction, Integer> {
 				parms.put("entryMonth", FU.df(FU.DATE.yyyyMMdd).format(ui.getDtEntryMonth()));
 			}
 		}
+		// FIXME - Year search is not working. Fix this.
 		if (ui.getDtTransMonth() != null) {
 			if (ui.isTransMonthAggr()) {
 				Date dt = ui.getDtTransMonth();
