@@ -16,7 +16,7 @@
                       <div class="col-lg-2 col-md-3">
                         <div class="form-group label-floating">
                           <label class="control-label">Category</label>
-                          <input ng-model="$ctrl.data.category" type="text" class="form-control" uib-typeahead="cat as cat.name for cat in $ctrl.ta.categories | filter:$viewValue" typeahead-show-hint="true" typeahead-min-length="0" typeahead-editable="false">
+                          <input ng-model="$ctrl.data.category" type="text" class="form-control" uib-typeahead="cat as cat.name for cat in $ctrl.ta.allCategories | filter:$viewValue" typeahead-show-hint="true" typeahead-min-length="0" typeahead-editable="false">
                         </div>
                       </div>
                       <div class="col-lg-2 col-md-3">

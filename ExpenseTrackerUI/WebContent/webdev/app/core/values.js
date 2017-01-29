@@ -8,6 +8,7 @@
 			city: {},
 			cities: [],
 			categories: [],
+			allCategories: [],
 			descriptions: [],
 			accounts: [],
 			allAccounts: [],

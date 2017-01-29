@@ -38,6 +38,11 @@
 				city: city.id
 			}, loadCategories);
 		}
+		function getAllCategories(city) {
+			aj.query('/startup/categories/all', {
+				city: city.id
+			}, loadAllCategories);
+		}
 		function getDescriptions(city) {
 			aj.query('/startup/descriptions', {
 				city: city.id
@@ -81,6 +86,14 @@
 			V.data.categories = [];
 			angular.forEach(categories, function(category) {
 				V.data.categories.push(category.toJSON());
+			});
+
+			getAllCategories(V.data.city);
+		}
+		function loadAllCategories(categories) {
+			V.data.allCategories = [];
+			angular.forEach(categories, function(category) {
+				V.data.allCategories.push(category.toJSON());
 			});
 
 			getDescriptions(V.data.city);

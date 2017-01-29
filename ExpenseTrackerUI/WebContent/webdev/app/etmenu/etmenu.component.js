@@ -9,8 +9,8 @@
 	});
 
 	ETMenuController.$inject = ['etmenuService', 'dashboardFlagsService', 'startupService',
-			'utilsService', 'CONSTANTS', 'VALUES', '$location', '$timeout'];
-	function ETMenuController(ms, dfs, sus, us, C, V, $location, $timeout) {
+			'utilsService', 'CONSTANTS', 'VALUES', '$location', '$timeout', '$route'];
+	function ETMenuController(ms, dfs, sus, us, C, V, $location, $timeout, $route) {
 		var vm = this;
 		init();
 
@@ -51,6 +51,7 @@
 					checkReloadPage();
 				}, 500);
 			} else {
+				$route.reload();
 				$location.path(C.HREF[ms.data.page]);
 			}
 		}

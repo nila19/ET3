@@ -46,6 +46,11 @@ public class StartupController {
 		return ss.getCategories(city);
 	}
 
+	@RequestMapping(value = "/categories/all", method = RequestMethod.GET)
+	public List<CategoryUI> getAllCategories(@RequestParam int city) {
+		return ss.getAllCategories(city);
+	}
+
 	@RequestMapping(value = "/descriptions", method = RequestMethod.GET)
 	public List<String> getDescriptions(@RequestParam int city) {
 		return ss.getAllDescription(Integer.valueOf(city));

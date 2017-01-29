@@ -38,7 +38,7 @@ public class SummaryService {
 		List<Transaction> trans = transactionDAO.findForMonthlySummary(dataKey, regular, adhoc);
 
 		// Step 0 : Add current month to the list, if not already present.
-		MonthUI[] months = addCurrentMonth(list);
+		MonthUI[] months = list.toArray(new MonthUI[1]);
 
 		// Step 1 : Build empty grid.
 		Map<Integer, SummaryUI> grid = buildEmptyGrid(categories, months);
@@ -68,18 +68,6 @@ public class SummaryService {
 		uis.add(0, calcTotalRow(grid, months));
 
 		return uis;
-	}
-
-	// Step 0 : Add current month to the list, if not already present.
-	private MonthUI[] addCurrentMonth(List<MonthUI> list) throws ParseException {
-		// Add current month to the list & sort it desc.
-		if (getMthIdx(list.toArray(new MonthUI[1]), new Date()) < 0) {
-			list.add(new MonthUI(new Date()));
-		}
-		Collections.sort(list);
-		Collections.reverse(list);
-
-		return list.toArray(new MonthUI[1]);
 	}
 
 	// Step 1 : Build empty grid.

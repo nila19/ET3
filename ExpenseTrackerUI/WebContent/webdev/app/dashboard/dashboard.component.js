@@ -10,8 +10,8 @@
 
 	DashboardController.$inject = ['dashboardwrapperService', 'dashboardService',
 			'dashboardFlagsService', 'etmenuService', 'explistService', 'startupService',
-			'CONSTANTS', 'VALUES', '$timeout'];
-	function DashboardController(dws, ds, dfs, ms, els, sus, C, V, $timeout) {
+			'searchService', 'CONSTANTS', 'VALUES', '$timeout'];
+	function DashboardController(dws, ds, dfs, ms, els, sus, ss, C, V, $timeout) {
 		var vm = this;
 		init();
 
@@ -25,6 +25,7 @@
 			// Temporarily resize the EXPLIST to fit the page, until the search reloads the list.
 			els.data.currPageNo = 0;
 			els.loadCurrentPage();
+			ss.initializeData();
 
 			// If Menu is not loaded yet; load the default city from V.
 			ms.checkInit();

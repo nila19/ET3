@@ -52,7 +52,7 @@
 		var tallyAccount = function(id) {
 			ms.data.loading = true;
 			data.tallyOn = id;
-			aj.post('/entry/tally/' + id, {}, loadTally);
+			aj.post('/entry/tally/' + ms.data.menu.city.id + '/' + id, {}, loadTally);
 		};
 		var filterAccount = function(id) {
 			data.filterBy = id;

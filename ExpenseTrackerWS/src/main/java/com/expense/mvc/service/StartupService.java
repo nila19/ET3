@@ -180,13 +180,21 @@ public class StartupService {
 	}
 
 	private void addYears(List<MonthUI> months) throws ParseException {
+		MonthUI currMonth = new MonthUI(new Date());
+		boolean currMonthPresent = false;
 		HashMap<Integer, Date> years = new HashMap<Integer, Date>();
 		for (MonthUI month : months) {
 			Calendar c = FU.getYearEnd(month.getId());
 			years.put(c.get(Calendar.YEAR), c.getTime());
+			if (month.equals(currMonth)) {
+				currMonthPresent = true;
+			}
 		}
 		for (int yr : years.keySet()) {
 			months.add(new MonthUI(years.get(yr), true));
+		}
+		if (!currMonthPresent) {
+			months.add(new MonthUI(new Date()));
 		}
 		Collections.sort(months);
 		Collections.reverse(months);
