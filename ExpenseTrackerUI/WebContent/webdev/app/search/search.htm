@@ -1,3 +1,10 @@
+<script type="text/ng-template" id="customTemplate.htm">
+  <a>
+	  <span ng-if="!match.model.active"><em><span class="text-warning" ng-bind-html="match.label | uibTypeaheadHighlight:query"></span></em></span>
+	  <span ng-if="match.model.active"><span ng-bind-html="match.label | uibTypeaheadHighlight:query"></span></span>
+  </a>
+</script>
+
   <div class="wrapper">
     <div class="main-panel">
       <!-- Menu panel -->
@@ -16,7 +23,7 @@
                       <div class="col-lg-2 col-md-3">
                         <div class="form-group label-floating">
                           <label class="control-label">Category</label>
-                          <input ng-model="$ctrl.data.category" type="text" class="form-control" uib-typeahead="cat as cat.name for cat in $ctrl.ta.allCategories | filter:$viewValue" typeahead-show-hint="true" typeahead-min-length="0" typeahead-editable="false">
+                          <input ng-model="$ctrl.data.category" type="text" class="form-control" uib-typeahead="cat as cat.name for cat in $ctrl.ta.allCategories | filter:$viewValue | limitTo:12" typeahead-template-url="customTemplate.htm" typeahead-show-hint="true" typeahead-min-length="0" typeahead-editable="false">
                         </div>
                       </div>
                       <div class="col-lg-2 col-md-3">
@@ -46,7 +53,7 @@
                       <div class="col-lg-2 col-md-3">
                         <div class="form-group label-floating">
                           <label class="control-label">Account</label>
-                          <input ng-model="$ctrl.data.account" type="text" class="form-control" uib-typeahead="acc as acc.name for acc in $ctrl.ta.allAccounts | filter:$viewValue" typeahead-show-hint="true" typeahead-min-length="0" typeahead-editable="false">
+                          <input ng-model="$ctrl.data.account" type="text" class="form-control" uib-typeahead="acc as acc.name for acc in $ctrl.ta.allAccounts | filter:$viewValue | limitTo:12" typeahead-template-url="customTemplate.htm" typeahead-show-hint="true" typeahead-min-length="0" typeahead-editable="false">
                         </div>
                       </div>
                       <div class="col-lg-1 col-md-2">

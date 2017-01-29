@@ -17,6 +17,8 @@
 			template: '<search></search>'
 		}).when('/search', {
 			template: '<search></search>'
-		}).otherwise('/dashboard');
+		}).when('/startup', {
+			template: '<startup></startup>'
+		}).otherwise('/startup');
 	}
 })(window.angular);

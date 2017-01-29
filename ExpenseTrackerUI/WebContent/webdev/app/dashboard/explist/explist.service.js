@@ -12,8 +12,10 @@
 				rows: []
 			},
 			maxPageNo: 0,
+			currPageSet: 0,
 			currPageNo: 0,
 			rowCount: 1,
+			pageSetSize: C.SIZES.PAGINATE_BTN,
 			loading: false,
 			filterApplied: false,
 			thinList: true,
@@ -40,6 +42,7 @@
 		};
 		var loadData = function(dt) {
 			data.rows = dt;
+			data.currPageSet = 0;
 			data.currPageNo = 0;
 			data.loading = false;
 

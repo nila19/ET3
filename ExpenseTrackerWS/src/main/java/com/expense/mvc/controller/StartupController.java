@@ -15,6 +15,7 @@ import com.expense.mvc.model.ui.AccountUI;
 import com.expense.mvc.model.ui.BillUI;
 import com.expense.mvc.model.ui.CategoryUI;
 import com.expense.mvc.model.ui.CityUI;
+import com.expense.mvc.model.ui.FlagMinUI;
 import com.expense.mvc.model.ui.MonthUI;
 import com.expense.mvc.service.StartupService;
 
@@ -25,6 +26,11 @@ public class StartupController {
 
 	@Autowired
 	private StartupService ss;
+
+	@RequestMapping(value = "/connect", method = RequestMethod.GET)
+	public FlagMinUI connect() {
+		return ss.connect();
+	}
 
 	@RequestMapping(value = "/cities", method = RequestMethod.GET)
 	public List<CityUI> getCities() {
@@ -61,9 +67,9 @@ public class StartupController {
 		return ss.getAllActiveAccounts(city);
 	}
 
-	@RequestMapping(value = "/accounts/all", method = RequestMethod.GET)
-	public List<AccountUI> getAllAccounts(@RequestParam int city) {
-		return ss.getAllAccounts(city);
+	@RequestMapping(value = "/accounts/inactive", method = RequestMethod.GET)
+	public List<AccountUI> getInactiveAccounts(@RequestParam int city) {
+		return ss.getInactiveAccounts(city);
 	}
 
 	@RequestMapping(value = "/account/{account}", method = RequestMethod.GET)

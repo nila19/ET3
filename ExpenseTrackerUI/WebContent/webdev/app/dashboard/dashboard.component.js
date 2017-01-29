@@ -9,14 +9,13 @@
 	});
 
 	DashboardController.$inject = ['dashboardwrapperService', 'dashboardService',
-			'dashboardFlagsService', 'etmenuService', 'explistService', 'startupService',
-			'searchService', 'CONSTANTS', 'VALUES', '$timeout'];
-	function DashboardController(dws, ds, dfs, ms, els, sus, ss, C, V, $timeout) {
+			'dashboardFlagsService', 'etmenuService', 'explistService', 'searchService',
+			'CONSTANTS', 'VALUES', '$timeout'];
+	function DashboardController(dws, ds, dfs, ms, els, ss, C, V, $timeout) {
 		var vm = this;
 		init();
 
 		function init() {
-			sus.loadAll();
 			ms.data.page = C.PAGES.DASHBOARD;
 			els.data.rowCount = C.SIZES.DASHBOARD_ROW;
 			els.data.thinList = true;

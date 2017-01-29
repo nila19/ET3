@@ -8,8 +8,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -28,12 +26,12 @@ import com.expense.mvc.model.ui.AccountUI;
 import com.expense.mvc.model.ui.BillUI;
 import com.expense.mvc.model.ui.CategoryUI;
 import com.expense.mvc.model.ui.CityUI;
+import com.expense.mvc.model.ui.FlagMinUI;
 import com.expense.mvc.model.ui.MonthUI;
 import com.expense.utils.FU;
 
 @Service
 public class StartupService {
-	private static final Logger logger = LogManager.getLogger("log." + StartupService.class);
 
 	@Autowired
 	private DataKeyDAO dataKeyDAO;
@@ -51,19 +49,14 @@ public class StartupService {
 	private BillDAO billDAO;
 
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = true)
-	public boolean canConnect() {
-		boolean valid = true;
+	public FlagMinUI connect() {
+		boolean valid = false;
 		try {
-			accountDAO.findAll();
+			dataKeyDAO.findAll();
+			valid = true;
 		} catch (Exception e) {
-			StartupService.logger.error("System Error...", e);
-			valid = false;
 		}
-		return valid;
-	}
-
-	public boolean isLoggedIn() {
-		return true;
+		return new FlagMinUI(valid);
 	}
 
 	// **************************** DataKey ****************************//
@@ -92,6 +85,17 @@ public class StartupService {
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = true)
 	public List<AccountUI> getAllActiveAccounts(int dataKey) {
 		List<Account> accts = accountDAO.findAllActive(dataKey);
+
+		List<AccountUI> uis = new ArrayList<AccountUI>();
+		for (Account acct : accts) {
+			uis.add(new AccountUI(acct));
+		}
+		return uis;
+	}
+
+	@Transactional(propagation = Propagation.REQUIRED, readOnly = true)
+	public List<AccountUI> getInactiveAccounts(int dataKey) {
+		List<Account> accts = accountDAO.findAllInactive(dataKey);
 
 		List<AccountUI> uis = new ArrayList<AccountUI>();
 		for (Account acct : accts) {

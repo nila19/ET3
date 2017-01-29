@@ -47,11 +47,12 @@
                             </td>
                           </tr>
                           <tr>
-                            <td colspan="4">
+                            <td colspan="2">
                               <div class="stats">
                                 <button type="button" class="btn btn-simple btn-xs">
                                   <i class="material-icons">schedule</i>
-                                </button>
+                                </button>&nbsp;
+                                <em>{{$ctrl.data.maxPageNo + 1}}</em>
                               </div>
                             </td>
                             <td><span ng-if="$ctrl.data.loading" class="btn btn-simple btn-xs no-btn"><img alt="loading..." style="width:20px;height:20px;" ng-src="loading.gif"></span>&nbsp;</td>
@@ -62,15 +63,14 @@
                                 </button>
                               </div>
                             </td>
-                            <td>
-                              <div class="stats">
-                                <button type="button" ng-disabled="!$ctrl.hasNextPage()" ng-click="$ctrl.nextPage()" class="btn btn-primary btn-xs pull-right">
-                                  <i class="material-icons">skip_next</i>
-                                </button>
-                                <button type="button" ng-disabled="!$ctrl.hasPrevPage()" ng-click="$ctrl.prevPage()" class="btn btn-primary btn-xs pull-right">
-                                  <i class="material-icons">skip_previous</i>
-                                </button>
-                              </div>
+                            <td colspan="3">
+                              <ul class="pagination pagination-primary etPaginate">
+                                <li><a href="" ng-show="$ctrl.hasPrevPageSet()" ng-click="$ctrl.prevPageSet()"><</a></li>
+                                <li ng-repeat="i in [0, 1, 2, 3, 4]" ng-class="{'active':$ctrl.data.currPageNo===$ctrl.page(i)}">
+                                  <a href="" ng-show="$ctrl.page(i)<=$ctrl.data.maxPageNo" ng-click="$ctrl.loadPage($ctrl.page(i))">{{$ctrl.page(i)+1}}</a>
+                                </li>
+                                <li><a href="" ng-show="$ctrl.hasNextPageSet()" ng-click="$ctrl.nextPageSet()">></a></li>
+                              </ul>
                             </td>
                           </tr>
                         </tbody>

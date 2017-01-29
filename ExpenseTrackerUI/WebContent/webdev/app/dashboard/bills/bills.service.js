@@ -12,22 +12,24 @@
 			showBills: false,
 			rows: [],
 			pgData: {},
+			currPageSet: 0,
 			currPageNo: 0,
 			maxPageNo: 0,
+			pageSetSize: C.SIZES.PAGINATE_BTN,
 			filterApplied: false,
 			filterBy: null,
 			loading: false
 		};
 		var rows = C.SIZES.BILLS_ROW;
 
-		var loadDataForPage = function() {
+		var loadCurrentPage = function() {
 			var pg = data.currPageNo;
 			data.pgData.rows = data.rows.slice(pg * rows, (pg + 1) * rows);
 		};
 		var loadBill = function(dt) {
 			var idx = us.getIndexOf(data.rows, dt.id);
 			data.rows[idx] = dt;
-			loadDataForPage();
+			loadCurrentPage();
 			data.loading = false;
 		};
 		var refreshBill = function(id) {
@@ -37,8 +39,9 @@
 		var loadData = function(dt) {
 			data.rows = dt;
 			data.maxPageNo = Math.ceil(data.rows.length / rows) - 1;
+			data.currPageSet = 0;
 			data.currPageNo = 0;
-			loadDataForPage();
+			loadCurrentPage();
 			data.loading = false;
 			ds.data.loading.donestep = 2;
 		};
@@ -56,7 +59,7 @@
 		return {
 			data: data,
 			loadData: loadData,
-			loadDataForPage: loadDataForPage,
+			loadCurrentPage: loadCurrentPage,
 			loadBillsForAcct: loadBillsForAcct,
 			loadAllBills: loadAllBills,
 			refreshBill: refreshBill

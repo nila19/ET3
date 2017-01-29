@@ -110,8 +110,7 @@ public class EntryService {
 		}
 
 		// If Financial Impact : for ADJUST both Accounts should be Active, else
-		// just FromAccount
-		// should be Active.
+		// just FromAccount should be Active.
 		if (finImpact) {
 			if (t.getAdjustInd() == Transaction.Adjust.YES.type) {
 				if (from.getAccountId() != 0 && !from.isActive()) {

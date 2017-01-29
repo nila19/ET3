@@ -15,10 +15,12 @@
 		init();
 
 		// ***** Exposed functions ******//
-		vm.hasPrevPage = hasPrevPage;
-		vm.hasNextPage = hasNextPage;
-		vm.prevPage = prevPage;
-		vm.nextPage = nextPage;
+		vm.hasPrevPageSet = hasPrevPageSet;
+		vm.hasNextPageSet = hasNextPageSet;
+		vm.prevPageSet = prevPageSet;
+		vm.nextPageSet = nextPageSet;
+		vm.page = page;
+		vm.loadPage = loadPage;
 		vm.showBillPay = showBillPay;
 		vm.filterExpenses = filterExpenses;
 		vm.clearFilter = clearFilter;
@@ -28,22 +30,30 @@
 			vm.data = bs.data;
 		}
 
-		function hasPrevPage() {
-			return bs.data.currPageNo > 0;
+		function hasPrevPageSet() {
+			return bs.data.currPageSet > 0;
 		}
 
-		function hasNextPage() {
-			return bs.data.currPageNo < bs.data.maxPageNo;
+		function hasNextPageSet() {
+			return ((bs.data.currPageSet + 1) * bs.data.pageSetSize) <= bs.data.maxPageNo;
 		}
 
-		function prevPage() {
-			bs.data.currPageNo -= 1;
-			bs.loadDataForPage();
+		function prevPageSet() {
+			bs.data.currPageSet -= 1;
 		}
 
-		function nextPage() {
-			bs.data.currPageNo += 1;
-			bs.loadDataForPage();
+		function nextPageSet() {
+			bs.data.currPageSet += 1;
+		}
+
+		// idx will be 0,1,2,3,4
+		function page(idx) {
+			return (bs.data.currPageSet * bs.data.pageSetSize) + idx;
+		}
+
+		function loadPage(pg) {
+			bs.data.currPageNo = pg;
+			bs.loadCurrentPage();
 		}
 
 		function showBillPay(id) {

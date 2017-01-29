@@ -12,10 +12,11 @@
 		},
 		SIZES: {
 			SUMMARY_COL: 13,
-			SEARCH_ROW: 13, // # of Expense @ Search
-			DASHBOARD_ROW: 4, // # of Expense @ Dashboard
-			BILLS_ROW: 2, // # of Bills @ Dashboard
-			ACCTS_COL: 6
+			SEARCH_ROW: 16, // # of Expense @ Search
+			DASHBOARD_ROW: 5, // # of Expense @ Dashboard
+			BILLS_ROW: 3, // # of Bills @ Dashboard
+			ACCTS_COL: 6, // # of Accounts in a row @ Dashboard
+			PAGINATE_BTN: 5, // # of Pagination buttons for Bills & ExpList
 		},
 		AMOUNT_REGEXP: /^-?\d+(?:\.\d{2}){0,1}$/,
 		BASE_URL: 'http://localhost:8080/ExpenseTrackerWS/servlet',

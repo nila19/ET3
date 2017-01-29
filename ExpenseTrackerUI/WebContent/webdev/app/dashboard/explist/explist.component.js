@@ -15,10 +15,12 @@
 		init();
 
 		// ***** Exposed functions ******//
-		vm.hasPrevPage = hasPrevPage;
-		vm.hasNextPage = hasNextPage;
-		vm.prevPage = prevPage;
-		vm.nextPage = nextPage;
+		vm.hasPrevPageSet = hasPrevPageSet;
+		vm.hasNextPageSet = hasNextPageSet;
+		vm.prevPageSet = prevPageSet;
+		vm.nextPageSet = nextPageSet;
+		vm.page = page;
+		vm.loadPage = loadPage;
 		vm.showModifyExpense = showModifyExpense;
 		vm.showDeleteExpense = showDeleteExpense;
 		vm.swapExpense = swapExpense;
@@ -30,21 +32,29 @@
 			vm.data = els.data;
 		}
 
-		function hasPrevPage() {
-			return els.data.currPageNo > 0;
+		function hasPrevPageSet() {
+			return els.data.currPageSet > 0;
 		}
 
-		function hasNextPage() {
-			return els.data.currPageNo < els.data.maxPageNo;
+		function hasNextPageSet() {
+			return ((els.data.currPageSet + 1) * els.data.pageSetSize) <= els.data.maxPageNo;
 		}
 
-		function prevPage() {
-			els.data.currPageNo -= 1;
-			els.loadCurrentPage();
+		function prevPageSet() {
+			els.data.currPageSet -= 1;
 		}
 
-		function nextPage() {
-			els.data.currPageNo += 1;
+		function nextPageSet() {
+			els.data.currPageSet += 1;
+		}
+
+		// idx will be 0,1,2,3,4
+		function page(idx) {
+			return (els.data.currPageSet * els.data.pageSetSize) + idx;
+		}
+
+		function loadPage(pg) {
+			els.data.currPageNo = pg;
 			els.loadCurrentPage();
 		}
 

@@ -3,6 +3,6 @@
 (function(angular) {
 	'use strict';
 
-	angular.module('etmenu', ['core', 'ngRoute']);
+	angular.module('etmenu', ['core', 'startup', 'ngRoute']);
 
 })(window.angular);
