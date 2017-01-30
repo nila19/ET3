@@ -35,14 +35,17 @@ public class SummaryController {
 
 	@RequestMapping(value = "/chart", method = RequestMethod.GET)
 	public ChartUI chart(@RequestParam int city) throws ParseException {
-		SummaryUI sui = summaryService.getSummary(city, true, true, false).get(0);
+		SummaryUI regular = summaryService.getSummary(city, true, false, false).get(0);
+		SummaryUI adhoc = summaryService.getSummary(city, false, true, false).get(0);
 		List<MonthUI> months = ss.getAllTransMonths(city);
 		ChartUI cui = new ChartUI();
 		for (int i = 0; i < months.size(); i++) {
 			MonthUI mui = months.get(i);
 			if (!mui.isAggregate()) {
 				cui.getLabels().add(mui.getName());
-				cui.getValues().add(sui.amount[i]);
+				cui.getRegulars().add(regular.amount[i]);
+				cui.getAdhocs().add(adhoc.amount[i]);
+				cui.getTotals().add(regular.amount[i] + adhoc.amount[i]);
 			}
 		}
 		return cui;

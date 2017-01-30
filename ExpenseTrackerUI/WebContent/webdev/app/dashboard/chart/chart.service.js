@@ -24,13 +24,18 @@
 			axisX: {
 				showGrid: false
 			},
+			axisY: {
+				labelInterpolationFnc: function(value) {
+					return '$' + value;
+				}
+			},
 			low: 0,
-			high: 2500,
+			high: 3500,
 			chartPadding: {
 				top: 0,
 				right: 5,
 				bottom: 0,
-				left: 0
+				left: 5
 			}
 		};
 		var responsiveOptions = [['screen and (max-width: 640px)', {
@@ -47,25 +52,20 @@
 					.Bar('#' + data.tagId, data.pgData, chartOptions, responsiveOptions);
 			md.startAnimationForBarChart(chart);
 		};
-		var findMax = function(series) {
-			var max = 0;
-			angular.forEach(series, function(value) {
-				if (value > max) {
-					max = value;
-				}
-			});
-			return max;
-		};
 		var loadCurrentPage = function() {
 			var pg = data.currPageNo;
 			var cols = data.columns;
 			data.pgData.labels = data.labels.slice(pg * cols, (pg + 1) * cols);
-			data.pgData.series = data.series.slice(pg * cols, (pg + 1) * cols);
+			data.pgData.series[0] = data.series[0].slice(pg * cols, (pg + 1) * cols);
+			data.pgData.series[1] = data.series[1].slice(pg * cols, (pg + 1) * cols);
+			data.pgData.series[2] = data.series[2].slice(pg * cols, (pg + 1) * cols);
 		};
 		var loadChartData = function(dt) {
 			data.labels = dt.labels;
-			data.series = dt.values;
-			chartOptions.high = findMax(data.series);
+			data.series[0] = dt.regulars;
+			data.series[1] = dt.adhocs;
+			data.series[2] = dt.totals;
+			// chartOptions.high = Math.max.apply(null, data.series[0]);
 
 			data.maxPageNo = Math.ceil(data.labels.length / data.columns) - 1;
 			data.currPageNo = 0;
@@ -81,6 +81,7 @@
 		return {
 			data: data,
 			loadChart: loadChart,
+			loadCurrentPage: loadCurrentPage,
 			renderChart: renderChart
 		};
 	}

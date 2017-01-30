@@ -8,14 +8,11 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 public class ChartUI implements java.io.Serializable {
 	private static final long serialVersionUID = 654487747864639606L;
 	private List<String> labels = new ArrayList<String>();
-	private List<Double> values = new ArrayList<Double>();
+	private List<Double> regulars = new ArrayList<Double>();
+	private List<Double> adhocs = new ArrayList<Double>();
+	private List<Double> totals = new ArrayList<Double>();
 
 	public ChartUI() {
-	}
-
-	public ChartUI(List<String> labels, List<Double> values) {
-		this.labels = labels;
-		this.values = values;
 	}
 
 	public List<String> getLabels() {
@@ -26,12 +23,28 @@ public class ChartUI implements java.io.Serializable {
 		this.labels = labels;
 	}
 
-	public List<Double> getValues() {
-		return values;
+	public List<Double> getRegulars() {
+		return regulars;
 	}
 
-	public void setValues(List<Double> values) {
-		this.values = values;
+	public void setRegulars(List<Double> regulars) {
+		this.regulars = regulars;
+	}
+
+	public List<Double> getAdhocs() {
+		return adhocs;
+	}
+
+	public void setAdhocs(List<Double> adhocs) {
+		this.adhocs = adhocs;
+	}
+
+	public List<Double> getTotals() {
+		return totals;
+	}
+
+	public void setTotals(List<Double> totals) {
+		this.totals = totals;
 	}
 
 	@Override

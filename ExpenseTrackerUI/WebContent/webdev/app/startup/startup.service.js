@@ -61,8 +61,6 @@
 				V.data.accounts.push(ac);
 				V.data.allAccounts.push(ac);
 			});
-			// V.data.accounts = accounts;
-			// V.data.allAccounts = accounts;
 			// Load to accountService - to preload the accounts row @ dashboard
 			acs.loadData(accounts);
 			data.status += 10;

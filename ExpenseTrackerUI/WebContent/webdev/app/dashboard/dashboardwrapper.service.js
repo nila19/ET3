@@ -28,9 +28,7 @@
 		};
 		var waitOnStepThree = function() {
 			if (ds.data.loading.donestep === 3) {
-				// FIXME - Fix the Charts.
-				// stepFour();
-				stepFive();
+				stepFour();
 			} else {
 				$timeout(function() {
 					waitOnStepThree();
