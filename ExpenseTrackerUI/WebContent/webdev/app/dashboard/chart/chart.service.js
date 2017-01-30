@@ -5,13 +5,20 @@
 
 	angular.module('dashboard.chart').factory('chartService', chartService);
 
-	chartService.$inject = ['etmenuService'];
-	function chartService(ms) {
+	chartService.$inject = ['etmenuService', 'dashboardService', 'ajaxService', 'CONSTANTS'];
+	function chartService(ms, ds, aj, C) {
 		var data = {
 			showChart: false,
 			tagId: 'chartMonthlyExpense',
 			labels: [],
-			series: []
+			series: [],
+			pgData: {
+				labels: [],
+				series: []
+			},
+			maxPageNo: 0,
+			currPageNo: 0,
+			columns: C.SIZES.CHART_COL
 		};
 		var chartOptions = {
 			axisX: {
@@ -35,31 +42,45 @@
 			}
 		}]];
 
-		var dummyChart = function() {
-			return {
-				labels: ['Nov 16', 'Oct 16', 'Sep 16', 'Aug 16', 'Jul 16', 'Jun 16', 'May 16',
-						'Apr 16', 'Mar 16', 'Feb 16', 'Jan 16', 'Dec 15'],
-				series: [[1542.45, 443.56, 1320.25, 780.45, 553.43, 1453.45, 1326.45, 1434.45, 568,
-						1610.75, 756.43, 1895.56]]
-			};
-		};
-
-		var loadData = function(dt) {
-			data.labels = dt.labels;
-			data.series = dt.series;
-		};
-		var loadChartData = function() {
-			console.log('Getting chart data @ vDB... ' + ms.data.menu.city.name);
-			loadData(dummyChart());
-		};
 		var renderChart = function() {
-			var chart = Chartist.Bar('#' + data.tagId, data, chartOptions, responsiveOptions);
+			var chart = Chartist
+					.Bar('#' + data.tagId, data.pgData, chartOptions, responsiveOptions);
 			md.startAnimationForBarChart(chart);
+		};
+		var findMax = function(series) {
+			var max = 0;
+			angular.forEach(series, function(value) {
+				if (value > max) {
+					max = value;
+				}
+			});
+			return max;
+		};
+		var loadCurrentPage = function() {
+			var pg = data.currPageNo;
+			var cols = data.columns;
+			data.pgData.labels = data.labels.slice(pg * cols, (pg + 1) * cols);
+			data.pgData.series = data.series.slice(pg * cols, (pg + 1) * cols);
+		};
+		var loadChartData = function(dt) {
+			data.labels = dt.labels;
+			data.series = dt.values;
+			chartOptions.high = findMax(data.series);
+
+			data.maxPageNo = Math.ceil(data.labels.length / data.columns) - 1;
+			data.currPageNo = 0;
+			loadCurrentPage();
+			ds.data.loading.donestep = 4;
+		};
+		var loadChart = function() {
+			aj.get('/summary/chart', {
+				city: ms.data.menu.city.id
+			}, loadChartData);
 		};
 
 		return {
 			data: data,
-			loadChartData: loadChartData,
+			loadChart: loadChart,
 			renderChart: renderChart
 		};
 	}

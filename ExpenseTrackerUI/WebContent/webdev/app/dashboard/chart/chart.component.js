@@ -17,7 +17,6 @@
 		function init() {
 			vm.data = cs.data;
 
-			cs.loadChartData();
 			// Wait to make sure DOM is loaded with the tagId, before the chart is rendered..
 			$timeout(renderChart, 1000);
 		}

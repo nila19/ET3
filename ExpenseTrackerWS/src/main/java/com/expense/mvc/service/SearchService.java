@@ -25,15 +25,15 @@ public class SearchService {
 
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = true)
 	public List<TransactionUI> search(Map<String, String> input) {
-		System.out.println(new Date() + " :: 1");
+		System.out.println(new Date() + " :: SearchService #1");
 		List<Transaction> trans = this.transactionDAO.findForSearch(toSearchUI(input));
-		System.out.println(new Date() + " :: 2");
+		System.out.println(new Date() + " :: SearchService #2");
 
 		List<TransactionUI> uis = new ArrayList<TransactionUI>();
 		for (Transaction tran : trans) {
 			uis.add(new TransactionUI(tran));
 		}
-		System.out.println(new Date() + " :: 3");
+		System.out.println(new Date() + " :: SearchService #3");
 		return uis;
 	}
 

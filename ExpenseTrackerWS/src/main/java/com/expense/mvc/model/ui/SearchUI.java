@@ -63,7 +63,6 @@ public class SearchUI implements java.io.Serializable {
 	public void setTransMonth(long transMonth) {
 		this.transMonth = transMonth;
 		this.dtTransMonth = new Date(this.transMonth);
-		System.out.println(this.dtTransMonth);
 	}
 
 	public boolean isTransMonthAggr() {

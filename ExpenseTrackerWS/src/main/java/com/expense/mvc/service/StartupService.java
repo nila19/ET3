@@ -190,7 +190,7 @@ public class StartupService {
 		for (MonthUI month : months) {
 			Calendar c = FU.getYearEnd(month.getId());
 			years.put(c.get(Calendar.YEAR), c.getTime());
-			if (month.equals(currMonth)) {
+			if (month.getSeq() == currMonth.getSeq()) {
 				currMonthPresent = true;
 			}
 		}

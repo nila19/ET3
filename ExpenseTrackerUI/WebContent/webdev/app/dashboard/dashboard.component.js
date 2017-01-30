@@ -18,23 +18,13 @@
 		function init() {
 			ms.data.page = C.PAGES.DASHBOARD;
 			els.data.rowCount = C.SIZES.DASHBOARD_ROW;
-			els.data.thinList = true;
-			els.data.thinListToggle = false;
-
-			// Temporarily resize the EXPLIST to fit the page, until the search reloads the list.
-			els.data.currPageNo = 0;
-			els.loadCurrentPage();
-			ss.initializeData();
 
 			// If Menu is not loaded yet; load the default city from V.
 			ms.checkInit();
 
-			setFlags();
-			loadPage();
-		}
-
-		function setFlags() {
+			dws.initialize();
 			dfs.setFlags();
+			loadPage();
 		}
 
 		// Load default bills & expenses once menu is loaded.

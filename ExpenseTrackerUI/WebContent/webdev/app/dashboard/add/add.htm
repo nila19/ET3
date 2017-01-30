@@ -7,13 +7,13 @@
                       <span class="nav-tabs-title text-uppercase">Add</span>
                       <ul class="nav nav-tabs" data-tabs="tabs">
                         <li class="active">
-                          <a href="" ng-click="$ctrl.data.adjust = false" data-toggle="tab"> 
+                          <a href="" ng-click="$ctrl.data.adjust = false;$ctrl.data.toAccount = null;" data-toggle="tab"> 
                             <i class="material-icons">add_shopping_cart</i>Expense
                             <div class="ripple-container"></div>
                           </a>
                         </li>
                         <li class="">
-                          <a href="" ng-click="$ctrl.data.adjust = true;$ctrl.data.adhoc = false;" data-toggle="tab">
+                          <a href="" ng-click="$ctrl.data.adjust = true;$ctrl.data.adhoc = false;$ctrl.data.category = null;" data-toggle="tab">
                             <i class="material-icons">transform</i>Adjustment
                             <div class="ripple-container"></div>
                           </a>
@@ -72,7 +72,7 @@
                           </div>
                           <div class="col-md-3">
                             <div class="form-group">
-                              <button type="submit" ng-disabled="addExpForm.$invalid" tooltip rel="tooltip" title="Add Expense" class="btn btn-success btn-lg pull-right">
+                              <button type="submit" ng-disabled="addExpForm.$invalid" class="btn btn-success btn-lg pull-right">
                                 <i class="material-icons">add</i>
                               </button>
                             </div>
@@ -119,7 +119,7 @@
                           </div>
                           <div class="col-md-3">
                             <div class="form-group">
-                              <button type="submit" ng-disabled="addAdjForm.$invalid" tooltip rel="tooltip" title="Add Adjustment" class="btn btn-success btn-lg pull-right">
+                              <button type="submit" ng-disabled="addAdjForm.$invalid" class="btn btn-success btn-lg pull-right">
                                 <i class="material-icons">add</i>
                               </button>
                             </div>

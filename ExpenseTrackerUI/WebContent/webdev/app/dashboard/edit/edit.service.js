@@ -32,6 +32,25 @@
 		};
 
 		// Modify Expense
+		var buildModifyInput = function() {
+			var input = {
+				city: data.expense.city,
+				id: data.expense.id,
+				fromAccount: data.expense.fromAccount,
+				description: data.expense.description,
+				amount: data.expense.amount,
+				transDate: data.expense.transDate,
+				adjust: data.expense.adjust
+			};
+			if (data.expense.adjust) {
+				input.toAccount = data.expense.toAccount;
+			} else {
+				input.bill = data.expense.bill;
+				input.category = data.expense.category;
+				input.adhoc = data.expense.adhoc;
+			}
+			return input;
+		};
 		var loadModifyData = function() {
 			data.loading = false;
 			elws.modifyItem(data.expense.id);
@@ -39,7 +58,7 @@
 			$('#model_Modify').modal('hide');
 		};
 		var modifyExpense = function() {
-			aj.post('/entry/modify', data.expense, loadModifyData);
+			aj.post('/entry/modify', buildModifyInput(), loadModifyData);
 			data.loading = true;
 		};
 

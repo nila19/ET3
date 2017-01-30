@@ -21,6 +21,23 @@
 			transDate: ''
 		};
 
+		var buildAddInput = function() {
+			var input = {
+				city: ms.data.menu.city,
+				fromAccount: data.fromAccount,
+				description: data.description,
+				amount: data.amount,
+				transDate: data.transDate,
+				adjust: data.adjust
+			};
+			if (data.adjust) {
+				input.toAccount = data.toAccount;
+			} else {
+				input.category = data.category;
+				input.adhoc = data.adhoc;
+			}
+			return input;
+		};
 		var initForm = function() {
 			data.amount = '';
 			data.description = '';
@@ -39,8 +56,7 @@
 			}
 		};
 		var addExpense = function() {
-			data.city = ms.data.menu.city;
-			aj.post('/entry/add', data, loadData);
+			aj.post('/entry/add', buildAddInput(), loadData);
 		};
 
 		return {
