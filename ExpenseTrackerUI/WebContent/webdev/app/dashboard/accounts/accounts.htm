@@ -11,7 +11,7 @@
                 </div>
                 <div class="card-footer">
                   <div ng-if="acct.billed && !acct.billDue" class="stats">
-                    <i class="material-icons">schedule</i> &nbsp;Next Bill on {{acct.nextBillDt | date:'dd-MMM'}}
+                    <i class="material-icons text-info">schedule</i> &nbsp;Next Bill on {{acct.nextBillDt | date:'dd-MMM'}}
                   </div>
                   <div ng-if="acct.billed && acct.billDue" class="stats">
                     <i class="material-icons text-warning">local_offer</i> {{acct.billAmt | currency:'$ '}} (Due on {{acct.dueDt | date:'dd-MMM'}})

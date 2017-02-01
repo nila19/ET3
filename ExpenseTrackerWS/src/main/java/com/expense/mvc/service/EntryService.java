@@ -226,8 +226,8 @@ public class EntryService {
 	}
 
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = true)
-	public List<BillUI> getBillsforAccount(int accId) {
-		List<Bill> bills = billDAO.findForAcct(accId);
+	public List<BillUI> getBillsforAccount(int accId, boolean open) {
+		List<Bill> bills = billDAO.findForAcct(accId, open);
 
 		List<BillUI> uis = new ArrayList<BillUI>();
 		for (Bill bill : bills) {

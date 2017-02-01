@@ -78,8 +78,8 @@ public class StartupController {
 	}
 
 	@RequestMapping(value = "/bills", method = RequestMethod.GET)
-	public List<BillUI> getBills(@RequestParam int city) {
-		return ss.getAllBills(city);
+	public List<BillUI> getBills(@RequestParam int city, @RequestParam boolean open) {
+		return ss.getAllBills(city, open);
 	}
 
 	@RequestMapping(value = "/months/entry", method = RequestMethod.GET)

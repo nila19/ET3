@@ -56,7 +56,7 @@
 		};
 		var filterAccount = function(id) {
 			data.filterBy = id;
-			bs.data.filterApplied = true;
+			bs.clearBillsList();
 			bs.loadBillsForAcct(id);
 			ss.data.account = {
 				id: id

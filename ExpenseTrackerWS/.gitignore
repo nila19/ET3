@@ -1,6 +1,7 @@
 /build/
 /bin/
 /gradle/
+/src/main/webapp/
 *.class
 .gradle
 .settings

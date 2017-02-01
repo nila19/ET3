@@ -21,6 +21,7 @@
 				// Clear filter for Bills
 				if (acs.data.filterBy) {
 					bs.data.filterApplied = false;
+					bs.clearBillsList();
 					bs.loadAllBills();
 				}
 				bs.data.filterBy = null;

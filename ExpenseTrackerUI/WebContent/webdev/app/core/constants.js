@@ -21,6 +21,7 @@
 		},
 		AMOUNT_REGEXP: /^-?\d+(?:\.\d{2}){0,1}$/,
 		BASE_URL: 'http://localhost:8080/ExpenseTrackerWS/servlet',
+		// BASE_URL: '../servlet',
 		PAGES: {
 			DASHBOARD: 'DASHBOARD',
 			SUMMARY: 'SUMMARY',

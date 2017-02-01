@@ -55,9 +55,9 @@ public class EntryController {
 		return es.getTransaction(transId);
 	}
 
-	@RequestMapping(value = "/bills/{accountId}", method = RequestMethod.GET)
-	public List<BillUI> getBillsforAccount(@PathVariable int accountId) {
-		return es.getBillsforAccount(accountId);
+	@RequestMapping(value = "/bills", method = RequestMethod.GET)
+	public List<BillUI> getBillsforAccount(@RequestParam int acctId, @RequestParam boolean open) {
+		return es.getBillsforAccount(acctId, open);
 	}
 
 	@RequestMapping(value = "/bill/{billId}", method = RequestMethod.GET)

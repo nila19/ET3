@@ -13,9 +13,9 @@ plugins.util.colors = chalk;
 //****************************** Intermediate path variables ******************************//
 var	dir = {
 	src: 'WebContent/webdev',
-	dest: 'WebContent/webapp',
 	appSrc: 'WebContent/webdev/app',
-	appDest: 'WebContent/webapp/app'
+	dest: 'WebContent/webapp',
+	dest2: '../ExpenseTrackerWS/src/main/webapp'
 };
 
 var path = {
@@ -26,6 +26,7 @@ var path = {
 	},
 	less: dir.appSrc + '/**/*.less',
 	htm: dir.appSrc + '/**/*.htm',
+	image: dir.appSrc + '/**/*.gif',
 	bower: dir.src + '/bower_components/**/*.*',
 	theme: dir.src + '/theme/**/*.*',
 	template: dir.src + '/template/**/*.*',
@@ -55,6 +56,7 @@ function checkColor() {
 var flag = {
 	prod: !!plugins.util.env.prod,		//gulp --prod
 	merge: !!plugins.util.env.merge,	//gulp --merge
+	dest2: !!plugins.util.env.dest2,	//gulp --dest2 - Make the destination as ExpenseTrackerWS.
 	maps: !plugins.util.env.prod,		//Do not generate sourcemaps for --prod
 	//less_preserve: !plugins.util.env.prod,		//Do not preserve less for --prod
 };
@@ -63,12 +65,18 @@ var src = {
 	js: [path.js.all].concat(buildExcludes()),
 	less: [path.less].concat(buildExcludes()),
 	htm: [path.htm].concat(buildExcludes()),
+	image: [path.image].concat(buildExcludes()),
 	jsModules: [path.js.modules].concat(buildExcludes()),
 	jsOthers: [path.js.all].concat(buildExcludes(path.js.modules)),
 	bower: path.bower,
 	theme: path.theme,
 	template: path.template
 };
+
+//gulp --dest2 - Make the destination as ExpenseTrackerWS.
+if(flag.dest2) {
+	dir.dest = dir.dest2;
+}
 
 var dest = {
 	root: dir.dest,
@@ -106,7 +114,7 @@ gulp.task('non-app', function(done) {
 });
 
 gulp.task('app', function(done) {
-	return runSequence('app.clean', 'js', 'css', 'htm', function() {
+	return runSequence('app.clean', 'js', 'css', 'htm', 'image', function() {
 		log('APP', 'END');
 		plugins.util.log(plugins.util.colors.yellow('***** COMPLETED ALL APP TASKS *****'));
 		done();
@@ -117,6 +125,7 @@ gulp.task('watch', ['app', 'bower'], function() {
 	gulp.watch(src.js, ['js']);
 	gulp.watch(src.less, ['css']);
 	gulp.watch(src.htm, ['htm']);
+	gulp.watch(src.image, ['image']);
 	gulp.watch(src.bower, ['bower']);
 	plugins.util.log(plugins.util.colors.cyan('***** WATCHING FOR SOURCE CHANGES *****'));
 });
@@ -159,6 +168,10 @@ gulp.task('theme', function() {
 //***************************** App Sources *****************************//
 gulp.task('htm', function() {
 	return gulp.src(src.htm)
+		.pipe(gulp.dest(dest.app));
+});
+gulp.task('image', function() {
+	return gulp.src(src.image)
 		.pipe(gulp.dest(dest.app));
 });
 

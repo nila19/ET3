@@ -22,13 +22,14 @@ public class BillDAO extends BaseDAO<Bill, Integer> {
 		idType = Integer.class;
 	}
 
-	public List<Bill> findAll(int dataKey) {
+	public List<Bill> findAll(int dataKey, boolean open) {
 		HashMap<String, Object> parms = new HashMap<String, Object>();
 		parms.put("dataKey", dataKey);
 		parms.put("status", Bill.Status.CLOSED.status);
+		String op = open ? "and billBalance > 0" : "and billBalance = 0";
 
-		return findByParameters("from Bill where dataKey = :dataKey and status = :status order by strBillDt desc",
-				parms);
+		return findByParameters(
+				"from Bill where dataKey = :dataKey and status = :status " + op + " order by strBillDt desc", parms);
 	}
 
 	public List<Bill> findAllOpen(int dataKey) {
@@ -40,12 +41,14 @@ public class BillDAO extends BaseDAO<Bill, Integer> {
 				parms);
 	}
 
-	public List<Bill> findForAcct(int accId) {
+	public List<Bill> findForAcct(int accId, boolean open) {
 		HashMap<String, Object> parms = new HashMap<String, Object>();
 		parms.put("accId", accId);
 		parms.put("status", Bill.Status.CLOSED.status);
+		String op = open ? "and billBalance > 0" : "and billBalance = 0";
 
 		return findByParameters(
-				"from Bill where account.accountId = :accId and status = :status order by strBillDt desc", parms);
+				"from Bill where account.accountId = :accId and status = :status " + op + " order by strBillDt desc",
+				parms);
 	}
 }

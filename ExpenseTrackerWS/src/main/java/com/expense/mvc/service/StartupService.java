@@ -212,8 +212,8 @@ public class StartupService {
 
 	// **************************** Bill ****************************//
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = true)
-	public List<BillUI> getAllBills(int dataKey) {
-		List<Bill> bills = billDAO.findAll(dataKey);
+	public List<BillUI> getAllBills(int dataKey, boolean open) {
+		List<Bill> bills = billDAO.findAll(dataKey, open);
 
 		List<BillUI> uis = new ArrayList<BillUI>();
 		for (Bill bill : bills) {

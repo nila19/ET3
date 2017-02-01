@@ -8,9 +8,9 @@
 		controller: BillsController
 	});
 
-	BillsController.$inject = ['billswrapperService', 'billsService', 'explistwrapperService',
-			'explistService', 'searchService'];
-	function BillsController(bws, bs, elws, els, ss) {
+	BillsController.$inject = ['billswrapperService', 'billsService', 'accountsService',
+			'explistwrapperService', 'explistService', 'searchService'];
+	function BillsController(bws, bs, acs, elws, els, ss) {
 		var vm = this;
 		init();
 
@@ -24,6 +24,8 @@
 		vm.showBillPay = showBillPay;
 		vm.filterExpenses = filterExpenses;
 		vm.clearFilter = clearFilter;
+		vm.showOpenBills = showOpenBills;
+		vm.showClosedBills = showClosedBills;
 
 		// ***** Function declarations *****//
 		function init() {
@@ -68,13 +70,30 @@
 				ss.data.bill = {
 					id: id
 				};
-				ss.data.account = null;
 				elws.reloadExpenses();
 			}
 		}
 
 		function clearFilter() {
 			elws.clearFilter();
+		}
+
+		function showOpenBills() {
+			bs.data.tab = 'OPEN';
+			bs.buildRowsForTab();
+		}
+
+		function showClosedBills() {
+			bs.data.tab = 'CLOSED';
+			if (bs.data.closedBills == null) {
+				if (acs.data.filterBy == null) {
+					bs.loadAllBills();
+				} else {
+					bs.loadBillsForAcct(acs.data.filterBy);
+				}
+			} else {
+				bs.buildRowsForTab();
+			}
 		}
 	}
 })(window.angular);
