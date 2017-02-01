@@ -242,6 +242,23 @@ public class EntryService {
 		return uis;
 	}
 
+	@Transactional(propagation = Propagation.REQUIRED, readOnly = true)
+	public List<BillUI> getAllBillsforAccount(int accId) {
+		List<Bill> bills = billDAO.findForAcct(accId);
+
+		List<BillUI> uis = new ArrayList<BillUI>();
+		for (Bill bill : bills) {
+			// Open Bills do not have bill amt & balance populated.
+			if (bill.isOpen()) {
+				double amt = BillCloser.calcBillAmt(bill);
+				bill.setBillAmt(amt);
+				bill.setBillBalance(amt);
+			}
+			uis.add(new BillUI(bill));
+		}
+		return uis;
+	}
+
 	@Transactional(propagation = Propagation.REQUIRED)
 	public TransMinUI payBill(BillPayUI bpui) {
 		Bill bill = billDAO.findById(bpui.getBill().getId());

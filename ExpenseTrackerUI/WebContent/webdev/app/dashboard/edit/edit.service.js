@@ -19,7 +19,10 @@
 			V.data.bills = dt;
 		};
 		var loadBills = function() {
-			aj.query('/entry/bills/' + data.expense.fromAccount.id, {}, loadBillData);
+			var input = {
+				acctId: data.expense.fromAccount.id,
+			};
+			aj.query('/entry/bills/all', input, loadBillData);
 		};
 
 		// Load Page Data

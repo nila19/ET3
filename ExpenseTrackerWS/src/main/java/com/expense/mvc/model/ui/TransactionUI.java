@@ -19,8 +19,6 @@ public class TransactionUI implements java.io.Serializable {
 	private double amount;
 	private Date entryDate;
 	private String transDate;
-	private boolean adhoc;
-	private boolean adjust;
 
 	private AccountUI fromAccount;
 	private double fromBalanceBf;
@@ -35,6 +33,10 @@ public class TransactionUI implements java.io.Serializable {
 	private Character status;
 
 	private BillUI bill;
+
+	private boolean adhoc;
+	private boolean adjust;
+	private boolean tallied;
 
 	public TransactionUI() {
 	}
@@ -59,6 +61,7 @@ public class TransactionUI implements java.io.Serializable {
 		transSeq = t.getTransSeq();
 		tallyInd = t.getTallyInd();
 		setTallyDate(t.getTallyDate());
+		tallied = t.getTallyInd() == 'Y' ? true : false;
 		if (t.getFromBill() != null) {
 			bill = new BillUI();
 			bill.setId(t.getFromBill().getBillId());
@@ -238,6 +241,14 @@ public class TransactionUI implements java.io.Serializable {
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
+	}
+
+	public boolean isTallied() {
+		return tallied;
+	}
+
+	public void setTallied(boolean tallied) {
+		this.tallied = tallied;
 	}
 
 	public BillUI getBill() {

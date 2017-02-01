@@ -60,6 +60,11 @@ public class EntryController {
 		return es.getBillsforAccount(acctId, open);
 	}
 
+	@RequestMapping(value = "/bills/all", method = RequestMethod.GET)
+	public List<BillUI> getAllBillsforAccount(@RequestParam int acctId) {
+		return es.getAllBillsforAccount(acctId);
+	}
+
 	@RequestMapping(value = "/bill/{billId}", method = RequestMethod.GET)
 	public BillUI getBill(@PathVariable int billId) {
 		return es.getBill(billId);

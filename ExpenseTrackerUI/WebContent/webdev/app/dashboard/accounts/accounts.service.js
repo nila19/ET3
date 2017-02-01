@@ -48,6 +48,7 @@
 			ms.data.loading = false;
 			us.showMsg('Tally', 'success');
 			refreshAccount(data.tallyOn);
+			ss.doSearch();
 		};
 		var tallyAccount = function(id) {
 			ms.data.loading = true;

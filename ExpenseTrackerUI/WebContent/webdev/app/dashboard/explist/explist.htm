@@ -25,7 +25,7 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <tr ng-repeat="trans in $ctrl.data.pgData.rows">
+                      <tr ng-repeat="trans in $ctrl.data.pgData.rows" ng-class="{'text-info':!trans.tallied}">
                         <td class="td-actions text-right">
                           <button type="button" ng-click="$ctrl.showModifyExpense(trans.id)" class="btn btn-warning btn-simple btn-xs">
                             <i class="material-icons">mode_edit</i>
