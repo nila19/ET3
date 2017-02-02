@@ -51,14 +51,14 @@ public class TallyService {
 		Date dt = new Date();
 		Account ac = accountDAO.findById(accountId);
 		ac.setTallyBalance(Double.valueOf(df.format(ac.getBalanceAmt())));
-		ac.setTallyDate(dt);
+		ac.setTallyDate(new java.sql.Timestamp(dt.getTime()));
 
 		accountDAO.save(ac);
 
 		TallyHistory h = new TallyHistory();
 		h.setDataKey(ac.getDataKey());
 		h.setAccount(ac);
-		h.setTallyDate(dt);
+		h.setTallyDate(new java.sql.Timestamp(dt.getTime()));
 		h.setTallyBalance(ac.getBalanceAmt());
 		tallyHistoryDAO.save(h);
 
@@ -69,7 +69,7 @@ public class TallyService {
 	private void tallyExpenseItems(Date dt, Set<Transaction> trans) {
 		for (Transaction t : trans) {
 			if (!t.isTallied()) {
-				t.setTallyDate(dt);
+				t.setTallyDate(new java.sql.Timestamp(dt.getTime()));
 				t.setTallyInd(Transaction.Tally.YES.status);
 				transactionDAO.save(t);
 			}

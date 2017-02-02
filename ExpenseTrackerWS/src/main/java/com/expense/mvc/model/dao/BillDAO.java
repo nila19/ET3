@@ -29,7 +29,7 @@ public class BillDAO extends BaseDAO<Bill, Integer> {
 		String op = open ? "and billBalance > 0" : "and billBalance = 0";
 
 		return findByParameters(
-				"from Bill where dataKey = :dataKey and status = :status " + op + " order by strBillDt desc", parms);
+				"from Bill where dataKey = :dataKey and status = :status " + op + " order by billDt desc", parms);
 	}
 
 	public List<Bill> findAllOpen(int dataKey) {
@@ -37,8 +37,7 @@ public class BillDAO extends BaseDAO<Bill, Integer> {
 		parms.put("dataKey", dataKey);
 		parms.put("status", Bill.Status.OPEN.status);
 
-		return findByParameters("from Bill where dataKey = :dataKey and status = :status order by strBillDt desc",
-				parms);
+		return findByParameters("from Bill where dataKey = :dataKey and status = :status order by billDt desc", parms);
 	}
 
 	public List<Bill> findForAcct(int accId, boolean open) {
@@ -48,7 +47,7 @@ public class BillDAO extends BaseDAO<Bill, Integer> {
 		String op = open ? "and billBalance > 0" : "and billBalance = 0";
 
 		return findByParameters(
-				"from Bill where account.accountId = :accId and status = :status " + op + " order by strBillDt desc",
+				"from Bill where account.accountId = :accId and status = :status " + op + " order by billDt desc",
 				parms);
 	}
 
@@ -57,7 +56,7 @@ public class BillDAO extends BaseDAO<Bill, Integer> {
 		parms.put("accId", accId);
 		parms.put("status", Bill.Status.CLOSED.status);
 
-		return findByParameters(
-				"from Bill where account.accountId = :accId and status = :status order by strBillDt desc", parms);
+		return findByParameters("from Bill where account.accountId = :accId and status = :status order by billDt desc",
+				parms);
 	}
 }

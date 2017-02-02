@@ -73,20 +73,20 @@ public class TransactionDAO extends BaseDAO<Transaction, Integer> {
 		if (ui.getDtEntryMonth() != null) {
 			if (ui.isEntryMonthAggr()) {
 				Date dt = ui.getDtEntryMonth();
-				parms.put("entryYearBegin", FU.df(FU.DATE.yyyyMMdd).format(FU.getYearBegin(dt).getTime()));
-				parms.put("entryYearEnd", FU.df(FU.DATE.yyyyMMdd).format(FU.getYearEnd(dt).getTime()));
+				parms.put("entryYearBegin", FU.getYearBegin(dt).getTime());
+				parms.put("entryYearEnd", FU.getYearEnd(dt).getTime());
 			} else {
-				parms.put("entryMonth", FU.df(FU.DATE.yyyyMMdd).format(ui.getDtEntryMonth()));
+				parms.put("entryMonth", ui.getDtEntryMonth());
 			}
 		}
 		// FIXME - Year search is not working. Fix this.
 		if (ui.getDtTransMonth() != null) {
 			if (ui.isTransMonthAggr()) {
 				Date dt = ui.getDtTransMonth();
-				parms.put("transYearBegin", FU.df(FU.DATE.yyyyMMdd).format(FU.getYearBegin(dt).getTime()));
-				parms.put("transYearEnd", FU.df(FU.DATE.yyyyMMdd).format(FU.getYearEnd(dt).getTime()));
+				parms.put("transYearBegin", FU.getYearBegin(dt).getTime());
+				parms.put("transYearEnd", FU.getYearEnd(dt).getTime());
 			} else {
-				parms.put("transMonth", FU.df(FU.DATE.yyyyMMdd).format(ui.getDtTransMonth()));
+				parms.put("transMonth", ui.getDtTransMonth());
 			}
 		}
 		parms.put("adhocInd", ui.getAdhocInd());
@@ -110,16 +110,16 @@ public class TransactionDAO extends BaseDAO<Transaction, Integer> {
 		}
 		if (ui.getDtEntryMonth() != null) {
 			if (ui.isEntryMonthAggr()) {
-				query += " and strEntryMonth between :entryYearBegin and :entryYearEnd";
+				query += " and entryMonth between :entryYearBegin and :entryYearEnd";
 			} else {
-				query += " and strEntryMonth = :entryMonth";
+				query += " and entryMonth = :entryMonth";
 			}
 		}
 		if (ui.getDtTransMonth() != null) {
 			if (ui.isTransMonthAggr()) {
-				query += " and strTransMonth between :transYearBegin and :transYearEnd";
+				query += " and transMonth between :transYearBegin and :transYearEnd";
 			} else {
-				query += " and strTransMonth = :transMonth";
+				query += " and transMonth = :transMonth";
 			}
 		}
 		if (ui.getAdhocInd() == Transaction.Adhoc.YES.type || ui.getAdhocInd() == Transaction.Adhoc.NO.type) {
@@ -155,28 +155,28 @@ public class TransactionDAO extends BaseDAO<Transaction, Integer> {
 		parms.put("adhocInd", Transaction.Adhoc.NO.type);
 		// Get Transactions for the last 3 months excluding the current month.
 		Date curr_month = DateUtils.truncate(new Date(), Calendar.MONTH);
-		parms.put("beginMon", FU.df(FU.DATE.yyyyMMdd).format(DateUtils.addMonths(curr_month, -3)));
-		parms.put("endMon", FU.df(FU.DATE.yyyyMMdd).format(DateUtils.addMonths(curr_month, -1)));
+		parms.put("beginMon", DateUtils.addMonths(curr_month, -3));
+		parms.put("endMon", DateUtils.addMonths(curr_month, -1));
 
-		String query = "from Transaction where dataKey = :dataKey and adjustInd = :adjustInd and adhocInd = :adhocInd and strTransMonth between :beginMon and :endMon";
+		String query = "from Transaction where dataKey = :dataKey and adjustInd = :adjustInd and adhocInd = :adhocInd and transMonth between :beginMon and :endMon";
 		return findByParameters(query, parms);
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<String> findAllEntryMonths(int dataKey) {
+	public List<java.sql.Date> findAllEntryMonths(int dataKey) {
 		HashMap<String, Object> parms = new HashMap<String, Object>();
 		parms.put("dataKey", dataKey);
 
-		String query = "select distinct strEntryMonth from Transaction where dataKey = :dataKey order by ENTRY_MONTH desc";
+		String query = "select distinct entryMonth from Transaction where dataKey = :dataKey order by ENTRY_MONTH desc";
 		return sessionFactory.getCurrentSession().createQuery(query).setProperties(parms).list();
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<String> findAllTransMonths(int dataKey) {
+	public List<java.sql.Date> findAllTransMonths(int dataKey) {
 		HashMap<String, Object> parms = new HashMap<String, Object>();
 		parms.put("dataKey", dataKey);
 
-		String query = "select distinct strTransMonth from Transaction where dataKey = :dataKey order by TRANS_MONTH desc";
+		String query = "select distinct transMonth from Transaction where dataKey = :dataKey order by TRANS_MONTH desc";
 		return sessionFactory.getCurrentSession().createQuery(query).setProperties(parms).list();
 	}
 

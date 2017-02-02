@@ -48,8 +48,8 @@ public class EntryService {
 	@Transactional(propagation = Propagation.REQUIRED)
 	public TransMinUI addExpense(TransactionUI ui) {
 		Transaction t = new Transaction();
-		t.setEntryDate(new Date());
-		t.setEntryMonth(DateUtils.truncate(new Date(), Calendar.MONTH));
+		t.setEntryDate(new java.sql.Timestamp((new Date()).getTime()));
+		t.setEntryMonth(new java.sql.Date(DateUtils.truncate(new Date(), Calendar.MONTH).getTime()));
 		t.setTallyInd(Transaction.Tally.NO.status);
 		t.setStatus(Transaction.Status.POSTED.status);
 		copyTransFields(ui, t);
@@ -100,12 +100,11 @@ public class EntryService {
 		Account from = t.getFromAccount();
 		Account to = t.getToAccount();
 
-		// Financial Impact - Identify if there is any change in Amount or
-		// Accounts.
+		// Financial Impact - Identify if there is any change in Amount or Accounts.
 		// Check Amount / FromAccount / ToAccount has changed.
 		boolean finImpact = false;
 		if (t.getAmount() != ui.getAmount() || from.getAccountId() != ui.getFromAccount().getId()
-				|| to.getAccountId() != ui.getToAccount().getId()) {
+				|| (ui.isAdjust() && to.getAccountId() != ui.getToAccount().getId())) {
 			finImpact = true;
 		}
 
@@ -389,8 +388,8 @@ public class EntryService {
 	// **************************************
 
 	private void copyTransFields(TransactionUI ui, Transaction t) {
-		t.setTransDate(ui.getDtTransDate());
-		t.setTransMonth(DateUtils.truncate(ui.getDtTransDate(), Calendar.MONTH));
+		t.setTransDate(new java.sql.Date(ui.getTransDate().getTime()));
+		t.setTransMonth(new java.sql.Date(DateUtils.truncate(ui.getTransDate(), Calendar.MONTH).getTime()));
 		t.setDescription(WordUtils.capitalize(ui.getDescription()));
 		t.setAmount(ui.getAmount());
 		t.setAdjustInd(ui.isAdjust() ? 'Y' : 'N');

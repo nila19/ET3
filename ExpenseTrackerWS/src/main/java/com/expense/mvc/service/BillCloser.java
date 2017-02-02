@@ -125,21 +125,21 @@ public class BillCloser {
 		Bill newBill = new Bill();
 		newBill.setDataKey(dataKey);
 		newBill.setAccount(ac);
-		newBill.setCreatedDt(now);
+		newBill.setCreatedDt(new java.sql.Timestamp(now.getTime()));
 
 		int billDay = ac.getClosingDay();
 		Date billDt = DateUtils.setDays(now, billDay);
 		if (DateUtils.truncatedCompareTo(billDt, now, Calendar.DATE) <= 0) {
 			billDt = DateUtils.addMonths(billDt, 1);
 		}
-		newBill.setBillDt(billDt);
+		newBill.setBillDt(new java.sql.Date(billDt.getTime()));
 
 		int dueDay = ac.getDueDay();
 		Date dueDt = DateUtils.setDays(billDt, dueDay);
 		if (DateUtils.truncatedCompareTo(dueDt, billDt, Calendar.DATE) <= 0) {
 			dueDt = DateUtils.addMonths(dueDt, 1);
 		}
-		newBill.setDueDt(dueDt);
+		newBill.setDueDt(new java.sql.Date(dueDt.getTime()));
 
 		newBill.setBillAmt((double) 0);
 		newBill.setBillBalance((double) 0);

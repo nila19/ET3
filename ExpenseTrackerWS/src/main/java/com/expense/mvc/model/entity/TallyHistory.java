@@ -2,7 +2,7 @@ package com.expense.mvc.model.entity;
 
 import static javax.persistence.GenerationType.IDENTITY;
 
-import java.util.Date;
+import java.sql.Timestamp;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -12,8 +12,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-
-import com.expense.utils.FU;
 
 @Entity
 @Table(name = "TALLY_HISTORY")
@@ -37,7 +35,7 @@ public class TallyHistory extends com.expense.mvc.model.BaseEntity
 	private Double tallyBalance;
 
 	@Column(name = "TALLY_DATE")
-	private String strTallyDate;
+	private Timestamp tallyDate;
 
 	public TallyHistory() {
 	}
@@ -74,24 +72,12 @@ public class TallyHistory extends com.expense.mvc.model.BaseEntity
 		this.tallyBalance = tallyBalance;
 	}
 
-	public String getStrTallyDate() {
-		return strTallyDate;
+	public Timestamp gettallyDate() {
+		return tallyDate;
 	}
 
-	public void setStrTallyDate(String strTallyDate) {
-		this.strTallyDate = strTallyDate;
-	}
-
-	public Date getTallyDate() {
-		try {
-			return FU.df(FU.DATE.yyyyMMddHHmmss).parse(strTallyDate);
-		} catch (Exception e) {
-			return new Date(0);
-		}
-	}
-
-	public void setTallyDate(Date tallyDate) {
-		strTallyDate = FU.df(FU.DATE.yyyyMMddHHmmss).format(tallyDate);
+	public void setTallyDate(Timestamp tallyDate) {
+		this.tallyDate = tallyDate;
 	}
 
 	@Override

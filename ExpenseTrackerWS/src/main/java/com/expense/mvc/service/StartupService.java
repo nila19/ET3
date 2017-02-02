@@ -174,10 +174,10 @@ public class StartupService {
 		return toDateList(transactionDAO.findAllTransMonths(dataKey));
 	}
 
-	private List<MonthUI> toDateList(List<String> strs) throws ParseException {
+	private List<MonthUI> toDateList(List<java.sql.Date> dates) throws ParseException {
 		List<MonthUI> months = new ArrayList<MonthUI>();
-		for (String str : strs) {
-			months.add(new MonthUI(FU.df(FU.DATE.yyyyMMdd).parse(str), false));
+		for (java.sql.Date date : dates) {
+			months.add(new MonthUI(new Date(date.getTime()), false));
 		}
 		addYears(months);
 		return months;

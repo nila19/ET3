@@ -50,7 +50,7 @@
 			sms.loadSummary();
 		}
 
-		function listExpenses(category, idx, adhoc, regular) {
+		function listExpenses(category, idx) {
 			// Initialize
 			ss.initializeData();
 
@@ -59,8 +59,8 @@
 			}
 			ss.data.transMonth = vm.data.months[idx];
 			ss.data.adjustInd = 'N';
-			if (!(adhoc && regular)) {
-				ss.data.adhocInd = (adhoc && !regular) ? 'Y' : 'N';
+			if (!(sms.data.input.adhoc && sms.data.input.regular)) {
+				ss.data.adhocInd = (sms.data.input.adhoc && !sms.data.input.regular) ? 'Y' : 'N';
 			}
 			$location.path('/search/Y');
 		}

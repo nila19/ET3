@@ -18,7 +18,8 @@ public class TransactionUI implements java.io.Serializable {
 	private String description = "";
 	private double amount;
 	private Date entryDate;
-	private String transDate;
+	private Date transDate;
+	private Date tallyDate;
 
 	private AccountUI fromAccount;
 	private double fromBalanceBf;
@@ -29,7 +30,6 @@ public class TransactionUI implements java.io.Serializable {
 
 	private Integer transSeq;
 	private Character tallyInd;
-	private Date tallyDate;
 	private Character status;
 
 	private BillUI bill;
@@ -49,8 +49,8 @@ public class TransactionUI implements java.io.Serializable {
 		category = new CategoryUI(t.getCategory());
 		adhoc = t.getAdhocInd() == 'Y' ? true : false;
 		adjust = t.getAdjustInd() == 'Y' ? true : false;
-		setEntryDate(t.getEntryDate());
-		setDtTransDate(t.getTransDate());
+		entryDate = t.getEntryDate();
+		transDate = t.getTransDate();
 		fromAccount = new AccountUI(t.getFromAccount());
 		fromBalanceBf = t.getFromBalanceBf();
 		fromBalanceAf = t.getFromBalanceAf();
@@ -60,8 +60,9 @@ public class TransactionUI implements java.io.Serializable {
 		status = t.getStatus();
 		transSeq = t.getTransSeq();
 		tallyInd = t.getTallyInd();
-		setTallyDate(t.getTallyDate());
+		tallyDate = t.getTallyDate();
 		tallied = t.getTallyInd() == 'Y' ? true : false;
+
 		if (t.getFromBill() != null) {
 			bill = new BillUI();
 			bill.setId(t.getFromBill().getBillId());
@@ -123,32 +124,19 @@ public class TransactionUI implements java.io.Serializable {
 	}
 
 	public void setEntryDate(Date entryDate) {
-		try {
-			this.entryDate = FU.df(FU.DATE.yyyyMMddHHmmss).parse(FU.df(FU.DATE.yyyyMMddHHmmss).format(entryDate));
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
+		this.entryDate = entryDate;
 	}
 
-	public String getTransDate() {
+	public Date getTransDate() {
 		return transDate;
 	}
 
+	// Input is string as comes in JSON.
 	public void setTransDate(String transDate) {
-		this.transDate = transDate;
-	}
-
-	public Date getDtTransDate() {
 		try {
-			return FU.df(FU.DATE.ddMMMyyyy).parse(transDate);
+			this.transDate = FU.df(FU.DATE.ddMMMyyyy).parse(transDate);
 		} catch (ParseException e) {
-			e.printStackTrace();
-			return null;
 		}
-	}
-
-	public void setDtTransDate(Date dtTransDate) {
-		this.transDate = FU.df(FU.DATE.ddMMMyyyy).format(dtTransDate);
 	}
 
 	public AccountUI getFromAccount() {
@@ -236,11 +224,7 @@ public class TransactionUI implements java.io.Serializable {
 	}
 
 	public void setTallyDate(Date tallyDate) {
-		try {
-			this.tallyDate = FU.df(FU.DATE.yyyyMMddHHmmss).parse(FU.df(FU.DATE.yyyyMMddHHmmss).format(tallyDate));
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
+		this.tallyDate = tallyDate;
 	}
 
 	public boolean isTallied() {

@@ -18,8 +18,8 @@ public class FU {
 	}
 
 	public enum DATE {
-		yyyyMMdd("yyyy-MM-dd"), yyyyMM("yyyyMM"), yyyy("yyyy"), ddMMMyyyy("dd-MMM-yyyy"), MMMyy(
-				"MMM-yy"), yyyyMMddHHmmss("yyyy-MM-dd HH:mm:ss"), yyyyMMMdd("yyyy-MMM-dd");
+		yyyyMMdd("yyyy-MM-dd"), MMMyy("MMM-yy"), yyyyMM("yyyyMM"), yyyy("yyyy"), ddMMMyyyy("dd-MMM-yyyy"), yyyyMMMdd(
+				"yyyy-MMM-dd");
 		public String format;
 
 		private DATE(String format) {
