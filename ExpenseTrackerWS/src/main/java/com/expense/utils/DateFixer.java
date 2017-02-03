@@ -23,8 +23,8 @@ public class DateFixer {
 		Class.forName("org.sqlite.JDBC");
 		Connection con = null;
 		try {
-			con = DriverManager.getConnection("jdbc:sqlite:C:/Java/SQLite/Data/Test4.db");
-			// trans(con);
+			con = DriverManager.getConnection("jdbc:sqlite:C:/Java/SQLite/Data/Prod.db");
+			trans(con);
 			// acct(con);
 			// tally(con);
 			// bill(con);
@@ -173,9 +173,11 @@ public class DateFixer {
 		String sql = "UPDATE ACCOUNT SET TALLY_DATE = ? WHERE ACCOUNT_ID = ?";
 		PreparedStatement stmt = con.prepareStatement(sql);
 		for (Integer id : m.keySet()) {
-			stmt.setTimestamp(1, new Timestamp(ts.parse(m.get(id)).getTime()));
-			stmt.setInt(2, id);
-			stmt.addBatch();
+			if (m.get(id) != null) {
+				stmt.setTimestamp(1, new Timestamp(ts.parse(m.get(id)).getTime()));
+				stmt.setInt(2, id);
+				stmt.addBatch();
+			}
 		}
 		stmt.executeBatch();
 		stmt.close();
@@ -185,18 +187,20 @@ public class DateFixer {
 			throws SQLException, ParseException {
 		Statement stmt = con.createStatement();
 		for (Integer id : m.keySet()) {
-			ResultSet rs = stmt.executeQuery("SELECT * FROM ACCOUNT WHERE ACCOUNT_ID = " + id);
-			rs.next();
-			String str = ts.format(rs.getTimestamp("TALLY_DATE"));
-			System.out.println(StringUtils.equals(str, m.get(id)) + " :: " + id + ", " + m.get(id) + ", " + str);
-			rs.close();
+			if (m.get(id) != null) {
+				ResultSet rs = stmt.executeQuery("SELECT * FROM ACCOUNT WHERE ACCOUNT_ID = " + id);
+				rs.next();
+				String str = ts.format(rs.getTimestamp("TALLY_DATE"));
+				System.out.println(StringUtils.equals(str, m.get(id)) + " :: " + id + ", " + m.get(id) + ", " + str);
+				rs.close();
+			}
 		}
 		stmt.close();
 	}
 
 	// ******************************** TRANSACTION **********************//
 	private static void trans(Connection con) throws SQLException, ParseException {
-		HashMap<Integer, Trans> m = transFirstFetch(con, 0, 4000);
+		HashMap<Integer, Trans> m = transFirstFetch(con, 6001, 10000);
 		transUpdate(con, m);
 		transSecondFetch(con, m);
 

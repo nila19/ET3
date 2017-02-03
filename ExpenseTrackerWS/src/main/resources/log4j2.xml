@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="WARN">
+	<Appenders>
+		<Console name="Console" target="SYSTEM_OUT">
+			<PatternLayout pattern="%d %-5p %c{1} - %m%n" />
+		</Console>
+		<RollingFile name="RollingFile" filename="ExpenseTracker.log" 
+		filepattern="C/://Java/logs/ET-%d{MM-dd-yy-HH-mm-ss}-%i-ET.log" bufferedIO="true" immediateFlush="true">
+			<PatternLayout pattern="%d %-5p %c{1} - %m%n" />
+			<Policies>
+				<SizeBasedTriggeringPolicy size="100 MB" />
+			</Policies>
+			<DefaultRolloverStrategy max="20" />
+		</RollingFile>
+	</Appenders>
+	<Loggers>
+		<Root level="info">
+			<AppenderRef ref="Console" />
+			<AppenderRef ref="RollingFile" />
+		</Root>
+	</Loggers>
+</Configuration>
