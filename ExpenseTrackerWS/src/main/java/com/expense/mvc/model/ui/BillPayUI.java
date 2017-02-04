@@ -7,7 +7,7 @@ public class BillPayUI implements java.io.Serializable {
 
 	private CityUI city = null;
 	private BillUI bill = null;
-	private AccountUI account;
+	private AccountMinUI account;
 	private String paidDt;
 
 	public CityUI getCity() {
@@ -26,11 +26,11 @@ public class BillPayUI implements java.io.Serializable {
 		this.bill = bill;
 	}
 
-	public AccountUI getAccount() {
+	public AccountMinUI getAccount() {
 		return account;
 	}
 
-	public void setAccount(AccountUI account) {
+	public void setAccount(AccountMinUI account) {
 		this.account = account;
 	}
 

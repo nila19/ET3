@@ -5,9 +5,9 @@
 
 	angular.module('dashboard.accounts').factory('accountsService', accountsService);
 
-	accountsService.$inject = ['etmenuService', 'billsService', 'explistService', 'searchService',
-			'utilsService', 'ajaxService', 'CONSTANTS'];
-	function accountsService(ms, bs, els, ss, us, aj, C) {
+	accountsService.$inject = ['etmenuService', 'dashboardService', 'billsService',
+			'explistService', 'searchService', 'utilsService', 'ajaxService', 'CONSTANTS'];
+	function accountsService(ms, ds, bs, els, ss, us, aj, C) {
 		var data = {
 			accts: null,
 			rows: [],
@@ -30,11 +30,17 @@
 			}
 		};
 		var loadData = function(dt) {
+			ds.data.loading.donestep = 1;
 			data.accts = dt;
 			data.maxRows = Math.ceil(data.accts.length / cols);
 			buildRows();
 		};
-
+		var loadAllAccounts = function() {
+			var input = {
+				city: ms.data.menu.city.id,
+			};
+			aj.query('/entry/accounts', input, loadData);
+		};
 		var loadAccount = function(dt) {
 			data.accts[us.getIndexOf(data.accts, dt.id)] = dt;
 			buildRows();
@@ -42,7 +48,7 @@
 		};
 		var refreshAccount = function(id) {
 			ms.data.loading = true;
-			aj.get('/startup/account/' + id, {}, loadAccount);
+			aj.get('/entry/account/' + id, {}, loadAccount);
 		};
 		var loadTally = function() {
 			ms.data.loading = false;
@@ -68,7 +74,7 @@
 
 		return {
 			data: data,
-			loadData: loadData,
+			loadAllAccounts: loadAllAccounts,
 			tallyAccount: tallyAccount,
 			filterAccount: filterAccount,
 			refreshAccount: refreshAccount

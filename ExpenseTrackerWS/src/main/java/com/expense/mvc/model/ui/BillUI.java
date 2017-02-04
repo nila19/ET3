@@ -9,14 +9,10 @@ import org.apache.commons.lang3.time.DateUtils;
 import com.expense.mvc.model.entity.Bill;
 import com.expense.utils.FU;
 
-public class BillUI implements java.io.Serializable {
+public class BillUI extends BillMinUI implements java.io.Serializable {
 	private static final long serialVersionUID = 1L;
 
-	private int id;
-	private String name;
-	private AccountUI account;
 	private Date createdDt;
-	private Date billDt;
 	private Date dueDt;
 
 	private double billAmt;
@@ -27,25 +23,19 @@ public class BillUI implements java.io.Serializable {
 	private boolean dueDateWarning = false;
 
 	public BillUI() {
+		super();
 	}
 
 	public BillUI(Bill bill) {
-		id = bill.getBillId();
-		account = new AccountUI(bill.getAccount());
+		super(bill);
 		createdDt = bill.getCreatedDt();
-		billDt = bill.getBillDt();
 		dueDt = bill.getDueDt();
 		billAmt = bill.getBillAmt();
 		billBalance = bill.getBillBalance();
 		billPaidDt = bill.getBillPaidDt();
 		status = bill.getStatus();
 
-		buildName();
 		checkDueDateWarning();
-	}
-
-	public void buildName() {
-		name = FU.df(FU.DATE.yyyyMMMdd).format(billDt) + " - #" + id;
 	}
 
 	private void checkDueDateWarning() {
@@ -60,44 +50,12 @@ public class BillUI implements java.io.Serializable {
 		}
 	}
 
-	public int getId() {
-		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public AccountUI getAccount() {
-		return account;
-	}
-
-	public void setAccount(AccountUI account) {
-		this.account = account;
-	}
-
 	public Date getCreatedDt() {
 		return createdDt;
 	}
 
 	public void setCreatedDt(Date createdDt) {
 		this.createdDt = createdDt;
-	}
-
-	public Date getBillDt() {
-		return billDt;
-	}
-
-	public void setBillDt(Date billDt) {
-		this.billDt = billDt;
 	}
 
 	public Date getDueDt() {

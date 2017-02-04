@@ -65,6 +65,7 @@
 			data.loading = true;
 			data.filterApplied = true;
 			var input = {
+				city: ms.data.menu.city.id,
 				acctId: id,
 				open: data.tab === 'OPEN'
 			};
@@ -75,9 +76,10 @@
 			data.filterApplied = false;
 			var input = {
 				city: ms.data.menu.city.id,
+				acctId: 0,
 				open: data.tab === 'OPEN'
 			};
-			aj.query('/startup/bills', input, loadData);
+			aj.query('/entry/bills', input, loadData);
 		};
 		return {
 			data: data,

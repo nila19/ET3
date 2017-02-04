@@ -19,12 +19,11 @@ public class TransactionUI implements java.io.Serializable {
 	private double amount;
 	private Date entryDate;
 	private Date transDate;
-	private Date tallyDate;
 
-	private AccountUI fromAccount;
+	private AccountMinUI fromAccount;
 	private double fromBalanceBf;
 	private double fromBalanceAf;
-	private AccountUI toAccount;
+	private AccountMinUI toAccount;
 	private double toBalanceBf;
 	private double toBalanceAf;
 
@@ -32,7 +31,7 @@ public class TransactionUI implements java.io.Serializable {
 	private Character tallyInd;
 	private Character status;
 
-	private BillUI bill;
+	private BillMinUI bill;
 
 	private boolean adhoc;
 	private boolean adjust;
@@ -51,23 +50,18 @@ public class TransactionUI implements java.io.Serializable {
 		adjust = t.getAdjustInd() == 'Y' ? true : false;
 		entryDate = t.getEntryDate();
 		transDate = t.getTransDate();
-		fromAccount = new AccountUI(t.getFromAccount());
+		fromAccount = new AccountMinUI(t.getFromAccount());
 		fromBalanceBf = t.getFromBalanceBf();
 		fromBalanceAf = t.getFromBalanceAf();
-		toAccount = new AccountUI(t.getToAccount());
+		toAccount = new AccountMinUI(t.getToAccount());
 		toBalanceBf = t.getToBalanceBf();
 		toBalanceAf = t.getToBalanceAf();
 		status = t.getStatus();
 		transSeq = t.getTransSeq();
 		tallyInd = t.getTallyInd();
-		tallyDate = t.getTallyDate();
 		tallied = t.getTallyInd() == 'Y' ? true : false;
-
 		if (t.getFromBill() != null) {
-			bill = new BillUI();
-			bill.setId(t.getFromBill().getBillId());
-			bill.setBillDt(t.getFromBill().getBillDt());
-			bill.buildName();
+			bill = new BillMinUI(t.getFromBill());
 		}
 	}
 
@@ -131,27 +125,31 @@ public class TransactionUI implements java.io.Serializable {
 		return transDate;
 	}
 
-	// Input is string as comes in JSON.
+	// Input string as coming in JSON. If modified in JS, comes as ddMMMyyyy, else comes as yyyyMMdd.
 	public void setTransDate(String transDate) {
 		try {
 			this.transDate = FU.df(FU.DATE.ddMMMyyyy).parse(transDate);
 		} catch (ParseException e) {
+			try {
+				this.transDate = FU.df(FU.DATE.yyyyMMdd).parse(transDate);
+			} catch (ParseException e2) {
+			}
 		}
 	}
 
-	public AccountUI getFromAccount() {
+	public AccountMinUI getFromAccount() {
 		return fromAccount;
 	}
 
-	public void setFromAccount(AccountUI fromAccount) {
+	public void setFromAccount(AccountMinUI fromAccount) {
 		this.fromAccount = fromAccount;
 	}
 
-	public AccountUI getToAccount() {
+	public AccountMinUI getToAccount() {
 		return toAccount;
 	}
 
-	public void setToAccount(AccountUI toAccount) {
+	public void setToAccount(AccountMinUI toAccount) {
 		this.toAccount = toAccount;
 	}
 
@@ -219,14 +217,6 @@ public class TransactionUI implements java.io.Serializable {
 		this.status = status;
 	}
 
-	public Date getTallyDate() {
-		return tallyDate;
-	}
-
-	public void setTallyDate(Date tallyDate) {
-		this.tallyDate = tallyDate;
-	}
-
 	public boolean isTallied() {
 		return tallied;
 	}
@@ -235,11 +225,11 @@ public class TransactionUI implements java.io.Serializable {
 		this.tallied = tallied;
 	}
 
-	public BillUI getBill() {
+	public BillMinUI getBill() {
 		return bill;
 	}
 
-	public void setBill(BillUI bill) {
+	public void setBill(BillMinUI bill) {
 		this.bill = bill;
 	}
 

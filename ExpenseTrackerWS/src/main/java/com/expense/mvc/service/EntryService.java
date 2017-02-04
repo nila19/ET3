@@ -21,7 +21,7 @@ import com.expense.mvc.model.dao.TransactionDAO;
 import com.expense.mvc.model.entity.Account;
 import com.expense.mvc.model.entity.Bill;
 import com.expense.mvc.model.entity.Transaction;
-import com.expense.mvc.model.ui.AccountUI;
+import com.expense.mvc.model.ui.AccountMinUI;
 import com.expense.mvc.model.ui.BillPayUI;
 import com.expense.mvc.model.ui.BillUI;
 import com.expense.mvc.model.ui.CategoryUI;
@@ -225,8 +225,8 @@ public class EntryService {
 	}
 
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = true)
-	public List<BillUI> getBillsforAccount(int accId, boolean open) {
-		List<Bill> bills = billDAO.findForAcct(accId, open);
+	public List<BillUI> getBills(int city, int accId, boolean open) {
+		List<Bill> bills = accId == 0 ? billDAO.findAll(city, open) : billDAO.findForAcct(accId, open);
 
 		List<BillUI> uis = new ArrayList<BillUI>();
 		for (Bill bill : bills) {
@@ -264,7 +264,7 @@ public class EntryService {
 
 		TransactionUI ui = new TransactionUI();
 		ui.setFromAccount(bpui.getAccount());
-		ui.setToAccount(new AccountUI(bill.getAccount()));
+		ui.setToAccount(new AccountMinUI(bill.getAccount()));
 		ui.setTransDate(bpui.getPaidDt());
 		ui.setCategory(new CategoryUI());
 		ui.getCategory().setId(0);

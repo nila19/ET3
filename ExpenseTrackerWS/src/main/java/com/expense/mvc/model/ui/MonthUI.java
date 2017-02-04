@@ -12,7 +12,7 @@ public class MonthUI implements java.io.Serializable, Comparable<MonthUI> {
 	private Date id;
 	private String name;
 	private boolean aggregate;
-	private Integer seq;
+	private int seq;
 
 	public MonthUI() {
 	}
@@ -69,7 +69,7 @@ public class MonthUI implements java.io.Serializable, Comparable<MonthUI> {
 
 	@Override
 	public int compareTo(MonthUI o) {
-		return this.seq.compareTo(o.seq);
+		return new Integer(this.seq).compareTo(o.seq);
 	}
 
 	@Override

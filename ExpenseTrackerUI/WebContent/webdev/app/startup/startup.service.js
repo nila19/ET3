@@ -5,9 +5,8 @@
 
 	angular.module('startup').factory('startupService', startupService);
 
-	startupService.$inject = ['etmenuService', 'accountsService', 'ajaxService', 'CONSTANTS',
-			'VALUES'];
-	function startupService(ms, acs, aj, C, V) {
+	startupService.$inject = ['etmenuService', 'ajaxService', 'CONSTANTS', 'VALUES'];
+	function startupService(ms, aj, C, V) {
 		var data = {
 			status: 0,
 			connect: false,
@@ -15,7 +14,7 @@
 		};
 
 		var loadingComplete = function() {
-			console.log('@ StartupService: Loading init app components COMPLETED...');
+			console.log('@ StartupService: Loading startup components COMPLETED...');
 			ms.data.loading = false;
 		};
 		var loadEntryMonths = function(entryMonths) {
@@ -61,8 +60,6 @@
 				V.data.accounts.push(ac);
 				V.data.allAccounts.push(ac);
 			});
-			// Load to accountService - to preload the accounts row @ dashboard
-			acs.loadData(accounts);
 			data.status += 10;
 			getInactiveAccounts(V.data.city);
 		};
@@ -132,13 +129,13 @@
 			if (!data.loadInitiated) {
 				ms.data.loading = true;
 				data.loadInitiated = true;
-				console.log('@ StartupService: Loading init app components...');
+				console.log('@ StartupService: Loading startup components...');
 				connect();
 			}
 		};
 		var loadOthers = function() {
 			ms.data.loading = true;
-			console.log('@ StartupService: Loading other items...');
+			console.log('@ StartupService: Loading items on city change...');
 			getCategories(V.data.city);
 		};
 

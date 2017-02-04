@@ -10,6 +10,8 @@ var gulp = require('gulp'),
 
 plugins.util.colors = chalk;
 
+//TODO Use gulp-clean instead of del..
+
 //****************************** Intermediate path variables ******************************//
 var	dir = {
 	src: 'WebContent/webdev',

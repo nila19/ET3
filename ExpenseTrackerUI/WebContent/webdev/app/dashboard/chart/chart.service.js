@@ -5,10 +5,13 @@
 
 	angular.module('dashboard.chart').factory('chartService', chartService);
 
-	chartService.$inject = ['etmenuService', 'dashboardService', 'ajaxService', 'CONSTANTS'];
-	function chartService(ms, ds, aj, C) {
+	chartService.$inject = ['etmenuService', 'dashboardService', 'ajaxService', 'CONSTANTS',
+			'$timeout'];
+	function chartService(ms, ds, aj, C, $timeout) {
+		var wait = 200;
 		var data = {
 			showChart: false,
+			loaded: false,
 			tagId: 'chartMonthlyExpense',
 			labels: [],
 			series: [],
@@ -47,11 +50,6 @@
 			}
 		}]];
 
-		var renderChart = function() {
-			var chart = Chartist
-					.Bar('#' + data.tagId, data.pgData, chartOptions, responsiveOptions);
-			md.startAnimationForBarChart(chart);
-		};
 		var loadCurrentPage = function() {
 			var pg = data.currPageNo;
 			var cols = data.columns;
@@ -70,6 +68,7 @@
 			data.maxPageNo = Math.ceil(data.labels.length / data.columns) - 1;
 			data.currPageNo = 0;
 			loadCurrentPage();
+			data.loaded = true;
 			ds.data.loading.donestep = 4;
 		};
 		var loadChart = function() {
@@ -77,12 +76,28 @@
 				city: ms.data.menu.city.id
 			}, loadChartData);
 		};
+		var showChart = function() {
+			if (data.loaded) {
+				var chart = Chartist.Bar('#' + data.tagId, data.pgData, chartOptions,
+						responsiveOptions);
+				md.startAnimationForBarChart(chart);
+			} else {
+				$timeout(function() {
+					showChart();
+				}, wait);
+			}
+		};
+		var renderChart = function() {
+			if (!data.loaded) {
+				loadChart();
+			}
+			showChart();
+		};
 
 		return {
 			data: data,
-			loadChart: loadChart,
-			loadCurrentPage: loadCurrentPage,
-			renderChart: renderChart
+			renderChart: renderChart,
+			loadCurrentPage: loadCurrentPage
 		};
 	}
 

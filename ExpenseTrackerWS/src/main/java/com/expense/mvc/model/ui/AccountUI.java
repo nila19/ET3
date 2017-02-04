@@ -8,14 +8,11 @@ import org.apache.commons.lang3.time.DateUtils;
 
 import com.expense.mvc.model.entity.Account;
 import com.expense.mvc.model.entity.Bill;
-import com.expense.mvc.model.entity.Transaction;
 import com.expense.utils.FU;
 
-public class AccountUI implements java.io.Serializable {
+public class AccountUI extends AccountMinUI implements java.io.Serializable {
 	private static final long serialVersionUID = 1L;
 
-	private int id;
-	private String name = "";
 	private double balanceAmt;
 	private char type;
 	private char status;
@@ -49,8 +46,7 @@ public class AccountUI implements java.io.Serializable {
 	}
 
 	public AccountUI(Account ac) {
-		id = ac.getAccountId();
-		name = ac.getDescription();
+		super(ac);
 		balanceAmt = ac.getBalanceAmt();
 		status = ac.getStatus();
 		type = ac.getType();
@@ -107,40 +103,24 @@ public class AccountUI implements java.io.Serializable {
 		tallyDate = ac.getTallyDate();
 		tallyExpenseCnt = 0;
 		tallyExpenseAmt = 0;
-		for (Transaction t : ac.getTransForFromAccount()) {
-			if (!t.isTallied()) {
-				tallyExpenseCnt++;
-				tallyExpenseAmt += t.getAmount();
-			}
-		}
-		for (Transaction t : ac.getTransForToAccount()) {
-			if (!t.isTallied()) {
-				tallyExpenseCnt++;
-				tallyExpenseAmt -= t.getAmount();
-			}
-		}
+		// for (Transaction t : ac.getTransForFromAccount()) {
+		// if (!t.isTallied()) {
+		// tallyExpenseCnt++;
+		// tallyExpenseAmt += t.getAmount();
+		// }
+		// }
+		// for (Transaction t : ac.getTransForToAccount()) {
+		// if (!t.isTallied()) {
+		// tallyExpenseCnt++;
+		// tallyExpenseAmt -= t.getAmount();
+		// }
+		// }
 		if (tallyExpenseAmt != 0 && ac.getType() == Account.Type.CASH.type) {
 			tallyExpenseAmt = tallyExpenseAmt * -1;
 		}
 		if (tallyDate != null) {
 			tallyToday = DateUtils.isSameDay(tallyDate, new Date());
 		}
-	}
-
-	public int getId() {
-		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
 	}
 
 	public double getBalanceAmt() {

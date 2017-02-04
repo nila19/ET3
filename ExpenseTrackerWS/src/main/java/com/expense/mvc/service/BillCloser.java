@@ -3,11 +3,16 @@ package com.expense.mvc.service;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.lang3.time.DateUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.core.Appender;
+import org.apache.logging.log4j.core.LoggerContext;
+import org.apache.logging.log4j.core.appender.RollingFileAppender;
+import org.apache.logging.log4j.core.config.Configuration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,11 +31,28 @@ public class BillCloser {
 
 	private int dataKey = 0;
 
+	private void log4j() {
+		final LoggerContext ctx = (LoggerContext) LogManager.getContext(false);
+		final Configuration config = ctx.getConfiguration();
+
+		Map<String, Appender> apps = config.getAppenders();
+
+		for (String a : apps.keySet()) {
+			Appender app = apps.get(a);
+			System.out.println("Appender : " + a + " :: " + app.toString());
+			if (app instanceof RollingFileAppender) {
+				System.out.println("File = " + ((RollingFileAppender) app).getFileName());
+			}
+		}
+	}
+
 	@Transactional(propagation = Propagation.REQUIRED)
 	public void init() {
 		// FIXME Fix this later..
 
 		BillCloser.logger.info("BillCloser started...");
+
+		log4j();
 
 		int billsClosed = 0;
 		int billsOpened = 0;

@@ -9,61 +9,45 @@
 			'searchService', 'explistService', 'explistwrapperService', 'billsService',
 			'chartService', 'ajaxService', '$timeout'];
 	function dashboardwrapperService(ds, ms, acs, ss, els, elws, bs, cs, aj, $timeout) {
+		var wait = 200;
 		var stepFive = function() {
+			// Don't wait for Step 4 to be complete... Reduces the page loading time.
 			ms.data.loading = false;
 			ds.data.loading.on = false;
 		};
-		var waitOnStepFour = function() {
-			if (ds.data.loading.donestep === 4) {
+		var stepFour = function() {
+			if (ds.data.loading.donestep === 3) {
+				// cs.loadChart();
 				stepFive();
 			} else {
 				$timeout(function() {
-					waitOnStepFour();
-				}, 500);
-			}
-		};
-		var stepFour = function() {
-			cs.loadChart();
-			waitOnStepFour();
-		};
-		var waitOnStepThree = function() {
-			if (ds.data.loading.donestep === 3) {
-				stepFour();
-			} else {
-				$timeout(function() {
-					waitOnStepThree();
-				}, 500);
+					stepFour();
+				}, wait);
 			}
 		};
 		var stepThree = function() {
-			ss.data.account = null;
-			ss.data.bill = null;
-			elws.reloadExpenses();
-			waitOnStepThree();
-		};
-		var waitOnStepTwo = function() {
 			if (ds.data.loading.donestep === 2) {
-				stepThree();
+				elws.reloadExpenses();
+				stepFour();
 			} else {
 				$timeout(function() {
-					waitOnStepTwo();
-				}, 500);
+					stepThree();
+				}, wait);
 			}
 		};
 		var stepTwo = function() {
-			bs.loadAllBills();
-			waitOnStepTwo();
-		};
-		var loadStepOne = function(dt) {
-			acs.loadData(dt);
-			ds.data.loading.donestep = 1;
-			stepTwo();
+			if (ds.data.loading.donestep === 1) {
+				bs.loadAllBills();
+				stepThree();
+			} else {
+				$timeout(function() {
+					stepTwo();
+				}, wait);
+			}
 		};
 		var stepOne = function() {
-			var input = {
-				city: ms.data.menu.city.id,
-			};
-			aj.query('/startup/accounts', input, loadStepOne);
+			acs.loadAllAccounts();
+			stepTwo();
 		};
 		var loadPage = function() {
 			ms.data.loading = true;

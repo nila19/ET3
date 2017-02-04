@@ -4,11 +4,13 @@
 		<Console name="Console" target="SYSTEM_OUT">
 			<PatternLayout pattern="%d %-5p %c{1} - %m%n" />
 		</Console>
-		<RollingFile name="RollingFile" filename="ExpenseTracker.log" 
-		filepattern="C/://Java/logs/ET-%d{MM-dd-yy-HH-mm-ss}-%i-ET.log" bufferedIO="true" immediateFlush="true">
+		<RollingFile name="RollingFile" filename="${LOG_PATH}/ExpenseTracker.log" 
+		filepattern="ET-%d{MM-dd-yy-HH-mm-ss}-%i-ET.log" bufferedIO="true" immediateFlush="true">
 			<PatternLayout pattern="%d %-5p %c{1} - %m%n" />
 			<Policies>
-				<SizeBasedTriggeringPolicy size="100 MB" />
+				<OnStartupTriggeringPolicy />
+				<SizeBasedTriggeringPolicy size="20 MB" />
+				<TimeBasedTriggeringPolicy />
 			</Policies>
 			<DefaultRolloverStrategy max="20" />
 		</RollingFile>

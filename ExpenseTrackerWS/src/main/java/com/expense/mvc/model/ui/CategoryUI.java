@@ -34,12 +34,6 @@ public class CategoryUI implements java.io.Serializable, Comparable<CategoryUI> 
 		displayOrder = cat.getDisplayOrder();
 	}
 
-	public CategoryUI(String category) {
-		this.name = category;
-		this.mainCategory = category.split(SEP)[0];
-		this.subCategory = category.split(SEP)[1];
-	}
-
 	public int getId() {
 		return id;
 	}

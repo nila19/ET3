@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.expense.mvc.model.entity.DataKey;
+import com.expense.mvc.model.ui.AccountUI;
 import com.expense.mvc.model.ui.BillPayUI;
 import com.expense.mvc.model.ui.BillUI;
 import com.expense.mvc.model.ui.CityUI;
@@ -28,7 +29,7 @@ import com.expense.mvc.service.TallyService;
 public class EntryController {
 
 	@Autowired
-	private StartupService sus;
+	private StartupService ss;
 
 	@Autowired
 	private EntryService es;
@@ -37,7 +38,7 @@ public class EntryController {
 	private TallyService ts;
 
 	private void checkDataKeyActive(int city) throws Exception {
-		CityUI ui = sus.getDataKeyById(city);
+		CityUI ui = ss.getDataKeyById(city);
 		if (ui.getStatus() != DataKey.Status.ACTIVE.status) {
 			throw new Exception("City is inactive. Cannot modify data.");
 		}
@@ -56,8 +57,8 @@ public class EntryController {
 	}
 
 	@RequestMapping(value = "/bills", method = RequestMethod.GET)
-	public List<BillUI> getBillsforAccount(@RequestParam int acctId, @RequestParam boolean open) {
-		return es.getBillsforAccount(acctId, open);
+	public List<BillUI> getAllBills(@RequestParam int city, @RequestParam int acctId, @RequestParam boolean open) {
+		return es.getBills(city, acctId, open);
 	}
 
 	@RequestMapping(value = "/bills/all", method = RequestMethod.GET)
@@ -68,6 +69,16 @@ public class EntryController {
 	@RequestMapping(value = "/bill/{billId}", method = RequestMethod.GET)
 	public BillUI getBill(@PathVariable int billId) {
 		return es.getBill(billId);
+	}
+
+	@RequestMapping(value = "/accounts", method = RequestMethod.GET)
+	public List<AccountUI> getActiveAccounts(@RequestParam int city) {
+		return ss.getAllActiveAccounts(city);
+	}
+
+	@RequestMapping(value = "/account/{account}", method = RequestMethod.GET)
+	public AccountUI getAccount(@PathVariable int account) {
+		return ss.getAccountUI(account);
 	}
 
 	@RequestMapping(value = "/tally/{cityId}/{accountId}", method = RequestMethod.POST)

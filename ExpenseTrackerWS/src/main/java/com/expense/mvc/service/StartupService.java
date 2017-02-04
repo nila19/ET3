@@ -22,6 +22,7 @@ import com.expense.mvc.model.entity.Account;
 import com.expense.mvc.model.entity.Bill;
 import com.expense.mvc.model.entity.Category;
 import com.expense.mvc.model.entity.DataKey;
+import com.expense.mvc.model.ui.AccountMinUI;
 import com.expense.mvc.model.ui.AccountUI;
 import com.expense.mvc.model.ui.BillUI;
 import com.expense.mvc.model.ui.CategoryUI;
@@ -83,30 +84,30 @@ public class StartupService {
 
 	// **************************** Account ****************************//
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = true)
-	public List<AccountUI> getAllActiveAccounts(int dataKey) {
+	public List<AccountMinUI> getAllActiveAccountsThin(int dataKey) {
 		List<Account> accts = accountDAO.findAllActive(dataKey);
 
-		List<AccountUI> uis = new ArrayList<AccountUI>();
+		List<AccountMinUI> uis = new ArrayList<AccountMinUI>();
 		for (Account acct : accts) {
-			uis.add(new AccountUI(acct));
+			uis.add(new AccountMinUI(acct));
 		}
 		return uis;
 	}
 
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = true)
-	public List<AccountUI> getInactiveAccounts(int dataKey) {
+	public List<AccountMinUI> getAllInactiveAccountsThin(int dataKey) {
 		List<Account> accts = accountDAO.findAllInactive(dataKey);
 
-		List<AccountUI> uis = new ArrayList<AccountUI>();
+		List<AccountMinUI> uis = new ArrayList<AccountMinUI>();
 		for (Account acct : accts) {
-			uis.add(new AccountUI(acct));
+			uis.add(new AccountMinUI(acct));
 		}
 		return uis;
 	}
 
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = true)
-	public List<AccountUI> getAllAccounts(int dataKey) {
-		List<Account> accts = accountDAO.findAll(dataKey);
+	public List<AccountUI> getAllActiveAccounts(int dataKey) {
+		List<Account> accts = accountDAO.findAllActive(dataKey);
 
 		List<AccountUI> uis = new ArrayList<AccountUI>();
 		for (Account acct : accts) {
@@ -211,16 +212,6 @@ public class StartupService {
 	}
 
 	// **************************** Bill ****************************//
-	@Transactional(propagation = Propagation.REQUIRED, readOnly = true)
-	public List<BillUI> getAllBills(int dataKey, boolean open) {
-		List<Bill> bills = billDAO.findAll(dataKey, open);
-
-		List<BillUI> uis = new ArrayList<BillUI>();
-		for (Bill bill : bills) {
-			uis.add(new BillUI(bill));
-		}
-		return uis;
-	}
 
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = true)
 	public List<BillUI> getAllOpenBills(int dataKey) {

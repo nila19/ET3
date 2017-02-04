@@ -11,8 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.expense.mvc.model.ui.AccountUI;
-import com.expense.mvc.model.ui.BillUI;
+import com.expense.mvc.model.ui.AccountMinUI;
 import com.expense.mvc.model.ui.CategoryUI;
 import com.expense.mvc.model.ui.CityUI;
 import com.expense.mvc.model.ui.FlagMinUI;
@@ -63,23 +62,13 @@ public class StartupController {
 	}
 
 	@RequestMapping(value = "/accounts", method = RequestMethod.GET)
-	public List<AccountUI> getActiveAccounts(@RequestParam int city) {
-		return ss.getAllActiveAccounts(city);
+	public List<AccountMinUI> getActiveAccounts(@RequestParam int city) {
+		return ss.getAllActiveAccountsThin(city);
 	}
 
 	@RequestMapping(value = "/accounts/inactive", method = RequestMethod.GET)
-	public List<AccountUI> getInactiveAccounts(@RequestParam int city) {
-		return ss.getInactiveAccounts(city);
-	}
-
-	@RequestMapping(value = "/account/{account}", method = RequestMethod.GET)
-	public AccountUI getAccount(@PathVariable int account) {
-		return ss.getAccountUI(account);
-	}
-
-	@RequestMapping(value = "/bills", method = RequestMethod.GET)
-	public List<BillUI> getBills(@RequestParam int city, @RequestParam boolean open) {
-		return ss.getAllBills(city, open);
+	public List<AccountMinUI> getInactiveAccounts(@RequestParam int city) {
+		return ss.getAllInactiveAccountsThin(city);
 	}
 
 	@RequestMapping(value = "/months/entry", method = RequestMethod.GET)

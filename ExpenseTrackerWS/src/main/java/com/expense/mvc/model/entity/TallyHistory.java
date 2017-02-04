@@ -72,7 +72,7 @@ public class TallyHistory extends com.expense.mvc.model.BaseEntity
 		this.tallyBalance = tallyBalance;
 	}
 
-	public Timestamp gettallyDate() {
+	public Timestamp getTallyDate() {
 		return tallyDate;
 	}
 
