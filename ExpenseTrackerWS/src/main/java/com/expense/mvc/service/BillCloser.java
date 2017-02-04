@@ -3,23 +3,16 @@ package com.expense.mvc.service;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 import org.apache.commons.lang3.time.DateUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.apache.logging.log4j.core.Appender;
-import org.apache.logging.log4j.core.LoggerContext;
-import org.apache.logging.log4j.core.appender.RollingFileAppender;
-import org.apache.logging.log4j.core.config.Configuration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.expense.mvc.model.entity.Account;
 import com.expense.mvc.model.entity.Bill;
-import com.expense.mvc.model.entity.Transaction;
 import com.expense.mvc.model.ui.AccountUI;
 import com.expense.mvc.model.ui.BillUI;
 
@@ -29,36 +22,18 @@ public class BillCloser {
 	@Autowired
 	private StartupService ss;
 
+	@Autowired
+	private BillService bs;
+
 	private int dataKey = 0;
-
-	private void log4j() {
-		final LoggerContext ctx = (LoggerContext) LogManager.getContext(false);
-		final Configuration config = ctx.getConfiguration();
-
-		Map<String, Appender> apps = config.getAppenders();
-
-		for (String a : apps.keySet()) {
-			Appender app = apps.get(a);
-			System.out.println("Appender : " + a + " :: " + app.toString());
-			if (app instanceof RollingFileAppender) {
-				System.out.println("File = " + ((RollingFileAppender) app).getFileName());
-			}
-		}
-	}
 
 	@Transactional(propagation = Propagation.REQUIRED)
 	public void init() {
-		// FIXME Fix this later..
-
 		BillCloser.logger.info("BillCloser started...");
-
-		log4j();
-
 		int billsClosed = 0;
 		int billsOpened = 0;
 		try {
 			dataKey = ss.getDefaultDataKey().getId();
-
 			billsClosed = closeAllOpenBills();
 			billsOpened = createAllOpenBills();
 		} catch (Exception e) {
@@ -73,7 +48,7 @@ public class BillCloser {
 		int billsClosed = 0;
 		Date today = Calendar.getInstance().getTime();
 
-		List<BillUI> openBills = ss.getAllOpenBills(dataKey);
+		List<BillUI> openBills = bs.getAllOpenBills(dataKey);
 		for (BillUI billUI : openBills) {
 			if (DateUtils.truncatedCompareTo(billUI.getBillDt(), today, Calendar.DATE) < 0) {
 				closeBill(billUI);
@@ -85,38 +60,17 @@ public class BillCloser {
 
 	@Transactional(propagation = Propagation.REQUIRED)
 	private void closeBill(BillUI billUI) {
-		Bill bill = ss.getBill(dataKey, billUI.getId());
-
-		double billAmt = BillCloser.calcBillAmt(bill);
+		Bill bill = bs.getBill(dataKey, billUI.getId());
+		double billAmt = bs.calcBillAmt(bill);
 
 		bill.setBillAmt(billAmt);
 		bill.setBillBalance(billAmt);
 		bill.setStatus(Bill.Status.CLOSED.status);
-		ss.saveBill(bill);
+		bs.saveBill(bill);
 
 		Account ac = bill.getAccount();
 		ac.setLastBill(bill);
-		ss.saveAccount(ac);
-	}
-
-	@Transactional(propagation = Propagation.REQUIRED)
-	public static double calcBillAmt(Bill bill) {
-		double billAmt = 0;
-
-		Set<Transaction> transForFromBill = bill.getTransForFromBill();
-		for (Transaction tran : transForFromBill) {
-			billAmt += tran.getAmount();
-		}
-
-		Set<Transaction> transForToBill = bill.getTransForToBill();
-		for (Transaction tran : transForToBill) {
-			billAmt -= tran.getAmount();
-		}
-
-		if (bill.getAccount().getType() == Account.Type.CASH.type) {
-			billAmt = billAmt * -1;
-		}
-		return billAmt;
+		bs.saveAccount(ac);
 	}
 
 	@Transactional(propagation = Propagation.REQUIRED)
@@ -126,12 +80,12 @@ public class BillCloser {
 		List<AccountUI> accounts = ss.getAllActiveAccounts(dataKey);
 		for (AccountUI ui : accounts) {
 			if (ui.isBilled()) {
-				Account ac = ss.getAccount(ui.getId());
+				Account ac = bs.getAccount(ui.getId());
 				if (ac.getOpenBill() == null || !ac.getOpenBill().isOpen()) {
 					Bill openBill = createOpenBill(ac);
-					ss.saveBill(openBill);
+					bs.saveBill(openBill);
 					ac.setOpenBill(openBill);
-					ss.saveAccount(ac);
+					bs.saveAccount(ac);
 
 					billsOpened++;
 				}

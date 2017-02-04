@@ -7,8 +7,8 @@ import com.expense.mvc.model.entity.Account;
 public class AccountMinUI implements java.io.Serializable {
 	private static final long serialVersionUID = 1L;
 
-	protected int id;
-	protected String name = "";
+	private int id;
+	private String name = "";
 	private char type;
 	private char status;
 	private char billOption;

@@ -8,10 +8,10 @@ import com.expense.mvc.model.entity.Bill;
 import com.expense.utils.FU;
 
 public class BillMinUI {
-	protected int id;
-	protected String name;
-	protected AccountMinUI account;
-	protected Date billDt;
+	private int id;
+	private String name;
+	private AccountMinUI account;
+	private Date billDt;
 
 	public BillMinUI() {
 	}

@@ -24,17 +24,33 @@ public class DateFixer {
 		Connection con = null;
 		try {
 			con = DriverManager.getConnection("jdbc:sqlite:C:/Java/SQLite/Data/Prod.db");
-			trans(con);
-			// acct(con);
-			// tally(con);
-			// bill(con);
+			con.setAutoCommit(false);
+			int parm = Integer.valueOf(args[0]);
+
+			switch (parm) {
+			case 1:
+				transactions(con);
+				break;
+			case 2:
+				accounts(con);
+				break;
+			case 3:
+				tallyHistory(con);
+				break;
+			case 4:
+				bills(con);
+				break;
+			}
+			con.commit();
+		} catch (Exception e) {
+			con.rollback();
 		} finally {
 			con.close();
 		}
 	}
 
 	// ******************************** BILL **********************//
-	private static void bill(Connection con) throws SQLException, ParseException {
+	private static void bills(Connection con) throws SQLException, ParseException {
 		HashMap<Integer, Bill> m = billFirstFetch(con);
 		billUpdate(con, m);
 		billSecondFetch(con, m);
@@ -107,7 +123,7 @@ public class DateFixer {
 	}
 
 	// ******************************** TALLY **********************//
-	private static void tally(Connection con) throws SQLException, ParseException {
+	private static void tallyHistory(Connection con) throws SQLException, ParseException {
 		HashMap<Integer, String> m = tallyFirstFetch(con);
 		tallyUpdate(con, m);
 		tallySecondFetch(con, m);
@@ -151,7 +167,7 @@ public class DateFixer {
 	}
 
 	// ******************************** ACCOUNT **********************//
-	private static void acct(Connection con) throws SQLException, ParseException {
+	private static void accounts(Connection con) throws SQLException, ParseException {
 		HashMap<Integer, String> m = acctFirstFetch(con);
 		acctUpdate(con, m);
 		acctSecondFetch(con, m);
@@ -199,7 +215,7 @@ public class DateFixer {
 	}
 
 	// ******************************** TRANSACTION **********************//
-	private static void trans(Connection con) throws SQLException, ParseException {
+	private static void transactions(Connection con) throws SQLException, ParseException {
 		HashMap<Integer, Trans> m = transFirstFetch(con, 6001, 10000);
 		transUpdate(con, m);
 		transSecondFetch(con, m);

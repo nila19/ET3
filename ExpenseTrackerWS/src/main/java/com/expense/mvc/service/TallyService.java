@@ -77,8 +77,8 @@ public class TallyService {
 	}
 
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = true)
-	public List<TransactionUI> getTransactions(int accountId, boolean pending, int billId, int dataKey) {
-		List<Transaction> trans = transactionDAO.findByAccount(dataKey, accountId, pending, billId);
+	public List<TransactionUI> getTransactions(int accountId, int billId, int dataKey) {
+		List<Transaction> trans = transactionDAO.findByAccount(dataKey, accountId, billId);
 
 		int LIST_EXPENSES_LIMIT = Integer.valueOf(FU.expense.getString("LIST.EXPENSES.LIMIT"));
 		int i = 0;

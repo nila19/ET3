@@ -47,8 +47,7 @@ public class EntryController {
 	@RequestMapping(value = "/transactions", method = RequestMethod.GET)
 	public List<TransactionUI> getTransactions(@RequestParam int city, @RequestParam int account,
 			@RequestParam int bill) {
-		// TODO Defaulting the 'pending' flag to FALSE. Future enhancement to fetch Tally expense list.
-		return ts.getTransactions(account, false, bill, city);
+		return ts.getTransactions(account, bill, city);
 	}
 
 	@RequestMapping(value = "/transaction/{transId}", method = RequestMethod.GET)

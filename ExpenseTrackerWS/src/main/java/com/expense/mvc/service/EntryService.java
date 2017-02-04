@@ -45,6 +45,9 @@ public class EntryService {
 	@Autowired
 	private BillDAO billDAO;
 
+	@Autowired
+	private BillService bs;
+
 	@Transactional(propagation = Propagation.REQUIRED)
 	public TransMinUI addExpense(TransactionUI ui) {
 		Transaction t = new Transaction();
@@ -95,7 +98,7 @@ public class EntryService {
 	}
 
 	@Transactional(propagation = Propagation.REQUIRED)
-	public boolean modifyExpense(TransactionUI ui) {
+	public void modifyExpense(TransactionUI ui) throws Exception {
 		Transaction t = transactionDAO.findById(ui.getId());
 		Account from = t.getFromAccount();
 		Account to = t.getToAccount();
@@ -110,18 +113,21 @@ public class EntryService {
 
 		// If Financial Impact : for ADJUST both Accounts should be Active, else
 		// just FromAccount should be Active.
+		boolean okToGo = true;
 		if (finImpact) {
 			if (t.getAdjustInd() == Transaction.Adjust.YES.type) {
-				if (from.getAccountId() != 0 && !from.isActive()) {
-					return false;
-				}
-				if (to.getAccountId() != 0 && !to.isActive()) {
-					return false;
+				if ((from.getAccountId() != 0 && !from.isActive()) || (to.getAccountId() != 0 && !to.isActive())) {
+					okToGo = false;
 				}
 			} else if ((t.getAdjustInd() == Transaction.Adjust.NO.type) && !from.isActive()) {
-				return false;
+				okToGo = false;
 			}
 		}
+		if (!okToGo) {
+			throw new Exception("Modification invalid. Account(s) involved not active...");
+		}
+
+		adjustBillBalances(t, ui);
 
 		// Move Cash only if there is any Financial impact.
 		// Reverse the previous cash movement.
@@ -139,7 +145,6 @@ public class EntryService {
 			// Fix the From/To Before/After amounts.
 			adjustTransBalances(t);
 		}
-		return true;
 	}
 
 	// Find previous trans for the same Fr/To accounts to get the Ac balance at
@@ -151,7 +156,7 @@ public class EntryService {
 			t.setFromBalanceBf(0);
 			t.setFromBalanceAf(0);
 		} else {
-			List<Transaction> allFr = transactionDAO.findByAccount(t.getDataKey(), fr, false, 0);
+			List<Transaction> allFr = transactionDAO.findByAccount(t.getDataKey(), fr, 0);
 			for (Transaction t2 : allFr) {
 				if (t2.getTransSeq() < t.getTransSeq()) {
 					if (fr == t2.getFromAccount().getAccountId()) {
@@ -174,7 +179,7 @@ public class EntryService {
 			t.setToBalanceBf(0);
 			t.setToBalanceAf(0);
 		} else {
-			List<Transaction> allTo = transactionDAO.findByAccount(t.getDataKey(), to, false, 0);
+			List<Transaction> allTo = transactionDAO.findByAccount(t.getDataKey(), to, 0);
 			for (Transaction t2 : allTo) {
 				if (t2.getTransSeq() < t.getTransSeq()) {
 					if (to == t2.getFromAccount().getAccountId()) {
@@ -198,6 +203,8 @@ public class EntryService {
 	public void deleteExpense(int transId) {
 		Transaction t = transactionDAO.findById(transId);
 
+		adjustBillBalances(t, null);
+
 		// Reverse the previous cash movement.
 		moveCash(t, t.getAmount() * -1);
 
@@ -208,7 +215,6 @@ public class EntryService {
 			t.getToAccount().getTransForToAccount().remove(t);
 		}
 
-		// TODO If bill is already closed, bill-balance is not getting adjusted...
 		transactionDAO.delete(t);
 	}
 
@@ -232,7 +238,7 @@ public class EntryService {
 		for (Bill bill : bills) {
 			// Open Bills do not have bill amt & balance populated.
 			if (bill.isOpen()) {
-				double amt = BillCloser.calcBillAmt(bill);
+				double amt = bs.calcBillAmt(bill);
 				bill.setBillAmt(amt);
 				bill.setBillBalance(amt);
 			}
@@ -249,7 +255,7 @@ public class EntryService {
 		for (Bill bill : bills) {
 			// Open Bills do not have bill amt & balance populated.
 			if (bill.isOpen()) {
-				double amt = BillCloser.calcBillAmt(bill);
+				double amt = bs.calcBillAmt(bill);
 				bill.setBillAmt(amt);
 				bill.setBillBalance(amt);
 			}
@@ -383,9 +389,23 @@ public class EntryService {
 		}
 	}
 
-	// ********************************************************************************************
-	// ************************************** Common Methods
-	// **************************************
+	// ***************** Common Methods *******************//
+
+	// Do for Modifies/Deletes only
+	private void adjustBillBalances(Transaction t, TransactionUI ui) {
+		if (t.getFromBill() != null) {
+			Bill ob = t.getFromBill();
+			ob.setBillAmt(ob.getBillAmt() - t.getAmount());
+			ob.setBillBalance(ob.getBillBalance() - t.getAmount());
+			billDAO.save(ob);
+		}
+		if (ui != null && ui.getBill() != null) {
+			Bill nb = billDAO.findById(ui.getBill().getId());
+			nb.setBillAmt(nb.getBillAmt() + t.getAmount());
+			nb.setBillBalance(nb.getBillBalance() + t.getAmount());
+			billDAO.save(nb);
+		}
+	}
 
 	private void copyTransFields(TransactionUI ui, Transaction t) {
 		t.setTransDate(new java.sql.Date(ui.getTransDate().getTime()));
@@ -401,7 +421,6 @@ public class EntryService {
 		if (ui.getBill() != null) {
 			t.setFromBill(t.getFromAccount().doesBills() ? billDAO.findById(ui.getBill().getId()) : null);
 		}
-		// TODO If bill is already closed, bill-balance is not getting adjusted...
 	}
 
 	private void moveCash(Transaction t, double amount) {

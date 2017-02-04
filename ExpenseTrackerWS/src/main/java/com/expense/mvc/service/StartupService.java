@@ -14,17 +14,14 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.expense.mvc.model.dao.AccountDAO;
-import com.expense.mvc.model.dao.BillDAO;
 import com.expense.mvc.model.dao.CategoryDAO;
 import com.expense.mvc.model.dao.DataKeyDAO;
 import com.expense.mvc.model.dao.TransactionDAO;
 import com.expense.mvc.model.entity.Account;
-import com.expense.mvc.model.entity.Bill;
 import com.expense.mvc.model.entity.Category;
 import com.expense.mvc.model.entity.DataKey;
 import com.expense.mvc.model.ui.AccountMinUI;
 import com.expense.mvc.model.ui.AccountUI;
-import com.expense.mvc.model.ui.BillUI;
 import com.expense.mvc.model.ui.CategoryUI;
 import com.expense.mvc.model.ui.CityUI;
 import com.expense.mvc.model.ui.FlagMinUI;
@@ -45,9 +42,6 @@ public class StartupService {
 
 	@Autowired
 	private TransactionDAO transactionDAO;
-
-	@Autowired
-	private BillDAO billDAO;
 
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = true)
 	public FlagMinUI connect() {
@@ -121,26 +115,6 @@ public class StartupService {
 		return new AccountUI(accountDAO.findById(acctId));
 	}
 
-	@Transactional(propagation = Propagation.REQUIRED, readOnly = true)
-	public Account getAccount(int acctId) {
-		Account acct = accountDAO.findById(acctId);
-
-		// Load the lazy loaded attributes.
-		if (acct.getLastBill() != null) {
-			acct.getLastBill().getBillId();
-		}
-		if (acct.getOpenBill() != null) {
-			acct.getOpenBill().getBillId();
-		}
-
-		return acct;
-	}
-
-	@Transactional(propagation = Propagation.REQUIRED)
-	public void saveAccount(Account account) {
-		accountDAO.save(account);
-	}
-
 	// **************************** Category ****************************//
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = true)
 	public List<CategoryUI> getCategories(int dataKey) {
@@ -209,32 +183,5 @@ public class StartupService {
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = true)
 	public List<String> getAllDescription(int dataKey) {
 		return transactionDAO.findAllDescription(dataKey);
-	}
-
-	// **************************** Bill ****************************//
-
-	@Transactional(propagation = Propagation.REQUIRED, readOnly = true)
-	public List<BillUI> getAllOpenBills(int dataKey) {
-		List<Bill> bills = billDAO.findAllOpen(dataKey);
-
-		List<BillUI> uis = new ArrayList<BillUI>();
-		for (Bill bill : bills) {
-			uis.add(new BillUI(bill));
-		}
-		return uis;
-	}
-
-	@Transactional(propagation = Propagation.REQUIRED)
-	public Bill getBill(int dataKey, int billId) {
-		Bill bill = billDAO.findById(billId);
-		// Initialize the lazy initialized lists.
-		bill.getTransForFromBill().size();
-		bill.getTransForToBill().size();
-		return bill;
-	}
-
-	@Transactional(propagation = Propagation.REQUIRED)
-	public void saveBill(Bill bill) {
-		billDAO.save(bill);
 	}
 }

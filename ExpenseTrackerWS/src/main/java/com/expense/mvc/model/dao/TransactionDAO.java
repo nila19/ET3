@@ -37,7 +37,7 @@ public class TransactionDAO extends BaseDAO<Transaction, Integer> {
 		return findByParameters("from Transaction where dataKey = :dataKey order by transSeq desc", parms);
 	}
 
-	public List<Transaction> findByAccount(int dataKey, int accountId, boolean pending, int billId) {
+	public List<Transaction> findByAccount(int dataKey, int accountId, int billId) {
 		HashMap<String, Object> parms = new HashMap<String, Object>();
 		parms.put("dataKey", dataKey);
 		parms.put("accountId", accountId);
@@ -47,14 +47,8 @@ public class TransactionDAO extends BaseDAO<Transaction, Integer> {
 		String query = "from Transaction where dataKey = :dataKey";
 		if (billId > 0) {
 			query += " and (fromBill.billId = :billId or toBill.billId = :billId )";
-		} else if (accountId > 0 && pending) {
-			query += " and ((fromAccount.accountId = :accountId and tallyInd = :tallyInd)"
-					+ " or (toAccount.accountId = :accountId and tallyInd = :tallyInd))";
 		} else if (accountId > 0) {
 			query += " and (fromAccount.accountId = :accountId or toAccount.accountId = :accountId )";
-		} else if (pending) {
-			query += " and ((fromAccount.accountId != 0 and tallyInd = :tallyInd)"
-					+ " or (toAccount.accountId != 0 and tallyInd = :tallyInd))";
 		}
 		query += " order by transSeq desc";
 
