@@ -82,6 +82,6 @@
 	<!-- Configure bean to convert JSON to POJO and vice versa -->
 	<bean id="jsonMessageConverter" class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter"></bean>	
 
-	<bean id="billCloser" class="com.expense.mvc.service.BillCloser" init-method="init" />
+	<bean id="billCloser" class="com.expense.mvc.controller.BillCloser" init-method="init" />
 
 </beans>

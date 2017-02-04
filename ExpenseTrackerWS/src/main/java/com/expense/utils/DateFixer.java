@@ -16,9 +16,6 @@ import org.apache.commons.lang3.StringUtils;
 
 public class DateFixer {
 
-	static SimpleDateFormat ts = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-	static SimpleDateFormat dt = new SimpleDateFormat("yyyy-MM-dd");
-
 	public static void main(String[] args) throws ClassNotFoundException, ParseException, SQLException {
 		Class.forName("org.sqlite.JDBC");
 		Connection con = null;
@@ -43,10 +40,27 @@ public class DateFixer {
 			}
 			con.commit();
 		} catch (Exception e) {
-			con.rollback();
+			if (con != null) {
+				con.rollback();
+			}
 		} finally {
-			con.close();
+			if (con != null) {
+				con.close();
+			}
 		}
+	}
+
+	private static enum F {
+		TS("yyyy-MM-dd HH:mm:ss"), DT("yyyy-MM-dd");
+		public String format;
+
+		private F(String format) {
+			this.format = format;
+		}
+	}
+
+	private static SimpleDateFormat DF(F f) {
+		return new SimpleDateFormat(f.format);
 	}
 
 	// ******************************** BILL **********************//
@@ -77,11 +91,11 @@ public class DateFixer {
 			b.setBillDateOld(rs.getString("BILL_DT"));
 			b.setDueDateOld(rs.getString("DUE_DT"));
 			b.setPaidDateOld(rs.getString("BILL_PAID_DT"));
-			b.setCreatedDate(new Timestamp(ts.parse(b.getCreatedDateOld()).getTime()));
-			b.setBillDate(new Date(dt.parse(b.getBillDateOld()).getTime()));
-			b.setDueDate(new Date(dt.parse(b.getDueDateOld()).getTime()));
+			b.setCreatedDate(new Timestamp(DF(F.TS).parse(b.getCreatedDateOld()).getTime()));
+			b.setBillDate(new Date(DF(F.DT).parse(b.getBillDateOld()).getTime()));
+			b.setDueDate(new Date(DF(F.DT).parse(b.getDueDateOld()).getTime()));
 			if (b.getPaidDateOld() != null) {
-				b.setPaidDate(new Date(dt.parse(b.getPaidDateOld()).getTime()));
+				b.setPaidDate(new Date(DF(F.DT).parse(b.getPaidDateOld()).getTime()));
 			}
 			m.put(b.getId(), b);
 		}
@@ -111,11 +125,11 @@ public class DateFixer {
 		for (Bill b : m.values()) {
 			ResultSet rs = stmt.executeQuery("SELECT * FROM BILL WHERE BILL_ID = " + b.getId());
 			rs.next();
-			b.setCreatedDateNew(ts.format(rs.getTimestamp("CREATED_DT")));
-			b.setBillDateNew(dt.format(rs.getDate("BILL_DT")));
-			b.setDueDateNew(dt.format(rs.getDate("DUE_DT")));
+			b.setCreatedDateNew(DF(F.TS).format(rs.getTimestamp("CREATED_DT")));
+			b.setBillDateNew(DF(F.DT).format(rs.getDate("BILL_DT")));
+			b.setDueDateNew(DF(F.DT).format(rs.getDate("DUE_DT")));
 			if (rs.getTimestamp("BILL_PAID_DT") != null) {
-				b.setPaidDateNew(dt.format(rs.getDate("BILL_PAID_DT")));
+				b.setPaidDateNew(DF(F.DT).format(rs.getDate("BILL_PAID_DT")));
 			}
 			rs.close();
 		}
@@ -145,7 +159,7 @@ public class DateFixer {
 		String sql = "UPDATE TALLY_HISTORY SET TALLY_DATE = ? WHERE TALLY_SEQ = ?";
 		PreparedStatement stmt = con.prepareStatement(sql);
 		for (Integer id : m.keySet()) {
-			stmt.setTimestamp(1, new Timestamp(ts.parse(m.get(id)).getTime()));
+			stmt.setTimestamp(1, new Timestamp(DF(F.TS).parse(m.get(id)).getTime()));
 			stmt.setInt(2, id);
 			stmt.addBatch();
 		}
@@ -159,7 +173,7 @@ public class DateFixer {
 		for (Integer id : m.keySet()) {
 			ResultSet rs = stmt.executeQuery("SELECT * FROM TALLY_HISTORY WHERE TALLY_SEQ = " + id);
 			rs.next();
-			String str = ts.format(rs.getTimestamp("TALLY_DATE"));
+			String str = DF(F.TS).format(rs.getTimestamp("TALLY_DATE"));
 			System.out.println(StringUtils.equals(str, m.get(id)) + " :: " + id + ", " + m.get(id) + ", " + str);
 			rs.close();
 		}
@@ -190,7 +204,7 @@ public class DateFixer {
 		PreparedStatement stmt = con.prepareStatement(sql);
 		for (Integer id : m.keySet()) {
 			if (m.get(id) != null) {
-				stmt.setTimestamp(1, new Timestamp(ts.parse(m.get(id)).getTime()));
+				stmt.setTimestamp(1, new Timestamp(DF(F.TS).parse(m.get(id)).getTime()));
 				stmt.setInt(2, id);
 				stmt.addBatch();
 			}
@@ -206,7 +220,7 @@ public class DateFixer {
 			if (m.get(id) != null) {
 				ResultSet rs = stmt.executeQuery("SELECT * FROM ACCOUNT WHERE ACCOUNT_ID = " + id);
 				rs.next();
-				String str = ts.format(rs.getTimestamp("TALLY_DATE"));
+				String str = DF(F.TS).format(rs.getTimestamp("TALLY_DATE"));
 				System.out.println(StringUtils.equals(str, m.get(id)) + " :: " + id + ", " + m.get(id) + ", " + str);
 				rs.close();
 			}
@@ -244,12 +258,12 @@ public class DateFixer {
 			t.setTransDateOld(rs.getString("TRANS_DATE"));
 			t.setTransMonthOld(rs.getString("TRANS_MONTH"));
 			t.setTallyDateOld(rs.getString("TALLY_DATE"));
-			t.setEntryDate(new Timestamp(ts.parse(t.getEntryDateOld()).getTime()));
-			t.setEntryMonth(new Date(dt.parse(t.getEntryMonthOld()).getTime()));
-			t.setTransDate(new Date(dt.parse(t.getTransDateOld()).getTime()));
-			t.setTransMonth(new Date(dt.parse(t.getTransMonthOld()).getTime()));
+			t.setEntryDate(new Timestamp(DF(F.TS).parse(t.getEntryDateOld()).getTime()));
+			t.setEntryMonth(new Date(DF(F.DT).parse(t.getEntryMonthOld()).getTime()));
+			t.setTransDate(new Date(DF(F.DT).parse(t.getTransDateOld()).getTime()));
+			t.setTransMonth(new Date(DF(F.DT).parse(t.getTransMonthOld()).getTime()));
 			if (t.getTallyDateOld() != null) {
-				t.setTallyDate(new Timestamp(ts.parse(t.getTallyDateOld()).getTime()));
+				t.setTallyDate(new Timestamp(DF(F.TS).parse(t.getTallyDateOld()).getTime()));
 			}
 			m.put(t.getId(), t);
 		}
@@ -281,12 +295,12 @@ public class DateFixer {
 		for (Trans t : m.values()) {
 			ResultSet rs = stmt.executeQuery("SELECT * FROM TRANSACTIONS WHERE TRANS_ID = " + t.getId());
 			rs.next();
-			t.setEntryDateNew(ts.format(rs.getTimestamp("ENTRY_DATE")));
-			t.setEntryMonthNew(dt.format(rs.getDate("ENTRY_MONTH")));
-			t.setTransDateNew(dt.format(rs.getDate("TRANS_DATE")));
-			t.setTransMonthNew(dt.format(rs.getDate("TRANS_MONTH")));
+			t.setEntryDateNew(DF(F.TS).format(rs.getTimestamp("ENTRY_DATE")));
+			t.setEntryMonthNew(DF(F.DT).format(rs.getDate("ENTRY_MONTH")));
+			t.setTransDateNew(DF(F.DT).format(rs.getDate("TRANS_DATE")));
+			t.setTransMonthNew(DF(F.DT).format(rs.getDate("TRANS_MONTH")));
 			if (rs.getTimestamp("TALLY_DATE") != null) {
-				t.setTallyDateNew(ts.format(rs.getTimestamp("TALLY_DATE")));
+				t.setTallyDateNew(DF(F.TS).format(rs.getTimestamp("TALLY_DATE")));
 			}
 			rs.close();
 		}
