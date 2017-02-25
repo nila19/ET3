@@ -48,7 +48,7 @@
     "func-names": ["error", "as-needed"],
     "no-param-reassign": "error",
     "max-params": ["error", 5],
-    "max-statements": ["error", 15],
+    "max-statements": ["error", 20],
     "prefer-arrow-callback": "off",
     "no-unused-vars": ["error", {
       "argsIgnorePattern": "next"
@@ -67,6 +67,7 @@
       "named": "never",
       "asyncArrow": "always"
     }],
+    "linebreak-style": "off",
     "no-undef": "error",
     "operator-linebreak": ["warn", "none"],
     "newline-per-chained-call": "off",

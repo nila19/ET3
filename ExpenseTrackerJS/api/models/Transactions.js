@@ -1,4 +1,3 @@
-/* eslint max-statements: "off" */
 
 'use strict';
 
@@ -67,88 +66,35 @@ const Transactions = function Transactions() {
 };
 
 Transactions.prototype = model('transactions');
-Transactions.prototype.findForCity = function findForCity(db, city) {
-  return this.find(db, {cityId: city}, {sort: {seq: -1}});
+Transactions.prototype.findForCity = function findForCity(db, cityId) {
+  return this.find(db, {cityId: cityId}, {sort: {seq: -1}});
 };
 // TODO Unused ??
-Transactions.prototype.findForAcct = function findForAcct(db, city, acct, bill) {
+Transactions.prototype.findForAcct = function findForAcct(db, cityId, acctId, billId) {
   const filter = {
-    cityId: city,
+    cityId: cityId,
     tallied: this.FLAGS.tallied.NO,
   };
 
-  if(bill) {
-    filter.$or = [{'accounts.from.billId': bill}, {'accounts.to.billId': bill}];
+  if(billId) {
+    filter.$or = [{'accounts.from.billId': billId}, {'accounts.to.billId': billId}];
   } else {
-    filter.$or = [{'accounts.from.acctId': acct}, {'accounts.to.acctId': acct}];
+    filter.$or = [{'accounts.from.acctId': acctId}, {'accounts.to.acctId': acctId}];
   }
-  // filter.$or = bill ? [{fromBillId: bill}, {toBillId: bill}] : [{fromAcctId: acct}, {toAcctId: acct}];
   return this.find(db, filter, {sort: {seq: -1}});
 };
-Transactions.prototype.findForSearch = function findForSearch(db, city, search) {
+Transactions.prototype.findForSearch = function findForSearch(db, search) {
   // dummy usage
   searchUI.acctId;
 
   const options = {sort: {seq: -1}};
-  const filter = {
-    cityId: city,
+  let filter = {
+    cityId: search.cityId,
   };
 
-  // account id
-  if(search.acctId) {
-    filter.$or = [{'accounts.from.acctId': search.acctId}, {'accounts.to.acctId': search.acctId}];
-  }
-  // bill id
-  if(search.billId) {
-    filter['accounts.from.billId'] = search.billId;
-  }
-  // category id
-  if(search.catId) {
-    filter.catId = search.catId;
-  }
-  // description
-  if(search.description) {
-    filter.description = {$regex: new RegExp(search.description, 'gi')};
-  }
-  // amount
-  if(search.amount) {
-    const amt75 = number(search.amount).multiply(config.pct75).value();
-    const amt125 = number(search.amount).multiply(config.pct125).value();
+  filter = this.buildSearchQueryOne(search, filter);
+  filter = this.buildSearchQueryTwo(search, filter);
 
-    filter.$and = [{amount: {$gt: amt75}}, {amount: {$lt: amt125}}];
-  }
-  // adhoc ind
-  if(search.adhoc) {
-    filter.adhoc = search.adhoc;
-  }
-  // adjust ind
-  if(search.adjust) {
-    filter.adjust = search.adjust;
-  }
-  // entry month
-  if(search.entryMonth) {
-    if(search.entryYear) {
-      // set startDt as 31-Dec of previous year, since that it is > than.
-      const yearBegin = moment(search.entryMonth).month(0).date(0).valueOf();
-      const yearEnd = moment(search.entryMonth).month(11).date(31).valueOf();
-
-      filter.$and = [{entryMonth: {$gt: yearBegin}}, {entryMonth: {$lt: yearEnd}}];
-    } else {
-      filter.entryMonth = search.entryMonth;
-    }
-  }
-  // trans month
-  if(search.transMonth) {
-    if(search.transYear) {
-      // set startDt as 31-Dec of previous year, since that it is > than.
-      const yearBegin = moment(search.transMonth).month(0).date(0).valueOf();
-      const yearEnd = moment(search.transMonth).month(11).date(31).valueOf();
-
-      filter.$and = [{transMonth: {$gt: yearBegin}}, {transMonth: {$lt: yearEnd}}];
-    } else {
-      filter.transMonth = search.transMonth;
-    }
-  }
   // thin list
   if(search.thinList) {
     options.limit = config.thinList;
@@ -218,9 +164,9 @@ Transactions.prototype.buildSearchQueryTwo = function buildSearchQueryTwo(search
   return filter;
 };
 
-Transactions.prototype.findForMonthlySummary = function findForMonthlySummary(db, city, regular, adhoc) {
+Transactions.prototype.findForMonthlySummary = function findForMonthlySummary(db, cityId, regular, adhoc) {
   const filter = {
-    cityId: city,
+    cityId: cityId,
     adjust: this.FLAGS.adjust.NO,
   };
 
@@ -230,12 +176,12 @@ Transactions.prototype.findForMonthlySummary = function findForMonthlySummary(db
   return this.find(db, filter, {sort: {seq: -1}});
 };
 // get Transactions for the last 3 months excluding the current month.
-Transactions.prototype.findForForecast = function findForForecast(db, city) {
+Transactions.prototype.findForForecast = function findForForecast(db, cityId) {
   const thisMth = moment().date(1);
   const beginMth = thisMth.clone().subtract(4, 'months').valueOf();
   const endMth = thisMth.clone().subtract(1, 'months').valueOf();
   const filter = {
-    cityId: city,
+    cityId: cityId,
     adhoc: this.FLAGS.adhoc.NO,
     adjust: this.FLAGS.adjust.NO,
     transMonth: {$gt: beginMth, $lte: endMth}
@@ -243,14 +189,14 @@ Transactions.prototype.findForForecast = function findForForecast(db, city) {
 
   return this.find(db, filter, {sort: {seq: -1}});
 };
-Transactions.prototype.findAllEntryMonths = function findAllEntryMonths(db, city) {
-  return this.distinct(db, 'entryMonth', {cityId: city}, {sort: {entryMonth: -1}});
+Transactions.prototype.findAllEntryMonths = function findAllEntryMonths(db, cityId) {
+  return this.distinct(db, 'entryMonth', {cityId: cityId}, {sort: {entryMonth: -1}});
 };
-Transactions.prototype.findAllTransMonths = function findAllTransMonths(db, city) {
-  return this.distinct(db, 'transMonth', {cityId: city}, {sort: {transMonth: -1}});
+Transactions.prototype.findAllTransMonths = function findAllTransMonths(db, cityId) {
+  return this.distinct(db, 'transMonth', {cityId: cityId}, {sort: {transMonth: -1}});
 };
-Transactions.prototype.findAllDescription = function findAllDescription(db, city) {
-  return db.get(this.collection).aggregate([{$match: {cityId: city}},
+Transactions.prototype.findAllDescriptions = function findAllDescriptions(db, cityId) {
+  return db.get(this.collection).aggregate([{$match: {cityId: cityId}},
     {$group: {_id: '$description', count: {$sum: 1}}}, {$sort: {count: -1}}]);
 };
 

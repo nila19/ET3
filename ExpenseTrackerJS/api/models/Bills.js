@@ -25,33 +25,37 @@ const Bills = function Bills() {
 };
 
 Bills.prototype = model('bills');
-Bills.prototype.findForCity = function findForCity(db, city, paid) {
+// paidInd == null, get all; paidInd = 'N', getUnpaid only, paidInd = 'Y', getPaid only
+Bills.prototype.findForCity = function findForCity(db, cityId, paidInd) {
   const filter = {
-    cityId: city,
+    cityId: cityId,
     status: this.FLAGS.status.CLOSED,
   };
 
-  filter.balance = paid ? 0: {$gt: 0};
+  if(paidInd) {
+    filter.balance = (paidInd === 'Y') ? 0: {$gt: 0};
+  }
   return this.find(db, filter, {sort: {billDt: -1}});
 };
-Bills.prototype.findForCityOpen = function findForCityOpen(db, city) {
+// TODO Unsed ???
+Bills.prototype.findForCityOpen = function findForCityOpen(db, cityId) {
   return this.find(db, {
-    cityId: city,
+    cityId: cityId,
     status: this.FLAGS.status.OPEN
   }, {
     sort: {billDt: -1}
   });
 };
 
-// paidInd == 0, get all; paidInd > 0, getUnpaid only, paidInd < 0, getPaid only
-Bills.prototype.findForAcct = function findForAcct(db, acct, paidInd) {
+// paidInd == null, get all; paidInd = 'N', getUnpaid only, paidInd = 'Y', getPaid only
+Bills.prototype.findForAcct = function findForAcct(db, acctId, paidInd) {
   const filter = {
-    acctId: acct,
+    acctId: acctId,
     status: this.FLAGS.status.CLOSED,
   };
 
   if(paidInd) {
-    filter.balance = (paidInd < 0) ? 0: {$gt: 0};
+    filter.balance = (paidInd === 'Y') ? 0: {$gt: 0};
   }
   return this.find(db, filter, {sort: {billDt: -1}});
 };

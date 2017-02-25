@@ -20,12 +20,12 @@ const Categories = function Categories() {
 };
 
 Categories.prototype = model('categories');
-Categories.prototype.findForCity = function findForCity(db, city) {
-  return this.find(db, {cityId: city}, {sort: {seq: 1}});
+Categories.prototype.findForCity = function findForCity(db, cityId) {
+  return this.find(db, {cityId: cityId}, {sort: {seq: 1}});
 };
-Categories.prototype.findForCityActive = function findForCityActive(db, city) {
+Categories.prototype.findForCityActive = function findForCityActive(db, cityId) {
   return this.find(db, {
-    cityId: city,
+    cityId: cityId,
     status: this.FLAGS.status.ACTIVE,
   }, {
     sort: {seq: 1}

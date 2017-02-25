@@ -15,8 +15,8 @@ const TallyHistories = function TallyHistories() {
 };
 
 TallyHistories.prototype = model('tallyhistories');
-TallyHistories.prototype.findForAccct = function findForAccct(db, acct) {
-  return this.find(db, {acctId: acct}, {sort: {tallyId: -1}});
+TallyHistories.prototype.findForAccct = function findForAccct(db, acctId) {
+  return this.find(db, {acctId: acctId}, {sort: {tallyId: -1}});
 };
 
 module.exports = function exp() {
