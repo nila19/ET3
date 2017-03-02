@@ -8,7 +8,7 @@ const schema = {
   balance: 'float default-0',
   type: 'string default-C',
   status: 'string default-A',
-  billed: 'string default-N',
+  billed: 'boolean',
   icon: 'string default-home',
   color: 'string default-blue',
   seq: 'int',
@@ -21,11 +21,11 @@ const schema = {
   FLAGS: {
     type: {CASH: 'C', CREDIT: 'R'},
     status: {ACTIVE: 'A', INACTIVE: 'I'},
-    billed: {YES: 'Y', NO: 'N'},
+//    billed: {YES: 'Y', NO: 'N'},
   },
 };
 
-const Accounts = function Accounts() {
+const Accounts = function () {
   // do nothing
   this.FLAGS = schema.FLAGS;
 };

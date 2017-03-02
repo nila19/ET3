@@ -9,7 +9,7 @@ const schema = {
   balance: 'float',
 };
 
-const TallyHistories = function TallyHistories() {
+const TallyHistories = function () {
   // do nothing
   schema.tallyId;
 };

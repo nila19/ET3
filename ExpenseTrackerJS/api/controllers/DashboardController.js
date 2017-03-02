@@ -2,7 +2,7 @@
 
 const accounts = require('../models/Accounts')();
 const bills = require('../models/Bills')();
-const transactions = require('../models/Transactions');
+const transactions = require('../models/Transactions')();
 const error = 1000;
 
 // **************************** transactions ****************************//

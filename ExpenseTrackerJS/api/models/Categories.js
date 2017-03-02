@@ -14,7 +14,7 @@ const schema = {
   },
 };
 
-const Categories = function Categories() {
+const Categories = function () {
   // do nothing
   this.FLAGS = schema.FLAGS;
 };

@@ -3,8 +3,8 @@
 const moment = require('moment');
 const number = require('numeral');
 const async = require('async');
-const categories = require('../models/Categories');
-const transactions = require('../models/Transactions');
+const categories = require('../models/Categories')();
+const transactions = require('../models/Transactions')();
 
 // utility methods to generate appropriate json..
 const getMonth = function (doc) {

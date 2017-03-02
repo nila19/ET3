@@ -32,16 +32,16 @@ const schema = {
       balanceAf: 'float default-0',
     }
   },
-  adhoc: 'string default-N',
-  adjust: 'string default-N',
-  status: 'string default-P',
-  tallied: 'string default-N',
+  adhoc: 'boolean',
+  adjust: 'boolean',
+  status: 'boolean',
+  tallied: 'boolean',
   tallyDt: 'timestamp',
   FLAGS: {
-    adhoc: {YES: 'Y', NO: 'N'},
-    adjust: {YES: 'Y', NO: 'N'},
-    status: {OPEN: 'O', POSTED: 'P'},
-    tallied: {YES: 'Y', NO: 'N'},
+    // adhoc: {YES: 'Y', NO: 'N'},
+    // adjust: {YES: 'Y', NO: 'N'},
+    // status: {OPEN: 'O', POSTED: 'P'},
+    // tallied: {YES: 'Y', NO: 'N'},
   }
 };
 
@@ -60,7 +60,7 @@ const searchUI = {
   thinList: 'boolean',
 };
 
-const Transactions = function Transactions() {
+const Transactions = function () {
   // do nothing
   this.FLAGS = schema.FLAGS;
 };
@@ -73,7 +73,7 @@ Transactions.prototype.findForCity = function findForCity(db, cityId) {
 Transactions.prototype.findForAcct = function findForAcct(db, cityId, acctId, billId) {
   const filter = {
     cityId: cityId,
-    tallied: this.FLAGS.tallied.NO,
+    tallied: false,
   };
 
   if(billId) {
@@ -87,6 +87,7 @@ Transactions.prototype.findForSearch = function findForSearch(db, search) {
   // dummy usage
   searchUI.acctId;
 
+  // TODO - change it to use querystring instead of req body.
   const options = {sort: {seq: -1}};
   let filter = {
     cityId: search.cityId,
@@ -99,7 +100,7 @@ Transactions.prototype.findForSearch = function findForSearch(db, search) {
   if(search.thinList) {
     options.limit = config.thinList;
   }
-  // console.log(JSON.stringify(filter));
+//  console.log(JSON.stringify(filter));
   return this.find(db, filter, options);
 };
 Transactions.prototype.buildSearchQueryOne = function buildSearchQueryOne(search, filter) {
@@ -128,11 +129,11 @@ Transactions.prototype.buildSearchQueryOne = function buildSearchQueryOne(search
   }
   // adhoc ind
   if(search.adhoc) {
-    filter.adhoc = search.adhoc;
+    filter.adhoc = search.adhoc === 'Y';
   }
   // adjust ind
   if(search.adjust) {
-    filter.adjust = search.adjust;
+    filter.adjust = search.adjust === 'Y';
   }
   return filter;
 };
@@ -167,11 +168,11 @@ Transactions.prototype.buildSearchQueryTwo = function buildSearchQueryTwo(search
 Transactions.prototype.findForMonthlySummary = function findForMonthlySummary(db, cityId, regular, adhoc) {
   const filter = {
     cityId: cityId,
-    adjust: this.FLAGS.adjust.NO,
+    adjust: false,
   };
 
   if(!(regular && adhoc)) {
-    filter.adhoc = (regular && !adhoc) ? this.FLAGS.adhoc.NO : ((adhoc && !regular) ? this.FLAGS.adhoc.YES : ' ');
+    filter.adhoc = (regular && !adhoc) ? false : true;
   }
   return this.find(db, filter, {sort: {seq: -1}});
 };
@@ -182,8 +183,8 @@ Transactions.prototype.findForForecast = function findForForecast(db, cityId) {
   const endMth = thisMth.clone().subtract(1, 'months').valueOf();
   const filter = {
     cityId: cityId,
-    adhoc: this.FLAGS.adhoc.NO,
-    adjust: this.FLAGS.adjust.NO,
+    adhoc: false,
+    adjust: false,
     transMonth: {$gt: beginMth, $lte: endMth}
   };
 

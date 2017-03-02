@@ -24,7 +24,7 @@ const migrate = function (sqlite, mongo, log, next) {
           balance: number(row.BALANCE_AMT).value(),
           type: row.TYPE,
           status: row.STATUS,
-          billed: row.BILL_OPTION,
+          billed: row.BILL_OPTION === 'Y' ? true : false,
           icon: row.IMAGE_CODE,
           color: row.BG_COLOR,
           seq: row.DISPLAY_ORDER,

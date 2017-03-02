@@ -1,0 +1,57 @@
+      <!-- Nav panel -->
+      <nav class="navbar navbar-transparent navbar-absolute">
+        <div class="container-fluid">
+          <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse">
+              <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span>
+            </button>
+          </div>
+          <div class="collapse navbar-collapse">
+            <div class="navbar-left">
+              <a ng-href="#!{{$ctrl.data.href.DASHBOARD}}" class="btn btn-primary"> <i class="material-icons">dashboard</i> Dashboard
+              </a>
+            </div>
+            <div class="navbar-left">
+              <a ng-href="#!{{$ctrl.data.href.SUMMARY}}" class="btn btn-success"> <i class="material-icons">content_copy</i> Monthly Summary
+              </a>
+            </div>
+            <div class="navbar-left">
+              <a ng-href="#!{{$ctrl.data.href.SEARCH}}" class="btn btn-google"> <i class="material-icons">search</i> Search
+              </a>
+            </div>
+            <div class="navbar-right">
+              <span class="btn btn-success no-btn">
+                <i ng-if="$ctrl.data.menu.city.currency === $ctrl.data.CURRENCY.USD" class="material-icons">attach_money</i> 
+                <i ng-if="$ctrl.data.menu.city.currency === $ctrl.data.CURRENCY.INR" class="material-icons">euro_symbol</i>
+              </span>
+            </div>
+            <div class="dropdown navbar-right">
+              <a class="btn btn-primary dropdown-toggle" data-toggle="dropdown"> 
+                <span>{{$ctrl.data.menu.city.name}}</span>&nbsp;<b class="caret"></b>
+              </a>
+              <ul class="dropdown-menu">
+                <li ng-repeat="city in $ctrl.data.menu.cities">
+                  <a ng-click="$ctrl.changeCity(city.id)">{{city.name}}</a>
+                </li>
+              </ul>
+            </div>
+            <div ng-if="$ctrl.data.showButtons">
+              <div class="navbar-right">
+                <a ng-switch="$ctrl.data.showingMoreAccounts.toString()" ng-click="$ctrl.toggleMoreAccounts()" class="btn btn-primary"> 
+                  <i ng-switch-when="true" class="material-icons">expand_less</i>
+                  <i ng-switch-when="false" class="material-icons">expand_more</i>
+                </a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              </div>
+              <div class="navbar-right">
+                <a ng-switch="$ctrl.data.showingChart.toString()" ng-click="$ctrl.toggleChart()" class="btn" ng-class="{'btn-warning':!$ctrl.data.showingChart,'btn-success':$ctrl.data.showingChart}"> 
+                  <i ng-switch-when="true" class="material-icons">add</i>
+                  <i ng-switch-when="false" class="material-icons">insert_chart</i>
+                </a>
+              </div>
+            </div>
+            <div class="navbar-right">
+              <span ng-if="$ctrl.data.loading" class="btn btn-simple no-btn"><img alt="loading..." style="width:20px;height:20px;" ng-src="loading.gif"></span>
+            </div>
+          </div>
+        </div>
+      </nav>

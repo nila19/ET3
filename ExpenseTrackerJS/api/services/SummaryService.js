@@ -20,12 +20,12 @@ const buildSummaryGrid = function (params, next) {
     data.fcTransactions = results[3];
 
     async.waterfall([buildEmptyGrid, populateGrid, calcYearlySummary,
-      buildForecastGrid, weedInactiveCats], function cb(err, grid) {
+      buildForecastGrid, weedInactiveCats, sortGridByCategory, calcTotalRow], function cb(err, gridArr) {
       if(err) {
         param.log.error(err);
         return next(err);
       }
-      return next(null, grid);
+      return next(null, gridArr);
     });
   });
 };
@@ -138,9 +138,62 @@ const embedFcToGrid = function (fcgrid, next) {
 // setp 5: identify inactive categories with no transactions ever & remove them from grid.
 const weedInactiveCats = function (grid, next) {
   const weeds = [];
-  // TODO Fix this...
 
+  for (const catId in grid) {
+    if (grid.hasOwnProperty(catId)) {
+      const ui = grid[catId];
+
+      if(ui.category.status !== 'A') {
+        let nonzero = false;
+
+        ui.amount.forEach(function aa(amt) {
+          if(amt !== 0) {
+            nonzero = true;
+          }
+        });
+        if(!nonzero) {
+          weeds.push(catId);
+        }
+      }
+    }
+  }
+
+  weeds.forEach(function bb(weed) {
+    delete grid[weed];
+  });
   return next(null, grid);
+};
+
+// setp 6: sort them based on Category sort order.
+const sortGridByCategory = function (grid, next) {
+  const gridArr = [];
+
+  data.categories.forEach(function aa(category) {
+    if(grid[category.catId]) {
+      gridArr.push(grid[category.catId]);
+    }
+  });
+
+  return next(null, gridArr);
+};
+
+// setp 7: calculate monthly total row & add it as top row.
+const calcTotalRow = function (gridArr, next) {
+  const totalui = {};
+
+  data.transMonths.forEach(function cc() {
+    totalui.amount.push(0);
+    totalui.count.push(0);
+  });
+
+  gridArr.forEach(function aa(ui) {
+    data.transMonths.forEach(function cc(month, ii) {
+      totalui.amount[ii] += ui.amount[ii];
+    });
+  });
+
+  gridArr.unshift(totalui);
+  return next(null, gridArr);
 };
 
 module.exports = {

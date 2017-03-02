@@ -1,4 +1,7 @@
+
+const async = require('async');
 const sqlite3 = require('sqlite3').verbose();
+const mongoconfig = require('../api/config/mongodb-config');
 
 const config = require('../api/config/config');
 const log = require('../api/utils/logger');
@@ -8,74 +11,93 @@ const categories = require('./migrate-categories');
 const cities = require('./migrate-cities');
 const tallies = require('./migrate-tallyhistories');
 const transactions = require('./migrate-transactions');
+const sequences = require('./migrate-sequences');
 const deleteAll = require('./delete-all');
 
 const sqlite = new sqlite3.Database(config.sqlite, sqlite3.OPEN_READONLY);
+let param = null;
 
-const account = function (sqlite, mongo, log, next) {
-  accounts(sqlite, mongo, log, function cb() {
-    log.info('AccountsMgr completed...');
+const account = function (next) {
+  accounts(param.sqlite, param.mongo, param.log, function cb() {
+    log.info('Accounts completed...');
     next();
   });
 };
 
-const bill = function (sqlite, mongo, log, next) {
-  bills(sqlite, mongo, log, function cb() {
-    log.info('BillsMgr completed...');
+const bill = function (next) {
+  bills(param.sqlite, param.mongo, param.log, function cb() {
+    log.info('Bills completed...');
     next();
   });
 };
 
-const category = function (sqlite, mongo, log, next) {
-  categories(sqlite, mongo, log, function cb() {
-    log.info('CategoriesMgr completed...');
+const category = function (next) {
+  categories(param.sqlite, param.mongo, param.log, function cb() {
+    log.info('Categories completed...');
     next();
   });
 };
 
-const city = function (sqlite, mongo, log, next) {
-  cities(sqlite, mongo, log, function cb() {
-    log.info('CitiesMgr completed...');
+const city = function (next) {
+  cities(param.sqlite, param.mongo, param.log, function cb() {
+    log.info('Cities completed...');
     next();
   });
 };
 
-const tally = function (sqlite, mongo, log, next) {
-  tallies(sqlite, mongo, log, function cb() {
-    log.info('TallyHistoryMgr completed...');
+const tally = function (next) {
+  tallies(param.sqlite, param.mongo, param.log, function cb() {
+    log.info('TallyHistory completed...');
     next();
   });
 };
 
-const transaction = function (sqlite, mongo, log, next) {
-  transactions(sqlite, mongo, log, function cb() {
-    log.info('TransactionsMgr completed...');
+const transaction = function (next) {
+  transactions(param.sqlite, param.mongo, param.log, function cb() {
+    log.info('Transactions completed...');
     next();
   });
 };
 
-const clear = function (mongo, log, next) {
-  deleteAll(true, mongo, log, function cb() {
-    log.info('DeleteAllMgr completed...');
+const sequence = function (next) {
+  sequences(param.mongo, param.log, function cb() {
+    log.info('Sequence completed...');
     next();
   });
 };
 
-require('../api/config/mongodb-config').connect(log, function cb(mongo) {
-  clear(mongo, log, function next() {
-    account(sqlite, mongo, log, function next() {
-      bill(sqlite, mongo, log, function next() {
-        category(sqlite, mongo, log, function next() {
-          city(sqlite, mongo, log, function next() {
-            tally(sqlite, mongo, log, function next() {
-              transaction(sqlite, mongo, log, function next() {
-                sqlite.close();
-                mongo.close();
-              });
-            });
-          });
-        });
-      });
+const clear = function (next) {
+  deleteAll(param.mongo, param.log, function cb() {
+    log.info('Delete completed...');
+    next();
+  });
+};
+
+const main = function (next) {
+  mongoconfig.connect(log, function cb(mongo) {
+    param = {
+      log: log,
+      mongo: mongo,
+      sqlite: sqlite
+    };
+
+    log.info('******* Migration activities started...!!!!!');
+    async.waterfall([clear, account, bill, category, city, tally,
+      transaction, sequence], function cb(err) {
+      if(err) {
+        param.log.error(err);
+        return next(err);
+      }
+      sqlite.close();
+      mongo.close();
+      return next();
     });
   });
+};
+
+main(function aa(err) {
+  if(err) {
+    log.error(err);
+  }
+  log.info('***** Migration activities completed...!!!!!');
 });

@@ -19,7 +19,7 @@ const migrate = function (sqlite, mongo, log, next) {
           cityId: row.DATA_KEY,
           description: row.DESCRIPTION,
           status: row.STATUS,
-          default: row.DEFAULT_IND,
+          default: row.DEFAULT_IND === 'Y' ? true : false,
           currency: row.CURRENCY,
           startDt: number(row.START_DT).value(),
           endDt: number(row.END_DT).value(),

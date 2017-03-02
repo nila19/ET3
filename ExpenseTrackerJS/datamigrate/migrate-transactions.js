@@ -1,8 +1,6 @@
 'use strict';
 
 const number = require('numeral');
-// const ts = require('moment');
-
 const transactions = require('../api/models/Transactions')();
 
 number.defaultFormat('0');
@@ -29,10 +27,10 @@ const migrate = function (sqlite, mongo, log, next) {
           transMonth: row.TRANS_MONTH,
           seq: row.TRANS_SEQ,
           accounts: {},
-          adhoc: row.ADHOC_IND,
-          adjust: row.ADJUST_IND,
-          status: row.STATUS,
-          tallied: row.TALLY_IND,
+          adhoc: row.ADHOC_IND === 'Y' ? true : false,
+          adjust: row.ADJUST_IND === 'Y' ? true : false,
+          status: row.STATUS === 'P' ? true : false,
+          tallied: row.TALLY_IND === 'Y' ? true : false,
           tallyDt: number(row.TALLY_DATE).value(),
         };
 
@@ -43,6 +41,13 @@ const migrate = function (sqlite, mongo, log, next) {
             balanceBf: number(row.FROM_BALANCE_BF).value(),
             balanceAf: number(row.FROM_BALANCE_AF).value(),
           };
+        } else {
+          trans.accounts.from = {
+            acctId: 0,
+            billId: null,
+            balanceBf: 0,
+            balanceAf: 0,
+          };
         }
         if(row.FROM_ACCOUNT_ID) {
           trans.accounts.to = {
@@ -50,6 +55,13 @@ const migrate = function (sqlite, mongo, log, next) {
             billId: number(row.TO_BILL_ID).value(),
             balanceBf: number(row.TO_BALANCE_BF).value(),
             balanceAf: number(row.TO_BALANCE_AF).value(),
+          };
+        } else {
+          trans.accounts.to = {
+            acctId: 0,
+            billId: null,
+            balanceBf: 0,
+            balanceAf: 0,
           };
         }
 

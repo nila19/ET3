@@ -1,0 +1,87 @@
+  <div class="wrapper">
+    <div class="main-panel">
+      <!-- Nav panel -->
+      <etmenu></etmenu>
+
+      <!-- Summary Content -->
+      <div class="content">
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-md-12">
+              <div class="card">
+                <div class="card-header" data-background-color="green">
+                  <h4 class="title text-uppercase">Monthly Summary</h4>
+                </div>
+                <div class="card-content table-responsive">
+                  <table class="table table-hover table-striped">
+                    <thead class="text-uppercase">
+                      <tr class="text-warning">
+                        <th class="text-right">&nbsp;</th>
+                        <th class="text-right">
+                          <div class="row stats">
+                            <div class="col-md-3">
+                              <div class="form-group">
+                                <input type="checkbox" ng-model="$ctrl.data.input.forecast" ng-click="$ctrl.loadSummary()" tooltip rel="tooltip" title="Forecast" data-placement="bottom" class="form-control">
+                              </div>
+                            </div>
+                            <div class="col-md-3">
+                              <div class="form-group">
+                                <input type="checkbox" ng-model="$ctrl.data.input.adhoc" ng-disabled="!$ctrl.data.input.regular" ng-click="$ctrl.loadSummary()" tooltip rel="tooltip" title="Adhoc" data-placement="bottom" class="form-control">
+                              </div>
+                            </div>
+                            <div class="col-md-3">
+                              <div class="form-group">
+                                <input type="checkbox" ng-model="$ctrl.data.input.regular" ng-disabled="!$ctrl.data.input.adhoc" ng-click="$ctrl.loadSummary()" tooltip rel="tooltip" title="Regular" data-placement="bottom" class="form-control">
+                              </div>
+                            </div>
+                          </div>
+                        </th>
+                        <th>
+                          <div class="stats">
+                            <button type="button" ng-disabled="!$ctrl.hasPrevPage()" ng-click="$ctrl.prevPage()" class="btn btn-primary btn-xs">
+                              <i class="material-icons">skip_previous</i>
+                            </button>
+                            <button type="button" ng-disabled="!$ctrl.hasNextPage()" ng-click="$ctrl.nextPage()" class="btn btn-primary btn-xs">
+                              <i class="material-icons">skip_next</i>
+                            </button>
+                          </div>
+                        </th>
+                        <th ng-repeat="month in $ctrl.data.pgData.months" class="text-right"><strong>{{month.name}}</strong></th>
+                      </tr>
+                      <tr class="text-warning">
+                        <th class="text-right">&nbsp;</th>
+                        <th class="text-right">&nbsp;</th>
+                        <th class="text-right">&nbsp;</th>
+                        <th ng-repeat="total in $ctrl.data.pgData.totalrow track by $index" class="text-right sumTotalCell">
+                          <span ng-click="$ctrl.listExpenses(0, $index)"><strong>{{$ctrl.data.pgData.totalrow[$index] | currency}}</strong></span>
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr ng-repeat="row in $ctrl.data.pgData.rows">
+                        <td class="td-actions text-right">
+                          <a class="btn btn-primary btn-simple btn-sm no-btn"><i class="material-icons">{{row.category.imageCode}}</i></a></td>
+                        <td ng-switch="row.category.active.toString()">
+                          <span ng-switch-when="true">{{row.category.mainCategory}}</span>
+                          <span ng-switch-when="false"><em>{{row.category.mainCategory}}</em></span>
+                        </td>
+                        <td ng-switch="row.category.active.toString()">
+                          <span ng-switch-when="true">{{row.category.subCategory}}</span>
+                          <span ng-switch-when="false"><em>{{row.category.subCategory}}</em></span>
+                        </td>
+                        <td ng-repeat="amt in row.amount track by $index" ng-switch="$ctrl.data.pgData.months[$index].aggregate.toString()" class="text-right sumDetailCell">
+                          <span ng-switch-when="false" ng-click="$ctrl.listExpenses(row.category, $index)">{{row.amount[$index] | currency}}</span>
+                          <span ng-switch-when="true" ng-click="$ctrl.listExpenses(row.category, $index)"><strong>{{row.amount[$index] | currency}}</strong></span>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>

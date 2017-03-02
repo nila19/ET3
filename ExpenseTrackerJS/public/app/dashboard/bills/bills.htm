@@ -1,0 +1,92 @@
+          <!-- Bills Card -->
+            <div ng-show="$ctrl.data.showBills" class="col-md-6">
+              <div class="card card-nav-tabs">
+                <div class="card-header" data-background-color="purple">
+                  <div class="nav-tabs-navigation">
+                    <div class="nav-tabs-wrapper">
+                      <span class="nav-tabs-title text-uppercase">Bills</strong></span>
+                      <ul class="nav nav-tabs" data-tabs="tabs">
+                        <li ng-class="{'active':$ctrl.data.tab === 'OPEN'}">
+                          <a href="" ng-click="$ctrl.showOpenBills();" data-toggle="tab">
+                            <i class="material-icons">flag</i>Open
+                            <div class="ripple-container"></div>
+                          </a>
+                        </li>
+                        <li ng-class="{'active':$ctrl.data.tab === 'CLOSED'}">
+                          <a href="" ng-click="$ctrl.showClosedBills();" data-toggle="tab">
+                            <i class="material-icons">schedule</i>Closed
+                            <div class="ripple-container"></div>
+                          </a>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+                <div class="card-content">
+                  <div class="tab-content">
+                    <div class="tab-pane active">
+                      <table class="table">
+                        <thead class="text-warning text-uppercase">
+                          <tr>
+                            <th width="5%">&nbsp;</th>
+                            <th width="20%">Account</th>
+                            <th width="10%">Bill Date</th>
+                            <th width="12%" class="text-right">Bill Amt</th>
+                            <th width="12%" class="text-right">Balance</th>
+                            <th width="16%" class="text-center">Due Date</th>
+                            <th width="15%">Payment</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr ng-repeat="bill in $ctrl.data.pgData.rows">
+                            <td class="td-actions text-right">
+                              <button type="button" ng-click="$ctrl.filterExpenses(bill.id)" tooltip rel="tooltip" title="View Expenses" class="btn btn-primary btn-simple btn-xs" ng-class="{'btn-warning': ($ctrl.data.filterBy === bill.id)}">
+                                <i class="material-icons">list</i>
+                              </button>
+                            </td>
+                            <td>{{bill.account.name}}</td>
+                            <td>{{bill.billDt | date:'dd-MMM-yy'}}</td>
+                            <td class="text-right">{{bill.billAmt | currency:''}}</td>
+                            <td class="text-right">{{bill.billBalance | currency:''}}</td>
+                            <td class="text-center">{{bill.dueDt | date:'dd-MMM-yy'}}</td>
+                            <td ng-if="bill.paid">{{bill.billPaidDt | date:'dd-MMM-yy'}}</td>
+                            <td ng-if="!bill.paid" class="td-actions">
+                              <span ng-click="$ctrl.showBillPay(bill.id)" class="btn btn-primary btn-xs">
+                                <i class="material-icons">payment</i>
+                              </span>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td colspan="2">
+                              <div class="stats">
+                                <button type="button" class="btn btn-simple btn-xs">
+                                  <i class="material-icons">schedule</i>
+                                </button>&nbsp;
+                                <em>{{$ctrl.data.maxPageNo + 1}}</em>
+                              </div>
+                            </td>
+                            <td><span ng-if="$ctrl.data.loading" class="btn btn-simple btn-xs no-btn"><img alt="loading..." style="width:20px;height:20px;" ng-src="loading.gif"></span>&nbsp;</td>
+                            <td>
+                              <div class="stats">
+                                <button type="button" ng-if="$ctrl.data.filterApplied" ng-click="$ctrl.clearFilter()" tooltip rel="tooltip" title="Clear Filter" class="btn btn-primary btn-xs">
+                                  <i class="material-icons">filter_list</i>
+                                </button>
+                              </div>
+                            </td>
+                            <td colspan="3">
+                              <ul class="pagination pagination-primary etPaginate">
+                                <li><a href="" ng-show="$ctrl.hasPrevPageSet()" ng-click="$ctrl.prevPageSet()"><</a></li>
+                                <li ng-repeat="i in [0, 1, 2, 3, 4]" ng-class="{'active':$ctrl.data.currPageNo===$ctrl.page(i)}">
+                                  <a href="" ng-show="$ctrl.page(i)<=$ctrl.data.maxPageNo" ng-click="$ctrl.loadPage($ctrl.page(i))">{{$ctrl.page(i)+1}}</a>
+                                </li>
+                                <li><a href="" ng-show="$ctrl.hasNextPageSet()" ng-click="$ctrl.nextPageSet()">></a></li>
+                              </ul>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>

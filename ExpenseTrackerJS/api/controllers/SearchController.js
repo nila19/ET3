@@ -1,6 +1,6 @@
 'use strict';
 
-const transactions = require('../models/Transactions');
+const transactions = require('../models/Transactions')();
 const error = 1000;
 
 const doSearch = function (req, resp) {

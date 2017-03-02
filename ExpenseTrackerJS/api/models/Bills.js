@@ -19,7 +19,7 @@ const schema = {
   }
 };
 
-const Bills = function Bills() {
+const Bills = function () {
   // do nothing
   this.FLAGS = schema.FLAGS;
 };

@@ -1,0 +1,61 @@
+
+/***** bootstrap.css  												*****/
+/***** 		#1615 - Changed padding from 15px to 5px 				*****/
+/***** material-dashboard.css 										*****/
+/***** 		# 630 - Changed from calc(100% -260px) to calc(100% - 0px) *****/
+/*****		# 651 - Changed padding from 30px 15px to 5px 5px 		*****/
+/***** 		#1325 - Changed padding from 4px 15px to 4px 10px 		*****/
+/***** 		#3635 - Changed font-size from 12px to 13px 			*****/
+/***** 		#3640 - Changed font-size from 12px to 14px 			*****/
+/***** 		#2351 - Changed padding from 12px 8px to 4px 4px 		*****/
+/***** 		#3522 - Changed margin from 25px to 15px 				*****/
+/***** 		#3569 - Changed margin from -20px to -15px 				*****/
+/***** 		# 683 - Changed margin from 10px 1px to 5px 2px 		*****/
+/***** 		#3562 - Changed padding from 15px 20px to 10px 10px 	*****/
+/***** 		#3562 - Changed padding from 15px 20px to 10px 10px 	*****/
+/***** 		#1941 - Changed margin from 27px 0 0 0 to 10px 0 0 0 	*****/
+
+@blue-l: rgba(69, 212, 230, 0.70);
+@orange-l: rgba(255, 162, 26, 0.50); 
+@white: #ffffff;
+
+.bg(@bg) {
+	background-color: @bg;
+}
+.bg(@bg, @color) {
+	background-color: @bg;
+	color: @color;
+}
+
+.sumDetailCell {
+	cursor: pointer;
+	&:hover { .bg(@blue-l, @white); }
+}
+.sumTotalCell {
+	cursor: pointer;
+	&:hover { .bg(@orange-l, @white); }
+}
+
+.no-btn {
+	cursor: default;
+}
+
+.progtall {
+	height: 40px;
+}
+.etPaginate {
+	margin: 0px 0;
+}
+
+/* Unused */
+.selAcc {
+/*  box-shadow: 0 12px 20px -10px rgba(244, 67, 54, 0.28), 0 4px 20px 0px rgba(0, 0, 0, 0.12), 0 7px 8px -5px rgba(244, 67, 54, 0.2);*/
+  box-shadow: 5px 8px 15px 0px rgba(255, 152, 0, 0.4);
+}
+
+.appRow {
+  margin-right: 15px;
+  margin-left: 15px;
+  padding-right: 15px;
+  padding-left: 15px;
+}

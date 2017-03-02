@@ -20,7 +20,8 @@
     "monk": "^4.0.0",
     "morgan": "~1.7.0",
     "numeral": "^2.0.4",
-    "serve-favicon": "~2.3.2"
+    "serve-favicon": "~2.3.2",
+    "sugar": "^2.0.4"
   },
   "scripts": {
     "test": "node bin/server.js --trace-sync-io | bunyan",

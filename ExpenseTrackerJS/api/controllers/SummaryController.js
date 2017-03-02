@@ -26,7 +26,7 @@ const doSummary = function (req, resp) {
 };
 
 const doChart = function (req, resp) {
-  // create a service.
+  // TODO create a service.
 };
 
 module.exports = {

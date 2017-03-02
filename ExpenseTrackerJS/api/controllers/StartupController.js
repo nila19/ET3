@@ -1,9 +1,9 @@
 'use strict';
 
 const accounts = require('../models/Accounts')();
-const cities = require('../models/Cities');
-const categories = require('../models/Categories');
-const transactions = require('../models/Transactions');
+const cities = require('../models/Cities')();
+const categories = require('../models/Categories')();
+const transactions = require('../models/Transactions')();
 const error = 1000;
 
 const canConnect = function (req, resp) {

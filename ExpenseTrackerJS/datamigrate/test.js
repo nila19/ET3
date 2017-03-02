@@ -1,16 +1,20 @@
 /* eslint no-magic-numbers: "off" */
 
 const dt = require('moment');
+const sugar = require('sugar');
 
 const log = require('../api/utils/logger');
 const trans = require('../api/models/Transactions')();
 
 const queryAll = function (mongo, log, next) {
   log.info('Query transactions started...');
-  const filter = {acctId: 60, adjust: 'Y', entryMonth: 1467349200000, entryYear: true, description: 'paym'};
+  const filter = {acctId: 60, cityId: 20140301, adjust: 'N', description: 'paym'};
   // bills.find(mongo, {acctId: 81, 'payments.amount': {$gt: 500}}).then((docs) => {
+  const msg = sugar.String('someone sAid somEThing SOMEWHERE.. also nothing..').capitalize(true, true);
 
-  trans.findForSearch(mongo, 20140301, filter).then((docs) => {
+  log.info('msg =' + msg.raw + '::');
+
+  trans.findForSearch(mongo, filter).then((docs) => {
     log.info('************** TEST **************...');
     docs.forEach(function fe(row) {
       // log.info('DATES :: ' + dt(row).format());
@@ -25,7 +29,10 @@ const queryAll = function (mongo, log, next) {
 };
 
 require('../api/config/mongodb-config').connect(log, function cb(mongo) {
-  queryAll(mongo, log, function next() {
+  queryAll(mongo, log, function next(err) {
+    if(err) {
+      log.error(err);
+    }
     mongo.close();
   });
 });

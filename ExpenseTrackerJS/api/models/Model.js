@@ -1,6 +1,6 @@
 'use strict';
 
-const Model = function Model(coll) {
+const Model = function (coll) {
   this.collection = coll;
 };
 

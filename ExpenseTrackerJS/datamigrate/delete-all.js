@@ -1,33 +1,91 @@
 'use strict';
 
+const async = require('async');
 const accounts = require('../api/models/Accounts')();
 const bills = require('../api/models/Bills')();
 const categories = require('../api/models/Categories')();
 const cities = require('../api/models/Cities')();
 const tallies = require('../api/models/TallyHistories')();
 const transactions = require('../api/models/Transactions')();
-const wait = 2000;
+const sequences = require('../api/models/Sequences')();
+let param = null;
 
-const deleteAll = function (mongo, log, next) {
-  log.info('Delete all data started...');
-  accounts.removeAll(mongo);
-  bills.removeAll(mongo);
-  categories.removeAll(mongo);
-  cities.removeAll(mongo);
-  tallies.removeAll(mongo);
-  transactions.removeAll(mongo);
-
-  setTimeout(function f2() {
-    return next();
-  }, wait);
+const deleteAccounts = function (next) {
+  accounts.removeAll(param.mongo).then(() => {
+    next();
+  }).catch((err) => {
+    param.log.error(err);
+    next(err);
+  });
+};
+const deleteBills = function (next) {
+  bills.removeAll(param.mongo).then(() => {
+    next();
+  }).catch((err) => {
+    param.log.error(err);
+    next(err);
+  });
+};
+const deleteCategories = function (next) {
+  categories.removeAll(param.mongo).then(() => {
+    next();
+  }).catch((err) => {
+    param.log.error(err);
+    next(err);
+  });
+};
+const deleteCities = function (next) {
+  cities.removeAll(param.mongo).then(() => {
+    next();
+  }).catch((err) => {
+    param.log.error(err);
+    next(err);
+  });
+};
+const deleteTallies = function (next) {
+  tallies.removeAll(param.mongo).then(() => {
+    next();
+  }).catch((err) => {
+    param.log.error(err);
+    next(err);
+  });
+};
+const deleteTransactions = function (next) {
+  transactions.removeAll(param.mongo).then(() => {
+    next();
+  }).catch((err) => {
+    param.log.error(err);
+    next(err);
+  });
+};
+const deleteSequences = function (next) {
+  sequences.removeAll(param.mongo).then(() => {
+    next();
+  }).catch((err) => {
+    param.log.error(err);
+    next(err);
+  });
 };
 
-module.exports = function exp(flag, mongo, log, next) {
-  if(flag) {
-    return deleteAll(mongo, log, function cb() {
-      return next();
-    });
-  } else {
+const deleteAll = function (next) {
+  param.log.info('Delete all data started...');
+  async.waterfall([deleteAccounts, deleteBills, deleteCategories, deleteCities,
+    deleteTallies, deleteTransactions, deleteSequences], function bb(err) {
+    if(err) {
+      param.log.error(err);
+      return next(err);
+    }
+    param.log.info('Delete all data completed...');
+    return next(null);
+  });
+};
+
+module.exports = function exp(db, log, next) {
+  param = {
+    mongo: db,
+    log: log
+  };
+  deleteAll(function cb() {
     return next();
-  }
+  });
 };
