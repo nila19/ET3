@@ -3,18 +3,9 @@
 (function (angular) {
   'use strict';
 
-  angular.module('startup').component('startup', {
-    templateUrl: 'startup/startup.htm',
-    controller: StartupController
-  });
-
-  StartupController.$inject = ['startupService', 'etmenuService', 'CONSTANTS', 'VALUES',
-    '$location', '$timeout'];
   const StartupController = function (sus, ms, C, V, $location, $timeout) {
     const vm = this;
     const WAIT = 500; // milliseconds
-
-    init();
 
 		// ***** function declarations *****//
     const init = function () {
@@ -22,7 +13,6 @@
       sus.loadAll();
       checkLoadComplete();
     };
-
     const checkLoadComplete = function () {
       if (!V.data.city.id || ms.data.loading) {
         $timeout(function () {
@@ -32,5 +22,14 @@
         $location.path('/dashboard');
       }
     };
+
+    init();
   };
+
+  angular.module('startup').component('startup', {
+    templateUrl: 'startup/startup.htm',
+    controller: StartupController
+  });
+  StartupController.$inject = ['startupService', 'etmenuService', 'CONSTANTS', 'VALUES',
+    '$location', '$timeout'];
 })(window.angular);

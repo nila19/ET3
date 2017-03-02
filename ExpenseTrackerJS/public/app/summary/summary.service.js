@@ -3,9 +3,6 @@
 (function (angular) {
   'use strict';
 
-  angular.module('summary').factory('summaryService', summaryService);
-
-  summaryService.$inject = ['etmenuService', 'ajaxService'];
   const summaryService = function (ms, aj) {
     const data = {
       months: [],
@@ -16,7 +13,7 @@
       currPageNo: 0,
       columns: 0,
       input: {
-        city: 0,
+        cityId: 0,
         forecast: false,
         adhoc: true,
         regular: true
@@ -52,7 +49,7 @@
     };
     const loadSummary = function () {
       ms.data.loading = true;
-      data.input.city = ms.data.menu.city.id;
+      data.input.cityId = ms.data.menu.city.id;
       aj.query('/summary/go', data.input, loadData);
     };
 
@@ -62,4 +59,7 @@
       loadCurrentPage: loadCurrentPage
     };
   };
+
+  angular.module('summary').factory('summaryService', summaryService);
+  summaryService.$inject = ['etmenuService', 'ajaxService'];
 })(window.angular);

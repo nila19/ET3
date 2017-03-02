@@ -3,11 +3,6 @@
 (function (angular) {
   'use strict';
 
-  angular.module('dashboard.explist').factory('explistwrapperService', explistwrapperService);
-
-  explistwrapperService.$inject = ['explistService', 'etmenuService', 'searchService',
-    'accountsService', 'billsService', 'ajaxService', 'utilsService', 'CONSTANTS',
-    '$timeout'];
   const explistwrapperService = function (els, ms, ss, acs, bs, aj, us, C, $timeout) {
     const DELAY = 500; // milliseconds
     const TEN = 10;
@@ -31,13 +26,13 @@
       reloadExpenses();
     };
     const loadAddItem = function (dt) {
-      els.addItem(dt);
+      els.addItem(dt.data);
     };
     const addItem = function (id) {
       aj.get('/dashboard/transaction/' + id, {}, loadAddItem);
     };
     const loadModifyItem = function (dt) {
-      els.modifyItem(dt);
+      els.modifyItem(dt.data);
     };
     const modifyItem = function (id) {
       aj.get('/dashboard/transaction/' + id, {}, loadModifyItem);
@@ -127,4 +122,9 @@
       swapExpense: swapExpense
     };
   };
+
+  angular.module('dashboard.explist').factory('explistwrapperService', explistwrapperService);
+  explistwrapperService.$inject = ['explistService', 'etmenuService', 'searchService',
+    'accountsService', 'billsService', 'ajaxService', 'utilsService', 'CONSTANTS',
+    '$timeout'];
 })(window.angular);

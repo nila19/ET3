@@ -3,10 +3,6 @@
 (function (angular) {
   'use strict';
 
-  angular.module('dashboard.accounts').factory('accountsService', accountsService);
-
-  accountsService.$inject = ['etmenuService', 'dashboardService', 'billsService',
-    'explistService', 'searchService', 'utilsService', 'ajaxService', 'CONSTANTS'];
   const accountsService = function (ms, ds, bs, els, ss, us, aj, C) {
     const data = {
       accts: null,
@@ -32,19 +28,19 @@
     };
     const loadData = function (dt) {
       ds.data.loading.donestep = 1;
-      data.accts = dt;
+      data.accts = dt.data;
       data.maxRows = Math.ceil(data.accts.length / cols);
       buildRows();
     };
     const loadAllAccounts = function () {
       const input = {
-        city: ms.data.menu.city.id,
+        cityId: ms.data.menu.city.id,
       };
 
       aj.query('/startup/accounts', input, loadData);
     };
     const loadAccount = function (dt) {
-      data.accts[us.getIndexOf(data.accts, dt.id)] = dt;
+      data.accts[us.getIndexOf(data.accts, dt.data.id)] = dt.data;
       buildRows();
       ms.data.loading = false;
     };
@@ -61,7 +57,7 @@
     const tallyAccount = function (id) {
       ms.data.loading = true;
       data.tallyOn = id;
-      aj.post('/entry/tally/' + ms.data.menu.city.id + '/' + id, {}, loadTally);
+      aj.post('/entry/tally/' + id, {}, loadTally);
     };
     const filterAccount = function (id) {
       data.filterBy = id;
@@ -82,4 +78,8 @@
       refreshAccount: refreshAccount
     };
   };
+
+  angular.module('dashboard.accounts').factory('accountsService', accountsService);
+  accountsService.$inject = ['etmenuService', 'dashboardService', 'billsService',
+    'explistService', 'searchService', 'utilsService', 'ajaxService', 'CONSTANTS'];
 })(window.angular);

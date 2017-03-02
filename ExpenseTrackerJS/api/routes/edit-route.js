@@ -15,8 +15,7 @@ router.all('*', function (req, res, next) {
   next();
 });
 
-// TODO Remove city from this.
-router.post('/tally/:cityId/:acctId', function (req, res, next) {
+router.post('/tally/:acctId', function (req, res, next) {
   tally.tallyAccount(req, res, req.params.acctId);
 });
 
@@ -28,7 +27,7 @@ router.post('/modify', function (req, res, next) {
   edit.modifyExpense(req, res);
 });
 
-router.post('/delete/:cityId/:transId', function (req, res, next) {
+router.post('/delete/:transId', function (req, res, next) {
   edit.deleteExpense(req, res, req.params.transId);
 });
 

@@ -3,29 +3,8 @@
 (function (angular) {
   'use strict';
 
-  angular.module('dashboard.explist').component('explist', {
-    templateUrl: 'dashboard/explist/explist.htm',
-    controller: ExplistController
-  });
-
-  ExplistController.$inject = ['explistwrapperService', 'explistService', 'editService', 'utilsService'];
   const ExplistController = function (elws, els, es, us) {
     const vm = this;
-
-    init();
-
-		// ***** exposed functions ******//
-    vm.hasPrevPageSet = hasPrevPageSet;
-    vm.hasNextPageSet = hasNextPageSet;
-    vm.prevPageSet = prevPageSet;
-    vm.nextPageSet = nextPageSet;
-    vm.page = page;
-    vm.loadPage = loadPage;
-    vm.showModifyExpense = showModifyExpense;
-    vm.showDeleteExpense = showDeleteExpense;
-    vm.swapExpense = swapExpense;
-    vm.clearFilter = clearFilter;
-    vm.toggleThinList = toggleThinList;
 
 		// ***** function declarations *****//
     const init = function () {
@@ -79,5 +58,26 @@
         elws.reloadExpenses();
       }
     };
+
+    init();
+
+    // ***** exposed functions ******//
+    vm.hasPrevPageSet = hasPrevPageSet;
+    vm.hasNextPageSet = hasNextPageSet;
+    vm.prevPageSet = prevPageSet;
+    vm.nextPageSet = nextPageSet;
+    vm.page = page;
+    vm.loadPage = loadPage;
+    vm.showModifyExpense = showModifyExpense;
+    vm.showDeleteExpense = showDeleteExpense;
+    vm.swapExpense = swapExpense;
+    vm.clearFilter = clearFilter;
+    vm.toggleThinList = toggleThinList;
   };
+
+  angular.module('dashboard.explist').component('explist', {
+    templateUrl: 'dashboard/explist/explist.htm',
+    controller: ExplistController
+  });
+  ExplistController.$inject = ['explistwrapperService', 'explistService', 'editService', 'utilsService'];
 })(window.angular);

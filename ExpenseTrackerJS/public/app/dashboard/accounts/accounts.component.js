@@ -3,20 +3,8 @@
 (function (angular) {
   'use strict';
 
-  angular.module('dashboard.accounts').component('accounts', {
-    templateUrl: 'dashboard/accounts/accounts.htm',
-    controller: AccountsController
-  });
-
-  AccountsController.$inject = ['accountsService', 'dashboardService', 'billsService', 'explistwrapperService'];
   const AccountsController = function (acs, ds, bs, elws) {
     const vm = this;
-
-    init();
-
-		// ***** exposed functions ******//
-    vm.filterAccount = filterAccount;
-    vm.tallyAccount = tallyAccount;
 
 		// ***** function declarations *****//
     const init = function () {
@@ -32,5 +20,17 @@
     const tallyAccount = function (id) {
       acs.tallyAccount(id);
     };
+
+    init();
+
+		// ***** exposed functions ******//
+    vm.filterAccount = filterAccount;
+    vm.tallyAccount = tallyAccount;
   };
+
+  angular.module('dashboard.accounts').component('accounts', {
+    templateUrl: 'dashboard/accounts/accounts.htm',
+    controller: AccountsController
+  });
+  AccountsController.$inject = ['accountsService', 'dashboardService', 'billsService', 'explistwrapperService'];
 })(window.angular);

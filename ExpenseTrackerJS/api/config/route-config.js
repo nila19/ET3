@@ -9,11 +9,11 @@ const dashboard = require('../routes/dashboard-route');
 
 module.exports = {
   route: function (app) {
-    app.use('/startup', startup);
-    app.use('/search', search);
-    app.use('/summary', summary);
-    app.use('/edit', edit);
-    app.use('/dashboard', dashboard);
+    app.use('/app/startup', startup);
+    app.use('/app/search', search);
+    app.use('/app/summary', summary);
+    app.use('/app/edit', edit);
+    app.use('/app/dashboard', dashboard);
 
     // catch 404 and forward to error handler
     app.use(error.inject404());

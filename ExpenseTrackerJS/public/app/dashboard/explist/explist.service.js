@@ -3,9 +3,6 @@
 (function (angular) {
   'use strict';
 
-  angular.module('dashboard.explist').factory('explistService', explistService);
-
-  explistService.$inject = ['utilsService', 'CONSTANTS'];
   const explistService = function (us, C) {
     const data = {
       pgData: {
@@ -75,4 +72,7 @@
       deleteItem: deleteItem
     };
   };
+
+  angular.module('dashboard.explist').factory('explistService', explistService);
+  explistService.$inject = ['utilsService', 'CONSTANTS'];
 })(window.angular);

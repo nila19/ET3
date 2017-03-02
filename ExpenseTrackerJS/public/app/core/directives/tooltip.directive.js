@@ -3,8 +3,6 @@
 (function (angular) {
   'use strict';
 
-  angular.module('core.directives').directive('tooltip', tooltip);
-
   const tooltip = function () {
     // const tooltip = function (scope, element, $attrs, ctrl) {
     const tooltip = function (scope, element) {
@@ -20,4 +18,6 @@
       link: tooltip
     };
   };
+
+  angular.module('core.directives').directive('tooltip', tooltip);
 })(window.angular);

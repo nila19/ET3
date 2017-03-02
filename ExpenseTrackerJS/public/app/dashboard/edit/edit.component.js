@@ -3,23 +3,8 @@
 (function (angular) {
   'use strict';
 
-  angular.module('dashboard.edit').component('edit', {
-    templateUrl: 'dashboard/edit/edit.htm',
-    controller: EditController
-  });
-
-  EditController.$inject = ['editService', 'explistService', 'utilsService', 'VALUES',
-    'CONSTANTS'];
   const EditController = function (es, els, us, V, C) {
     const vm = this;
-
-    init();
-
-		// ***** exposed functions ******//
-    vm.modifyExpense = modifyExpense;
-    vm.deleteExpense = deleteExpense;
-    vm.loadBills = loadBills;
-    vm.clearBills = clearBills;
 
 		// ***** function declarations *****//
     const init = function () {
@@ -57,5 +42,19 @@
     const deleteExpense = function () {
       es.deleteExpense();
     };
+
+    init();
+
+    // ***** exposed functions ******//
+    vm.modifyExpense = modifyExpense;
+    vm.deleteExpense = deleteExpense;
+    vm.loadBills = loadBills;
+    vm.clearBills = clearBills;
   };
+
+  angular.module('dashboard.edit').component('edit', {
+    templateUrl: 'dashboard/edit/edit.htm',
+    controller: EditController
+  });
+  EditController.$inject = ['editService', 'explistService', 'utilsService', 'VALUES', 'CONSTANTS'];
 })(window.angular);

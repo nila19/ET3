@@ -3,9 +3,6 @@
 (function (angular) {
   'use strict';
 
-  angular.module('core.directives').directive('xxDate', xxDate);
-
-  xxDate.$inject = ['CONSTANTS', '$filter'];
   const xxDate = function (CONSTANTS, $filter) {
     const date = function ($scope, $element, $attrs, ctrl) {
 			// runs when model gets updated on the scope directly; Keeps view in sync
@@ -19,4 +16,7 @@
       link: date
     };
   };
+
+  angular.module('core.directives').directive('xxDate', xxDate);
+  xxDate.$inject = ['CONSTANTS', '$filter'];
 })(window.angular);

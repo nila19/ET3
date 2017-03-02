@@ -3,21 +3,8 @@
 (function (angular) {
   'use strict';
 
-  angular.module('dashboard.chart').component('chart', {
-    templateUrl: 'dashboard/chart/chart.htm',
-    controller: ChartController
-  });
-
-  ChartController.$inject = ['chartService'];
   const ChartController = function (cs) {
     const vm = this;
-
-    init();
-
-    vm.hasPrevPage = hasPrevPage;
-    vm.hasNextPage = hasNextPage;
-    vm.prevPage = prevPage;
-    vm.nextPage = nextPage;
 
 		// ***** function declarations *****//
     const init = function () {
@@ -39,5 +26,18 @@
       cs.loadCurrentPage();
       cs.renderChart();
     };
+
+    init();
+
+    vm.hasPrevPage = hasPrevPage;
+    vm.hasNextPage = hasNextPage;
+    vm.prevPage = prevPage;
+    vm.nextPage = nextPage;
   };
+
+  angular.module('dashboard.chart').component('chart', {
+    templateUrl: 'dashboard/chart/chart.htm',
+    controller: ChartController
+  });
+  ChartController.$inject = ['chartService'];
 })(window.angular);

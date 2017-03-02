@@ -3,9 +3,6 @@
 (function (angular) {
   'use strict';
 
-  angular.module('dashboard.edit').factory('editService', editService);
-
-  editService.$inject = ['etmenuService', 'explistwrapperService', 'ajaxService', 'utilsService', 'VALUES'];
   const editService = function (ms, elws, aj, us, V) {
     const data = {
       expense: {},
@@ -15,14 +12,14 @@
 
 		// load Bills
     const loadBillData = function (dt) {
-      V.data.bills = dt;
+      V.data.bills = dt.data;
     };
     const loadBills = function () {
       const input = {
         acctId: data.expense.fromAccount.id,
       };
 
-      aj.query('/dashboard/bills/all', input, loadBillData);
+      aj.query('/dashboard/bills', input, loadBillData);
     };
 
 		// load Page Data
@@ -74,7 +71,7 @@
       $('#model_Delete').modal('hide');
     };
     const deleteExpense = function () {
-      aj.post('/edit/delete/' + ms.data.menu.city.id + '/' + data.expense.id, {},
+      aj.post('/edit/delete/' + data.expense.id, {},
 					loadDeleteData);
       data.loading = true;
     };
@@ -87,4 +84,7 @@
       loadBills: loadBills
     };
   };
+
+  angular.module('dashboard.edit').factory('editService', editService);
+  editService.$inject = ['etmenuService', 'explistwrapperService', 'ajaxService', 'utilsService', 'VALUES'];
 })(window.angular);

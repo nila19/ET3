@@ -3,23 +3,9 @@
 (function (angular) {
   'use strict';
 
-  angular.module('etmenu').component('etmenu', {
-    templateUrl: 'etmenu/etmenu.htm',
-    controller: ETMenuController
-  });
-
-  ETMenuController.$inject = ['etmenuService', 'dashboardFlagsService', 'startupService',
-    'utilsService', 'CONSTANTS', 'VALUES', '$location', '$timeout', '$route'];
   const ETMenuController = function (ms, dfs, sus, us, C, V, $location, $timeout, $route) {
     const vm = this;
     const WAIT = 500; // milliseconds
-
-    init();
-
-		// ***** exposed functions ******//
-    vm.toggleMoreAccounts = toggleMoreAccounts;
-    vm.toggleChart = toggleChart;
-    vm.changeCity = changeCity;
 
 		// ***** function declarations *****//
     const init = function () {
@@ -30,15 +16,12 @@
       ms.checkInit();
       ms.data.showButtons = (ms.data.page === C.PAGES.DASHBOARD);
     };
-
     const toggleMoreAccounts = function () {
       dfs.toggleMoreAccounts();
     };
-
     const toggleChart = function () {
       dfs.toggleChart();
     };
-
     const changeCity = function (id) {
       V.data.city = us.getObjectOf(ms.data.menu.cities, id);
       sus.loadOthers();
@@ -46,7 +29,6 @@
         checkReloadPage();
       }, WAIT);
     };
-
     const checkReloadPage = function () {
       if (!V.data.city.id || ms.data.loading) {
         $timeout(function () {
@@ -69,5 +51,19 @@
     //     $location.path('/search');
     //   }
     // };
+
+    init();
+
+    // ***** exposed functions ******//
+    vm.toggleMoreAccounts = toggleMoreAccounts;
+    vm.toggleChart = toggleChart;
+    vm.changeCity = changeCity;
   };
+
+  angular.module('etmenu').component('etmenu', {
+    templateUrl: 'etmenu/etmenu.htm',
+    controller: ETMenuController
+  });
+  ETMenuController.$inject = ['etmenuService', 'dashboardFlagsService', 'startupService',
+    'utilsService', 'CONSTANTS', 'VALUES', '$location', '$timeout', '$route'];
 })(window.angular);

@@ -3,21 +3,9 @@
 (function (angular) {
   'use strict';
 
-  angular.module('search').component('search', {
-    templateUrl: 'search/search.htm',
-    controller: SearchController
-  });
-
-  SearchController.$inject = ['searchService', 'etmenuService', 'startupService',
-    'explistService', 'utilsService', 'CONSTANTS', 'VALUES', '$routeParams', '$timeout'];
   const SearchController = function (ss, ms, sus, els, us, C, V, $routeParams, $timeout) {
     const vm = this;
     const WAIT = 500; // milliseconds
-
-    init();
-
-		// ***** exposed functions ******//
-    vm.doSearch = doSearch;
 
 		// ***** function declarations *****//
     const init = function () {
@@ -40,7 +28,6 @@
       }
       initSearch();
     };
-
     const initSearch = function () {
       if (!V.data.city.id || ms.data.loading) {
         $timeout(function () {
@@ -50,9 +37,20 @@
         ss.doSearch();
       }
     };
-
     const doSearch = function () {
       ss.doSearch();
     };
+
+    init();
+
+    // ***** exposed functions ******//
+    vm.doSearch = doSearch;
   };
+
+  angular.module('search').component('search', {
+    templateUrl: 'search/search.htm',
+    controller: SearchController
+  });
+  SearchController.$inject = ['searchService', 'etmenuService', 'startupService',
+    'explistService', 'utilsService', 'CONSTANTS', 'VALUES', '$routeParams', '$timeout'];
 })(window.angular);

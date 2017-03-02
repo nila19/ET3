@@ -3,30 +3,8 @@
 (function (angular) {
   'use strict';
 
-  angular.module('dashboard.bills').component('bills', {
-    templateUrl: 'dashboard/bills/bills.htm',
-    controller: BillsController
-  });
-
-  BillsController.$inject = ['billswrapperService', 'billsService', 'accountsService',
-    'explistwrapperService', 'explistService', 'searchService'];
   const BillsController = function (bws, bs, acs, elws, els, ss) {
     const vm = this;
-
-    init();
-
-		// ***** exposed functions ******//
-    vm.hasPrevPageSet = hasPrevPageSet;
-    vm.hasNextPageSet = hasNextPageSet;
-    vm.prevPageSet = prevPageSet;
-    vm.nextPageSet = nextPageSet;
-    vm.page = page;
-    vm.loadPage = loadPage;
-    vm.showBillPay = showBillPay;
-    vm.filterExpenses = filterExpenses;
-    vm.clearFilter = clearFilter;
-    vm.showOpenBills = showOpenBills;
-    vm.showClosedBills = showClosedBills;
 
 		// ***** function declarations *****//
     const init = function () {
@@ -85,5 +63,27 @@
         bs.buildRowsForTab();
       }
     };
+
+    init();
+
+    // ***** exposed functions ******//
+    vm.hasPrevPageSet = hasPrevPageSet;
+    vm.hasNextPageSet = hasNextPageSet;
+    vm.prevPageSet = prevPageSet;
+    vm.nextPageSet = nextPageSet;
+    vm.page = page;
+    vm.loadPage = loadPage;
+    vm.showBillPay = showBillPay;
+    vm.filterExpenses = filterExpenses;
+    vm.clearFilter = clearFilter;
+    vm.showOpenBills = showOpenBills;
+    vm.showClosedBills = showClosedBills;
   };
+
+  angular.module('dashboard.bills').component('bills', {
+    templateUrl: 'dashboard/bills/bills.htm',
+    controller: BillsController
+  });
+  BillsController.$inject = ['billswrapperService', 'billsService', 'accountsService',
+    'explistwrapperService', 'explistService', 'searchService'];
 })(window.angular);

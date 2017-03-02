@@ -5,10 +5,6 @@
 (function (angular) {
   'use strict';
 
-  angular.module('dashboard.chart').factory('chartService', chartService);
-
-  chartService.$inject = ['etmenuService', 'dashboardService', 'ajaxService', 'CONSTANTS',
-    '$timeout'];
   const chartService = function (ms, ds, aj, C, $timeout) {
     const WAIT = 200;
     const HEIGHT = 3500;
@@ -64,10 +60,10 @@
       data.pgData.series[2] = data.series[2].slice(pg * cols, (pg + 1) * cols);
     };
     const loadChartData = function (dt) {
-      data.labels = dt.labels;
-      data.series[0] = dt.regulars;
-      data.series[1] = dt.adhocs;
-      data.series[2] = dt.totals;
+      data.labels = dt.data.labels;
+      data.series[0] = dt.data.regulars;
+      data.series[1] = dt.data.adhocs;
+      data.series[2] = dt.data.totals;
 			// chartOptions.high = Math.max.apply(null, data.series[0]);
 
       data.maxPageNo = Math.ceil(data.labels.length / data.columns) - 1;
@@ -78,7 +74,7 @@
     };
     const loadChart = function () {
       aj.get('/summary/chart', {
-        city: ms.data.menu.city.id
+        cityId: ms.data.menu.city.id
       }, loadChartData);
     };
     const showChart = function () {
@@ -106,4 +102,7 @@
       loadCurrentPage: loadCurrentPage
     };
   };
+
+  angular.module('dashboard.chart').factory('chartService', chartService);
+  chartService.$inject = ['etmenuService', 'dashboardService', 'ajaxService', 'CONSTANTS', '$timeout'];
 })(window.angular);

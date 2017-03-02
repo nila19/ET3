@@ -3,19 +3,8 @@
 (function (angular) {
   'use strict';
 
-  angular.module('dashboard.billpay').component('billpay', {
-    templateUrl: 'dashboard/billpay/billpay.htm',
-    controller: BillPayController
-  });
-
-  BillPayController.$inject = ['billpayService', 'billsService', 'VALUES'];
   const BillPayController = function (bps, bs, V) {
     const vm = this;
-
-    init();
-
-		// ***** exposed functions ******//
-    vm.payBill = payBill;
 
 		// ***** function declarations *****//
     const init = function () {
@@ -30,5 +19,16 @@
         $('#model_BillPay').modal('hide');
       }
     };
+
+    init();
+
+		// ***** exposed functions ******//
+    vm.payBill = payBill;
   };
+
+  angular.module('dashboard.billpay').component('billpay', {
+    templateUrl: 'dashboard/billpay/billpay.htm',
+    controller: BillPayController
+  });
+  BillPayController.$inject = ['billpayService', 'billsService', 'VALUES'];
 })(window.angular);

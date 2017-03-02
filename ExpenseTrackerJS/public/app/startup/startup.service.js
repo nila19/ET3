@@ -3,9 +3,6 @@
 (function (angular) {
   'use strict';
 
-  angular.module('startup').factory('startupService', startupService);
-
-  startupService.$inject = ['etmenuService', 'ajaxService', 'CONSTANTS', 'VALUES'];
   const startupService = function (ms, aj, C, V) {
     const data = {
       status: 0,
@@ -18,9 +15,9 @@
       // console.log('@ StartupService: Loading startup components COMPLETED...');
       ms.data.loading = false;
     };
-    const loadEntryMonths = function (entryMonths) {
+    const loadEntryMonths = function (dt) {
       V.data.entryMonths = [];
-      angular.forEach(entryMonths, function (entryMonth) {
+      angular.forEach(dt.data, function (entryMonth) {
         V.data.entryMonths.push(entryMonth.toJSON());
       });
       data.status += TEN;
@@ -28,12 +25,12 @@
     };
     const getEntryMonths = function (city) {
       aj.query('/startup/months/entry', {
-        city: city.id
+        cityId: city.id
       }, loadEntryMonths);
     };
-    const loadTransMonths = function (transMonths) {
+    const loadTransMonths = function (dt) {
       V.data.transMonths = [];
-      angular.forEach(transMonths, function (transMonth) {
+      angular.forEach(dt.data, function (transMonth) {
         V.data.transMonths.push(transMonth.toJSON());
       });
       data.status += TEN;
@@ -41,11 +38,11 @@
     };
     const getTransMonths = function (city) {
       aj.query('/startup/months/trans', {
-        city: city.id
+        cityId: city.id
       }, loadTransMonths);
     };
-    const loadInactiveAccounts = function (accounts) {
-      angular.forEach(accounts, function (ac) {
+    const loadInactiveAccounts = function (dt) {
+      angular.forEach(dt.data, function (ac) {
         V.data.allAccounts.push(ac);
       });
       data.status += TEN;
@@ -53,11 +50,11 @@
     };
     const getInactiveAccounts = function (city) {
       aj.query('/startup/accounts/inactive', {
-        city: city.id
+        cityId: city.id
       }, loadInactiveAccounts);
     };
-    const loadAccounts = function (accounts) {
-      angular.forEach(accounts, function (ac) {
+    const loadAccounts = function (dt) {
+      angular.forEach(dt.data, function (ac) {
         V.data.accounts.push(ac);
         V.data.allAccounts.push(ac);
       });
@@ -66,57 +63,57 @@
     };
     const getAccounts = function (city) {
       aj.query('/startup/accounts', {
-        city: city.id
+        cityId: city.id
       }, loadAccounts);
     };
-    const loadDescriptions = function (descriptions) {
-      V.data.descriptions = descriptions;
+    const loadDescriptions = function (dt) {
+      V.data.descriptions = dt.data;
       data.status += TEN;
       getAccounts(V.data.city);
     };
     const getDescriptions = function (city) {
       aj.query('/startup/descriptions', {
-        city: city.id
+        cityId: city.id
       }, loadDescriptions);
     };
-    const loadAllCategories = function (categories) {
-      V.data.allCategories = categories;
+    const loadAllCategories = function (dt) {
+      V.data.allCategories = dt.data;
       data.status += TEN;
       getDescriptions(V.data.city);
     };
     const getAllCategories = function (city) {
       aj.query('/startup/categories/all', {
-        city: city.id
+        cityId: city.id
       }, loadAllCategories);
     };
-    const loadCategories = function (categories) {
-      V.data.categories = categories;
+    const loadCategories = function (dt) {
+      V.data.categories = dt.data;
       data.status += TEN;
       getAllCategories(V.data.city);
     };
     const getCategories = function (city) {
       aj.query('/startup/categories', {
-        city: city.id
+        cityId: city.id
       }, loadCategories);
     };
-    const loadCities = function (cities) {
-      V.data.cities = cities;
+    const loadCities = function (dt) {
+      V.data.cities = dt.data;
       data.status += TEN;
       getCategories(V.data.city);
     };
     const getCities = function () {
       aj.query('/startup/cities', {}, loadCities);
     };
-    const loadDefaultCity = function (city) {
-      V.data.city = city;
+    const loadDefaultCity = function (dt) {
+      V.data.city = dt.data;
       data.status += TEN;
       getCities();
     };
     const getDefaultCity = function () {
       aj.get('/startup/city/default', {}, loadDefaultCity);
     };
-    const loadConnect = function (conn) {
-      data.connect = conn.flag;
+    const loadConnect = function (dt) {
+      data.connect = dt.data;
       if (data.connect) {
         data.status += TEN;
         getDefaultCity();
@@ -145,4 +142,7 @@
       loadOthers: loadOthers,
     };
   };
+
+  angular.module('startup').factory('startupService', startupService);
+  startupService.$inject = ['etmenuService', 'ajaxService', 'CONSTANTS', 'VALUES'];
 })(window.angular);

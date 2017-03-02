@@ -6,7 +6,7 @@ const async = require('async');
 const sugar = require('sugar');
 const accounts = require('../models/Accounts')();
 const transactions = require('../models/Transactions')();
-const sequences = require('../api/models/Sequences')();
+const sequences = require('../models/Sequences')();
 const cashService = require('./CashService');
 
 let param = null;

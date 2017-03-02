@@ -3,10 +3,6 @@
 (function (angular) {
   'use strict';
 
-  angular.module('dashboard.billpay').factory('billpayService', billpayService);
-
-  billpayService.$inject = ['etmenuService', 'billsService', 'accountsService',
-    'explistwrapperService', 'ajaxService', 'utilsService'];
   const billpayService = function (ms, bs, acs, elws, aj, us) {
     const data = {
       bill: null,
@@ -43,4 +39,8 @@
       payBill: payBill
     };
   };
+
+  angular.module('dashboard.billpay').factory('billpayService', billpayService);
+  billpayService.$inject = ['etmenuService', 'billsService', 'accountsService',
+    'explistwrapperService', 'ajaxService', 'utilsService'];
 })(window.angular);

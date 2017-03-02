@@ -3,9 +3,6 @@
 (function (angular) {
   'use strict';
 
-  angular.module('dashboard.bills').factory('billswrapperService', billswrapperService);
-
-  billswrapperService.$inject = ['billsService', 'billpayService', 'utilsService'];
   const billswrapperService = function (bs, bps, us) {
     const showBillPay = function (id) {
       const bill = us.getObjectOf(bs.data.rows, id);
@@ -17,4 +14,7 @@
       showBillPay: showBillPay
     };
   };
+
+  angular.module('dashboard.bills').factory('billswrapperService', billswrapperService);
+  billswrapperService.$inject = ['billsService', 'billpayService', 'utilsService'];
 })(window.angular);

@@ -3,12 +3,9 @@
 (function (angular) {
   'use strict';
 
-  angular.module('core.services').factory('utilsService', utilsService);
-
   // utilsService.$inject = ['CONSTANTS'];
   const utilsService = function () {
     const DELAY = 2000; // milliseconds
-
     const getObjectOf = function (arr, id) {
       let o = null;
 
@@ -31,14 +28,12 @@
       }
       return idx;
     };
-
 		// popup message
     const showMsg = function (action, t) {
       const msg = '<b>' + action + '</b> - Completed successfully.';
 
       show(msg, t);
     };
-
     const show = function (msg, t) {
       $.notify({
         icon: 'notifications',
@@ -60,4 +55,6 @@
       show: show
     };
   };
+
+  angular.module('core.services').factory('utilsService', utilsService);
 })(window.angular);

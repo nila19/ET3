@@ -17,7 +17,7 @@ const canConnect = function (req, resp) {
 
 // **************************** city ****************************//
 const getAllCities = function (req, resp) {
-  cities.findAll(req.app.locals.db).then((docs) => {
+  cities.findAllCities(req.app.locals.db).then((docs) => {
     return resp.json({code: 0, data: docs});
   }).catch((err) => {
     req.app.locals.log.error(err);
@@ -68,7 +68,7 @@ const getAllCategories = function (req, resp) {
     return resp.json({code: error});
   });
 };
-const getActiveCategories = function (req, resp) {
+const getCategories = function (req, resp) {
   categories.findForCityActive(req.app.locals.db, req.body.cityId).then((doc) => {
     return resp.json({code: 0, data: doc});
   }).catch((err) => {
@@ -113,7 +113,7 @@ module.exports = {
   getActiveAccounts: getActiveAccounts,
   getInactiveAccounts: getInactiveAccounts,
   getAllCategories: getAllCategories,
-  getActiveCategories: getActiveCategories,
+  getCategories: getCategories,
   getDescriptions: getDescriptions,
   getEntryMonths: getEntryMonths,
   getTransMonths: getTransMonths

@@ -3,10 +3,6 @@
 (function (angular) {
   'use strict';
 
-  angular.module('dashboard.bills').factory('billsService', billsService);
-
-  billsService.$inject = ['etmenuService', 'dashboardService', 'ajaxService', 'utilsService',
-    'CONSTANTS'];
   const billsService = function (ms, ds, aj, us, C) {
     const data = {
       showBills: false,
@@ -36,9 +32,9 @@
       data.pgData.rows = data.rows.slice(pg * rows, (pg + 1) * rows);
     };
     const loadBill = function (dt) {
-      const idx = us.getIndexOf(data.rows, dt.id);
+      const idx = us.getIndexOf(data.rows, dt.data.id);
 
-      data.rows[idx] = dt;
+      data.rows[idx] = dt.data;
       loadCurrentPage();
       data.loading = false;
     };
@@ -57,9 +53,9 @@
     const loadData = function (dt) {
       ds.data.loading.donestep = 2;
       if (data.tab === 'OPEN') {
-        data.openBills = dt;
+        data.openBills = dt.data;
       } else {
-        data.closedBills = dt;
+        data.closedBills = dt.data;
       }
       buildRowsForTab();
     };
@@ -67,9 +63,9 @@
       data.loading = true;
       data.filterApplied = true;
       const input = {
-        city: ms.data.menu.city.id,
+        cityId: ms.data.menu.city.id,
         acctId: id,
-        open: data.tab === 'OPEN'
+        paidInd: (data.tab === 'OPEN') ? 'N' : 'Y'
       };
 
       aj.query('/dashboard/bills', input, loadData);
@@ -78,9 +74,9 @@
       data.loading = true;
       data.filterApplied = false;
       const input = {
-        city: ms.data.menu.city.id,
+        cityId: ms.data.menu.city.id,
         acctId: 0,
-        open: data.tab === 'OPEN'
+        paidInd: (data.tab === 'OPEN') ? 'N' : 'Y'
       };
 
       aj.query('/dashboard/bills', input, loadData);
@@ -97,4 +93,7 @@
       refreshBill: refreshBill
     };
   };
+
+  angular.module('dashboard.bills').factory('billsService', billsService);
+  billsService.$inject = ['etmenuService', 'dashboardService', 'ajaxService', 'utilsService', 'CONSTANTS'];
 })(window.angular);

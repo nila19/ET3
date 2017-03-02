@@ -3,9 +3,6 @@
 (function (angular) {
   'use strict';
 
-  angular.module('etmenu').factory('etmenuService', etmenuService);
-
-  etmenuService.$inject = ['CONSTANTS', 'VALUES'];
   const etmenuService = function (C, V) {
     const data = {
       page: '',
@@ -34,4 +31,7 @@
       checkInit: checkInit
     };
   };
+
+  angular.module('etmenu').factory('etmenuService', etmenuService);
+  etmenuService.$inject = ['CONSTANTS', 'VALUES'];
 })(window.angular);

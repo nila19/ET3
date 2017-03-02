@@ -3,9 +3,6 @@
 (function (angular) {
   'use strict';
 
-  angular.module('core.services').factory('ajaxService', ajaxService);
-
-  ajaxService.$inject = ['utilsService', 'CONSTANTS', '$resource'];
   const ajaxService = function (us, C, $resource) {
     const url = function (path) {
       const url = C.BASE_URL + path;
@@ -16,7 +13,8 @@
       url(path).get(data, ok, error);
     };
     const query = function (path, data, ok) {
-      url(path).query(data, ok, error);
+      url(path).get(data, ok, error);
+      // url(path).query(data, ok, error);
     };
     const post = function (path, data, ok) {
       url(path).save(data, ok, error);
@@ -33,4 +31,7 @@
       post: post
     };
   };
+
+  angular.module('core.services').factory('ajaxService', ajaxService);
+  ajaxService.$inject = ['utilsService', 'CONSTANTS', '$resource'];
 })(window.angular);

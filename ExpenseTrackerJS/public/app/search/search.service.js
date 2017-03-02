@@ -3,9 +3,6 @@
 (function (angular) {
   'use strict';
 
-  angular.module('search').factory('searchService', searchService);
-
-  searchService.$inject = ['dashboardService', 'explistService', 'etmenuService', 'ajaxService'];
   const searchService = function (ds, els, ms, aj) {
     const data = {
       thinList: true
@@ -35,7 +32,7 @@
     };
     const buildSearchInput = function () {
       const input = {
-        city: ms.data.menu.city.id,
+        cityId: ms.data.menu.city.id,
         thinList: data.thinList
       };
 
@@ -46,20 +43,20 @@
         input.amount = data.amount;
       }
       if (data.adjustInd) {
-        input.adjustInd = data.adjustInd;
+        input.adjust = data.adjustInd;
       }
       if (data.adhocInd) {
-        input.adhocInd = data.adhocInd;
+        input.adhoc = data.adhocInd;
       }
-      addProp(input, 'category', 'categoryId');
-      addProp(input, 'account', 'accountId');
+      addProp(input, 'category', 'catId');
+      addProp(input, 'account', 'acctId');
       addProp(input, 'bill', 'billId');
-      addProp(input, 'transMonth', 'transMonth', 'transMonthAggr');
-      addProp(input, 'entryMonth', 'entryMonth', 'entryMonthAggr');
+      addProp(input, 'transMonth', 'transMonth', 'transYear');
+      addProp(input, 'entryMonth', 'entryMonth', 'entryYear');
       return input;
     };
     const loadResults = function (dt) {
-      els.loadData(dt);
+      els.loadData(dt.data);
       els.data.thinList = data.thinList;
       ds.data.loading.donestep = 3;
     };
@@ -80,4 +77,7 @@
       loadResults: loadResults
     };
   };
+
+  angular.module('search').factory('searchService', searchService);
+  searchService.$inject = ['dashboardService', 'explistService', 'etmenuService', 'ajaxService'];
 })(window.angular);

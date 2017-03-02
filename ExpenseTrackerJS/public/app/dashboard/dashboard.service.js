@@ -3,9 +3,6 @@
 (function (angular) {
   'use strict';
 
-  angular.module('dashboard').factory('dashboardService', dashboardService);
-
-  dashboardService.$inject = [];
   const dashboardService = function () {
     const data = {
       loading: {
@@ -18,4 +15,7 @@
       data: data,
     };
   };
+
+  angular.module('dashboard').factory('dashboardService', dashboardService);
+  dashboardService.$inject = [];
 })(window.angular);

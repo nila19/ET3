@@ -3,11 +3,6 @@
 (function (angular) {
   'use strict';
 
-  angular.module('dashboard').factory('dashboardwrapperService', dashboardwrapperService);
-
-  dashboardwrapperService.$inject = ['dashboardService', 'etmenuService', 'accountsService',
-    'searchService', 'explistService', 'explistwrapperService', 'billsService',
-    'chartService', 'ajaxService', '$timeout'];
   const dashboardwrapperService = function (ds, ms, acs, ss, els, elws, bs, cs, aj, $timeout) {
     const wait = 200;
     const stepFive = function () {
@@ -74,4 +69,9 @@
       initialize: initialize
     };
   };
+
+  angular.module('dashboard').factory('dashboardwrapperService', dashboardwrapperService);
+  dashboardwrapperService.$inject = ['dashboardService', 'etmenuService', 'accountsService',
+    'searchService', 'explistService', 'explistwrapperService', 'billsService',
+    'chartService', 'ajaxService', '$timeout'];
 })(window.angular);

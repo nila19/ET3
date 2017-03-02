@@ -46,6 +46,7 @@ const schema = {
 };
 
 const searchUI = {
+  cityId: 'int',
   acctId: 'int',
   billId: 'int',
   catId: 'int',

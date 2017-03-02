@@ -3,10 +3,6 @@
 (function (angular) {
   'use strict';
 
-  angular.module('dashboard.add').factory('addService', addService);
-
-  addService.$inject = ['etmenuService', 'accountsService', 'explistwrapperService',
-    'ajaxService', 'utilsService', 'CONSTANTS'];
   const addService = function (ms, acs, elws, aj, us, C) {
     const data = {
       showAdd: false,
@@ -65,4 +61,8 @@
       addExpense: addExpense
     };
   };
+
+  angular.module('dashboard.add').factory('addService', addService);
+  addService.$inject = ['etmenuService', 'accountsService', 'explistwrapperService',
+    'ajaxService', 'utilsService', 'CONSTANTS'];
 })(window.angular);

@@ -2,10 +2,6 @@
 
 (function (angular) {
   'use strict';
-
-  angular.module('app').config(appRoute);
-
-  appRoute.$inject = ['$locationProvider', '$routeProvider'];
   const appRoute = function ($locationProvider, $routeProvider) {
     $locationProvider.hashPrefix('!');
 
@@ -21,4 +17,7 @@
       template: '<startup></startup>'
     }).otherwise('/startup');
   };
+
+  angular.module('app').config(appRoute);
+  appRoute.$inject = ['$locationProvider', '$routeProvider'];
 })(window.angular);

@@ -43,7 +43,7 @@ router.get('/categories/all', function (req, res, next) {
 });
 
 router.get('/categories', function (req, res, next) {
-  startup.getActiveCategories(req, res);
+  startup.getCategories(req, res);
 });
 
 router.get('/descriptions', function (req, res, next) {

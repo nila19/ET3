@@ -3,10 +3,6 @@
 (function (angular) {
   'use strict';
 
-  angular.module('dashboard').factory('dashboardFlagsService', dashboardFlagsService);
-
-  dashboardFlagsService.$inject = ['etmenuService', 'accountsService', 'addService',
-    'chartService', 'explistService', 'billsService'];
   const dashboardFlagsService = function (ms, acs, as, cs, els, bs) {
     const setFlags = function () {
       acs.data.showAcctsRowOne = true;
@@ -35,4 +31,8 @@
       toggleChart: toggleChart
     };
   };
+
+  angular.module('dashboard').factory('dashboardFlagsService', dashboardFlagsService);
+  dashboardFlagsService.$inject = ['etmenuService', 'accountsService', 'addService',
+    'chartService', 'explistService', 'billsService'];
 })(window.angular);

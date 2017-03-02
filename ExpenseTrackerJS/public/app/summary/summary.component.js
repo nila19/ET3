@@ -3,36 +3,17 @@
 (function (angular) {
   'use strict';
 
-  angular.module('summary').component('summary', {
-    templateUrl: 'summary/summary.htm',
-    controller: SummaryController
-  });
-
-  SummaryController.$inject = ['summaryService', 'searchService', 'etmenuService', 'CONSTANTS',
-    'VALUES', '$location', '$timeout'];
   const SummaryController = function (sms, ss, ms, C, V, $location, $timeout) {
     const vm = this;
     const WAIT = 500; // milliseconds
-
-    init();
-
-		// ***** exposed functions ******//
-    vm.loadSummary = loadSummary;
-    vm.hasPrevPage = hasPrevPage;
-    vm.hasNextPage = hasNextPage;
-    vm.prevPage = prevPage;
-    vm.nextPage = nextPage;
-    vm.listExpenses = listExpenses;
 
 		// ***** function declarations *****//
     const init = function () {
       vm.data = sms.data;
       ms.data.page = C.PAGES.SUMMARY;
       sms.data.columns = C.SIZES.SUMMARY_COL;
-
 			// if menu is not loaded, load the default city.
       ms.checkInit();
-
 			// run default Summary.
       initialLoad();
     };
@@ -47,15 +28,12 @@
         loadSummary();
       }
     };
-
     const loadSummary = function () {
       sms.loadSummary();
     };
-
     const listExpenses = function (category, idx) {
 			// initialize
       ss.initializeData();
-
       if (category.id > 0) {
         ss.data.category = category;
       }
@@ -66,23 +44,36 @@
       }
       $location.path('/search/Y');
     };
-
     const hasPrevPage = function () {
       return sms.data.currPageNo > 0;
     };
-
     const hasNextPage = function () {
       return sms.data.currPageNo < sms.data.maxPageNo;
     };
-
     const prevPage = function () {
       sms.data.currPageNo -= 1;
       sms.loadCurrentPage();
     };
-
     const nextPage = function () {
       sms.data.currPageNo += 1;
       sms.loadCurrentPage();
     };
+
+    init();
+
+    // ***** exposed functions ******//
+    vm.loadSummary = loadSummary;
+    vm.hasPrevPage = hasPrevPage;
+    vm.hasNextPage = hasNextPage;
+    vm.prevPage = prevPage;
+    vm.nextPage = nextPage;
+    vm.listExpenses = listExpenses;
   };
+
+  angular.module('summary').component('summary', {
+    templateUrl: 'summary/summary.htm',
+    controller: SummaryController
+  });
+  SummaryController.$inject = ['summaryService', 'searchService', 'etmenuService', 'CONSTANTS',
+    'VALUES', '$location', '$timeout'];
 })(window.angular);
