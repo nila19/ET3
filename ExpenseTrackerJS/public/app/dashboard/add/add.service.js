@@ -7,7 +7,7 @@
 
   addService.$inject = ['etmenuService', 'accountsService', 'explistwrapperService',
     'ajaxService', 'utilsService', 'CONSTANTS'];
-  function addService(ms, acs, elws, aj, us, C) {
+  const addService = function (ms, acs, elws, aj, us, C) {
     const data = {
       showAdd: false,
       city: null,
@@ -64,5 +64,5 @@
       data: data,
       addExpense: addExpense
     };
-  }
+  };
 })(window.angular);

@@ -70,7 +70,7 @@ const deleteSequences = function (next) {
 const deleteAll = function (next) {
   param.log.info('Delete all data started...');
   async.waterfall([deleteAccounts, deleteBills, deleteCategories, deleteCities,
-    deleteTallies, deleteTransactions, deleteSequences], function bb(err) {
+    deleteTallies, deleteTransactions, deleteSequences], function (err) {
     if(err) {
       param.log.error(err);
       return next(err);
@@ -80,12 +80,12 @@ const deleteAll = function (next) {
   });
 };
 
-module.exports = function exp(db, log, next) {
+module.exports = function (db, log, next) {
   param = {
     mongo: db,
     log: log
   };
-  deleteAll(function cb() {
+  deleteAll(function () {
     return next();
   });
 };

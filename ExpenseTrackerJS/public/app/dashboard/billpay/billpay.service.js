@@ -7,7 +7,7 @@
 
   billpayService.$inject = ['etmenuService', 'billsService', 'accountsService',
     'explistwrapperService', 'ajaxService', 'utilsService'];
-  function billpayService(ms, bs, acs, elws, aj, us) {
+  const billpayService = function (ms, bs, acs, elws, aj, us) {
     const data = {
       bill: null,
       city: null,
@@ -42,5 +42,5 @@
       loadData: loadData,
       payBill: payBill
     };
-  }
+  };
 })(window.angular);

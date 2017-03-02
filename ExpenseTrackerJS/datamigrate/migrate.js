@@ -18,63 +18,63 @@ const sqlite = new sqlite3.Database(config.sqlite, sqlite3.OPEN_READONLY);
 let param = null;
 
 const account = function (next) {
-  accounts(param.sqlite, param.mongo, param.log, function cb() {
+  accounts(param.sqlite, param.mongo, param.log, function () {
     log.info('Accounts completed...');
     next();
   });
 };
 
 const bill = function (next) {
-  bills(param.sqlite, param.mongo, param.log, function cb() {
+  bills(param.sqlite, param.mongo, param.log, function () {
     log.info('Bills completed...');
     next();
   });
 };
 
 const category = function (next) {
-  categories(param.sqlite, param.mongo, param.log, function cb() {
+  categories(param.sqlite, param.mongo, param.log, function () {
     log.info('Categories completed...');
     next();
   });
 };
 
 const city = function (next) {
-  cities(param.sqlite, param.mongo, param.log, function cb() {
+  cities(param.sqlite, param.mongo, param.log, function () {
     log.info('Cities completed...');
     next();
   });
 };
 
 const tally = function (next) {
-  tallies(param.sqlite, param.mongo, param.log, function cb() {
+  tallies(param.sqlite, param.mongo, param.log, function () {
     log.info('TallyHistory completed...');
     next();
   });
 };
 
 const transaction = function (next) {
-  transactions(param.sqlite, param.mongo, param.log, function cb() {
+  transactions(param.sqlite, param.mongo, param.log, function () {
     log.info('Transactions completed...');
     next();
   });
 };
 
 const sequence = function (next) {
-  sequences(param.mongo, param.log, function cb() {
+  sequences(param.mongo, param.log, function () {
     log.info('Sequence completed...');
     next();
   });
 };
 
 const clear = function (next) {
-  deleteAll(param.mongo, param.log, function cb() {
+  deleteAll(param.mongo, param.log, function () {
     log.info('Delete completed...');
     next();
   });
 };
 
 const main = function (next) {
-  mongoconfig.connect(log, function cb(mongo) {
+  mongoconfig.connect(log, function (mongo) {
     param = {
       log: log,
       mongo: mongo,
@@ -83,7 +83,7 @@ const main = function (next) {
 
     log.info('******* Migration activities started...!!!!!');
     async.waterfall([clear, account, bill, category, city, tally,
-      transaction, sequence], function cb(err) {
+      transaction, sequence], function (err) {
       if(err) {
         param.log.error(err);
         return next(err);
@@ -95,7 +95,7 @@ const main = function (next) {
   });
 };
 
-main(function aa(err) {
+main(function (err) {
   if(err) {
     log.error(err);
   }

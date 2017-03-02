@@ -16,15 +16,15 @@ app.set('port', port);
 server.listen(port);
 
 // pass-through methods since unable to pass port# from event handler.
-server.on('error', function onError(err) {
+server.on('error', function (err) {
   handler.onError(err, app);
 });
-server.on('listening', function onListening() {
+server.on('listening', function () {
   handler.onListening(app);
 });
 
 // pings server every 100ms & look for process blockages. Logs if the wait time goes more than the threshold.
-blocked(function blk(ms) {
+blocked(function (ms) {
   app.locals.log.warn(app.locals.log.chalk.cyan(new Date() + ' :: CPU blocked for %sms', ms || 0));
 }, {threshold: milliSecsMin});
 

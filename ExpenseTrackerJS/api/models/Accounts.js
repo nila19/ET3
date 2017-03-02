@@ -31,10 +31,10 @@ const Accounts = function () {
 };
 
 Accounts.prototype = model('accounts');
-Accounts.prototype.findForCity = function findForCity(db, cityId) {
+Accounts.prototype.findForCity = function (db, cityId) {
   return this.find(db, {cityId: cityId}, {sort: {status: 1, seq: 1}});
 };
-Accounts.prototype.findForCityActive = function findForCityActive(db, cityId) {
+Accounts.prototype.findForCityActive = function (db, cityId) {
   return this.find(db, {
     cityId: cityId,
     status: this.FLAGS.status.ACTIVE
@@ -42,7 +42,7 @@ Accounts.prototype.findForCityActive = function findForCityActive(db, cityId) {
     sort: {seq: 1}
   });
 };
-Accounts.prototype.findForCityInactive = function findForCityInactive(db, cityId) {
+Accounts.prototype.findForCityInactive = function (db, cityId) {
   return this.find(db, {
     cityId: cityId,
     status: this.FLAGS.status.INACTIVE
@@ -51,6 +51,6 @@ Accounts.prototype.findForCityInactive = function findForCityInactive(db, cityId
   });
 };
 
-module.exports = function exp() {
+module.exports = function () {
   return new Accounts();
 };

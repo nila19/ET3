@@ -15,10 +15,10 @@ const TallyHistories = function () {
 };
 
 TallyHistories.prototype = model('tallyhistories');
-TallyHistories.prototype.findForAccct = function findForAccct(db, acctId) {
+TallyHistories.prototype.findForAcct = function (db, acctId) {
   return this.find(db, {acctId: acctId}, {sort: {tallyId: -1}});
 };
 
-module.exports = function exp() {
+module.exports = function () {
   return new TallyHistories();
 };

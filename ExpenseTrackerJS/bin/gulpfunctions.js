@@ -24,7 +24,7 @@ const buildExcludes = function (...args) {
   paths = paths.concat(args);
 
   // negate the path names.
-  paths.forEach(function each(path) {
+  paths.forEach(function (path) {
     excludes.push('!' + path);
   });
   return excludes;
@@ -43,7 +43,8 @@ const dir = {
 const path = {
   excludes: {
     nodeModules: dir.root + '/node_modules/**/*.*',
-    bower: dir.public + '/bower_components/**/*.*'
+    bower: dir.public + '/bower_components/**/*.*',
+    theme: dir.public + '/theme/**/*.*'
   },
   public: {
     js: dir.public + '/**/*.js',

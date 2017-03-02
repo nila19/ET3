@@ -5,28 +5,28 @@ const Model = function (coll) {
 };
 
 Model.prototype = {
-  findOne: function findOne(db, filter, options) {
+  findOne: function (db, filter, options) {
     return db.get(this.collection).findOne(filter, options || {});
   },
-  find: function find(db, filter, options) {
+  find: function (db, filter, options) {
     return db.get(this.collection).find(filter, options || {});
   },
-  findAll: function findAll(db, options) {
+  findAll: function (db, options) {
     return db.get(this.collection).find({}, options || {});
   },
-  distinct: function distinct(db, field, filter, options) {
+  distinct: function (db, field, filter, options) {
     return db.get(this.collection).distinct(field, filter || {}, options || {});
   },
-  remove: function remove(db, filter) {
+  remove: function (db, filter) {
     return db.get(this.collection).remove(filter);
   },
-  removeAll: function removeAll(db) {
+  removeAll: function (db) {
     return db.get(this.collection).remove({});
   },
-  insert: function insert(db, data) {
+  insert: function (db, data) {
     return db.get(this.collection).insert(data);
   },
-  update: function update(db, filter, mod, options) {
+  update: function (db, filter, mod, options) {
     // TODO Embed the multi/upsert options based on input options.
     return db.get(this.collection).update(filter, mod, options || {
       multi: true,
@@ -35,6 +35,6 @@ Model.prototype = {
   }
 };
 
-module.exports = function exp(coll) {
+module.exports = function (coll) {
   return new Model(coll);
 };

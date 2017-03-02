@@ -20,10 +20,10 @@ const Categories = function () {
 };
 
 Categories.prototype = model('categories');
-Categories.prototype.findForCity = function findForCity(db, cityId) {
+Categories.prototype.findForCity = function (db, cityId) {
   return this.find(db, {cityId: cityId}, {sort: {seq: 1}});
 };
-Categories.prototype.findForCityActive = function findForCityActive(db, cityId) {
+Categories.prototype.findForCityActive = function (db, cityId) {
   return this.find(db, {
     cityId: cityId,
     status: this.FLAGS.status.ACTIVE,
@@ -32,6 +32,6 @@ Categories.prototype.findForCityActive = function findForCityActive(db, cityId) 
   });
 };
 
-module.exports = function exp() {
+module.exports = function () {
   return new Categories();
 };

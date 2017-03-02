@@ -1,33 +1,34 @@
 /** ** ./dashboard/billpay/billpay.component.js *** */
 
-(function(angular) {
-	'use strict';
+(function (angular) {
+  'use strict';
 
-	angular.module('dashboard.billpay').component('billpay', {
-		templateUrl: 'dashboard/billpay/billpay.htm',
-		controller: BillPayController
-	});
+  angular.module('dashboard.billpay').component('billpay', {
+    templateUrl: 'dashboard/billpay/billpay.htm',
+    controller: BillPayController
+  });
 
-	BillPayController.$inject = ['billpayService', 'billsService', 'VALUES'];
-	function BillPayController(bps, bs, V) {
-		var vm = this;
-		init();
+  BillPayController.$inject = ['billpayService', 'billsService', 'VALUES'];
+  const BillPayController = function (bps, bs, V) {
+    const vm = this;
 
-		// ***** Exposed functions ******//
-		vm.payBill = payBill;
+    init();
 
-		// ***** Function declarations *****//
-		function init() {
-			vm.data = bps.data;
-			vm.ta = V.data;
-		}
+		// ***** exposed functions ******//
+    vm.payBill = payBill;
 
-		function payBill(valid) {
-			if (valid) {
-				bs.data.loading = true;
-				bps.payBill();
-				$('#model_BillPay').modal('hide');
-			}
-		}
-	}
+		// ***** function declarations *****//
+    const init = function () {
+      vm.data = bps.data;
+      vm.ta = V.data;
+    };
+
+    const payBill = function (valid) {
+      if (valid) {
+        bs.data.loading = true;
+        bps.payBill();
+        $('#model_BillPay').modal('hide');
+      }
+    };
+  };
 })(window.angular);

@@ -22,7 +22,7 @@ const addExpense = function (params, data1, next) {
   data = data1;
 
   async.waterfall([getAccountsInfo, copyTransData, copyAccountsData, fetchTransSeq, saveTransaction,
-    transferCash, getAccountsInfo, updateAfBalances], function cb(err) {
+    transferCash, getAccountsInfo, updateAfBalances], function (err) {
     logErr(param.log, err);
     return next(err);
   });
@@ -36,7 +36,7 @@ const getAccountsInfo = function (next) {
       if(!data.fromAccount) {
         return cb();
       }
-      getAccount(data.fromAccount.id, function aa(err, ac) {
+      getAccount(data.fromAccount.id, function (err, ac) {
         accts.from = ac;
         logErr(param.log, err);
         return cb(err);
@@ -46,13 +46,13 @@ const getAccountsInfo = function (next) {
       if(!data.toAccount) {
         return cb();
       }
-      getAccount(data.toAccount.id, function aa(err, ac) {
+      getAccount(data.toAccount.id, function (err, ac) {
         accts.to = ac;
         logErr(param.log, err);
         return cb(err);
       });
     }
-  }, function done(err) {
+  }, function (err) {
     logErr(param.log, err);
     return next(err);
   });
@@ -141,7 +141,7 @@ const saveTransaction = function (next) {
 // step 6 : move cash across from / to accounts
 const transferCash = function (next) {
   cashService.transferCash({db: param.db, log: param.log, fromId: accts.from.acctId,
-    toId: accts.to.acctId, amount: trans.amount, seq: 0}, function cb(err) {
+    toId: accts.to.acctId, amount: trans.amount, seq: 0}, function (err) {
     logErr(param.log, err);
     return next(err);
   });

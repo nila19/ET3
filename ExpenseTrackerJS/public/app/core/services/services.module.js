@@ -1,8 +1,7 @@
 /** ** ./core/services/services.module.js *** */
 
-(function(angular) {
-	'use strict';
+(function (angular) {
+  'use strict';
 
-	angular.module('core.services', ['core', 'ngResource']);
-
+  angular.module('core.services', ['core', 'ngResource']);
 })(window.angular);

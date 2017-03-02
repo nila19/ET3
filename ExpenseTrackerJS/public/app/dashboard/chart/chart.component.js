@@ -1,46 +1,43 @@
 /** ** ./dashboard/chart/chart.component.js *** */
 
-(function(angular) {
-	'use strict';
+(function (angular) {
+  'use strict';
 
-	angular.module('dashboard.chart').component('chart', {
-		templateUrl: 'dashboard/chart/chart.htm',
-		controller: ChartController
-	});
+  angular.module('dashboard.chart').component('chart', {
+    templateUrl: 'dashboard/chart/chart.htm',
+    controller: ChartController
+  });
 
-	ChartController.$inject = ['chartService'];
-	function ChartController(cs) {
-		var vm = this;
-		init();
+  ChartController.$inject = ['chartService'];
+  const ChartController = function (cs) {
+    const vm = this;
 
-		vm.hasPrevPage = hasPrevPage;
-		vm.hasNextPage = hasNextPage;
-		vm.prevPage = prevPage;
-		vm.nextPage = nextPage;
+    init();
 
-		// ***** Function declarations *****//
-		function init() {
-			vm.data = cs.data;
-		}
+    vm.hasPrevPage = hasPrevPage;
+    vm.hasNextPage = hasNextPage;
+    vm.prevPage = prevPage;
+    vm.nextPage = nextPage;
 
-		function hasPrevPage() {
-			return cs.data.currPageNo > 0;
-		}
-
-		function hasNextPage() {
-			return cs.data.currPageNo < cs.data.maxPageNo;
-		}
-
-		function prevPage() {
-			cs.data.currPageNo -= 1;
-			cs.loadCurrentPage();
-			cs.renderChart();
-		}
-
-		function nextPage() {
-			cs.data.currPageNo += 1;
-			cs.loadCurrentPage();
-			cs.renderChart();
-		}
-	}
+		// ***** function declarations *****//
+    const init = function () {
+      vm.data = cs.data;
+    };
+    const hasPrevPage = function () {
+      return cs.data.currPageNo > 0;
+    };
+    const hasNextPage = function () {
+      return cs.data.currPageNo < cs.data.maxPageNo;
+    };
+    const prevPage = function () {
+      cs.data.currPageNo -= 1;
+      cs.loadCurrentPage();
+      cs.renderChart();
+    };
+    const nextPage = function () {
+      cs.data.currPageNo += 1;
+      cs.loadCurrentPage();
+      cs.renderChart();
+    };
+  };
 })(window.angular);

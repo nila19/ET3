@@ -1,86 +1,88 @@
 /** ** ./summary/summary.component.js *** */
 
-(function(angular) {
-	'use strict';
+(function (angular) {
+  'use strict';
 
-	angular.module('summary').component('summary', {
-		templateUrl: 'summary/summary.htm',
-		controller: SummaryController
-	});
+  angular.module('summary').component('summary', {
+    templateUrl: 'summary/summary.htm',
+    controller: SummaryController
+  });
 
-	SummaryController.$inject = ['summaryService', 'searchService', 'etmenuService', 'CONSTANTS',
-			'VALUES', '$location', '$timeout'];
-	function SummaryController(sms, ss, ms, C, V, $location, $timeout) {
-		var vm = this;
-		init();
+  SummaryController.$inject = ['summaryService', 'searchService', 'etmenuService', 'CONSTANTS',
+    'VALUES', '$location', '$timeout'];
+  const SummaryController = function (sms, ss, ms, C, V, $location, $timeout) {
+    const vm = this;
+    const WAIT = 500; // milliseconds
 
-		// ***** Exposed functions ******//
-		vm.loadSummary = loadSummary;
-		vm.hasPrevPage = hasPrevPage;
-		vm.hasNextPage = hasNextPage;
-		vm.prevPage = prevPage;
-		vm.nextPage = nextPage;
-		vm.listExpenses = listExpenses;
+    init();
 
-		// ***** Function declarations *****//
-		function init() {
-			vm.data = sms.data;
-			ms.data.page = C.PAGES.SUMMARY;
-			sms.data.columns = C.SIZES.SUMMARY_COL;
+		// ***** exposed functions ******//
+    vm.loadSummary = loadSummary;
+    vm.hasPrevPage = hasPrevPage;
+    vm.hasNextPage = hasNextPage;
+    vm.prevPage = prevPage;
+    vm.nextPage = nextPage;
+    vm.listExpenses = listExpenses;
 
-			// If menu is not loaded, load the default city.
-			ms.checkInit();
+		// ***** function declarations *****//
+    const init = function () {
+      vm.data = sms.data;
+      ms.data.page = C.PAGES.SUMMARY;
+      sms.data.columns = C.SIZES.SUMMARY_COL;
 
-			// Run default Summary.
-			initialLoad();
-		}
+			// if menu is not loaded, load the default city.
+      ms.checkInit();
 
-		function initialLoad() {
-			if (!V.data.city.id || ms.data.loading) {
-				$timeout(function() {
-					initialLoad();
-				}, 500);
-			} else {
-				sms.data.months = V.data.transMonths;
-				loadSummary();
-			}
-		}
+			// run default Summary.
+      initialLoad();
+    };
 
-		function loadSummary() {
-			sms.loadSummary();
-		}
+    const initialLoad = function () {
+      if (!V.data.city.id || ms.data.loading) {
+        $timeout(function () {
+          initialLoad();
+        }, WAIT);
+      } else {
+        sms.data.months = V.data.transMonths;
+        loadSummary();
+      }
+    };
 
-		function listExpenses(category, idx) {
-			// Initialize
-			ss.initializeData();
+    const loadSummary = function () {
+      sms.loadSummary();
+    };
 
-			if (category.id > 0) {
-				ss.data.category = category;
-			}
-			ss.data.transMonth = vm.data.months[idx];
-			ss.data.adjustInd = 'N';
-			if (!(sms.data.input.adhoc && sms.data.input.regular)) {
-				ss.data.adhocInd = (sms.data.input.adhoc && !sms.data.input.regular) ? 'Y' : 'N';
-			}
-			$location.path('/search/Y');
-		}
+    const listExpenses = function (category, idx) {
+			// initialize
+      ss.initializeData();
 
-		function hasPrevPage() {
-			return sms.data.currPageNo > 0;
-		}
+      if (category.id > 0) {
+        ss.data.category = category;
+      }
+      ss.data.transMonth = vm.data.months[idx];
+      ss.data.adjustInd = 'N';
+      if (!(sms.data.input.adhoc && sms.data.input.regular)) {
+        ss.data.adhocInd = (sms.data.input.adhoc && !sms.data.input.regular) ? 'Y' : 'N';
+      }
+      $location.path('/search/Y');
+    };
 
-		function hasNextPage() {
-			return sms.data.currPageNo < sms.data.maxPageNo;
-		}
+    const hasPrevPage = function () {
+      return sms.data.currPageNo > 0;
+    };
 
-		function prevPage() {
-			sms.data.currPageNo -= 1;
-			sms.loadCurrentPage();
-		}
+    const hasNextPage = function () {
+      return sms.data.currPageNo < sms.data.maxPageNo;
+    };
 
-		function nextPage() {
-			sms.data.currPageNo += 1;
-			sms.loadCurrentPage();
-		}
-	}
+    const prevPage = function () {
+      sms.data.currPageNo -= 1;
+      sms.loadCurrentPage();
+    };
+
+    const nextPage = function () {
+      sms.data.currPageNo += 1;
+      sms.loadCurrentPage();
+    };
+  };
 })(window.angular);

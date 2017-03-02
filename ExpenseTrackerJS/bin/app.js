@@ -27,7 +27,7 @@ const routes = require('../api/config/route-config');
 app.locals.log = require('../api/utils/logger');
 
 // establish DB connection to MongoDB..
-require('../api/config/mongodb-config').connect(app.locals.log, function cb(db) {
+require('../api/config/mongodb-config').connect(app.locals.log, function (db) {
   app.locals.db = db;
 });
 
@@ -38,7 +38,7 @@ app.set('view engine', 'ejs');
 app.use(helmet());
 app.use(compression());
 app.use(morgan('dev', {
-  skip: function skip(req, res) {
+  skip: function (req, res) {
     return res.statusCode < httpSuccessCodes;
   }
 }));

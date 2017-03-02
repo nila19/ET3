@@ -5,14 +5,13 @@
 
   angular.module('dashboard.edit').factory('editService', editService);
 
-  editService.$inject = ['etmenuService', 'explistwrapperService', 'ajaxService', 'utilsService',
-    'VALUES', 'CONSTANTS'];
-  function editService(ms, elws, aj, us, V, C) {
+  editService.$inject = ['etmenuService', 'explistwrapperService', 'ajaxService', 'utilsService', 'VALUES'];
+  const editService = function (ms, elws, aj, us, V) {
     const data = {
       expense: {},
       loading: false
     };
-    const ta = {};
+    // const ta = {};
 
 		// load Bills
     const loadBillData = function (dt) {
@@ -87,5 +86,5 @@
       deleteExpense: deleteExpense,
       loadBills: loadBills
     };
-  }
+  };
 })(window.angular);

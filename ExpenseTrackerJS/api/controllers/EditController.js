@@ -12,7 +12,7 @@ const addExpense = function (req, resp) {
     log: req.app.locals.log
   };
   // check if city is editable.
-  addservice.addExpense(parms, req.body, function aa(err) {
+  addservice.addExpense(parms, req.body, function (err) {
     if(err) {
       parms.log.error(err);
       return resp.json({code: error});

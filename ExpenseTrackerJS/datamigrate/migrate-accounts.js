@@ -9,11 +9,11 @@ number.defaultFormat('0');
 number.nullFormat('');
 
 const migrate = function (sqlite, mongo, log, next) {
-  sqlite.serialize(function f1() {
+  sqlite.serialize(function () {
     let count = 0;
 
     log.info('Accounts data started...');
-    sqlite.each('SELECT * FROM ACCOUNT', function fn(err, row) {
+    sqlite.each('SELECT * FROM ACCOUNT', function (err, row) {
       if(err) {
         log.error(err);
       } else {
@@ -39,15 +39,15 @@ const migrate = function (sqlite, mongo, log, next) {
         accounts.insert(mongo, acct);
         count += 1;
       }
-    }, function done() {
+    }, function () {
       log.info('Accounts data over... : ' + count);
       return next();
     });
   });
 };
 
-module.exports = function exp(sqlite, mongo, log, next) {
-  return migrate(sqlite, mongo, log, function cb() {
+module.exports = function (sqlite, mongo, log, next) {
+  return migrate(sqlite, mongo, log, function () {
     return next();
   });
 };

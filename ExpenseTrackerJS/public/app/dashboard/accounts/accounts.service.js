@@ -7,7 +7,7 @@
 
   accountsService.$inject = ['etmenuService', 'dashboardService', 'billsService',
     'explistService', 'searchService', 'utilsService', 'ajaxService', 'CONSTANTS'];
-  function accountsService(ms, ds, bs, els, ss, us, aj, C) {
+  const accountsService = function (ms, ds, bs, els, ss, us, aj, C) {
     const data = {
       accts: null,
       rows: [],
@@ -81,5 +81,5 @@
       filterAccount: filterAccount,
       refreshAccount: refreshAccount
     };
-  }
+  };
 })(window.angular);

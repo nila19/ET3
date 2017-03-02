@@ -3,11 +3,11 @@
 const categories = require('../api/models/Categories')();
 
 const migrate = function (sqlite, mongo, log, next) {
-  sqlite.serialize(function f1() {
+  sqlite.serialize(function () {
     let count = 0;
 
     log.info('Categories data started...');
-    sqlite.each('SELECT * FROM CATEGORY', function fn(err, row) {
+    sqlite.each('SELECT * FROM CATEGORY', function (err, row) {
       if(err) {
         log.error(err);
       } else {
@@ -24,15 +24,15 @@ const migrate = function (sqlite, mongo, log, next) {
         categories.insert(mongo, category);
         count += 1;
       }
-    }, function done() {
+    }, function () {
       log.info('Categories data over... : ' + count);
       return next();
     });
   });
 };
 
-module.exports = function exp(sqlite, mongo, log, next) {
-  return migrate(sqlite, mongo, log, function cb() {
+module.exports = function (sqlite, mongo, log, next) {
+  return migrate(sqlite, mongo, log, function () {
     return next();
   });
 };

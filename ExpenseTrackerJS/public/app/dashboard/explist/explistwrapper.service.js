@@ -8,12 +8,14 @@
   explistwrapperService.$inject = ['explistService', 'etmenuService', 'searchService',
     'accountsService', 'billsService', 'ajaxService', 'utilsService', 'CONSTANTS',
     '$timeout'];
-  function explistwrapperService(els, ms, ss, acs, bs, aj, us, C, $timeout) {
+  const explistwrapperService = function (els, ms, ss, acs, bs, aj, us, C, $timeout) {
+    const DELAY = 500; // milliseconds
+    const TEN = 10;
+
     const reloadExpenses = function () {
       ss.data.thinList = els.data.thinList;
       ss.doSearch();
     };
-
     const clearFilter = function () {
       ss.initializeData();
       if (ms.data.page === C.PAGES.DASHBOARD) {
@@ -28,7 +30,6 @@
       }
       reloadExpenses();
     };
-
     const loadAddItem = function (dt) {
       els.addItem(dt);
     };
@@ -73,11 +74,11 @@
         tempPool.push(swap);
       });
 
-      console.log('Publishing swaps...' + tempPool.length);
+      // console.log('Publishing swaps...' + tempPool.length);
       els.data.loading = true;
       aj.post('/edit/swap/' + ms.data.menu.city.id, tempPool, resetSwapPool);
     };
-    var looper = function () {
+    const looper = function () {
       if (swapPool.length > 0) {
         if (!publishing) {
           publishing = true;
@@ -85,7 +86,7 @@
         }
         $timeout(function () {
           looper();
-        }, 3000);
+        }, DELAY);
       } else {
         looperOn = false;
       }
@@ -94,7 +95,7 @@
       const id1 = els.data.rows[idx1].id;
       const id2 = els.data.rows[idx2].id;
 
-      const code = id1 * 10 + id2; // unique code to identify.
+      const code = (id1 * TEN) + id2; // unique code to identify.
 
       swapPool.push({
         code: code,
@@ -113,7 +114,7 @@
         looperOn = true;
         $timeout(function () {
           looper();
-        }, 3000);
+        }, DELAY);
       }
     };
 
@@ -125,5 +126,5 @@
       deleteItem: deleteItem,
       swapExpense: swapExpense
     };
-  }
+  };
 })(window.angular);

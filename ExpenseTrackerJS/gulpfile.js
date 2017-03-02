@@ -9,15 +9,15 @@ const gf = require('./bin/gulpfunctions');
 const src = gf.src;
 
 //* ******************************* tasks ********************************//
-gulp.task('default', function dft(next) {
-  return runSequence('server', 'public', function log() {
+gulp.task('default', function (next) {
+  return runSequence('server', 'public', function () {
     gf.log('default', 'END');
     gf.log('COMPLETED ALL DEFAULT TASKS');
     next();
   });
 });
 
-gulp.task('watch', ['default'], function watch() {
+gulp.task('watch', ['default'], function () {
   gulp.watch(src.public.js, ['public-js']);
   gulp.watch(src.public.less, ['public-less']);
   gulp.watch(src.server.js, ['server-js']);
@@ -25,37 +25,37 @@ gulp.task('watch', ['default'], function watch() {
   gf.log('WATCHING FOR SOURCE CHANGES');
 });
 
-gulp.task('server', function server(next) {
-  return runSequence('server-js', function log() {
+gulp.task('server', function (next) {
+  return runSequence('server-js', function () {
     gf.log('SERVER processing', 'COMPLETED');
     next();
   });
 });
 
-gulp.task('server-js', function serverjs() {
+gulp.task('server-js', function () {
   const pipe = gulp.src(src.server.js).pipe(plugins.eslint()).pipe(plugins.eslint.format());
 
   return pipe.pipe(plugins.eslint.failAfterError());
 });
 
 // unused
-gulp.task('server-ejs', function serverejs() {
+gulp.task('server-ejs', function () {
   return gulp.src(src.server.ejs).pipe(plugins.ejs());
 });
 
-gulp.task('public', function pbl(next) {
-  return runSequence('public-js', 'public-less', function log() {
+gulp.task('public', function (next) {
+  return runSequence('public-js', 'public-less', function () {
     gf.log('PUBLIC processing', 'COMPLETED');
     next();
   });
 });
 
-gulp.task('public-js', function publicjs() {
+gulp.task('public-js', function () {
   const pipe = gulp.src(src.public.js).pipe(plugins.eslint()).pipe(plugins.eslint.format());
 
   return pipe.pipe(plugins.eslint.failAfterError());
 });
 
-gulp.task('public-less', function publicless() {
+gulp.task('public-less', function () {
   return gulp.src(src.public.less).pipe(plugins.less()).pipe(gulpif(gf.flag.prod, plugins.cleanCss()));
 });

@@ -1,4 +1,5 @@
 /** ** ./core/constants.js *** */
+/* eslint no-magic-numbers: "off" */
 
 (function (angular) {
   'use strict';

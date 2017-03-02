@@ -6,15 +6,16 @@
   angular.module('startup').factory('startupService', startupService);
 
   startupService.$inject = ['etmenuService', 'ajaxService', 'CONSTANTS', 'VALUES'];
-  function startupService(ms, aj, C, V) {
+  const startupService = function (ms, aj, C, V) {
     const data = {
       status: 0,
       connect: false,
       loadInitiated: false
     };
+    const TEN = 10;
 
     const loadingComplete = function () {
-      console.log('@ StartupService: Loading startup components COMPLETED...');
+      // console.log('@ StartupService: Loading startup components COMPLETED...');
       ms.data.loading = false;
     };
     const loadEntryMonths = function (entryMonths) {
@@ -22,7 +23,7 @@
       angular.forEach(entryMonths, function (entryMonth) {
         V.data.entryMonths.push(entryMonth.toJSON());
       });
-      data.status += 10;
+      data.status += TEN;
       loadingComplete();
     };
     const getEntryMonths = function (city) {
@@ -35,7 +36,7 @@
       angular.forEach(transMonths, function (transMonth) {
         V.data.transMonths.push(transMonth.toJSON());
       });
-      data.status += 10;
+      data.status += TEN;
       getEntryMonths(V.data.city);
     };
     const getTransMonths = function (city) {
@@ -47,7 +48,7 @@
       angular.forEach(accounts, function (ac) {
         V.data.allAccounts.push(ac);
       });
-      data.status += 10;
+      data.status += TEN;
       getTransMonths(V.data.city);
     };
     const getInactiveAccounts = function (city) {
@@ -60,7 +61,7 @@
         V.data.accounts.push(ac);
         V.data.allAccounts.push(ac);
       });
-      data.status += 10;
+      data.status += TEN;
       getInactiveAccounts(V.data.city);
     };
     const getAccounts = function (city) {
@@ -70,7 +71,7 @@
     };
     const loadDescriptions = function (descriptions) {
       V.data.descriptions = descriptions;
-      data.status += 10;
+      data.status += TEN;
       getAccounts(V.data.city);
     };
     const getDescriptions = function (city) {
@@ -80,7 +81,7 @@
     };
     const loadAllCategories = function (categories) {
       V.data.allCategories = categories;
-      data.status += 10;
+      data.status += TEN;
       getDescriptions(V.data.city);
     };
     const getAllCategories = function (city) {
@@ -90,7 +91,7 @@
     };
     const loadCategories = function (categories) {
       V.data.categories = categories;
-      data.status += 10;
+      data.status += TEN;
       getAllCategories(V.data.city);
     };
     const getCategories = function (city) {
@@ -100,7 +101,7 @@
     };
     const loadCities = function (cities) {
       V.data.cities = cities;
-      data.status += 10;
+      data.status += TEN;
       getCategories(V.data.city);
     };
     const getCities = function () {
@@ -108,7 +109,7 @@
     };
     const loadDefaultCity = function (city) {
       V.data.city = city;
-      data.status += 10;
+      data.status += TEN;
       getCities();
     };
     const getDefaultCity = function () {
@@ -117,25 +118,24 @@
     const loadConnect = function (conn) {
       data.connect = conn.flag;
       if (data.connect) {
-        data.status += 10;
+        data.status += TEN;
         getDefaultCity();
       }
     };
     const connect = function () {
       aj.get('/startup/connect', {}, loadConnect);
     };
-
     const loadAll = function () {
       if (!data.loadInitiated) {
         ms.data.loading = true;
         data.loadInitiated = true;
-        console.log('@ StartupService: Loading startup components...');
+        // console.log('@ StartupService: Loading startup components...');
         connect();
       }
     };
     const loadOthers = function () {
       ms.data.loading = true;
-      console.log('@ StartupService: Loading items on city change...');
+      // console.log('@ StartupService: Loading items on city change...');
       getCategories(V.data.city);
     };
 
@@ -144,5 +144,5 @@
       loadAll: loadAll,
       loadOthers: loadOthers,
     };
-  }
+  };
 })(window.angular);

@@ -1,7 +1,7 @@
 'use strict';
 
-const inject404 = function inject404() {
-  return function inject(req, res, next) {
+const inject404 = function () {
+  return function (req, res, next) {
     const code = 404;
     const err = new Error('Not Found');
 
@@ -10,8 +10,8 @@ const inject404 = function inject404() {
   };
 };
 
-const handler = function handler() {
-  return function handle(err, req, res, next) {
+const handler = function () {
+  return function (err, req, res, next) {
     if (res.headersSent) {
       return next(err);
     }

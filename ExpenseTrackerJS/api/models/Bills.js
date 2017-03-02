@@ -26,7 +26,7 @@ const Bills = function () {
 
 Bills.prototype = model('bills');
 // paidInd == null, get all; paidInd = 'N', getUnpaid only, paidInd = 'Y', getPaid only
-Bills.prototype.findForCity = function findForCity(db, cityId, paidInd) {
+Bills.prototype.findForCity = function (db, cityId, paidInd) {
   const filter = {
     cityId: cityId,
     status: this.FLAGS.status.CLOSED,
@@ -38,7 +38,7 @@ Bills.prototype.findForCity = function findForCity(db, cityId, paidInd) {
   return this.find(db, filter, {sort: {billDt: -1}});
 };
 // TODO Unsed ???
-Bills.prototype.findForCityOpen = function findForCityOpen(db, cityId) {
+Bills.prototype.findForCityOpen = function (db, cityId) {
   return this.find(db, {
     cityId: cityId,
     status: this.FLAGS.status.OPEN
@@ -48,7 +48,7 @@ Bills.prototype.findForCityOpen = function findForCityOpen(db, cityId) {
 };
 
 // paidInd == null, get all; paidInd = 'N', getUnpaid only, paidInd = 'Y', getPaid only
-Bills.prototype.findForAcct = function findForAcct(db, acctId, paidInd) {
+Bills.prototype.findForAcct = function (db, acctId, paidInd) {
   const filter = {
     acctId: acctId,
     status: this.FLAGS.status.CLOSED,
@@ -60,6 +60,6 @@ Bills.prototype.findForAcct = function findForAcct(db, acctId, paidInd) {
   return this.find(db, filter, {sort: {billDt: -1}});
 };
 
-module.exports = function exp() {
+module.exports = function () {
   return new Bills();
 };

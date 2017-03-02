@@ -6,7 +6,7 @@
   angular.module('app').config(appRoute);
 
   appRoute.$inject = ['$locationProvider', '$routeProvider'];
-  function appRoute($locationProvider, $routeProvider) {
+  const appRoute = function ($locationProvider, $routeProvider) {
     $locationProvider.hashPrefix('!');
 
     $routeProvider.when('/dashboard', {
@@ -20,5 +20,5 @@
     }).when('/startup', {
       template: '<startup></startup>'
     }).otherwise('/startup');
-  }
+  };
 })(window.angular);

@@ -1,4 +1,6 @@
 /** ** ./dashboard/chart/chart.service.js *** */
+/* global Chartist, md */
+/* eslint new-cap: ["error", { "capIsNewExceptions": ["Bar"] }]*/
 
 (function (angular) {
   'use strict';
@@ -7,8 +9,10 @@
 
   chartService.$inject = ['etmenuService', 'dashboardService', 'ajaxService', 'CONSTANTS',
     '$timeout'];
-  function chartService(ms, ds, aj, C, $timeout) {
-    const wait = 200;
+  const chartService = function (ms, ds, aj, C, $timeout) {
+    const WAIT = 200;
+    const HEIGHT = 3500;
+
     const data = {
       showChart: false,
       loaded: false,
@@ -33,7 +37,7 @@
         }
       },
       low: 0,
-      high: 3500,
+      high: HEIGHT,
       chartPadding: {
         top: 0,
         right: 5,
@@ -77,7 +81,7 @@
         city: ms.data.menu.city.id
       }, loadChartData);
     };
-    var showChart = function () {
+    const showChart = function () {
       if (data.loaded) {
         const chart = Chartist.Bar('#' + data.tagId, data.pgData, chartOptions,
 						responsiveOptions);
@@ -86,7 +90,7 @@
       } else {
         $timeout(function () {
           showChart();
-        }, wait);
+        }, WAIT);
       }
     };
     const renderChart = function () {
@@ -101,5 +105,5 @@
       renderChart: renderChart,
       loadCurrentPage: loadCurrentPage
     };
-  }
+  };
 })(window.angular);

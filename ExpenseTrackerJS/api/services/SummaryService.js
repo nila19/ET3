@@ -9,7 +9,7 @@ const data = null;
 // step 0: use serviceUtils to fetch all data from DB & build the trans months list.
 const buildSummaryGrid = function (params, next) {
   param = params;
-  serviceUtils.getDataFromDB(params, function aa(err, results) {
+  serviceUtils.getDataFromDB(params, function (err, results) {
     if(err) {
       param.log.error(err);
       return next(err);
@@ -20,7 +20,7 @@ const buildSummaryGrid = function (params, next) {
     data.fcTransactions = results[3];
 
     async.waterfall([buildEmptyGrid, populateGrid, calcYearlySummary,
-      buildForecastGrid, weedInactiveCats, sortGridByCategory, calcTotalRow], function cb(err, gridArr) {
+      buildForecastGrid, weedInactiveCats, sortGridByCategory, calcTotalRow], function (err, gridArr) {
       if(err) {
         param.log.error(err);
         return next(err);
@@ -34,10 +34,10 @@ const buildSummaryGrid = function (params, next) {
 const buildEmptyGrid = function (next) {
   const grid = {};
 
-  data.categories.forEach(function bb(category) {
+  data.categories.forEach(function (category) {
     const ui = {category: category, amount: [], count: []};
 
-    data.transMonths.forEach(function cc() {
+    data.transMonths.forEach(function () {
       ui.amount.push(0);
       ui.count.push(0);
     });
@@ -48,7 +48,7 @@ const buildEmptyGrid = function (next) {
 
 // setp 2: populate the grid with transaction data.
 const populateGrid = function (grid, next) {
-  data.transactions.forEach(function aa(trans) {
+  data.transactions.forEach(function (trans) {
     const ui = grid[trans.catId];
     const idx = serviceUtils.getMonthIndex(data.transMonths, trans.transMonth);
 
@@ -62,9 +62,9 @@ const populateGrid = function (grid, next) {
 // yearly Summary - For each SummaryUI, populate the yearly totals by summing up the months for that year.
 // pick only the non-aggregate months for totaling.
 const calcYearlySummary = function (grid, next) {
-  data.transMonths.forEach(function cc(year, ii) {
+  data.transMonths.forEach(function (year, ii) {
     if(year.aggregate) {
-      data.transMonths.forEach(function cc(month, jj) {
+      data.transMonths.forEach(function (month, jj) {
         if(!month.aggregate && year.year === month.year) {
           for (const catId in grid) {
             if (grid.hasOwnProperty(catId)) {
@@ -89,7 +89,7 @@ const buildForecastGrid = function (grid1, next) {
   }
 
   grid = grid1;
-  async.waterfall([buildEmptyGrid, populateFcGrid, embedFcToGrid], function cb(err, grid) {
+  async.waterfall([buildEmptyGrid, populateFcGrid, embedFcToGrid], function (err, grid) {
     if(err) {
       param.log.error(err);
       return next(err);
@@ -100,7 +100,7 @@ const buildForecastGrid = function (grid1, next) {
 
 // setp 4.1: populate the forecast grid with fctransaction data.
 const populateFcGrid = function (fcgrid, next) {
-  data.fcTransactions.forEach(function aa(trans) {
+  data.fcTransactions.forEach(function (trans) {
     const ui = fcgrid[trans.catId];
 
     ui.amount[0] += trans.amount;
@@ -146,7 +146,7 @@ const weedInactiveCats = function (grid, next) {
       if(ui.category.status !== 'A') {
         let nonzero = false;
 
-        ui.amount.forEach(function aa(amt) {
+        ui.amount.forEach(function (amt) {
           if(amt !== 0) {
             nonzero = true;
           }
@@ -158,7 +158,7 @@ const weedInactiveCats = function (grid, next) {
     }
   }
 
-  weeds.forEach(function bb(weed) {
+  weeds.forEach(function (weed) {
     delete grid[weed];
   });
   return next(null, grid);
@@ -168,7 +168,7 @@ const weedInactiveCats = function (grid, next) {
 const sortGridByCategory = function (grid, next) {
   const gridArr = [];
 
-  data.categories.forEach(function aa(category) {
+  data.categories.forEach(function (category) {
     if(grid[category.catId]) {
       gridArr.push(grid[category.catId]);
     }
@@ -181,13 +181,13 @@ const sortGridByCategory = function (grid, next) {
 const calcTotalRow = function (gridArr, next) {
   const totalui = {};
 
-  data.transMonths.forEach(function cc() {
+  data.transMonths.forEach(function () {
     totalui.amount.push(0);
     totalui.count.push(0);
   });
 
-  gridArr.forEach(function aa(ui) {
-    data.transMonths.forEach(function cc(month, ii) {
+  gridArr.forEach(function (ui) {
+    data.transMonths.forEach(function (month, ii) {
       totalui.amount[ii] += ui.amount[ii];
     });
   });

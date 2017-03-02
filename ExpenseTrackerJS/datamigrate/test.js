@@ -16,7 +16,7 @@ const queryAll = function (mongo, log, next) {
 
   trans.findForSearch(mongo, filter).then((docs) => {
     log.info('************** TEST **************...');
-    docs.forEach(function fe(row) {
+    docs.forEach(function (row) {
       // log.info('DATES :: ' + dt(row).format());
       log.info(JSON.stringify(row) + ' :: ' + dt(row.entryMonth).format());
     });
@@ -28,8 +28,8 @@ const queryAll = function (mongo, log, next) {
   });
 };
 
-require('../api/config/mongodb-config').connect(log, function cb(mongo) {
-  queryAll(mongo, log, function next(err) {
+require('../api/config/mongodb-config').connect(log, function (mongo) {
+  queryAll(mongo, log, function (err) {
     if(err) {
       log.error(err);
     }

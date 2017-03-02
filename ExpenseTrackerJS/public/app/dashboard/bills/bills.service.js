@@ -7,7 +7,7 @@
 
   billsService.$inject = ['etmenuService', 'dashboardService', 'ajaxService', 'utilsService',
     'CONSTANTS'];
-  function billsService(ms, ds, aj, us, C) {
+  const billsService = function (ms, ds, aj, us, C) {
     const data = {
       showBills: false,
       rows: [],
@@ -96,5 +96,5 @@
       loadAllBills: loadAllBills,
       refreshBill: refreshBill
     };
-  }
+  };
 })(window.angular);

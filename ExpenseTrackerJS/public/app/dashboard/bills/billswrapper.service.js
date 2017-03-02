@@ -6,7 +6,7 @@
   angular.module('dashboard.bills').factory('billswrapperService', billswrapperService);
 
   billswrapperService.$inject = ['billsService', 'billpayService', 'utilsService'];
-  function billswrapperService(bs, bps, us) {
+  const billswrapperService = function (bs, bps, us) {
     const showBillPay = function (id) {
       const bill = us.getObjectOf(bs.data.rows, id);
 
@@ -16,5 +16,5 @@
     return {
       showBillPay: showBillPay
     };
-  }
+  };
 })(window.angular);

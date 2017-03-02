@@ -93,11 +93,11 @@ const migrate = function (mongo, log, next) {
 
   param.log.info('Sequences data started...');
   cities.findAllCities(param.db).then((docs) => {
-    async.each(docs, function processCity(doc, cb) {
-      async.waterfall([function first(nxt) {
+    async.each(docs, function (doc, cb) {
+      async.waterfall([function (nxt) {
         return nxt(null, doc.cityId);
       }, setAccountsSeq, setBillsSeq, setCategoriesSeq, setTransactionsSeq,
-        setTallyHistoriesSeq], function bb(err) {
+        setTallyHistoriesSeq], function (err) {
         if(err) {
           param.log.error(err);
           return cb(err);
@@ -105,7 +105,7 @@ const migrate = function (mongo, log, next) {
         count += 1;
         return cb();
       });
-    }, function allCitiesDone(err) {
+    }, function (err) {
       if(err) {
         param.log.error(err);
         return next(err);
@@ -120,8 +120,8 @@ const migrate = function (mongo, log, next) {
   });
 };
 
-module.exports = function exp(mongo, log, next) {
-  return migrate(mongo, log, function cb() {
+module.exports = function (mongo, log, next) {
+  return migrate(mongo, log, function () {
     return next();
   });
 };

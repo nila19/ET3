@@ -14,10 +14,10 @@ const Sequences = function () {
 };
 
 Sequences.prototype = model('sequences');
-Sequences.prototype.getNextSeq = function getNextSeq(db, filter) {
+Sequences.prototype.getNextSeq = function (db, filter) {
   return db.get(this.collection).findAndModify({query: filter, update: {$inc: {seq: 1}}, new: true});
 };
 
-module.exports = function exp() {
+module.exports = function () {
   return new Sequences();
 };

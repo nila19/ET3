@@ -15,7 +15,7 @@ const doSummary = function (req, resp) {
     forecast: req.body.forecast
   };
 
-  summaryService.buildSummaryGrid(params, function aa(err, grid) {
+  summaryService.buildSummaryGrid(params, function (err, grid) {
     if(err) {
       req.app.locals.log.error(err);
       return resp.json({code: error});

@@ -1,8 +1,7 @@
 /** ** ./core/directives/directives.module.js *** */
 
-(function(angular) {
-	'use strict';
+(function (angular) {
+  'use strict';
 
-	angular.module('core.directives', ['core']);
-
+  angular.module('core.directives', ['core']);
 })(window.angular);

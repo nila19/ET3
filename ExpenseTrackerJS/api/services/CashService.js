@@ -13,7 +13,7 @@ let param = null;
 const transferCash = function (params, next) {
   param = params;
 
-  async.series([getAccountsInfo, moveCash], function cb(err) {
+  async.series([getAccountsInfo, moveCash], function (err) {
     logErr(param.log, err);
     return next(err);
   });
@@ -27,7 +27,7 @@ const getAccountsInfo = function (next) {
       if(!param.fromId) {
         return cb();
       }
-      getAccount(param.fromId, function aa(err, ac) {
+      getAccount(param.fromId, function (err, ac) {
         accts.from = ac;
         logErr(param.log, err);
         return cb(err);
@@ -37,13 +37,13 @@ const getAccountsInfo = function (next) {
       if(!param.toId) {
         return cb();
       }
-      getAccount(param.toId, function aa(err, ac) {
+      getAccount(param.toId, function (err, ac) {
         accts.to = ac;
         logErr(param.log, err);
         return cb(err);
       });
     }
-  }, function done(err) {
+  }, function (err) {
     logErr(param.log, err);
     return next(err);
   });
@@ -83,7 +83,7 @@ const moveCash = function (next) {
         return cb(err);
       });
     }
-  }, function done(err) {
+  }, function (err) {
     logErr(param.log, err);
     return next(err);
   });
@@ -101,7 +101,7 @@ const updateAccount = function (acct, amount, seq, next) {
     if(!seq) {
       return next();
     }
-    updateTransItemBalances(acct, amt, seq, function cb(err) {
+    updateTransItemBalances(acct, amt, seq, function (err) {
       logErr(param.log, err);
       return next(err);
     });
@@ -114,7 +114,7 @@ const updateAccount = function (acct, amount, seq, next) {
 // step 2.1.1 : find all future trans post this trans & adjust the ac balances.
 const updateTransItemBalances = function (acct, amount, seq, next) {
   transactions.findForAcct(param.db, acct.cityId, acct.acctId).then((trans) => {
-    async.each(trans, function processTran(tran, cb) {
+    async.each(trans, function (tran, cb) {
       // if seq is less, then it is an earlier transaction, ignore..
       if(tran.seq < seq) {
         return cb();
@@ -126,11 +126,11 @@ const updateTransItemBalances = function (acct, amount, seq, next) {
         tran.accounts.to.balanceBf += amount;
         tran.accounts.to.balanceAf += amount;
       }
-      updateTrans(tran, function cb2(err) {
+      updateTrans(tran, function (err) {
         logErr(param.log, err);
         return cb(err);
       });
-    }, function done(err) {
+    }, function (err) {
       logErr(param.log, err);
       return next(err);
     });

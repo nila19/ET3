@@ -40,7 +40,7 @@ const getCategories = function (next) {
 // step 2 - fetch trans months from DB & build the months array structure.
 const getTransMonths = function (next) {
   transactions.findAllTransMonths(param.db, param.cityId).then((docs) => {
-    buildTransMonths(docs, function bb(err, months) {
+    buildTransMonths(docs, function (err, months) {
       if(err) {
         param.log.error(err);
         return next(err);
@@ -57,7 +57,7 @@ const getTransMonths = function (next) {
 let docs = null;
 const buildTransMonths = function (docs1, next) {
   docs = docs1;
-  async.waterfall([buildMonths, addCurrentMonth, addCurrentYear, sortMonths], function cb(err, months) {
+  async.waterfall([buildMonths, addCurrentMonth, addCurrentYear, sortMonths], function (err, months) {
     if(err) {
       param.log.error(err);
       return next(err);
@@ -70,7 +70,7 @@ const buildTransMonths = function (docs1, next) {
 const buildMonths = function (next) {
   const months = [];
 
-  docs.forEach(function ea(doc) {
+  docs.forEach(function (doc) {
     months.push(getMonth(doc));
   });
   return next(null, months);
@@ -81,7 +81,7 @@ const addCurrentMonth = function (next, months) {
   const currMonth = getMonth(moment().valueOf());
   let currMonthPresent = false;
 
-  months.forEach(function ea(month) {
+  months.forEach(function (month) {
     if(month.seq === currMonth.seq) {
       currMonthPresent = true;
     }
@@ -96,7 +96,7 @@ const addCurrentMonth = function (next, months) {
 const addCurrentYear = function (next, months) {
   const years = {};
 
-  months.forEach(function ea(month) {
+  months.forEach(function (month) {
     years[month.year] = moment().year(month.year).month(11).date(31).valueOf();
   });
   for (const year in years) {
@@ -109,7 +109,7 @@ const addCurrentYear = function (next, months) {
 
 // step 2.4 - sort the months list based on the 'seq' in reverse.
 const sortMonths = function (next, months) {
-  months.sort(function sr(aa, bb) {
+  months.sort(function (aa, bb) {
     return (aa.seq > bb.seq) ? -1 : ((bb.seq > aa.seq) ? 1 : 0);
   });
   return next(null, months);
@@ -139,7 +139,7 @@ const getFcTransactions = function (next) {
 let param = null;
 const getDataFromDB = function (params, next) {
   param = params;
-  async.parallel([getCategories, getTransMonths, getTransactions, getFcTransactions], function cc(err, results) {
+  async.parallel([getCategories, getTransMonths, getTransactions, getFcTransactions], function (err, results) {
     // result has arrays of results from previous methods..
     if(err) {
       param.log.error(err);
@@ -153,7 +153,7 @@ const getDataFromDB = function (params, next) {
 const getMonthIndex = function (months, date) {
   const mon = getMonth(date);
 
-  months.forEach(function aa(month, idx) {
+  months.forEach(function (month, idx) {
     if(month.seq === mon.seq) {
       return idx;
     }

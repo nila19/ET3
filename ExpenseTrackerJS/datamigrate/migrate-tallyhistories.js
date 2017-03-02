@@ -8,11 +8,11 @@ number.defaultFormat('0');
 number.nullFormat('');
 
 const migrate = function (sqlite, mongo, log, next) {
-  sqlite.serialize(function f1() {
+  sqlite.serialize(function () {
     let count = 0;
 
     log.info('Tally Histories data started...');
-    sqlite.each('SELECT * FROM TALLY_HISTORY', function fn(err, row) {
+    sqlite.each('SELECT * FROM TALLY_HISTORY', function (err, row) {
       if(err) {
         log.error(err);
       } else {
@@ -27,15 +27,15 @@ const migrate = function (sqlite, mongo, log, next) {
         tallies.insert(mongo, tally);
         count += 1;
       }
-    }, function done() {
+    }, function () {
       log.info('Tally Histories data over... : ' + count);
       return next();
     });
   });
 };
 
-module.exports = function exp(sqlite, mongo, log, next) {
-  return migrate(sqlite, mongo, log, function cb() {
+module.exports = function (sqlite, mongo, log, next) {
+  return migrate(sqlite, mongo, log, function () {
     return next();
   });
 };

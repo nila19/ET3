@@ -22,7 +22,7 @@ const tallyAccount = function (req, resp, acctId) {
   };
 
   async.waterfall([fetchAccount, editCity, updateAccount, fetchTallySeq,
-    insertTallyHistory, updateTrans], function cb(err, gridArr) {
+    insertTallyHistory, updateTrans], function (err, gridArr) {
     if(err) {
       parms.log.error(err);
       return resp.json({code: error});
@@ -71,7 +71,7 @@ const insertTallyHistory = function (seq, next) {
 };
 const updateTrans = function (next) {
   transactions.findForAcct(db, ac.cityId, ac.acctId).then((trans) => {
-    async.each(trans, function processEachItem(tran, cb) {
+    async.each(trans, function (tran, cb) {
       if(!tran.tallied) {
         transactions.update(db, {transId: tran.transId}, {$set: {tallied: true, tallyDt: parms.now}}).then(() => {
           return cb();
@@ -82,7 +82,7 @@ const updateTrans = function (next) {
       } else {
         return cb();
       }
-    }, function allItemProcessed(err) {
+    }, function (err) {
       if(err) {
         parms.log.error(err);
         return next(err);

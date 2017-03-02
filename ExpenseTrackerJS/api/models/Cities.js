@@ -21,16 +21,16 @@ const Cities = function () {
 };
 
 Cities.prototype = model('cities');
-Cities.prototype.findAllCities = function findAllCities(db) {
+Cities.prototype.findAllCities = function (db) {
   return this.findAll(db, {sort: {startDt: -1}});
 };
-Cities.prototype.findActive = function findActive(db) {
+Cities.prototype.findActive = function (db) {
   return this.find(db, {status: this.FLAGS.status.ACTIVE}, {sort: {startDt: -1}});
 };
-Cities.prototype.findDefault = function findDefault(db) {
+Cities.prototype.findDefault = function (db) {
   return this.findOne(db, {default: true});
 };
 
-module.exports = function exp() {
+module.exports = function () {
   return new Cities();
 };
