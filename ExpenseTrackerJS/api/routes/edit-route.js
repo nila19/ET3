@@ -1,5 +1,6 @@
 'use strict';
 
+const numeral = require('numeral');
 const express = require('express');
 const router = express.Router();
 const error = require('./error-route');
@@ -16,7 +17,7 @@ router.all('*', function (req, res, next) {
 });
 
 router.post('/tally/:acctId', function (req, res, next) {
-  tally.tallyAccount(req, res, req.params.acctId);
+  tally.tallyAccount(req, res, numeral(req.params.acctId).value());
 });
 
 router.post('/add', function (req, res, next) {
@@ -28,11 +29,11 @@ router.post('/modify', function (req, res, next) {
 });
 
 router.post('/delete/:transId', function (req, res, next) {
-  edit.deleteExpense(req, res, req.params.transId);
+  edit.deleteExpense(req, res, numeral(req.params.transId).value());
 });
 
 router.post('/swap/:cityId', function (req, res, next) {
-  edit.swapExpenses(req, res, req.params.cityId);
+  edit.swapExpenses(req, res, numeral(req.params.cityId).value());
 });
 
 router.post('/paybill', function (req, res, next) {

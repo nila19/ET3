@@ -12,13 +12,13 @@
     const TEN = 10;
 
     const loadingComplete = function () {
-      // console.log('@ StartupService: Loading startup components COMPLETED...');
+      console.log('@ StartupService: Loading startup components COMPLETED...');
       ms.data.loading = false;
     };
     const loadEntryMonths = function (dt) {
       V.data.entryMonths = [];
       angular.forEach(dt.data, function (entryMonth) {
-        V.data.entryMonths.push(entryMonth.toJSON());
+        V.data.entryMonths.push(entryMonth);
       });
       data.status += TEN;
       loadingComplete();
@@ -30,8 +30,10 @@
     };
     const loadTransMonths = function (dt) {
       V.data.transMonths = [];
+      console.log('data= ' + JSON.stringify(dt.data));
       angular.forEach(dt.data, function (transMonth) {
-        V.data.transMonths.push(transMonth.toJSON());
+        console.log('transMonth= ' + JSON.stringify(transMonth));
+        V.data.transMonths.push(transMonth);
       });
       data.status += TEN;
       getEntryMonths(V.data.city);
@@ -126,13 +128,13 @@
       if (!data.loadInitiated) {
         ms.data.loading = true;
         data.loadInitiated = true;
-        // console.log('@ StartupService: Loading startup components...');
+        console.log('@ StartupService: Loading startup components...');
         connect();
       }
     };
     const loadOthers = function () {
       ms.data.loading = true;
-      // console.log('@ StartupService: Loading items on city change...');
+      console.log('@ StartupService: Loading items on city change...');
       getCategories(V.data.city);
     };
 

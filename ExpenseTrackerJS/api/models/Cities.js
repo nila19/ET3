@@ -2,17 +2,14 @@
 
 const model = require('./Model');
 const schema = {
-  cityId: 'int not-null primarykey',
-  description: 'string',
-  status: 'string default-A',
+  id: 'int not-null primarykey',
+  name: 'string',
+  active: 'boolean',
   default: 'boolean',
   currency: 'string default-USD',
   startDt: 'date',
   endDt: 'date',
-  FLAGS: {
-//    default: {YES: 'Y', NO: 'N'},
-    status: {ACTIVE: 'A', INACTIVE: 'I'},
-  },
+  FLAGS: {},
 };
 
 const Cities = function () {
@@ -22,10 +19,10 @@ const Cities = function () {
 
 Cities.prototype = model('cities');
 Cities.prototype.findAllCities = function (db) {
-  return this.findAll(db, {sort: {startDt: -1}});
+  return this.findAll(db, {fields: {_id: 0}, sort: {startDt: -1}});
 };
 Cities.prototype.findActive = function (db) {
-  return this.find(db, {status: this.FLAGS.status.ACTIVE}, {sort: {startDt: -1}});
+  return this.find(db, {active: true}, {fields: {_id: 0}, sort: {startDt: -1}});
 };
 Cities.prototype.findDefault = function (db) {
   return this.findOne(db, {default: true});

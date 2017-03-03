@@ -2,16 +2,15 @@
 
 const model = require('./Model');
 const schema = {
-  catId: 'int not-null primarykey autoincrement',
+  id: 'int not-null primarykey autoincrement',
+  name: 'string',
   cityId: 'int not-null',
   mainDesc: 'string default-NA',
   subDesc: 'string default-NA',
   icon: 'string default- ',
-  status: 'string default-A',
+  active: 'boolean',
   seq: 'int default-0',
-  FLAGS: {
-    status: {ACTIVE: 'A', INACTIVE: 'I'}
-  },
+  FLAGS: {},
 };
 
 const Categories = function () {
@@ -21,15 +20,13 @@ const Categories = function () {
 
 Categories.prototype = model('categories');
 Categories.prototype.findForCity = function (db, cityId) {
-  return this.find(db, {cityId: cityId}, {sort: {seq: 1}});
+  return this.find(db, {cityId: cityId}, {fields: {_id: 0}, sort: {seq: 1}});
 };
 Categories.prototype.findForCityActive = function (db, cityId) {
   return this.find(db, {
     cityId: cityId,
-    status: this.FLAGS.status.ACTIVE,
-  }, {
-    sort: {seq: 1}
-  });
+    active: true,
+  }, {fields: {_id: 0}, sort: {seq: 1}});
 };
 
 module.exports = function () {

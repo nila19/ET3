@@ -1,28 +1,33 @@
 'use strict';
 
-const number = require('numeral');
+const numeral = require('numeral');
 const transactions = require('../api/models/Transactions')();
 
-number.defaultFormat('0');
-number.nullFormat('');
+numeral.defaultFormat('0');
+numeral.nullFormat('');
 
 const migrate = function (sqlite, mongo, log, next) {
   sqlite.serialize(function () {
     let count = 0;
 
     log.info('Transactions data started...');
-    sqlite.each('SELECT * FROM TRANSACTIONS', function (err, row) {
+    let sql = 'SELECT T.*, A.DESCRIPTION AS FROM_ACCOUNT_NAME, B.DESCRIPTION AS TO_ACCOUNT_NAME, C.MAIN_CATEGORY,';
+
+    sql += ' C.SUB_CATEGORY FROM TRANSACTIONS T, ACCOUNT A, ACCOUNT B, CATEGORY C';
+    sql += ' WHERE T.FROM_ACCOUNT_ID = A.ACCOUNT_ID AND T.TO_ACCOUNT_ID = B.ACCOUNT_ID';
+    sql += ' AND T.CATEGORY_ID = C.CATEGORY_ID';
+    sqlite.each(sql, function (err, row) {
       if(err) {
         log.error(err);
       } else {
         const trans = {
-          transId: row.TRANS_ID,
+          id: row.TRANS_ID,
           cityId: row.DATA_KEY,
           entryDt: row.ENTRY_DATE,
           entryMonth: row.ENTRY_MONTH,
-          catId: number(row.CATEGORY_ID).value(),
+          category: {id: numeral(row.CATEGORY_ID).value(), name: row.MAIN_CATEGORY + ' ~ ' + row.SUB_CATEGORY},
           description: row.DESCRIPTION,
-          amount: number(row.AMOUNT).value(),
+          amount: numeral(row.AMOUNT).value(),
           transDt: row.TRANS_DATE,
           transMonth: row.TRANS_MONTH,
           seq: row.TRANS_SEQ,
@@ -31,38 +36,30 @@ const migrate = function (sqlite, mongo, log, next) {
           adjust: row.ADJUST_IND === 'Y' ? true : false,
           status: row.STATUS === 'P' ? true : false,
           tallied: row.TALLY_IND === 'Y' ? true : false,
-          tallyDt: number(row.TALLY_DATE).value(),
+          tallyDt: numeral(row.TALLY_DATE).value(),
         };
 
         if(row.FROM_ACCOUNT_ID) {
           trans.accounts.from = {
-            acctId: number(row.FROM_ACCOUNT_ID).value(),
-            billId: number(row.FROM_BILL_ID).value(),
-            balanceBf: number(row.FROM_BALANCE_BF).value(),
-            balanceAf: number(row.FROM_BALANCE_AF).value(),
+            id: numeral(row.FROM_ACCOUNT_ID).value(),
+            name: row.FROM_ACCOUNT_NAME,
+            billId: numeral(row.FROM_BILL_ID).value() || 0,
+            balanceBf: numeral(row.FROM_BALANCE_BF).value(),
+            balanceAf: numeral(row.FROM_BALANCE_AF).value(),
           };
         } else {
-          trans.accounts.from = {
-            acctId: 0,
-            billId: null,
-            balanceBf: 0,
-            balanceAf: 0,
-          };
+          trans.accounts.from = {id: 0, billId: 0, balanceBf: 0, balanceAf: 0};
         }
         if(row.FROM_ACCOUNT_ID) {
           trans.accounts.to = {
-            acctId: number(row.TO_ACCOUNT_ID).value(),
-            billId: number(row.TO_BILL_ID).value(),
-            balanceBf: number(row.TO_BALANCE_BF).value(),
-            balanceAf: number(row.TO_BALANCE_AF).value(),
+            id: numeral(row.TO_ACCOUNT_ID).value(),
+            name: row.TO_ACCOUNT_NAME,
+            billId: numeral(row.TO_BILL_ID).value() || 0,
+            balanceBf: numeral(row.TO_BALANCE_BF).value(),
+            balanceAf: numeral(row.TO_BALANCE_AF).value(),
           };
         } else {
-          trans.accounts.to = {
-            acctId: 0,
-            billId: null,
-            balanceBf: 0,
-            balanceAf: 0,
-          };
+          trans.accounts.to = {id: 0, billId: 0, balanceBf: 0, balanceAf: 0};
         }
 
         transactions.insert(mongo, trans);

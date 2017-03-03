@@ -15,6 +15,7 @@
     };
     const checkLoadComplete = function () {
       if (!V.data.city.id || ms.data.loading) {
+        console.log(new Date() +' :: Load not done...');
         $timeout(function () {
           checkLoadComplete();
         }, WAIT);

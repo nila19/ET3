@@ -5,6 +5,7 @@ const async = require('async');
 const serviceUtils = require('./SummaryServiceUtils');
 let param = null;
 const data = null;
+let grid = null;
 
 // step 0: use serviceUtils to fetch all data from DB & build the trans months list.
 const buildSummaryGrid = function (params, next) {
@@ -41,18 +42,18 @@ const buildEmptyGrid = function (next) {
       ui.amount.push(0);
       ui.count.push(0);
     });
-    grid[category.catId] = ui;
+    grid[category.id] = ui;
   });
   return next(null, grid);
 };
 
 // setp 2: populate the grid with transaction data.
 const populateGrid = function (grid, next) {
-  data.transactions.forEach(function (trans) {
-    const ui = grid[trans.catId];
-    const idx = serviceUtils.getMonthIndex(data.transMonths, trans.transMonth);
+  data.transactions.forEach(function (tran) {
+    const ui = grid[tran.category.id];
+    const idx = serviceUtils.getMonthIndex(data.transMonths, tran.transMonth);
 
-    ui.amount[idx] += trans.amount;
+    ui.amount[idx] += tran.amount;
     ui.count[idx] += 1;
   });
   return next(null, grid);
@@ -82,7 +83,6 @@ const calcYearlySummary = function (grid, next) {
 };
 
 // setp 4: build forecast grid, if the forecast flag is on. if the flag is not on, proceed forward.
-let grid = null;
 const buildForecastGrid = function (grid1, next) {
   if(!param.forecast) {
     return next(null, grid);
@@ -101,7 +101,7 @@ const buildForecastGrid = function (grid1, next) {
 // setp 4.1: populate the forecast grid with fctransaction data.
 const populateFcGrid = function (fcgrid, next) {
   data.fcTransactions.forEach(function (trans) {
-    const ui = fcgrid[trans.catId];
+    const ui = fcgrid[trans.category.id];
 
     ui.amount[0] += trans.amount;
     ui.count[0] += 1;
@@ -143,7 +143,7 @@ const weedInactiveCats = function (grid, next) {
     if (grid.hasOwnProperty(catId)) {
       const ui = grid[catId];
 
-      if(ui.category.status !== 'A') {
+      if(!ui.category.active) {
         let nonzero = false;
 
         ui.amount.forEach(function (amt) {
@@ -169,8 +169,8 @@ const sortGridByCategory = function (grid, next) {
   const gridArr = [];
 
   data.categories.forEach(function (category) {
-    if(grid[category.catId]) {
-      gridArr.push(grid[category.catId]);
+    if(grid[category.id]) {
+      gridArr.push(grid[category.id]);
     }
   });
 

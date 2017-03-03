@@ -2,7 +2,7 @@
 
 const model = require('./Model');
 const schema = {
-  tallyId: 'int not-null primarykey autoincrement',
+  id: 'int not-null primarykey autoincrement',
   acctId: 'int not-null',
   cityId: 'int not-null',
   tallyDt: 'date',
@@ -16,7 +16,7 @@ const TallyHistories = function () {
 
 TallyHistories.prototype = model('tallyhistories');
 TallyHistories.prototype.findForAcct = function (db, acctId) {
-  return this.find(db, {acctId: acctId}, {sort: {tallyId: -1}});
+  return this.find(db, {acctId: acctId}, {fields: {_id: 0}, sort: {id: -1}});
 };
 
 module.exports = function () {

@@ -1,5 +1,6 @@
 'use strict';
 
+const numeral = require('numeral');
 const express = require('express');
 const router = express.Router();
 const error = require('./error-route');
@@ -27,7 +28,7 @@ router.get('/city/default', function (req, res, next) {
 });
 
 router.get('/city/:cityId', function (req, res, next) {
-  startup.getCityById(req, res, req.params.cityId);
+  startup.getCityById(req, res, numeral(req.params.cityId).value());
 });
 
 router.get('/accounts', function (req, res, next) {
@@ -43,6 +44,7 @@ router.get('/categories/all', function (req, res, next) {
 });
 
 router.get('/categories', function (req, res, next) {
+  console.log('categories : city = ' + req.query.cityId);
   startup.getCategories(req, res);
 });
 

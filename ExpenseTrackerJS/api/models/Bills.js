@@ -2,21 +2,17 @@
 
 const model = require('./Model');
 const schema = {
-  billId: 'int not-null primarykey autoincrement',
+  id: 'int not-null primarykey autoincrement',
   cityId: 'int not-null',
-  acctId: 'int not-null',
+  account: {id: 'int not-null', name: 'string'},
   createdDt: 'timestamp',
   billDt: 'date',
   dueDt: 'date',
-  status: 'string',
+  closed: 'boolean',
   amount: 'float',
   balance: 'float',
-  payments: [
-    {transId: 'int', transDt: 'date', amount: 'float'}
-  ],
-  FLAGS: {
-    status: {OPEN: 'O', CLOSED: 'C'}
-  }
+  payments: [{id: 'int', transDt: 'date', amount: 'float'}],
+  FLAGS: {}
 };
 
 const Bills = function () {
@@ -27,37 +23,29 @@ const Bills = function () {
 Bills.prototype = model('bills');
 // paidInd == null, get all; paidInd = 'N', getUnpaid only, paidInd = 'Y', getPaid only
 Bills.prototype.findForCity = function (db, cityId, paidInd) {
-  const filter = {
-    cityId: cityId,
-    status: this.FLAGS.status.CLOSED,
-  };
+  const filter = {cityId: cityId, closed: true};
 
   if(paidInd) {
     filter.balance = (paidInd === 'Y') ? 0: {$gt: 0};
   }
-  return this.find(db, filter, {sort: {billDt: -1}});
+  return this.find(db, filter, {fields: {_id: 0}, sort: {billDt: -1}});
 };
 // TODO Unsed ???
 Bills.prototype.findForCityOpen = function (db, cityId) {
   return this.find(db, {
     cityId: cityId,
-    status: this.FLAGS.status.OPEN
-  }, {
-    sort: {billDt: -1}
-  });
+    closed: false
+  }, {fields: {_id: 0}, sort: {billDt: -1}});
 };
 
 // paidInd == null, get all; paidInd = 'N', getUnpaid only, paidInd = 'Y', getPaid only
 Bills.prototype.findForAcct = function (db, acctId, paidInd) {
-  const filter = {
-    acctId: acctId,
-    status: this.FLAGS.status.CLOSED,
-  };
+  const filter = {'account.id': acctId, closed: true};
 
   if(paidInd) {
     filter.balance = (paidInd === 'Y') ? 0: {$gt: 0};
   }
-  return this.find(db, filter, {sort: {billDt: -1}});
+  return this.find(db, filter, {fields: {_id: 0}, sort: {billDt: -1}});
 };
 
 module.exports = function () {

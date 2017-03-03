@@ -1,12 +1,12 @@
 'use strict';
 
-const number = require('numeral');
+const numeral = require('numeral');
 // const ts = require('moment');
 
 const accounts = require('../api/models/Accounts')();
 
-number.defaultFormat('0');
-number.nullFormat('');
+numeral.defaultFormat('0');
+numeral.nullFormat('');
 
 const migrate = function (sqlite, mongo, log, next) {
   sqlite.serialize(function () {
@@ -18,22 +18,22 @@ const migrate = function (sqlite, mongo, log, next) {
         log.error(err);
       } else {
         const acct = {
-          acctId: row.ACCOUNT_ID,
+          id: row.ACCOUNT_ID,
           cityId: row.DATA_KEY,
-          description: row.DESCRIPTION,
-          balance: number(row.BALANCE_AMT).value(),
-          type: row.TYPE,
-          status: row.STATUS,
-          billed: row.BILL_OPTION === 'Y' ? true : false,
+          name: row.DESCRIPTION,
+          balance: numeral(row.BALANCE_AMT).value(),
+          cash: row.TYPE === 'C',
+          active: row.STATUS === 'A',
+          billed: row.BILL_OPTION === 'Y',
           icon: row.IMAGE_CODE,
           color: row.BG_COLOR,
           seq: row.DISPLAY_ORDER,
-          tallyBalance: number(row.TALLY_BALANCE).value(),
-          tallyDt: number(row.TALLY_DATE).value(),
-          closingDay: number(row.CLOSING_DAY).value(),
-          dueDay: number(row.DUE_DAY).value(),
-          lastBillId: number(row.LAST_BILL_ID).value(),
-          openBillId: number(row.OPEN_BILL_ID).value()
+          tallyBalance: numeral(row.TALLY_BALANCE).value() || 0,
+          tallyDt: numeral(row.TALLY_DATE).value() || 0,
+          closingDay: numeral(row.CLOSING_DAY).value() || 0,
+          dueDay: numeral(row.DUE_DAY).value() || 0,
+          lastBillId: numeral(row.LAST_BILL_ID).value() || 0,
+          openBillId: numeral(row.OPEN_BILL_ID).value() || 0
         };
 
         accounts.insert(mongo, acct);

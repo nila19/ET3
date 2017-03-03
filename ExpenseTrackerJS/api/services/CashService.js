@@ -50,8 +50,8 @@ const getAccountsInfo = function (next) {
 };
 
 // step 1.1 : fetches account info from DB
-const getAccount = function (acctId, next) {
-  accounts.findOne(param.db, {acctId: acctId}).then((doc) => {
+const getAccount = function (id, next) {
+  accounts.findById(param.db, id).then((doc) => {
     return next(null, doc);
   }).catch((err) => {
     logErr(param.log, err);
@@ -93,10 +93,10 @@ const moveCash = function (next) {
 const updateAccount = function (acct, amount, seq, next) {
   let amt = amount;
 
-  if(acct.type === accounts.FLAGS.type.CREDIT) {
+  if(!acct.cash) {
     amt = amount * -1;
   }
-  accounts.update(param.db, {acctId: acct.acctId}, {$set: {balance: (acct.balance + amt)}}).then(() => {
+  accounts.update(param.db, {id: acct.id}, {$set: {balance: (acct.balance + amt)}}).then(() => {
     // if seq = 0, it is an 'add'. ignore the updateTransItemBalances step. that's used only for modify.
     if(!seq) {
       return next();
@@ -113,16 +113,16 @@ const updateAccount = function (acct, amount, seq, next) {
 
 // step 2.1.1 : find all future trans post this trans & adjust the ac balances.
 const updateTransItemBalances = function (acct, amount, seq, next) {
-  transactions.findForAcct(param.db, acct.cityId, acct.acctId).then((trans) => {
+  transactions.findForAcct(param.db, acct.cityId, acct.id).then((trans) => {
     async.each(trans, function (tran, cb) {
       // if seq is less, then it is an earlier transaction, ignore..
       if(tran.seq < seq) {
         return cb();
       }
-      if(tran.accounts.from.acctId === acct.acctId) {
+      if(tran.accounts.from.id === acct.id) {
         tran.accounts.from.balanceBf += amount;
         tran.accounts.from.balanceAf += amount;
-      } else if( tran.accounts.to.acctId === acct.acctId) {
+      } else if( tran.accounts.to.id === acct.id) {
         tran.accounts.to.balanceBf += amount;
         tran.accounts.to.balanceAf += amount;
       }
@@ -142,7 +142,7 @@ const updateTransItemBalances = function (acct, amount, seq, next) {
 
 // step 2.1.1.1 : save the ac balances changes to DB.
 const updateTrans = function (tr, next) {
-  transactions.update(param.db, {transId: tr.transId},
+  transactions.update(param.db, {id: tr.id},
     {$set: {'accounts.from.balanceBf': tr.accounts.from.balanceBf,
       'accounts.from.balanceAf': tr.accounts.from.balanceAf,
       'accounts.to.balanceBf': tr.accounts.to.balanceBf,

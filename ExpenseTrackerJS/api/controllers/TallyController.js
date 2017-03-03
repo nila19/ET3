@@ -32,7 +32,7 @@ const tallyAccount = function (req, resp, acctId) {
 };
 
 const fetchAccount = function (next) {
-  accounts.findOne(db, {acctId: parms.acctId}).then((account) => {
+  accounts.findById(db, parms.acctId).then((account) => {
     ac = account;
     return next();
   }).catch((err) => {
@@ -41,11 +41,11 @@ const fetchAccount = function (next) {
   });
 };
 const editCity = function (next) {
-  // TODO Implement City editable check..
+  // TODO implement City editable check..
   return next();
 };
 const updateAccount = function (next) {
-  accounts.update(db, {acctId: ac.acctId}, {$set: {tallyBalance: ac.balance, tallyDt: parms.now}}).then(() => {
+  accounts.update(db, {id: ac.id}, {$set: {tallyBalance: ac.balance, tallyDt: parms.now}}).then(() => {
     return next();
   }).catch((err) => {
     parms.log.error(err);
@@ -61,7 +61,7 @@ const fetchTallySeq = function (next) {
   });
 };
 const insertTallyHistory = function (seq, next) {
-  tallyhistories.insert(db, {tallyId: seq.seq, acctId: ac.acctId, cityId: ac.cityId, tallyDt: parms.now,
+  tallyhistories.insert(db, {id: seq.seq, acctId: ac.id, cityId: ac.cityId, tallyDt: parms.now,
     balance: ac.balance}).then((th) => {
       return next();
     }).catch((err) => {
@@ -70,29 +70,31 @@ const insertTallyHistory = function (seq, next) {
     });
 };
 const updateTrans = function (next) {
-  transactions.findForAcct(db, ac.cityId, ac.acctId).then((trans) => {
+  transactions.findForAcct(db, ac.cityId, ac.id).then((trans) => {
     async.each(trans, function (tran, cb) {
-      if(!tran.tallied) {
-        transactions.update(db, {transId: tran.transId}, {$set: {tallied: true, tallyDt: parms.now}}).then(() => {
-          return cb();
-        }).catch((err) => {
-          parms.log.error(err);
-          return cb(err);
-        });
-      } else {
+      if(tran.tallied) {
         return cb();
       }
-    }, function (err) {
-      if(err) {
+      transactions.update(db, {id: tran.id}, {$set: {tallied: true, tallyDt: parms.now}}).then(() => {
+        return cb();
+      }).catch((err) => {
         parms.log.error(err);
-        return next(err);
-      }
-      return next();
+        return cb(err);
+      });
+    }, function (err) {
+      logErr(parms.log, err);
+      return next(err);
     });
   }).catch((err) => {
-    parms.log.error(err);
+    logErr(parms.log, err);
     return next(err);
   });
+};
+
+const logErr = function (log, err) {
+  if(err) {
+    log.error(err);
+  }
 };
 
 module.exports = {

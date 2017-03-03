@@ -1,5 +1,6 @@
 'use strict';
 
+const numeral = require('numeral');
 const express = require('express');
 const router = express.Router();
 const error = require('./error-route');
@@ -15,7 +16,7 @@ router.all('*', function (req, res, next) {
 });
 
 router.get('/transaction/:transId', function (req, res, next) {
-  dashboard.getTransactionById(req, res, req.params.transId);
+  dashboard.getTransactionById(req, res, numeral(req.params.transId).value());
 });
 
 router.get('/bills', function (req, res, next) {
@@ -23,11 +24,11 @@ router.get('/bills', function (req, res, next) {
 });
 
 router.get('/bill/:billId', function (req, res, next) {
-  dashboard.getBillById(req, res), req.params.billId;
+  dashboard.getBillById(req, res, numeral(req.params.billId).value());
 });
 
 router.get('/account/:acctId', function (req, res, next) {
-  dashboard.getAccountById(req, res, req.params.acctId);
+  dashboard.getAccountById(req, res, numeral(req.params.acctId).value());
 });
 
 router.use(error.inject404());

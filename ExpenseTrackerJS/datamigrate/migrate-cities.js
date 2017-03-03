@@ -1,10 +1,10 @@
 'use strict';
 
-const number = require('numeral');
+const numeral = require('numeral');
 const cities = require('../api/models/Cities')();
 
-number.defaultFormat('0');
-number.nullFormat('');
+numeral.defaultFormat('0');
+numeral.nullFormat('');
 
 const migrate = function (sqlite, mongo, log, next) {
   sqlite.serialize(function () {
@@ -16,13 +16,13 @@ const migrate = function (sqlite, mongo, log, next) {
         log.error(err);
       } else {
         const city = {
-          cityId: row.DATA_KEY,
-          description: row.DESCRIPTION,
-          status: row.STATUS,
-          default: row.DEFAULT_IND === 'Y' ? true : false,
+          id: row.DATA_KEY,
+          name: row.DESCRIPTION,
+          active: row.STATUS === 'A',
+          default: row.DEFAULT_IND === 'Y',
           currency: row.CURRENCY,
-          startDt: number(row.START_DT).value(),
-          endDt: number(row.END_DT).value(),
+          startDt: numeral(row.START_DT).value(),
+          endDt: numeral(row.END_DT).value(),
         };
 
         cities.insert(mongo, city);

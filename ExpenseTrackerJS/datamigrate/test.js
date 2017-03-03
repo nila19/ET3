@@ -5,10 +5,11 @@ const sugar = require('sugar');
 
 const log = require('../api/utils/logger');
 const trans = require('../api/models/Transactions')();
+const monthUtils = require('../api/utils/month-utils');
 
 const queryAll = function (mongo, log, next) {
   log.info('Query transactions started...');
-  const filter = {acctId: 60, cityId: 20140301, adjust: 'N', description: 'paym'};
+  const filter = {acctId: 60, cityId: 20140301, adjust: 'Y', description: 'paym', thinList: true};
   // bills.find(mongo, {acctId: 81, 'payments.amount': {$gt: 500}}).then((docs) => {
   const msg = sugar.String('someone sAid somEThing SOMEWHERE.. also nothing..').capitalize(true, true);
 
@@ -28,11 +29,29 @@ const queryAll = function (mongo, log, next) {
   });
 };
 
+const getTransMonths = function (mongo, log, next) {
+  trans.findAllTransMonths(mongo, 20140301).then((docs) => {
+    monthUtils.buildMonthsList(docs, log, function (err, dates) {
+      if(err) {
+        log.error(err);
+      } else {
+        log.info('************** TEST **************...');
+        dates.forEach(function (row) {
+          log.info(JSON.stringify(row));
+        });
+        log.info('************** DONE TEST **************...');
+      }
+      return next(err);
+    });
+  }).catch((err) => {
+    log.error(err);
+  });
+};
+
 require('../api/config/mongodb-config').connect(log, function (mongo) {
-  queryAll(mongo, log, function (err) {
-    if(err) {
-      log.error(err);
-    }
+  // queryAll(mongo, log, function (err) {
+  getTransMonths(mongo, log, function (err) {
+    log.error(err);
     mongo.close();
   });
 });

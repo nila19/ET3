@@ -1,11 +1,10 @@
 'use strict';
 
-const number = require('numeral');
-
+const numeral = require('numeral');
 const tallies = require('../api/models/TallyHistories')();
 
-number.defaultFormat('0');
-number.nullFormat('');
+numeral.defaultFormat('0');
+numeral.nullFormat('');
 
 const migrate = function (sqlite, mongo, log, next) {
   sqlite.serialize(function () {
@@ -17,11 +16,11 @@ const migrate = function (sqlite, mongo, log, next) {
         log.error(err);
       } else {
         const tally = {
-          tallyId: row.TALLY_SEQ,
+          id: row.TALLY_SEQ,
           acctId: row.ACCOUNT_ID,
           cityId: row.DATA_KEY,
-          tallyDt: number(row.TALLY_DATE).value(),
-          balance: number(row.TALLY_BALANCE).value(),
+          tallyDt: numeral(row.TALLY_DATE).value(),
+          balance: numeral(row.TALLY_BALANCE).value(),
         };
 
         tallies.insert(mongo, tally);

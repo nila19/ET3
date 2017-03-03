@@ -2,17 +2,17 @@
 'use strict';
 
 const moment = require('moment');
-const number = require('numeral');
+const numeral = require('numeral');
 
 const config = require('../config/config');
 const model = require('./Model');
 
 const schema = {
-  transId: 'int not-null primarykey autoincrement',
+  id: 'int not-null primarykey autoincrement',
   cityId: 'int not-null',
   entryDt: 'timestamp',
   entryMonth: 'date',
-  catId: 'int',
+  category: {id: 'int', name: 'string'},
   description: 'string not-null',
   amount: 'float',
   transDt: 'date',
@@ -20,13 +20,15 @@ const schema = {
   seq: 'int',
   accounts: {
     from: {
-      acctId: 'int',
+      id: 'int',
+      name: 'string',
       billId: 'int',
       balanceBf: 'float default-0',
       balanceAf: 'float default-0',
     },
     to: {
-      acctId: 'int',
+      id: 'int',
+      name: 'string',
       billId: 'int',
       balanceBf: 'float default-0',
       balanceAf: 'float default-0',
@@ -37,12 +39,7 @@ const schema = {
   status: 'boolean',
   tallied: 'boolean',
   tallyDt: 'timestamp',
-  FLAGS: {
-    // adhoc: {YES: 'Y', NO: 'N'},
-    // adjust: {YES: 'Y', NO: 'N'},
-    // status: {OPEN: 'O', POSTED: 'P'},
-    // tallied: {YES: 'Y', NO: 'N'},
-  }
+  FLAGS: {}
 };
 
 const searchUI = {
@@ -68,7 +65,7 @@ const Transactions = function () {
 
 Transactions.prototype = model('transactions');
 Transactions.prototype.findForCity = function (db, cityId) {
-  return this.find(db, {cityId: cityId}, {sort: {seq: -1}});
+  return this.find(db, {cityId: cityId}, {fields: {_id: 0}, sort: {seq: -1}});
 };
 // TODO Unused ??
 Transactions.prototype.findForAcct = function (db, cityId, acctId, billId) {
@@ -80,18 +77,17 @@ Transactions.prototype.findForAcct = function (db, cityId, acctId, billId) {
   if(billId) {
     filter.$or = [{'accounts.from.billId': billId}, {'accounts.to.billId': billId}];
   } else {
-    filter.$or = [{'accounts.from.acctId': acctId}, {'accounts.to.acctId': acctId}];
+    filter.$or = [{'accounts.from.id': acctId}, {'accounts.to.id': acctId}];
   }
-  return this.find(db, filter, {sort: {seq: -1}});
+  return this.find(db, filter, {fields: {_id: 0}, sort: {seq: -1}});
 };
 Transactions.prototype.findForSearch = function (db, search) {
   // dummy usage
   searchUI.acctId;
 
-  // TODO - change it to use querystring instead of req body.
-  const options = {sort: {seq: -1}};
+  const options = {fields: {_id: 0}, sort: {seq: -1}};
   let filter = {
-    cityId: search.cityId,
+    cityId: numeral(search.cityId).value(),
   };
 
   filter = this.buildSearchQueryOne(search, filter);
@@ -101,21 +97,22 @@ Transactions.prototype.findForSearch = function (db, search) {
   if(search.thinList) {
     options.limit = config.thinList;
   }
-//  console.log(JSON.stringify(filter));
+  console.log(JSON.stringify(filter));
   return this.find(db, filter, options);
 };
 Transactions.prototype.buildSearchQueryOne = function (search, filter) {
   // account id
   if(search.acctId) {
-    filter.$or = [{'accounts.from.acctId': search.acctId}, {'accounts.to.acctId': search.acctId}];
+    filter.$or = [{'accounts.from.id': numeral(search.acctId).value()},
+    {'accounts.to.id': numeral(search.acctId).value()}];
   }
   // bill id
   if(search.billId) {
-    filter['accounts.from.billId'] = search.billId;
+    filter['accounts.from.billId'] = numeral(search.billId).value();
   }
   // category id
   if(search.catId) {
-    filter.catId = search.catId;
+    filter['category.id'] = numeral(search.catId).value();
   }
   // description
   if(search.description) {
@@ -123,8 +120,8 @@ Transactions.prototype.buildSearchQueryOne = function (search, filter) {
   }
   // amount
   if(search.amount) {
-    const amt75 = number(search.amount).multiply(config.pct75).value();
-    const amt125 = number(search.amount).multiply(config.pct125).value();
+    const amt75 = numeral(search.amount).multiply(config.pct75).value();
+    const amt125 = numeral(search.amount).multiply(config.pct125).value();
 
     filter.$and = [{amount: {$gt: amt75}}, {amount: {$lt: amt125}}];
   }
@@ -175,7 +172,7 @@ Transactions.prototype.findForMonthlySummary = function (db, cityId, regular, ad
   if(!(regular && adhoc)) {
     filter.adhoc = (regular && !adhoc) ? false : true;
   }
-  return this.find(db, filter, {sort: {seq: -1}});
+  return this.find(db, filter, {fields: {_id: 0}, sort: {seq: -1}});
 };
 // get Transactions for the last 3 months excluding the current month.
 Transactions.prototype.findForForecast = function (db, cityId) {
@@ -189,13 +186,13 @@ Transactions.prototype.findForForecast = function (db, cityId) {
     transMonth: {$gt: beginMth, $lte: endMth}
   };
 
-  return this.find(db, filter, {sort: {seq: -1}});
+  return this.find(db, filter, {fields: {_id: 0}, sort: {seq: -1}});
 };
 Transactions.prototype.findAllEntryMonths = function (db, cityId) {
-  return this.distinct(db, 'entryMonth', {cityId: cityId}, {sort: {entryMonth: -1}});
+  return this.distinct(db, 'entryMonth', {cityId: cityId}, {fields: {_id: 0}, sort: {entryMonth: -1}});
 };
 Transactions.prototype.findAllTransMonths = function (db, cityId) {
-  return this.distinct(db, 'transMonth', {cityId: cityId}, {sort: {transMonth: -1}});
+  return this.distinct(db, 'transMonth', {cityId: cityId}, {fields: {_id: 0}, sort: {transMonth: -1}});
 };
 Transactions.prototype.findAllDescriptions = function (db, cityId) {
   return db.get(this.collection).aggregate([{$match: {cityId: cityId}},

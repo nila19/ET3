@@ -5,17 +5,20 @@ const Model = function (coll) {
 };
 
 Model.prototype = {
+  findById: function (db, id) {
+    return db.get(this.collection).findOne({id: id}, {fields: {_id: 0}});
+  },
   findOne: function (db, filter, options) {
-    return db.get(this.collection).findOne(filter, options || {});
+    return db.get(this.collection).findOne(filter, options || {fields: {_id: 0}});
   },
   find: function (db, filter, options) {
-    return db.get(this.collection).find(filter, options || {});
+    return db.get(this.collection).find(filter, options || {fields: {_id: 0}});
   },
   findAll: function (db, options) {
-    return db.get(this.collection).find({}, options || {});
+    return db.get(this.collection).find({}, options || {fields: {_id: 0}});
   },
   distinct: function (db, field, filter, options) {
-    return db.get(this.collection).distinct(field, filter || {}, options || {});
+    return db.get(this.collection).distinct(field, filter || {}, options || {fields: {_id: 0}});
   },
   remove: function (db, filter) {
     return db.get(this.collection).remove(filter);

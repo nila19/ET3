@@ -11,11 +11,11 @@ const sequences = require('../api/models/Sequences')();
 let param = null;
 
 const setAccountsSeq = function (cityId, next) {
-  accounts.findOne(param.db, {cityId: cityId}, {sort: {acctId: -1}}).then((doc) => {
-    sequences.insert(param.db, {seqId: 'accounts', cityId: cityId, seq: doc.acctId + 1}).then(() => {
+  accounts.findOne(param.db, {cityId: cityId}, {sort: {id: -1}}).then((doc) => {
+    sequences.insert(param.db, {seqId: 'accounts', cityId: cityId, seq: doc.id + 1}).then(() => {
       return next(null, cityId);
     }).catch((err) => {
-      param.log.info('Error @ setAccountsSeq sequences.insert. - ' + cityId + ' : ' + doc.acctId);
+      param.log.info('Error @ setAccountsSeq sequences.insert. - ' + cityId + ' : ' + doc.id);
       param.log.error(err);
       return next(err);
     });
@@ -26,13 +26,13 @@ const setAccountsSeq = function (cityId, next) {
   });
 };
 const setBillsSeq = function (cityId, next) {
-  bills.findOne(param.db, {cityId: cityId}, {sort: {billId: -1}}).then((doc) => {
-    const doc1 = (doc && doc.billId) ? doc : {billId: 0};
+  bills.findOne(param.db, {cityId: cityId}, {sort: {id: -1}}).then((doc) => {
+    const doc1 = (doc && doc.id) ? doc : {id: 0};
 
-    sequences.insert(param.db, {seqId: 'bills', cityId: cityId, seq: (doc1.billId + 1)}).then(() => {
+    sequences.insert(param.db, {seqId: 'bills', cityId: cityId, seq: (doc1.id + 1)}).then(() => {
       return next(null, cityId);
     }).catch((err) => {
-      param.log.info('Error @ setBillsSeq sequences.insert. - ' + cityId + ' : ' + doc1.billId);
+      param.log.info('Error @ setBillsSeq sequences.insert. - ' + cityId + ' : ' + doc1.id);
       param.log.error(err);
       return next(err);
     });
@@ -43,8 +43,8 @@ const setBillsSeq = function (cityId, next) {
   });
 };
 const setCategoriesSeq = function (cityId, next) {
-  categories.findOne(param.db, {cityId: cityId}, {sort: {catId: -1}}).then((doc) => {
-    sequences.insert(param.db, {seqId: 'categories', cityId: cityId, seq: doc.catId + 1}).then(() => {
+  categories.findOne(param.db, {cityId: cityId}, {sort: {id: -1}}).then((doc) => {
+    sequences.insert(param.db, {seqId: 'categories', cityId: cityId, seq: doc.id + 1}).then(() => {
       return next(null, cityId);
     }).catch((err) => {
       param.log.error(err);
@@ -56,10 +56,10 @@ const setCategoriesSeq = function (cityId, next) {
   });
 };
 const setTallyHistoriesSeq = function (cityId, next) {
-  tallyhistories.findOne(param.db, {cityId: cityId}, {sort: {tallyId: -1}}).then((doc) => {
-    const doc1 = (doc && doc.tallyId) ? doc : {tallyId: 0};
+  tallyhistories.findOne(param.db, {cityId: cityId}, {sort: {id: -1}}).then((doc) => {
+    const doc1 = (doc && doc.tallyId) ? doc : {id: 0};
 
-    sequences.insert(param.db, {seqId: 'tallyhistories', cityId: cityId, seq: (doc1.tallyId + 1)}).then(() => {
+    sequences.insert(param.db, {seqId: 'tallyhistories', cityId: cityId, seq: (doc1.id + 1)}).then(() => {
       return next(null, cityId);
     }).catch((err) => {
       param.log.error(err);
@@ -71,8 +71,8 @@ const setTallyHistoriesSeq = function (cityId, next) {
   });
 };
 const setTransactionsSeq = function (cityId, next) {
-  transactions.findOne(param.db, {cityId: cityId}, {sort: {transId: -1}}).then((doc) => {
-    sequences.insert(param.db, {seqId: 'transactions', cityId: cityId, seq: doc.transId + 1}).then(() => {
+  transactions.findOne(param.db, {cityId: cityId}, {sort: {id: -1}}).then((doc) => {
+    sequences.insert(param.db, {seqId: 'transactions', cityId: cityId, seq: doc.id + 1}).then(() => {
       return next(null, cityId);
     }).catch((err) => {
       param.log.error(err);
@@ -95,7 +95,7 @@ const migrate = function (mongo, log, next) {
   cities.findAllCities(param.db).then((docs) => {
     async.each(docs, function (doc, cb) {
       async.waterfall([function (nxt) {
-        return nxt(null, doc.cityId);
+        return nxt(null, doc.id);
       }, setAccountsSeq, setBillsSeq, setCategoriesSeq, setTransactionsSeq,
         setTallyHistoriesSeq], function (err) {
         if(err) {

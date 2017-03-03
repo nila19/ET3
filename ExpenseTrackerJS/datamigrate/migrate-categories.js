@@ -12,12 +12,13 @@ const migrate = function (sqlite, mongo, log, next) {
         log.error(err);
       } else {
         const category = {
-          catId: row.CATEGORY_ID,
+          id: row.CATEGORY_ID,
+          name: row.MAIN_CATEGORY + ' ~ ' + row.SUB_CATEGORY,
           cityId: row.DATA_KEY,
           mainDesc: row.MAIN_CATEGORY,
           subDesc: row.SUB_CATEGORY,
           icon: row.IMAGE_CODE,
-          status: row.STATUS,
+          active: row.STATUS === 'A',
           seq: row.DISPLAY_ORDER,
         };
 
