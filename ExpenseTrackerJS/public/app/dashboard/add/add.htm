@@ -1,134 +1,134 @@
-          <!-- Add Expense -->
-            <div ng-show="$ctrl.data.showAdd" class="col-md-6">
-              <div class="card card-nav-tabs">
-                <div class="card-header" data-background-color="green">
-                  <div class="nav-tabs-navigation">
-                    <div class="nav-tabs-wrapper">
-                      <span class="nav-tabs-title text-uppercase">Add</span>
-                      <ul class="nav nav-tabs" data-tabs="tabs">
-                        <li class="active">
-                          <a href="" ng-click="$ctrl.data.adjust = false;$ctrl.data.toAccount = null;" data-toggle="tab"> 
-                            <i class="material-icons">add_shopping_cart</i>Expense
-                            <div class="ripple-container"></div>
-                          </a>
-                        </li>
-                        <li class="">
-                          <a href="" ng-click="$ctrl.data.adjust = true;$ctrl.data.adhoc = false;$ctrl.data.category = null;" data-toggle="tab">
-                            <i class="material-icons">transform</i>Adjustment
-                            <div class="ripple-container"></div>
-                          </a>
-                        </li>
-                      </ul>
-                    </div>
-                  </div>
+<!-- Add Expense -->
+<div ng-show="$ctrl.data.showAdd" class="col-md-6">
+  <div class="card card-nav-tabs">
+    <div class="card-header" data-background-color="green">
+      <div class="nav-tabs-navigation">
+        <div class="nav-tabs-wrapper">
+          <span class="nav-tabs-title text-uppercase">Add</span>
+          <ul class="nav nav-tabs" data-tabs="tabs">
+            <li class="active">
+              <a href="" ng-click="$ctrl.data.adjust = false;$ctrl.data.toAccount = null;" data-toggle="tab">
+                <i class="material-icons">add_shopping_cart</i>Expense
+                <div class="ripple-container"></div>
+              </a>
+            </li>
+            <li class="">
+              <a href="" ng-click="$ctrl.data.adjust = true;$ctrl.data.adhoc = false;$ctrl.data.category = null;" data-toggle="tab">
+                <i class="material-icons">transform</i>Adjustment
+                <div class="ripple-container"></div>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="card-content">
+      <div class="tab-content">
+        <div class="tab-pane" ng-class="{'active':!$ctrl.data.adjust}">
+          <form name="addExpForm" novalidate="novalidate" ng-submit="$ctrl.addExpense(addExpForm.$valid)">
+            <div class="row">
+              <div class="col-md-4">
+                <div class="form-group label-floating">
+                  <label class="control-label">From Account</label>
+                  <input type="text" ng-model="$ctrl.data.fromAccount" class="form-control" required uib-typeahead="acc as acc.name for acc in $ctrl.ta.accounts | filter:$viewValue | limitTo:8" typeahead-show-hint="true" typeahead-min-length="0" typeahead-editable="false">
                 </div>
-                <div class="card-content">
-                  <div class="tab-content">
-                    <div class="tab-pane" ng-class="{'active':!$ctrl.data.adjust}">
-                      <form name="addExpForm" novalidate="novalidate" ng-submit="$ctrl.addExpense(addExpForm.$valid)">
-                        <div class="row">
-                          <div class="col-md-4">
-                            <div class="form-group label-floating">
-                              <label class="control-label">From Account</label>
-                              <input type="text" ng-model="$ctrl.data.fromAccount" class="form-control" required uib-typeahead="acc as acc.name for acc in $ctrl.ta.accounts | filter:$viewValue | limitTo:8" typeahead-show-hint="true" typeahead-min-length="0" typeahead-editable="false">
-                            </div>
-                          </div>
-                          <div class="col-md-5">
-                            <div class="form-group label-floating">
-                              <label class="control-label">Category</label> 
-                              <input type="text" ng-model="$ctrl.data.category" class="form-control" required uib-typeahead="cat as cat.name for cat in $ctrl.ta.categories | filter:$viewValue | limitTo:8" typeahead-show-hint="true" typeahead-min-length="0" typeahead-editable="false">
-                            </div>
-                          </div>
-                          <div class="col-md-1">
-                            <div>&nbsp;</div>
-                          </div>
-                          <div class="col-md-1">
-                            <div class="row">
-                              <div class="col-md-8">
-                                <label>Adhoc</label>
-                                <input type="checkbox" ng-model="$ctrl.data.adhoc" class="form-control">
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                        <div class="row">
-                          <div class="col-md-4">
-                            <div class="form-group label-floating">
-                              <label class="control-label">Description</label> 
-                              <input type="text" ng-model="$ctrl.data.description" class="form-control" required uib-typeahead="desc for desc in $ctrl.ta.descriptions | filter:$viewValue | limitTo:8">
-                            </div>
-                          </div>
-                          <div class="col-md-2">
-                            <div class="form-group label-floating">
-                              <label class="control-label">Amount</label>
-                              <input type="text" ng-model="$ctrl.data.amount" xx-amount class="form-control" required>
-                            </div>
-                          </div>
-                          <div class="col-md-3">
-                            <div class="form-group label-floating">
-                              <label class="control-label">Date</label>
-                              <input type="text" ng-model="$ctrl.data.transDate" xx-date class="form-control" required data-provide="datepicker" data-date-format="dd-M-yyyy">
-                            </div>
-                          </div>
-                          <div class="col-md-3">
-                            <div class="form-group">
-                              <button type="submit" ng-disabled="addExpForm.$invalid" class="btn btn-success btn-lg pull-right">
-                                <i class="material-icons">add</i>
-                              </button>
-                            </div>
-                          </div>
-                        </div>
-                        <div class="clearfix"></div>
-                      </form>
-                    </div>
-                    <div class="tab-pane" ng-class="{'active':$ctrl.data.adjust}">
-                      <form name="addAdjForm" novalidate="novalidate" ng-submit="$ctrl.addExpense(addAdjForm.$valid)">
-                        <div class="row">
-                          <div class="col-md-4">
-                            <div class="form-group label-floating">
-                              <label class="control-label">From Account</label>
-                              <input type="text" ng-model="$ctrl.data.fromAccount" class="form-control" uib-typeahead="acc as acc.name for acc in $ctrl.ta.accounts | filter:$viewValue | limitTo:8" typeahead-show-hint="true" typeahead-min-length="0" typeahead-editable="false">
-                            </div>
-                          </div>
-                          <div class="col-md-4">
-                            <div class="form-group label-floating">
-                              <label class="control-label">To Account</label>
-                              <input type="text" ng-model="$ctrl.data.toAccount" class="form-control" uib-typeahead="acc as acc.name for acc in $ctrl.ta.accounts | filter:$viewValue | limitTo:8" typeahead-show-hint="true" typeahead-min-length="0" typeahead-editable="false">
-                            </div>
-                          </div>
-                          <div class="col-md-4">&nbsp;</div>
-                        </div>
-                        <div class="row">
-                          <div class="col-md-4">
-                            <div class="form-group label-floating">
-                              <label class="control-label">Description</label>
-                              <input type="text" ng-model="$ctrl.data.description" class="form-control" required uib-typeahead="desc for desc in $ctrl.ta.descriptions | filter:$viewValue | limitTo:8">
-                            </div>
-                          </div>
-                          <div class="col-md-2">
-                            <div class="form-group label-floating">
-                              <label class="control-label">Amount</label>
-                              <input type="text" ng-model="$ctrl.data.amount" xx-amount class="form-control" required>
-                            </div>
-                          </div>
-                          <div class="col-md-3">
-                            <div class="form-group label-floating">
-                              <label class="control-label">Date</label>
-                              <input type="text" ng-model="$ctrl.data.transDate" xx-date class="form-control" required data-provide="datepicker" data-date-format="dd-M-yyyy">
-                            </div>
-                          </div>
-                          <div class="col-md-3">
-                            <div class="form-group">
-                              <button type="submit" ng-disabled="addAdjForm.$invalid" class="btn btn-success btn-lg pull-right">
-                                <i class="material-icons">add</i>
-                              </button>
-                            </div>
-                          </div>
-                        </div>
-                        <div class="clearfix"></div>
-                      </form>
-                    </div>
+              </div>
+              <div class="col-md-5">
+                <div class="form-group label-floating">
+                  <label class="control-label">Category</label>
+                  <input type="text" ng-model="$ctrl.data.category" class="form-control" required uib-typeahead="cat as cat.name for cat in $ctrl.ta.categories | filter:$viewValue | limitTo:8" typeahead-show-hint="true" typeahead-min-length="0" typeahead-editable="false">
+                </div>
+              </div>
+              <div class="col-md-1">
+                <div>&nbsp;</div>
+              </div>
+              <div class="col-md-1">
+                <div class="row">
+                  <div class="col-md-8">
+                    <label>Adhoc</label>
+                    <input type="checkbox" ng-model="$ctrl.data.adhoc" class="form-control">
                   </div>
                 </div>
               </div>
             </div>
+            <div class="row">
+              <div class="col-md-4">
+                <div class="form-group label-floating">
+                  <label class="control-label">Description</label>
+                  <input type="text" ng-model="$ctrl.data.description" class="form-control" required uib-typeahead="desc for desc in $ctrl.ta.descriptions | filter:$viewValue | limitTo:8">
+                </div>
+              </div>
+              <div class="col-md-2">
+                <div class="form-group label-floating">
+                  <label class="control-label">Amount</label>
+                  <input type="text" ng-model="$ctrl.data.amount" xx-amount class="form-control" required>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="form-group label-floating">
+                  <label class="control-label">Date</label>
+                  <input type="text" ng-model="$ctrl.data.transDt" xx-date class="form-control" required data-provide="datepicker" data-date-format="dd-M-yyyy">
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="form-group">
+                  <button type="submit" ng-disabled="addExpForm.$invalid" class="btn btn-success btn-lg pull-right">
+                    <i class="material-icons">add</i>
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div class="clearfix"></div>
+          </form>
+        </div>
+        <div class="tab-pane" ng-class="{'active':$ctrl.data.adjust}">
+          <form name="addAdjForm" novalidate="novalidate" ng-submit="$ctrl.addExpense(addAdjForm.$valid)">
+            <div class="row">
+              <div class="col-md-4">
+                <div class="form-group label-floating">
+                  <label class="control-label">From Account</label>
+                  <input type="text" ng-model="$ctrl.data.fromAccount" class="form-control" uib-typeahead="acc as acc.name for acc in $ctrl.ta.accounts | filter:$viewValue | limitTo:8" typeahead-show-hint="true" typeahead-min-length="0" typeahead-editable="false">
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group label-floating">
+                  <label class="control-label">To Account</label>
+                  <input type="text" ng-model="$ctrl.data.toAccount" class="form-control" uib-typeahead="acc as acc.name for acc in $ctrl.ta.accounts | filter:$viewValue | limitTo:8" typeahead-show-hint="true" typeahead-min-length="0" typeahead-editable="false">
+                </div>
+              </div>
+              <div class="col-md-4">&nbsp;</div>
+            </div>
+            <div class="row">
+              <div class="col-md-4">
+                <div class="form-group label-floating">
+                  <label class="control-label">Description</label>
+                  <input type="text" ng-model="$ctrl.data.description" class="form-control" required uib-typeahead="desc for desc in $ctrl.ta.descriptions | filter:$viewValue | limitTo:8">
+                </div>
+              </div>
+              <div class="col-md-2">
+                <div class="form-group label-floating">
+                  <label class="control-label">Amount</label>
+                  <input type="text" ng-model="$ctrl.data.amount" xx-amount class="form-control" required>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="form-group label-floating">
+                  <label class="control-label">Date</label>
+                  <input type="text" ng-model="$ctrl.data.transDate" xx-date class="form-control" required data-provide="datepicker" data-date-format="dd-M-yyyy">
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="form-group">
+                  <button type="submit" ng-disabled="addAdjForm.$invalid" class="btn btn-success btn-lg pull-right">
+                    <i class="material-icons">add</i>
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div class="clearfix"></div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

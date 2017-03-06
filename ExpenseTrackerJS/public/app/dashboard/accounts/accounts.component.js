@@ -20,17 +20,22 @@
     const tallyAccount = function (id) {
       acs.tallyAccount(id);
     };
+    const isTallyToday = function (tallyDt) {
+      return moment().isSame(moment(tallyDt), 'day');
+    };
 
     init();
 
 		// ***** exposed functions ******//
     vm.filterAccount = filterAccount;
     vm.tallyAccount = tallyAccount;
+    vm.isTallyToday = isTallyToday;
   };
 
   angular.module('dashboard.accounts').component('accounts', {
     templateUrl: 'dashboard/accounts/accounts.htm',
     controller: AccountsController
   });
-  AccountsController.$inject = ['accountsService', 'dashboardService', 'billsService', 'explistwrapperService'];
+  AccountsController.$inject = ['accountsService', 'dashboardService', 'billsService',
+    'explistwrapperService'];
 })(window.angular);

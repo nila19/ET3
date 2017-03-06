@@ -67,7 +67,9 @@ const addYears = function (months, next) {
   const years = {};
 
   months.forEach(function (month) {
-    years[month.year] = moment().year(month.year).month(11).date(31).valueOf();
+    if(month.year) {
+      years[month.year] = moment().year(month.year).endOf('year').startOf('day').valueOf();
+    }
   });
   for (const year in years) {
     if (years.hasOwnProperty(year)) {

@@ -48,10 +48,16 @@ const getTransMonths = function (mongo, log, next) {
   });
 };
 
+// debugger;
+
 require('../api/config/mongodb-config').connect(log, function (mongo) {
   // queryAll(mongo, log, function (err) {
-  getTransMonths(mongo, log, function (err) {
-    log.error(err);
-    mongo.close();
-  });
+  // getTransMonths(mongo, log, function (err) {
+  //   log.error(err);
+  //   mongo.close();
+  // });
+  mongo.close();
+  const tally2 = dt().subtract(4, 'hours');
+
+  log.info(tally2.valueOf() + ' - ' + dt().isSame(tally2, 'day'));
 });

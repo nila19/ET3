@@ -75,7 +75,6 @@
       data.filterApplied = false;
       const input = {
         cityId: ms.data.menu.city.id,
-        acctId: 0,
         paidInd: (data.tab === 'OPEN') ? 'N' : 'Y'
       };
 

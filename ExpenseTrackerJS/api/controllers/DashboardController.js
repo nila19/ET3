@@ -20,7 +20,7 @@ const getTransactionById = function (req, resp, transId) {
 const getBills = function (req, resp) {
   let promise = null;
 
-  if(req.body.acctId) {
+  if(req.query.acctId) {
     promise = bills.findForAcct(req.app.locals.db, numeral(req.query.acctId).value(), req.query.paidInd);
   } else {
     promise = bills.findForCity(req.app.locals.db, numeral(req.query.cityId).value(), req.query.paidInd);

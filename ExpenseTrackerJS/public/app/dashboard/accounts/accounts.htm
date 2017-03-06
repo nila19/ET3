@@ -1,33 +1,33 @@
-        <!-- Accounts Cards -->
-          <div class="row" ng-repeat="row in $ctrl.data.rows track by $index" ng-if="(($index == 0 && $ctrl.data.showAcctsRowOne) || ($index > 0 && $ctrl.data.showAcctsMore))">
-            <div class="col-lg-2 col-md-4 col-sm-6" ng-repeat="acct in row.cols">
-              <div class="card card-stats">
-                <div class="card-header" data-background-color="{{$ctrl.data.filterBy === acct.id? 'orange' : acct.bgColor}}">
-                  <a href="" ng-click="$ctrl.filterAccount(acct.id)"><i class="material-icons">{{acct.imageCode}}</i></a>
-                </div>
-                <div class="card-content">
-                  <p class="category">{{acct.name}}</p>
-                  <h3 class="title">{{acct.balanceAmt | currency:''}}</h3>
-                </div>
-                <div class="card-footer">
-                  <div ng-if="acct.billed && !acct.billDue" class="stats">
-                    <i class="material-icons text-info">schedule</i> &nbsp;Next Bill on {{acct.nextBillDt | date:'dd-MMM'}}
-                  </div>
-                  <div ng-if="acct.billed && acct.billDue" class="stats">
-                    <i class="material-icons text-warning">local_offer</i> {{acct.billAmt | currency:'$ '}} (Due on {{acct.dueDt | date:'dd-MMM'}})
-                  </div>
-                  <div ng-if="!acct.billed" class="stats">
-                    <i class="material-icons">block</i> &nbsp; No bills.
-                  </div>
-                  <div class="stats">
-                    <i class="material-icons {{acct.tallyToday?'text-success':'text-warning'}}">check_circle</i> {{acct.tallyBalance | currency:''}} @ {{acct.tallyDate | date:'dd-MMM-yy hh:mm a'}}
-                  </div>
-                </div>
-                <div class="card-footer" align="center">
-                  <div class="stats">
-                    <span ng-click="$ctrl.tallyAccount(acct.id)" class="btn btn-success btn-sm">Tally &nbsp;<span ng-if="acct.tallyExpenseCnt > 0"  class="badge">{{acct.tallyExpenseCnt}}</span></span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+<!-- Accounts Cards -->
+<div class="row" ng-repeat="row in $ctrl.data.rows track by $index" ng-if="(($index == 0 && $ctrl.data.showAcctsRowOne) || ($index > 0 && $ctrl.data.showAcctsMore))">
+  <div class="col-lg-2 col-md-4 col-sm-6" ng-repeat="acct in row.cols">
+    <div class="card card-stats">
+      <div class="card-header" data-background-color="{{$ctrl.data.filterBy === acct.id? 'orange' : acct.color}}">
+        <a href="" ng-click="$ctrl.filterAccount(acct.id)"><i class="material-icons">{{acct.icon}}</i></a>
+      </div>
+      <div class="card-content">
+        <p class="category">{{acct.name}}</p>
+        <h3 class="title">{{acct.balance | currency:''}}</h3>
+      </div>
+      <div class="card-footer">
+        <div ng-if="acct.billed && !acct.bills.last.amount" class="stats">
+          <i class="material-icons text-info">schedule</i> &nbsp;Next Bill on {{acct.bills.open.billDt | date:'dd-MMM'}}
+        </div>
+        <div ng-if="acct.billed && acct.bills.last.amount" class="stats">
+          <i class="material-icons text-warning">local_offer</i> {{acct.bills.last.amount | currency:'$ '}} (Due on {{acct.bills.last.dueDt | date:'dd-MMM'}})
+        </div>
+        <div ng-if="!acct.billed" class="stats">
+          <i class="material-icons">block</i> &nbsp; No bills.
+        </div>
+        <div class="stats">
+          <i class="material-icons {{$ctrl.isTallyToday(acct.tallyDt)?'text-success':'text-warning'}}">check_circle</i> {{acct.tallyBalance | currency:''}} @ {{acct.tallyDt | date:'dd-MMM-yy hh:mm a'}}
+        </div>
+      </div>
+      <div class="card-footer" align="center">
+        <div class="stats">
+          <span ng-click="$ctrl.tallyAccount(acct.id)" class="btn btn-success btn-sm">Tally &nbsp;<span ng-if="acct.tallyExpenseCnt > 0"  class="badge">{{acct.tallyExpenseCnt}}</span></span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

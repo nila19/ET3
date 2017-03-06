@@ -13,7 +13,12 @@ const migrate = function (sqlite, mongo, log, next) {
     let count = 0;
 
     log.info('Accounts data started...');
-    sqlite.each('SELECT * FROM ACCOUNT', function (err, row) {
+    let sql = 'SELECT A.*, B.BILL_DT AS LAST_BILL_DT, B.DUE_DT AS LAST_DUE_DT, B.BILL_AMT AS LAST_BILL_AMT,';
+
+    sql += ' C.BILL_DT AS OPEN_BILL_DT, C.DUE_DT AS OPEN_DUE_DT, C.BILL_AMT AS OPEN_BILL_AMT';
+    sql += ' FROM ACCOUNT A LEFT OUTER JOIN BILL B ON A.LAST_BILL_ID = B.BILL_ID ';
+    sql += ' LEFT OUTER JOIN BILL C ON A.OPEN_BILL_ID = C.BILL_ID';
+    sqlite.each(sql, function (err, row) {
       if(err) {
         log.error(err);
       } else {
@@ -32,9 +37,25 @@ const migrate = function (sqlite, mongo, log, next) {
           tallyDt: numeral(row.TALLY_DATE).value() || 0,
           closingDay: numeral(row.CLOSING_DAY).value() || 0,
           dueDay: numeral(row.DUE_DAY).value() || 0,
-          lastBillId: numeral(row.LAST_BILL_ID).value() || 0,
-          openBillId: numeral(row.OPEN_BILL_ID).value() || 0
+          bills: null
         };
+
+        if(acct.billed) {
+          acct.bills = {
+            last: {
+              id: numeral(row.LAST_BILL_ID).value() || 0,
+              billDt: numeral(row.LAST_BILL_DT).value() || 0,
+              dueDt: numeral(row.LAST_DUE_DT).value() || 0,
+              amount: numeral(row.LAST_BILL_AMT).value() || 0
+            },
+            open: {
+              id: numeral(row.OPEN_BILL_ID).value() || 0,
+              billDt: numeral(row.OPEN_BILL_DT).value() || 0,
+              dueDt: numeral(row.OPEN_DUE_DT).value() || 0,
+              amount: numeral(row.OPEN_BILL_AMT).value() || 0
+            }
+          };
+        }
 
         accounts.insert(mongo, acct);
         count += 1;

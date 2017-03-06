@@ -1,104 +1,106 @@
 <script type="text/ng-template" id="customTemplate.htm">
   <a>
-	  <span ng-if="!match.model.active"><em><span class="text-warning" ng-bind-html="match.label | uibTypeaheadHighlight:query"></span></em></span>
-	  <span ng-if="match.model.active"><span ng-bind-html="match.label | uibTypeaheadHighlight:query"></span></span>
+    <span ng-if="!match.model.active"><em><span class="text-warning" ng-bind-html="match.label | uibTypeaheadHighlight:query"></span></em>
+    </span>
+    <span ng-if="match.model.active"><span ng-bind-html="match.label | uibTypeaheadHighlight:query"></span></span>
   </a>
 </script>
 
-  <div class="wrapper">
-    <div class="main-panel">
-      <!-- Menu panel -->
-      <etmenu></etmenu>
+<div class="wrapper">
+  <div class="main-panel">
+    <!-- Menu panel -->
+    <etmenu></etmenu>
 
-      <!-- Search Content -->
-      <div class="content">
-        <div class="container-fluid">
-          <div class="row">
-            <div class="col-md-12">
+    <!-- Search Content -->
+    <div class="content">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-md-12">
 
-              <div class="card">
-                <div class="card-content">
-                  <form ng-submit="$ctrl.doSearch()">
-                    <div class="row">
-                      <div class="col-lg-2 col-md-3">
-                        <div class="form-group label-floating">
-                          <label class="control-label">Category</label>
-                          <input ng-model="$ctrl.data.category" type="text" class="form-control" uib-typeahead="cat as cat.name for cat in $ctrl.ta.allCategories | filter:$viewValue | limitTo:12" typeahead-template-url="customTemplate.htm" typeahead-show-hint="true" typeahead-min-length="0" typeahead-editable="false">
-                        </div>
-                      </div>
-                      <div class="col-lg-2 col-md-3">
-                        <div class="form-group label-floating">
-                          <label class="control-label">Description</label>
-                          <input ng-model="$ctrl.data.description" type="text" class="form-control" uib-typeahead="desc for desc in $ctrl.ta.descriptions | filter:$viewValue | limitTo:12">
-                        </div>
-                      </div>
-                      <div class="col-lg-1 col-md-2">
-                        <div class="form-group label-floating">
-                          <label class="control-label">Amount</label>
-                          <input ng-model="$ctrl.data.amount" xx-amount type="text" class="form-control">
-                        </div>
-                      </div>
-                      <div class="col-lg-1 col-md-2">
-                        <div class="form-group label-floating">
-                          <label class="control-label">Exp Month</label>
-                          <input ng-model="$ctrl.data.transMonth" type="text" class="form-control" uib-typeahead="month as month.name for month in $ctrl.ta.transMonths | filter:$viewValue" typeahead-show-hint="true" typeahead-min-length="0" typeahead-editable="false">
-                        </div>
-                      </div>
-                      <div class="col-lg-1 col-md-2">
-                        <div class="form-group label-floating">
-                          <label class="control-label">Entry Month</label>
-                          <input ng-model="$ctrl.data.entryMonth" type="text" class="form-control" uib-typeahead="month as month.name for month in $ctrl.ta.entryMonths | filter:$viewValue" typeahead-show-hint="true" typeahead-min-length="0" typeahead-editable="false">
-                        </div>
-                      </div>
-                      <div class="col-lg-2 col-md-3">
-                        <div class="form-group label-floating">
-                          <label class="control-label">Account</label>
-                          <input ng-model="$ctrl.data.account" type="text" class="form-control" uib-typeahead="acc as acc.name for acc in $ctrl.ta.allAccounts | filter:$viewValue | limitTo:12" typeahead-template-url="customTemplate.htm" typeahead-show-hint="true" typeahead-min-length="0" typeahead-editable="false">
-                        </div>
-                      </div>
-                      <div class="col-lg-1 col-md-2">
-                        <div class="form-group label-floating">
-                          <label class="control-label">Adjust</label> 
-                          <select ng-model="$ctrl.data.adjustInd" class="form-control">
-                            <option></option>
-                            <option value="Y">Yes</option>
-                            <option value="N">No</option>
-                          </select>
-                        </div>
-                      </div>
-                      <div class="col-lg-1 col-md-2">
-                        <div class="form-group label-floating">
-                          <label class="control-label">Adhoc</label> 
-                          <select ng-model="$ctrl.data.adhocInd" class="form-control">
-                            <option></option>
-                            <option value="Y">Yes</option>
-                            <option value="N">No</option>
-                          </select>
-                        </div>
-                      </div>
-                      <div class="col-lg-1 col-md-2">
-                        <button type="submit" class="btn btn-danger btn-lg pull-right">Search</button>
+            <div class="card">
+              <div class="card-content">
+                <form ng-submit="$ctrl.doSearch()">
+                  <div class="row">
+                    <div class="col-lg-2 col-md-3">
+                      <div class="form-group label-floating">
+                        <label class="control-label">Category</label>
+                        <input ng-model="$ctrl.data.category" type="text" class="form-control" uib-typeahead="cat as cat.name for cat in $ctrl.ta.allCategories | filter:$viewValue | limitTo:12" typeahead-template-url="customTemplate.htm" typeahead-show-hint="true" typeahead-min-length="0"
+                            typeahead-editable="false">
                       </div>
                     </div>
-                    <!-- /.row -->
-                  </form>
-                </div>
-                <!-- /.card-content -->
+                    <div class="col-lg-2 col-md-3">
+                      <div class="form-group label-floating">
+                        <label class="control-label">Description</label>
+                        <input ng-model="$ctrl.data.description" type="text" class="form-control" uib-typeahead="desc for desc in $ctrl.ta.descriptions | filter:$viewValue | limitTo:12">
+                      </div>
+                    </div>
+                    <div class="col-lg-1 col-md-2">
+                      <div class="form-group label-floating">
+                        <label class="control-label">Amount</label>
+                        <input ng-model="$ctrl.data.amount" xx-amount type="text" class="form-control">
+                      </div>
+                    </div>
+                    <div class="col-lg-1 col-md-2">
+                      <div class="form-group label-floating">
+                        <label class="control-label">Exp Month</label>
+                        <input ng-model="$ctrl.data.transMonth" type="text" class="form-control" uib-typeahead="month as month.name for month in $ctrl.ta.transMonths | filter:$viewValue" typeahead-show-hint="true" typeahead-min-length="0" typeahead-editable="false">
+                      </div>
+                    </div>
+                    <div class="col-lg-1 col-md-2">
+                      <div class="form-group label-floating">
+                        <label class="control-label">Entry Month</label>
+                        <input ng-model="$ctrl.data.entryMonth" type="text" class="form-control" uib-typeahead="month as month.name for month in $ctrl.ta.entryMonths | filter:$viewValue" typeahead-show-hint="true" typeahead-min-length="0" typeahead-editable="false">
+                      </div>
+                    </div>
+                    <div class="col-lg-2 col-md-3">
+                      <div class="form-group label-floating">
+                        <label class="control-label">Account</label>
+                        <input ng-model="$ctrl.data.account" type="text" class="form-control" uib-typeahead="acc as acc.name for acc in $ctrl.ta.allAccounts | filter:$viewValue | limitTo:12" typeahead-template-url="customTemplate.htm" typeahead-show-hint="true" typeahead-min-length="0"
+                            typeahead-editable="false">
+                      </div>
+                    </div>
+                    <div class="col-lg-1 col-md-2">
+                      <div class="form-group label-floating">
+                        <label class="control-label">Adjust</label>
+                        <select ng-model="$ctrl.data.adjustInd" class="form-control">
+                          <option></option>
+                          <option value="Y">Yes</option>
+                          <option value="N">No</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="col-lg-1 col-md-2">
+                      <div class="form-group label-floating">
+                        <label class="control-label">Adhoc</label>
+                        <select ng-model="$ctrl.data.adhocInd" class="form-control">
+                          <option></option>
+                          <option value="Y">Yes</option>
+                          <option value="N">No</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="col-lg-1 col-md-2">
+                      <button type="submit" class="btn btn-danger btn-lg pull-right">Search</button>
+                    </div>
+                  </div>
+                  <!-- /.row -->
+                </form>
               </div>
-              <!-- /.card -->
-
+              <!-- /.card-content -->
             </div>
+            <!-- /.card -->
+
           </div>
-
-          <!-- Search Results -->
-          <explist></explist>
-
         </div>
+
+        <!-- Search Results -->
+        <explist></explist>
+
       </div>
-
     </div>
-  </div>
 
-  <!--   Edit Modal Windows   -->
-  <edit></edit>
-  
+  </div>
+</div>
+
+<!--   Edit Modal Windows   -->
+<edit></edit>

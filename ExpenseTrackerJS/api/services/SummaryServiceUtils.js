@@ -62,20 +62,30 @@ const getDataFromDB = function (params, next) {
       param.log.error(err);
       return next(err);
     }
-    return next(null, results);
+    const data = {
+      categories: results[0],
+      transMonths: results[1],
+      transactions: results[2],
+      fcTransactions: results[3]
+    };
+
+    return next(null, data);
   });
 };
 
 // utility function
 const getMonthIndex = function (months, date) {
-  const mon = monthUtils.getMonth(date);
+  const month = monthUtils.getMonth(date);
+  let pos = -1;
+  let i = 0;
 
-  months.forEach(function (month, idx) {
-    if(month.seq === mon.seq) {
-      return idx;
+  while (i < months.length && pos < 0) {
+    if(month.seq === months[i].seq) {
+      pos = i;
     }
-  });
-  return -1;
+    i += 1;
+  }
+  return pos;
 };
 
 module.exports = {

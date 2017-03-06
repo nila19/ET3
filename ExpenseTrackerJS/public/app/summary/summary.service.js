@@ -40,8 +40,8 @@
       data.pgData.rows = pgRows;
     };
     const loadData = function (dt) {
-      data.totalrow = dt.splice(0, 1)[0];
-      data.rows = dt;
+      data.totalrow = dt.data.splice(0, 1)[0];
+      data.rows = dt.data;
       data.maxPageNo = Math.ceil(data.months.length / data.columns) - 1;
       data.currPageNo = 0;
       loadCurrentPage();

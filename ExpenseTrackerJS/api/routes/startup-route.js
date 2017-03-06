@@ -44,7 +44,6 @@ router.get('/categories/all', function (req, res, next) {
 });
 
 router.get('/categories', function (req, res, next) {
-  console.log('categories : city = ' + req.query.cityId);
   startup.getCategories(req, res);
 });
 

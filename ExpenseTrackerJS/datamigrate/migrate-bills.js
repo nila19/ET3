@@ -1,5 +1,6 @@
 'use strict';
 
+const moment = require('moment');
 const numeral = require('numeral');
 const bills = require('../api/models/Bills')();
 
@@ -28,6 +29,9 @@ const migrate = function (sqlite, mongo, log, next) {
           balance: numeral(row.BILL_BALANCE).value(),
           payments: []
         };
+        const billDt = moment(numeral(row.BILL_DT).value()).format('YYYY-MM-DD');
+
+        bill.name = row.DESCRIPTION + ' : ' + billDt + ' #' + row.BILL_ID;
 
         if(row.BILL_PAID_DT || row.PAY_TRAN_ID) {
           bill.payments.push({

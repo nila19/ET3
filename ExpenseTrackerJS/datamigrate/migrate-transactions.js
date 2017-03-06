@@ -48,9 +48,9 @@ const migrate = function (sqlite, mongo, log, next) {
             balanceAf: numeral(row.FROM_BALANCE_AF).value(),
           };
         } else {
-          trans.accounts.from = {id: 0, billId: 0, balanceBf: 0, balanceAf: 0};
+          trans.accounts.from = {id: 0, name: '', billId: 0, balanceBf: 0, balanceAf: 0};
         }
-        if(row.FROM_ACCOUNT_ID) {
+        if(row.TO_ACCOUNT_ID) {
           trans.accounts.to = {
             id: numeral(row.TO_ACCOUNT_ID).value(),
             name: row.TO_ACCOUNT_NAME,
@@ -59,7 +59,7 @@ const migrate = function (sqlite, mongo, log, next) {
             balanceAf: numeral(row.TO_BALANCE_AF).value(),
           };
         } else {
-          trans.accounts.to = {id: 0, billId: 0, balanceBf: 0, balanceAf: 0};
+          trans.accounts.to = {id: 0, name: '', billId: 0, balanceBf: 0, balanceAf: 0};
         }
 
         transactions.insert(mongo, trans);

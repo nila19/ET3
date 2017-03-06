@@ -3,6 +3,7 @@
 const model = require('./Model');
 const schema = {
   id: 'int not-null primarykey autoincrement',
+  name: 'string',
   cityId: 'int not-null',
   account: {id: 'int not-null', name: 'string'},
   createdDt: 'timestamp',

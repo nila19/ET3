@@ -16,8 +16,7 @@ const schema = {
   tallyDt: 'timestamp',
   closingDay: 'int',
   dueDay: 'int',
-  lastBillId: 'int',
-  openBillId: 'int',
+  bills: {last: {}, open: {}},
   FLAGS: {},
 };
 

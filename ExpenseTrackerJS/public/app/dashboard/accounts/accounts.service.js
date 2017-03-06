@@ -57,7 +57,7 @@
     const tallyAccount = function (id) {
       ms.data.loading = true;
       data.tallyOn = id;
-      aj.post('/entry/tally/' + id, {}, loadTally);
+      aj.post('/edit/tally/' + id, {}, loadTally);
     };
     const filterAccount = function (id) {
       data.filterBy = id;

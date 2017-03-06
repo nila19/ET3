@@ -1,3 +1,4 @@
+/* eslint no-magic-numbers: "off", no-console: "off" */
 
 'use strict';
 
@@ -94,10 +95,9 @@ Transactions.prototype.findForSearch = function (db, search) {
   filter = this.buildSearchQueryTwo(search, filter);
 
   // thin list
-  if(search.thinList) {
+  if(search.thinList == 'true') {
     options.limit = config.thinList;
   }
-  console.log(JSON.stringify(filter));
   return this.find(db, filter, options);
 };
 Transactions.prototype.buildSearchQueryOne = function (search, filter) {
@@ -136,28 +136,32 @@ Transactions.prototype.buildSearchQueryOne = function (search, filter) {
   return filter;
 };
 Transactions.prototype.buildSearchQueryTwo = function (search, filter) {
+  const entry = moment(numeral(search.entryMonth).value());
+  const trans = moment(numeral(search.transMonth).value());
+
   // entry month
   if(search.entryMonth) {
-    if(search.entryYear) {
+    if(search.entryYear == 'true') {
       // set startDt as 31-Dec of previous year, since that it is > than.
-      const yearBegin = moment(search.entryMonth).month(0).date(0).valueOf();
-      const yearEnd = moment(search.entryMonth).month(11).date(31).valueOf();
+      // set endDt as 1-Jan of next year, since that it is > than.
+      const yearBegin = entry.clone().month(0).date(0).valueOf();
+      const yearEnd = entry.clone().month(11).date(31).valueOf();
 
       filter.$and = [{entryMonth: {$gt: yearBegin}}, {entryMonth: {$lt: yearEnd}}];
     } else {
-      filter.entryMonth = search.entryMonth;
+      filter.entryMonth = entry.valueOf();
     }
   }
   // trans month
   if(search.transMonth) {
-    if(search.transYear) {
+    if(search.transYear == 'true') {
       // set startDt as 31-Dec of previous year, since that it is > than.
-      const yearBegin = moment(search.transMonth).month(0).date(0).valueOf();
-      const yearEnd = moment(search.transMonth).month(11).date(31).valueOf();
+      const yearBegin = trans.clone().month(0).date(0).valueOf();
+      const yearEnd = trans.clone().month(11).date(31).valueOf();
 
       filter.$and = [{transMonth: {$gt: yearBegin}}, {transMonth: {$lt: yearEnd}}];
     } else {
-      filter.transMonth = search.transMonth;
+      filter.transMonth = trans.valueOf();
     }
   }
   return filter;

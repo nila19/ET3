@@ -30,9 +30,7 @@
     };
     const loadTransMonths = function (dt) {
       V.data.transMonths = [];
-      console.log('data= ' + JSON.stringify(dt.data));
       angular.forEach(dt.data, function (transMonth) {
-        console.log('transMonth= ' + JSON.stringify(transMonth));
         V.data.transMonths.push(transMonth);
       });
       data.status += TEN;

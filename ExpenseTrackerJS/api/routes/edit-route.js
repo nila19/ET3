@@ -4,7 +4,6 @@ const numeral = require('numeral');
 const express = require('express');
 const router = express.Router();
 const error = require('./error-route');
-const tally = require('../controllers/TallyController');
 const edit = require('../controllers/EditController');
 
 router.use(function (req, res, next) {
@@ -17,7 +16,7 @@ router.all('*', function (req, res, next) {
 });
 
 router.post('/tally/:acctId', function (req, res, next) {
-  tally.tallyAccount(req, res, numeral(req.params.acctId).value());
+  edit.tallyAccount(req, res, numeral(req.params.acctId).value());
 });
 
 router.post('/add', function (req, res, next) {

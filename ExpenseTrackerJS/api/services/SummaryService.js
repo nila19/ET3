@@ -4,21 +4,17 @@ const moment = require('moment');
 const async = require('async');
 const serviceUtils = require('./SummaryServiceUtils');
 let param = null;
-const data = null;
-let grid = null;
+let data = {categories: null, transMonths: null, transactions: null, fcTransactions: null};
 
 // step 0: use serviceUtils to fetch all data from DB & build the trans months list.
 const buildSummaryGrid = function (params, next) {
   param = params;
-  serviceUtils.getDataFromDB(params, function (err, results) {
+  serviceUtils.getDataFromDB(params, function (err, data1) {
     if(err) {
       param.log.error(err);
       return next(err);
     }
-    data.categories = results[0];
-    data.transMonths = results[1];
-    data.transactions = results[2];
-    data.fcTransactions = results[3];
+    data = data1;
 
     async.waterfall([buildEmptyGrid, populateGrid, calcYearlySummary,
       buildForecastGrid, weedInactiveCats, sortGridByCategory, calcTotalRow], function (err, gridArr) {
@@ -83,13 +79,14 @@ const calcYearlySummary = function (grid, next) {
 };
 
 // setp 4: build forecast grid, if the forecast flag is on. if the flag is not on, proceed forward.
-const buildForecastGrid = function (grid1, next) {
+const buildForecastGrid = function (grid, next) {
   if(!param.forecast) {
     return next(null, grid);
   }
 
-  grid = grid1;
-  async.waterfall([buildEmptyGrid, populateFcGrid, embedFcToGrid], function (err, grid) {
+  async.waterfall([buildEmptyGrid, populateFcGrid, function (fcgrid, cb) {
+    embedFcToGrid(grid, fcgrid, cb);
+  }], function (err, grid) {
     if(err) {
       param.log.error(err);
       return next(err);
@@ -118,7 +115,7 @@ const populateFcGrid = function (fcgrid, next) {
 };
 
 // setp 4.2: embed the main grid with fctransaction data.
-const embedFcToGrid = function (fcgrid, next) {
+const embedFcToGrid = function (grid, fcgrid, next) {
   const idx = serviceUtils.getMonthIndex(data.transMonths, moment().valueOf());
 
   for (const catId in fcgrid) {
@@ -179,7 +176,7 @@ const sortGridByCategory = function (grid, next) {
 
 // setp 7: calculate monthly total row & add it as top row.
 const calcTotalRow = function (gridArr, next) {
-  const totalui = {};
+  const totalui = {amount: [], count: []};
 
   data.transMonths.forEach(function () {
     totalui.amount.push(0);

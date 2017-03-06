@@ -2,22 +2,41 @@
 /* eslint no-unused-vars: "off" */
 'use strict';
 
+const moment = require('moment');
 const addservice = require('../services/AddService');
+const tallyservice = require('../services/TallyService');
 const error = 1000;
-let parms = null;
+
+const tallyAccount = function (req, resp, acctId) {
+  const param = {
+    db: req.app.locals.db,
+    log: req.app.locals.log,
+    acctId: acctId,
+    now: moment().valueOf()
+  };
+
+  tallyservice.tally(param, function (err) {
+    if(err) {
+      param.log.error(err);
+      return resp.json({code: error});
+    } else {
+      return resp.json({code: 0, message: 'Account tallied successfully!!'});
+    }
+  });
+};
 
 const addExpense = function (req, resp) {
-  parms = {
+  const param = {
     db: req.app.locals.db,
     log: req.app.locals.log
   };
-  // check if city is editable.
-  addservice.addExpense(parms, req.body, function (err, tran) {
+
+  addservice.addExpense(param, req.body, function (err, trans) {
     if(err) {
-      parms.log.error(err);
+      param.log.error(err);
       return resp.json({code: error});
     } else {
-      return resp.json({code: 0, data: tran});
+      return resp.json({code: 0, data: trans});
     }
   });
 };
@@ -39,6 +58,7 @@ const payBill = function (req, resp) {
 };
 
 module.exports = {
+  tallyAccount: tallyAccount,
   addExpense: addExpense,
   modifyExpense: modifyExpense,
   deleteExpense: deleteExpense,

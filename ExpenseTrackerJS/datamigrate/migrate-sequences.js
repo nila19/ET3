@@ -57,7 +57,7 @@ const setCategoriesSeq = function (cityId, next) {
 };
 const setTallyHistoriesSeq = function (cityId, next) {
   tallyhistories.findOne(param.db, {cityId: cityId}, {sort: {id: -1}}).then((doc) => {
-    const doc1 = (doc && doc.tallyId) ? doc : {id: 0};
+    const doc1 = (doc && doc.id) ? doc : {id: 0};
 
     sequences.insert(param.db, {seqId: 'tallyhistories', cityId: cityId, seq: (doc1.id + 1)}).then(() => {
       return next(null, cityId);

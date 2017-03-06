@@ -1,46 +1,46 @@
-  <!--   Bill Pay Modal Window   -->
-  <div class="modal fade" id="model_BillPay" tabindex="-1">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
-          <h4 class="modal-title text-primary text-uppercase"><i class="material-icons">list</i> Pay Bill</h4>
-        </div>
-        <div class="modal-body">
-          <form name="billPayForm" novalidate="novalidate" ng-submit="$ctrl.payBill(billPayForm.$valid)">
-            <div class="form-group">
-              <label class="control-label">Account</label>
-              <input type="text" ng-model="$ctrl.data.bill.account.name" class="form-control" disabled="disabled">
+<!--   Bill Pay Modal Window   -->
+<div class="modal fade" id="model_BillPay" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
+        <h4 class="modal-title text-primary text-uppercase"><i class="material-icons">list</i> Pay Bill</h4>
+      </div>
+      <div class="modal-body">
+        <form name="billPayForm" novalidate="novalidate" ng-submit="$ctrl.payBill(billPayForm.$valid)">
+          <div class="form-group">
+            <label class="control-label">Account</label>
+            <input type="text" ng-model="$ctrl.data.bill.account.name" class="form-control" disabled="disabled">
+          </div>
+          <div class="form-group">
+            <label class="control-label">Bill</label>
+            <input type="text" ng-model="$ctrl.data.bill.name" class="form-control" disabled="disabled">
+          </div>
+          <div class="form-group">
+            <label class="control-label">Bill Balance</label>
+            <input type="text" ng-model="$ctrl.data.bill.balance" xx-amount class="form-control" disabled="disabled">
+          </div>
+          <div class="form-group ">
+            <label class="control-label ">Bill Due Date</label>
+            <input type="text" ng-model="$ctrl.data.bill.dueDt " xx-date class="form-control " disabled="disabled">
+          </div>
+          <div class="form-group">
+            <div class="col-md-6">
+              <label class="control-label">Pay From </label>
+              <input ng-model="$ctrl.data.account" type="text" class="form-control" required uib-typeahead="acc as acc.name for acc in $ctrl.ta.accounts | filter:$viewValue" typeahead-show-hint="true" typeahead-min-length="0" typeahead-editable="false">
             </div>
-            <div class="form-group">
-              <label class="control-label">Bill</label>
-              <input type="text" ng-model="$ctrl.data.bill.name" class="form-control" disabled="disabled">
+            <div class="col-md-6">
+              <label class="control-label">Date</label>
+              <input type="text" ng-model="$ctrl.data.paidDt" xx-date class="form-control" required data-provide="datepicker" data-date-format="dd-M-yyyy">
             </div>
-            <div class="form-group">
-              <label class="control-label">Bill Balance</label>
-              <input type="text" ng-model="$ctrl.data.bill.billBalance" xx-amount class="form-control" disabled="disabled"">
-            </div>
-            <div class="form-group">
-              <label class="control-label">Bill Due Date</label>
-              <input type="text" ng-model="$ctrl.data.bill.dueDt" xx-date class="form-control" disabled="disabled"">
-            </div>
-            <div class="form-group">
-              <div class="col-md-6">
-                <label class="control-label">Pay From </label>
-                  <input ng-model="$ctrl.data.account" type="text" class="form-control" required uib-typeahead="acc as acc.name for acc in $ctrl.ta.accounts | filter:$viewValue" typeahead-show-hint="true" typeahead-min-length="0" typeahead-editable="false">
-              </div>
-              <div class="col-md-6">
-                <label class="control-label">Date</label>
-                <input type="text" ng-model="$ctrl.data.paidDt" xx-date class="form-control" required data-provide="datepicker" data-date-format="dd-M-yyyy">
-              </div>
-            </div>
-            <div class="form-group">
-              <button type="submit" ng-disabled="billPayForm.$invalid" class="btn btn-primary pull-right" tooltip rel="tooltip" title="Pay Bill"><i class="material-icons">payment</i></button>
-            </div>
-          </form>
-        </div>
-        <div class="modal-footer">
-        </div>
+          </div>
+          <div class="form-group">
+            <button type="submit" ng-disabled="billPayForm.$invalid" class="btn btn-primary pull-right" tooltip rel="tooltip" title="Pay Bill"><i class="material-icons">payment</i></button>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
       </div>
     </div>
   </div>
+</div>

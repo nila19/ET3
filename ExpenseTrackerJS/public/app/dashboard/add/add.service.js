@@ -14,7 +14,7 @@
       toAccount: null,
       description: '',
       amount: '',
-      transDate: ''
+      transDt: ''
     };
 
     const buildAddInput = function () {
@@ -23,7 +23,7 @@
         fromAccount: data.fromAccount,
         description: data.description,
         amount: data.amount,
-        transDate: data.transDate,
+        transDt: data.transDt,
         adjust: data.adjust
       };
 
@@ -43,7 +43,7 @@
       initForm();
       us.showMsg('Add Expense', C.MSG.SUCCESS);
 			// add the newly added Expense to the top of the Expenselist..
-      elws.addItem(dt.id);
+      elws.addItem(dt.data.id);
 
       if (data.fromAccount && data.fromAccount.id) {
         acs.refreshAccount(data.fromAccount.id);

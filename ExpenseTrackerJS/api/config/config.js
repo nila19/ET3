@@ -11,7 +11,7 @@ module.exports = {
     period: '1m',
     count: 12
   },
-  thinList: 3,  // TODO 100
+  thinList: 100,  // TODO 100
   pct75: 0.75,
   pct125: 1.25,
 };

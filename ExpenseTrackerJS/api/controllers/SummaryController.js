@@ -11,12 +11,11 @@ const doSummary = function (req, resp) {
     db: req.app.locals.db,
     log: req.app.locals.log,
     cityId: numeral(req.query.cityId).value(),
-    regular: req.query.regular,
-    adhoc: req.query.adhoc,
-    forecast: req.query.forecast
+    regular: req.query.regular && req.query.regular == 'true',
+    adhoc: req.query.adhoc && req.query.adhoc == 'true',
+    forecast: req.query.forecast && req.query.forecast == 'true'
   };
 
-  console.log(JSON.stringify(params));
   summaryService.buildSummaryGrid(params, function (err, grid) {
     if(err) {
       req.app.locals.log.error(err);

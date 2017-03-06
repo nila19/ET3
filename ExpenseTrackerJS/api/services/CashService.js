@@ -3,82 +3,33 @@
 const async = require('async');
 const accounts = require('../models/Accounts')();
 const transactions = require('../models/Transactions')();
-
-const accts = {from: null, to: null};
 let param = null;
 
 //* *************************************************//
 // this service transfers cash from one account to another.
-// params: {db, log, fromId, toId, amount, seq}
+// params: {db, log, from, to, amount, seq}
+// setp 2: move cash for both from & to accounts. If any of them is 0, ignore.
 const transferCash = function (params, next) {
   param = params;
 
-  async.series([getAccountsInfo, moveCash], function (err) {
-    logErr(param.log, err);
-    return next(err);
-  });
-};
-
-//* *************************************************//
-// step 1 : fetch from & to accounts info from DB
-const getAccountsInfo = function (next) {
-  async.parallel({
-    from: function (cb) {
-      if(!param.fromId) {
-        return cb();
-      }
-      getAccount(param.fromId, function (err, ac) {
-        accts.from = ac;
-        logErr(param.log, err);
-        return cb(err);
-      });
-    },
-    to: function (cb) {
-      if(!param.toId) {
-        return cb();
-      }
-      getAccount(param.toId, function (err, ac) {
-        accts.to = ac;
-        logErr(param.log, err);
-        return cb(err);
-      });
-    }
-  }, function (err) {
-    logErr(param.log, err);
-    return next(err);
-  });
-};
-
-// step 1.1 : fetches account info from DB
-const getAccount = function (id, next) {
-  accounts.findById(param.db, id).then((doc) => {
-    return next(null, doc);
-  }).catch((err) => {
-    logErr(param.log, err);
-    return next(err);
-  });
-};
-
-// setp 2: move cash for both from & to accounts. If any of them is 0, ignore.
-const moveCash = function (next) {
-  async.parallel({
+  async.series({
     from: function (cb) {
       // if acct is 0, ignore.
-      if(!param.fromId) {
+      if(!param.from || !param.from.id) {
         return cb();
       }
       // for fromAccount negate the amount.
-      updateAccount(accts.from, (param.amount * -1), param.seq, function cb(err) {
+      updateAccount(param.from, (param.amount * -1), param.seq, function (err) {
         logErr(param.log, err);
         return cb(err);
       });
     },
     to: function (cb) {
       // if acct is 0, ignore.
-      if(!param.toId) {
+      if(!param.to || !param.to.id) {
         return cb();
       }
-      updateAccount(accts.to, param.amount, param.seq, function cb(err) {
+      updateAccount(param.to, param.amount, param.seq, function (err) {
         logErr(param.log, err);
         return cb(err);
       });
@@ -161,5 +112,5 @@ const logErr = function (log, err) {
 };
 
 module.exports = {
-  transferCash: transferCash,
+  transferCash: transferCash
 };
