@@ -12,7 +12,7 @@
     const TEN = 10;
 
     const loadingComplete = function () {
-      console.log('@ StartupService: Loading startup components COMPLETED...');
+      // console.log('@ StartupService: Loading startup components COMPLETED...');
       ms.data.loading = false;
     };
     const loadEntryMonths = function (dt) {
@@ -126,13 +126,13 @@
       if (!data.loadInitiated) {
         ms.data.loading = true;
         data.loadInitiated = true;
-        console.log('@ StartupService: Loading startup components...');
+        // console.log('@ StartupService: Loading startup components...');
         connect();
       }
     };
     const loadOthers = function () {
       ms.data.loading = true;
-      console.log('@ StartupService: Loading items on city change...');
+      // console.log('@ StartupService: Loading items on city change...');
       getCategories(V.data.city);
     };
 

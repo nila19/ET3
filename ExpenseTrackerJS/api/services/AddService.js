@@ -9,14 +9,11 @@ const transactions = require('../models/Transactions')();
 const sequences = require('../models/Sequences')();
 const cashService = require('./CashService');
 
-let param = null;
-let data = null;
+let param = null; // {db, log}
+let data = null;  // {city, fromAccount, toAccount, category, description, amount, transDt, adjust, adhoc}
 let trans = null;
 
-// params: {log, db}
-// data: {}
 const addExpense = function (params, data1, next) {
-  // TODO Check if the city is active.
   param = params;
   data = data1;
 

@@ -31,13 +31,14 @@ Bills.prototype.findForCity = function (db, cityId, paidInd) {
   }
   return this.find(db, filter, {fields: {_id: 0}, sort: {billDt: -1}});
 };
-// TODO Unsed ???
-Bills.prototype.findForCityOpen = function (db, cityId) {
-  return this.find(db, {
-    cityId: cityId,
-    closed: false
-  }, {fields: {_id: 0}, sort: {billDt: -1}});
-};
+
+// unsed ???
+// bills.prototype.findForCityOpen = function (db, cityId) {
+//   return this.find(db, {
+//     cityId: cityId,
+//     closed: false
+//   }, {fields: {_id: 0}, sort: {billDt: -1}});
+// };
 
 // paidInd == null, get all; paidInd = 'N', getUnpaid only, paidInd = 'Y', getPaid only
 Bills.prototype.findForAcct = function (db, acctId, paidInd) {

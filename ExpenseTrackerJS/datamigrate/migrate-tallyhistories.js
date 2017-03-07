@@ -20,7 +20,7 @@ const migrate = function (sqlite, mongo, log, next) {
           acctId: row.ACCOUNT_ID,
           cityId: row.DATA_KEY,
           tallyDt: numeral(row.TALLY_DATE).value(),
-          balance: numeral(row.TALLY_BALANCE).value(),
+          balance: numeral(numeral(row.TALLY_BALANCE).format('0.00')).value(),
         };
 
         tallies.insert(mongo, tally);

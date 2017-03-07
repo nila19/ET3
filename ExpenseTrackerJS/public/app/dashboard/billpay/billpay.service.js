@@ -23,7 +23,7 @@
       us.showMsg('Bill Pay', 'success');
       bs.refreshBill(data.bill.id);
 			// add the newly added Expense to the top of the Expenselist..
-      elws.addItem(dt.id);
+      elws.addItem(dt.data.id);
 
       acs.refreshAccount(data.bill.account.id);
       acs.refreshAccount(data.account.id);

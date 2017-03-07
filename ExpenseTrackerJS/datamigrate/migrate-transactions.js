@@ -27,7 +27,7 @@ const migrate = function (sqlite, mongo, log, next) {
           entryMonth: row.ENTRY_MONTH,
           category: {id: numeral(row.CATEGORY_ID).value(), name: row.MAIN_CATEGORY + ' ~ ' + row.SUB_CATEGORY},
           description: row.DESCRIPTION,
-          amount: numeral(row.AMOUNT).value(),
+          amount: numeral(numeral(row.AMOUNT).format('0.00')).value(),
           transDt: row.TRANS_DATE,
           transMonth: row.TRANS_MONTH,
           seq: row.TRANS_SEQ,
@@ -44,8 +44,8 @@ const migrate = function (sqlite, mongo, log, next) {
             id: numeral(row.FROM_ACCOUNT_ID).value(),
             name: row.FROM_ACCOUNT_NAME,
             billId: numeral(row.FROM_BILL_ID).value() || 0,
-            balanceBf: numeral(row.FROM_BALANCE_BF).value(),
-            balanceAf: numeral(row.FROM_BALANCE_AF).value(),
+            balanceBf: numeral(numeral(row.FROM_BALANCE_BF).format('0.00')).value(),
+            balanceAf: numeral(numeral(row.FROM_BALANCE_AF).format('0.00')).value(),
           };
         } else {
           trans.accounts.from = {id: 0, name: '', billId: 0, balanceBf: 0, balanceAf: 0};
@@ -55,8 +55,8 @@ const migrate = function (sqlite, mongo, log, next) {
             id: numeral(row.TO_ACCOUNT_ID).value(),
             name: row.TO_ACCOUNT_NAME,
             billId: numeral(row.TO_BILL_ID).value() || 0,
-            balanceBf: numeral(row.TO_BALANCE_BF).value(),
-            balanceAf: numeral(row.TO_BALANCE_AF).value(),
+            balanceBf: numeral(numeral(row.TO_BALANCE_BF).format('0.00')).value(),
+            balanceAf: numeral(numeral(row.TO_BALANCE_AF).format('0.00')).value(),
           };
         } else {
           trans.accounts.to = {id: 0, name: '', billId: 0, balanceBf: 0, balanceAf: 0};

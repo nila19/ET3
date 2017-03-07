@@ -25,19 +25,18 @@ const migrate = function (sqlite, mongo, log, next) {
           billDt: numeral(row.BILL_DT).value(),
           dueDt: numeral(row.DUE_DT).value(),
           closed: row.STATUS === 'C',
-          amount: numeral(row.BILL_AMT).value(),
-          balance: numeral(row.BILL_BALANCE).value(),
+          amount: numeral(numeral(row.BILL_AMT).format('0.00')).value(),
+          balance: numeral(numeral(row.BILL_BALANCE).format('0.00')).value(),
           payments: []
         };
         const billDt = moment(numeral(row.BILL_DT).value()).format('YYYY-MM-DD');
 
         bill.name = row.DESCRIPTION + ' : ' + billDt + ' #' + row.BILL_ID;
-
         if(row.BILL_PAID_DT || row.PAY_TRAN_ID) {
           bill.payments.push({
             id: row.PAY_TRAN_ID | 0,
             transDt: numeral(row.BILL_PAID_DT).value(),
-            amount: numeral(row.BILL_AMT).value()
+            amount: numeral(numeral(row.BILL_AMT).format('0.00')).value()
           });
         }
 

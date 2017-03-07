@@ -13,17 +13,17 @@
         <form name="modifyForm" novalidate="novalidate" ng-submit="$ctrl.modifyExpense(modifyForm.$valid)">
           <div class="form-group">
             <label class="control-label">From Account</label>
-            <input ng-model="$ctrl.data.expense.fromAccount" ng-change="$ctrl.clearBills()" type="text" class="form-control" uib-typeahead="acc as acc.name for acc in $ctrl.ta.accounts | filter:$viewValue" typeahead-show-hint="true" typeahead-min-length="0" typeahead-editable="false">
+            <input ng-model="$ctrl.data.expense.accounts.from" ng-change="$ctrl.clearBills()" type="text" class="form-control" uib-typeahead="acc as acc.name for acc in $ctrl.ta.accounts | filter:$viewValue" typeahead-show-hint="true" typeahead-min-length="0" typeahead-editable="false">
           </div>
           <div ng-if="$ctrl.data.expense.adjust" class="form-group">
             <label class="control-label">To Account</label>
-            <input ng-model="$ctrl.data.expense.toAccount" type="text" class="form-control" uib-typeahead="acc as acc.name for acc in $ctrl.ta.accounts | filter:$viewValue" typeahead-show-hint="true" typeahead-min-length="0" typeahead-editable="false">
+            <input ng-model="$ctrl.data.expense.accounts.to" type="text" class="form-control" uib-typeahead="acc as acc.name for acc in $ctrl.ta.accounts | filter:$viewValue" typeahead-show-hint="true" typeahead-min-length="0" typeahead-editable="false">
           </div>
-          <div ng-if="!$ctrl.data.expense.adjust && $ctrl.data.expense.fromAccount.billed" class="form-group">
+          <div ng-if="!$ctrl.data.expense.adjust && $ctrl.data.expense.accounts.from.billed" class="form-group">
             <div class="row">
               <div class="col-md-11">
                 <label class="control-label">Bill</label>
-                <input ng-model="$ctrl.data.expense.bill" type="text" class="form-control" uib-typeahead="bill as bill.name for bill in $ctrl.ta.bills | filter:$viewValue" typeahead-show-hint="true" typeahead-min-length="0" typeahead-editable="false">
+                <input ng-model="$ctrl.data.expense.accounts.from.billId" type="text" class="form-control" uib-typeahead="bill.id as bill.name for bill in $ctrl.ta.bills | filter:$viewValue" typeahead-show-hint="true" typeahead-min-length="0" typeahead-editable="false">
               </div>
               <div class="col-md-1">
                 <button type="button" ng-click="$ctrl.loadBills()" class="btn btn-primary btn-xs"><i class="material-icons">list</i></button>
@@ -46,7 +46,7 @@
               </div>
               <div class="col-md-4">
                 <label class="control-label">Date</label>
-                <input ng-model="$ctrl.data.expense.transDate" xx-date type="text" class="form-control" required data-provide="datepicker" data-date-format="dd-M-yyyy">
+                <input ng-model="$ctrl.data.expense.transDt" xx-date type="text" class="form-control" required data-provide="datepicker" data-date-format="dd-M-yyyy">
               </div>
               <div class="col-md-4">
                 <div ng-if="!$ctrl.data.expense.adjust">
@@ -79,11 +79,11 @@
         <form>
           <div class="form-group">
             <label class="control-label">From Account</label>
-            <input ng-model="$ctrl.data.expense.fromAccount.name" type="text" class="form-control" disabled="disabled">
+            <input ng-model="$ctrl.data.expense.accounts.from.name" type="text" class="form-control" disabled="disabled">
           </div>
           <div ng-if="$ctrl.data.expense.adjust" class="form-group">
             <label class="control-label">To Account</label>
-            <input ng-model="$ctrl.data.expense.toAccount.name" type="text" class="form-control" disabled="disabled">
+            <input ng-model="$ctrl.data.expense.accounts.to.name" type="text" class="form-control" disabled="disabled">
           </div>
           <div ng-if="!$ctrl.data.expense.adjust" class="form-group">
             <label class="control-label">Category</label>
@@ -101,7 +101,7 @@
               </div>
               <div class="col-md-4">
                 <label class="control-label">Date</label>
-                <input ng-model="$ctrl.data.expense.transDate" xx-date type="text" class="form-control" disabled="disabled">
+                <input ng-model="$ctrl.data.expense.transDt" xx-date type="text" class="form-control" disabled="disabled">
               </div>
               <div class="col-md-4">
                 <div ng-if="!$ctrl.data.expense.adjust">

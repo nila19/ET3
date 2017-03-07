@@ -68,11 +68,9 @@ Transactions.prototype = model('transactions');
 Transactions.prototype.findForCity = function (db, cityId) {
   return this.find(db, {cityId: cityId}, {fields: {_id: 0}, sort: {seq: -1}});
 };
-// TODO Unused ??
 Transactions.prototype.findForAcct = function (db, cityId, acctId, billId) {
   const filter = {
     cityId: cityId,
-    tallied: false,
   };
 
   if(billId) {

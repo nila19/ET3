@@ -1,5 +1,3 @@
-// TODO Fix this..
-/* eslint no-unused-vars: "off" */
 'use strict';
 
 const numeral = require('numeral');
@@ -27,7 +25,7 @@ const doSummary = function (req, resp) {
 };
 
 const doChart = function (req, resp) {
-  // TODO create a service.
+  // TODO implement doChart function.
 };
 
 module.exports = {

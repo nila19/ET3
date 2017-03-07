@@ -34,7 +34,7 @@
     }],
     "prefer-destructuring": "off",
     "no-magic-numbers": ["error", {
-      "ignore": [0, 1, 2, 3, 4, 5, -1, 11, 31],
+      "ignore": [0, 1, 2, 3, 4, 5, -1, 11, 31, 0.01, -0.01],
       "ignoreArrayIndexes": true,
       "enforceConst": true,
       "detectObjects": true

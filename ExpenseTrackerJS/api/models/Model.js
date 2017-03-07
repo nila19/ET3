@@ -11,6 +11,9 @@ Model.prototype = {
   findOne: function (db, filter, options) {
     return db.get(this.collection).findOne(filter, options || {fields: {_id: 0}});
   },
+  findOneAndUpdate: function (db, filter, mod, options) {
+    return db.get(this.collection).findOneAndUpdate(filter, mod, options || {fields: {_id: 0}, returnOriginal: false});
+  },
   find: function (db, filter, options) {
     return db.get(this.collection).find(filter, options || {fields: {_id: 0}});
   },

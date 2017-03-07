@@ -12,8 +12,8 @@
       vm.ta = V.data;
     };
 
-    const payBill = function (valid) {
-      if (valid) {
+    const payBill = function (form) {
+      if (form.$valid) {
         bs.data.loading = true;
         bps.payBill();
         $('#model_BillPay').modal('hide');

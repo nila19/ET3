@@ -26,14 +26,14 @@ const migrate = function (sqlite, mongo, log, next) {
           id: row.ACCOUNT_ID,
           cityId: row.DATA_KEY,
           name: row.DESCRIPTION,
-          balance: numeral(row.BALANCE_AMT).value(),
+          balance: numeral(numeral(row.BALANCE_AMT).format('0.00')).value(),
           cash: row.TYPE === 'C',
           active: row.STATUS === 'A',
           billed: row.BILL_OPTION === 'Y',
           icon: row.IMAGE_CODE,
           color: row.BG_COLOR,
           seq: row.DISPLAY_ORDER,
-          tallyBalance: numeral(row.TALLY_BALANCE).value() || 0,
+          tallyBalance: numeral(numeral(row.TALLY_BALANCE).format('0.00')).value() || 0,
           tallyDt: numeral(row.TALLY_DATE).value() || 0,
           closingDay: numeral(row.CLOSING_DAY).value() || 0,
           dueDay: numeral(row.DUE_DAY).value() || 0,
@@ -46,13 +46,13 @@ const migrate = function (sqlite, mongo, log, next) {
               id: numeral(row.LAST_BILL_ID).value() || 0,
               billDt: numeral(row.LAST_BILL_DT).value() || 0,
               dueDt: numeral(row.LAST_DUE_DT).value() || 0,
-              amount: numeral(row.LAST_BILL_AMT).value() || 0
+              amount: numeral(numeral(row.LAST_BILL_AMT).format('0.00')).value() || 0
             },
             open: {
               id: numeral(row.OPEN_BILL_ID).value() || 0,
               billDt: numeral(row.OPEN_BILL_DT).value() || 0,
               dueDt: numeral(row.OPEN_DUE_DT).value() || 0,
-              amount: numeral(row.OPEN_BILL_AMT).value() || 0
+              amount: numeral(numeral(row.OPEN_BILL_AMT).format('0.00')).value() || 0
             }
           };
         }
