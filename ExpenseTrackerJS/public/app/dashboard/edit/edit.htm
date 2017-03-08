@@ -23,7 +23,7 @@
             <div class="row">
               <div class="col-md-11">
                 <label class="control-label">Bill</label>
-                <input ng-model="$ctrl.data.expense.accounts.from.billId" type="text" class="form-control" uib-typeahead="bill.id as bill.name for bill in $ctrl.ta.bills | filter:$viewValue" typeahead-show-hint="true" typeahead-min-length="0" typeahead-editable="false">
+                <input ng-model="$ctrl.data.expense.bill" type="text" class="form-control" uib-typeahead="bill as bill.name for bill in $ctrl.ta.bills | filter:$viewValue" typeahead-show-hint="true" typeahead-min-length="0" typeahead-editable="false">
               </div>
               <div class="col-md-1">
                 <button type="button" ng-click="$ctrl.loadBills()" class="btn btn-primary btn-xs"><i class="material-icons">list</i></button>

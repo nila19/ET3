@@ -18,10 +18,13 @@ const transferCash = function (params, next) {
       if(!param.from || !param.from.id) {
         return cb();
       }
-      // for fromAccount negate the amount.
-      updateAccount(param.from, (param.amount * -1), param.seq, function (err) {
+      // for account.from negate the amount.
+      getAccount(param.from.id, function (err, acct) {
         logErr(param.log, err);
-        return cb(err);
+        updateAccount(acct, (param.amount * -1), param.seq, function (err) {
+          logErr(param.log, err);
+          return cb(err);
+        });
       });
     },
     to: function (cb) {
@@ -29,9 +32,12 @@ const transferCash = function (params, next) {
       if(!param.to || !param.to.id) {
         return cb();
       }
-      updateAccount(param.to, param.amount, param.seq, function (err) {
+      getAccount(param.to.id, function (err, acct) {
         logErr(param.log, err);
-        return cb(err);
+        updateAccount(acct, param.amount, param.seq, function (err) {
+          logErr(param.log, err);
+          return cb(err);
+        });
       });
     }
   }, function (err) {
@@ -40,14 +46,21 @@ const transferCash = function (params, next) {
   });
 };
 
+// step 3.5: fetch account info from DB
+const getAccount = function (id, next) {
+  accounts.findById(param.db, id).then((acct) => {
+    return next(null, acct);
+  }).catch((err) => {
+    logErr(param.log, err);
+    return next(err);
+  });
+};
+
 // step 2.1 : update the balance amount into DB.
 const updateAccount = function (acct, amount, seq, next) {
-  let amt = amount;
+  const amt = acct.cash ? amount : amount * -1;
 
-  if(!acct.cash) {
-    amt = amount * -1;
-  }
-  accounts.update(param.db, {id: acct.id}, {$set: {balance: (acct.balance + amt)}}).then(() => {
+  accounts.update(param.db, {id: acct.id}, {$inc: {balance: amt}}).then(() => {
     // if seq = 0, it is an 'add'. ignore the updateTransItemBalances step. that's used only for modify.
     if(!seq) {
       return next();

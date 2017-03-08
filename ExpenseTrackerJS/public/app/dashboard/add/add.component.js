@@ -16,7 +16,7 @@
     };
     const addExpense = function (valid) {
       if (valid) {
-        if (as.data.adjust && (isNull(as.data.fromAccount) && isNull(as.data.toAccount))) {
+        if (as.data.adjust && (isNull(as.data.accounts.from) && isNull(as.data.accounts.to))) {
           us.show('Select at least one of From, To accounts!!', C.MSG.WARNING);
           return false;
         }

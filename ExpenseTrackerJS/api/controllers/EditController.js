@@ -4,6 +4,7 @@ const moment = require('moment');
 const tallyservice = require('../services/TallyService');
 const addservice = require('../services/AddService');
 const deleteservice = require('../services/DeleteService');
+const modifyservice = require('../services/ModifyService');
 const billpayservice = require('../services/BillPayService');
 const error = 1000;
 
@@ -42,7 +43,19 @@ const addExpense = function (req, resp) {
 };
 
 const modifyExpense = function (req, resp) {
-  // check if city is editable.
+  const param = {
+    db: req.app.locals.db,
+    log: req.app.locals.log
+  };
+
+  modifyservice.modifyExpense(param, req.body, function (err) {
+    if(err) {
+      param.log.error(err);
+      return resp.json({code: error});
+    } else {
+      return resp.json({code: 0});
+    }
+  });
 };
 
 const deleteExpense = function (req, resp, transId) {

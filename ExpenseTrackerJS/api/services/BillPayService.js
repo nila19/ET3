@@ -2,7 +2,6 @@
 
 const async = require('async');
 const addservice = require('./AddService');
-const accounts = require('../models/Accounts')();
 const bills = require('../models/Bills')();
 
 let param = null;
@@ -12,8 +11,7 @@ const payBill = function (params, data1, next) {
   param = params;
   data = data1;
 
-  async.waterfall([checkCityEditable, getAccountInfo, buildTransInput, addTransaction,
-    updateBill], function (err, trans) {
+  async.waterfall([checkCityEditable, buildTransInput, addTransaction, updateBill], function (err, trans) {
     logErr(param.log, err);
     return next(err, trans);
   });
@@ -25,24 +23,12 @@ const checkCityEditable = function (next) {
   return next(null);
 };
 
-//* *************************************************//
-// step 7 : fetch from & to accounts info from DB
-const getAccountInfo = function (next) {
-  accounts.findById(param.db, data.bill.account.id).then((acct) => {
-    return next(null, acct);
-  }).catch((err) => {
-    logErr(param.log, err);
-    return next(err);
-  });
-};
-
 // setp 2: copy transaction data from input to transaction record.
-// {city, fromAccount, toAccount, category, description, amount, transDt, adjust, adhoc}
-const buildTransInput = function (acct, next) {
+// {city, account.from, account.to, category, description, amount, transDt, adjust, adhoc}
+const buildTransInput = function (next) {
   const input = {
     city: data.city,
-    fromAccount: data.account,
-    toAccount: acct,
+    accounts: {from: data.account, to: data.bill.account},
     category: null,
     description: 'CC Bill Payment',
     amount: data.bill.balance,

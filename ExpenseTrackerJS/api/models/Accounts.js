@@ -16,7 +16,10 @@ const schema = {
   tallyDt: 'timestamp',
   closingDay: 'int',
   dueDay: 'int',
-  bills: {last: {}, open: {}},
+  bills: {
+    last: {},
+    open: {id: 'int', billDt: 'timestamp', dueDt: 'timestamp', amount: 'float'}
+  },
   FLAGS: {},
 };
 

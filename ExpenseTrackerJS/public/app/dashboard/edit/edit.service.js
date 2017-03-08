@@ -25,32 +25,12 @@
     const loadData = function (dt) {
       data.expense = dt;
 			// initialize Bills TA.
-      if (data.expense.accounts.from.id) {
+      if (data.expense.accounts.from.billed) {
         loadBills();
       }
     };
 
 		// modify Expense
-    const buildModifyInput = function () {
-      const input = {
-        city: data.expense.city,
-        id: data.expense.id,
-        fromAccount: data.expense.fromAccount,
-        description: data.expense.description,
-        amount: data.expense.amount,
-        transDate: data.expense.transDate,
-        adjust: data.expense.adjust
-      };
-
-      if (data.expense.adjust) {
-        input.toAccount = data.expense.toAccount;
-      } else {
-        input.bill = data.expense.bill;
-        input.category = data.expense.category;
-        input.adhoc = data.expense.adhoc;
-      }
-      return input;
-    };
     const loadModifyData = function () {
       data.loading = false;
       elws.modifyItem(data.expense.id);
@@ -66,7 +46,7 @@
       $('#model_Modify').modal('hide');
     };
     const modifyExpense = function () {
-      aj.post('/edit/modify', buildModifyInput(), loadModifyData);
+      aj.post('/edit/modify', data.expense, loadModifyData);
       data.loading = true;
     };
 

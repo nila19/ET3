@@ -13,15 +13,15 @@
     };
     const modifyExpense = function (valid) {
       if (valid) {
-        if (es.data.expense.adjust && (isNull(es.data.expense.fromAccount) && isNull(es.data.expense.toAccount))) {
+        if (es.data.expense.adjust && (isNull(es.data.expense.accounts.from) && isNull(es.data.expense.accounts.to))) {
           us.show('1 - Mandatory fields are empty!!', C.MSG.WARNING);
           return false;
         }
-        if (!es.data.expense.adjust && (isNull(es.data.expense.fromAccount) || isNull(es.data.expense.category))) {
+        if (!es.data.expense.adjust && (isNull(es.data.expense.accounts.from) || isNull(es.data.expense.category))) {
           us.show('2 - Mandatory fields are empty!!', C.MSG.WARNING);
           return false;
         }
-        if (!es.data.expense.adjust && es.data.expense.fromAccount.billed && isNull(es.data.expense.bill)) {
+        if (!es.data.expense.adjust && es.data.expense.accounts.from.billed && isNull(es.data.expense.bill)) {
           us.show('3 - Mandatory fields are empty!!', C.MSG.WARNING);
           return false;
         }
@@ -32,7 +32,7 @@
       return !e || !e.id;
     };
     const loadBills = function () {
-      if (!isNull(es.data.expense.fromAccount)) {
+      if (!isNull(es.data.expense.accounts.from) && es.data.expense.accounts.from.billed) {
         es.loadBills();
       }
     };

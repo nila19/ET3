@@ -23,18 +23,17 @@ const schema = {
     from: {
       id: 'int',
       name: 'string',
-      billId: 'int',
       balanceBf: 'float default-0',
       balanceAf: 'float default-0',
     },
     to: {
       id: 'int',
       name: 'string',
-      billId: 'int',
       balanceBf: 'float default-0',
       balanceAf: 'float default-0',
     }
   },
+  bill: {id: 'int', name: 'string'},
   adhoc: 'boolean',
   adjust: 'boolean',
   status: 'boolean',
@@ -74,11 +73,20 @@ Transactions.prototype.findForAcct = function (db, cityId, acctId, billId) {
   };
 
   if(billId) {
-    filter.$or = [{'accounts.from.billId': billId}, {'accounts.to.billId': billId}];
+    filter['bill.id'] = billId;
   } else {
     filter.$or = [{'accounts.from.id': acctId}, {'accounts.to.id': acctId}];
   }
   return this.find(db, filter, {fields: {_id: 0}, sort: {seq: -1}});
+};
+Transactions.prototype.findPrevious = function (db, cityId, acctId, seq) {
+  const filter = {
+    cityId: cityId,
+    seq: {$lt: seq}
+  };
+
+  filter.$or = [{'accounts.from.id': acctId}, {'accounts.to.id': acctId}];
+  return this.findOne(db, filter, {fields: {_id: 0}, sort: {seq: -1}});
 };
 Transactions.prototype.findForSearch = function (db, search) {
   // dummy usage
@@ -106,7 +114,7 @@ Transactions.prototype.buildSearchQueryOne = function (search, filter) {
   }
   // bill id
   if(search.billId) {
-    filter['accounts.from.billId'] = numeral(search.billId).value();
+    filter['bill.id'] = numeral(search.billId).value();
   }
   // category id
   if(search.catId) {
@@ -199,6 +207,33 @@ Transactions.prototype.findAllTransMonths = function (db, cityId) {
 Transactions.prototype.findAllDescriptions = function (db, cityId) {
   return db.get(this.collection).aggregate([{$match: {cityId: cityId}},
     {$group: {_id: '$description', count: {$sum: 1}}}, {$sort: {count: -1}}]);
+};
+Transactions.prototype.updateTrans = function (db, trans) {
+  const filter = {
+    cityId: trans.cityId,
+    id: trans.id
+  };
+
+  const mod = {
+    $set: {
+      category: trans.category,
+      description: trans.description,
+      amount: trans.amount,
+      transDt: trans.transDt,
+      transMonth: trans.transMonth,
+      adhoc: trans.adhoc,
+      adjust: trans.adjust,
+      tallied: trans.tallied,
+      tallyDt: trans.tallyDt,
+      accounts: trans.accounts
+    }
+  };
+
+  if(trans.bill) {
+    mod.$set.bill = trans.bill;
+  }
+
+  return this.update(db, filter, mod);
 };
 
 module.exports = function () {

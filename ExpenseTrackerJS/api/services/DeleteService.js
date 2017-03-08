@@ -22,6 +22,7 @@ const deleteExpense = function (params, next) {
 // setp 1: check city is editable.
 const checkCityEditable = function (next) {
   // TODO implement City editable check..
+  // TODO check if both accounts are active ??
   return next(null);
 };
 
@@ -80,18 +81,18 @@ const getAccount = function (id, next) {
 
 // step 4: if the expense has been included in a bill, deduct the bill amount & balance.
 const modifyBillBalance = function (trans, accts, next) {
-  if(!trans.accounts.from.billId) {
+  if(!trans.bill) {
     return next(null, trans, accts);
   }
-  updateBill(trans.accounts.from.billId, trans.amount, function (err) {
+  updateBill(trans.bill.id, trans.amount, function (err) {
     logErr(param.log, err);
     return next(err, trans, accts);
   });
 };
 
 // step 4.5: decrement the bill amount & balance with the trans amount.
-const updateBill = function (billId, amount, next) {
-  bills.findOneAndUpdate(param.db, {id: billId}, {$inc: {amount: -amount, balance: -amount}}).then(() => {
+const updateBill = function (id, amount, next) {
+  bills.findOneAndUpdate(param.db, {id: id}, {$inc: {amount: -amount, balance: -amount}}).then(() => {
     return next();
   }).catch((err) => {
     logErr(param.log, err);
