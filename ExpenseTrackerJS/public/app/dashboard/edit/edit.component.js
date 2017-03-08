@@ -13,6 +13,13 @@
     };
     const modifyExpense = function (valid) {
       if (valid) {
+        // clear bill if it does not belong to the same from account.
+        if(es.data.expense.accounts.from.id && es.data.expense.bill) {
+          if(es.data.expense.accounts.from.id !== es.data.expense.bill.account.id) {
+            delete es.data.expense.bill;
+          }
+        }
+
         if (es.data.expense.adjust && (isNull(es.data.expense.accounts.from) && isNull(es.data.expense.accounts.to))) {
           us.show('1 - Mandatory fields are empty!!', C.MSG.WARNING);
           return false;

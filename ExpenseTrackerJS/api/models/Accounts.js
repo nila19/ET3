@@ -18,7 +18,7 @@ const schema = {
   dueDay: 'int',
   bills: {
     last: {},
-    open: {id: 'int', billDt: 'timestamp', dueDt: 'timestamp', amount: 'float'}
+    open: {id: 'int', name: 'string', billDt: 'timestamp', dueDt: 'timestamp', amount: 'float'}
   },
   FLAGS: {},
 };

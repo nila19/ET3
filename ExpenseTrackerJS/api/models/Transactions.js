@@ -33,7 +33,10 @@ const schema = {
       balanceAf: 'float default-0',
     }
   },
-  bill: {id: 'int', name: 'string'},
+  bill: {
+    id: 'int',
+    name: 'string',
+    account: {id: 'int', name: 'string'}},
   adhoc: 'boolean',
   adjust: 'boolean',
   status: 'boolean',
@@ -231,6 +234,8 @@ Transactions.prototype.updateTrans = function (db, trans) {
 
   if(trans.bill) {
     mod.$set.bill = trans.bill;
+  } else {
+    mod.$unset.bill = '';
   }
 
   return this.update(db, filter, mod);

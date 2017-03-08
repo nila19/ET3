@@ -67,7 +67,8 @@ const migrate = function (sqlite, mongo, log, next) {
 
           trans.bill = {
             id: numeral(row.FROM_BILL_ID).value(),
-            name: billname
+            name: billname,
+            account: {id: trans.accounts.from.id, name: trans.accounts.from.name}
           };
         }
 

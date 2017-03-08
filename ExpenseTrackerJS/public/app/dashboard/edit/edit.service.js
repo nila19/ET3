@@ -24,6 +24,10 @@
 		// load Page Data
     const loadData = function (dt) {
       data.expense = dt;
+      // refresh the 'from' account from TA so what it will have 'billed' attribute.
+      if(data.expense.accounts.from.id) {
+        data.expense.accounts.from = us.getObjectOf(V.data.accounts, data.expense.accounts.from.id);
+      }
 			// initialize Bills TA.
       if (data.expense.accounts.from.billed) {
         loadBills();

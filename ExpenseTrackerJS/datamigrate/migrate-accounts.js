@@ -1,8 +1,7 @@
 'use strict';
 
+const moment = require('moment');
 const numeral = require('numeral');
-// const ts = require('moment');
-
 const accounts = require('../api/models/Accounts')();
 
 numeral.defaultFormat('0');
@@ -44,17 +43,29 @@ const migrate = function (sqlite, mongo, log, next) {
           acct.bills = {
             last: {
               id: numeral(row.LAST_BILL_ID).value() || 0,
+              name: acct.name + ' #0',
               billDt: numeral(row.LAST_BILL_DT).value() || 0,
               dueDt: numeral(row.LAST_DUE_DT).value() || 0,
               amount: numeral(numeral(row.LAST_BILL_AMT).format('0.00')).value() || 0
             },
             open: {
               id: numeral(row.OPEN_BILL_ID).value() || 0,
+              name: acct.name + ' #0',
               billDt: numeral(row.OPEN_BILL_DT).value() || 0,
               dueDt: numeral(row.OPEN_DUE_DT).value() || 0,
               amount: numeral(numeral(row.OPEN_BILL_AMT).format('0.00')).value() || 0
             }
           };
+          if(acct.bills.last.id) {
+            const billDt = moment(acct.bills.last.billDt).format('YYYY-MM-DD');
+
+            acct.bills.last.name = acct.name + ' : ' + billDt + ' #' + acct.bills.last.id;
+          }
+          if(acct.bills.open.id) {
+            const billDt = moment(acct.bills.open.billDt).format('YYYY-MM-DD');
+
+            acct.bills.open.name = acct.name + ' : ' + billDt + ' #' + acct.bills.open.id;
+          }
         }
 
         accounts.insert(mongo, acct);

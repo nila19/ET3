@@ -117,7 +117,8 @@ const copyAccountsData = function (next) {
 
       trans.bill = {
         id: from.bills.open.id,
-        name: billname
+        name: billname,
+        account: {id: from.id, name: from.name}
       };
     }
   } else {

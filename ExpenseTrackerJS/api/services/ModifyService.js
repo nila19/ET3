@@ -214,7 +214,8 @@ const copyTransData = function (next) {
   if(data.bill) {
     trans.bill = {
       id: data.bill.id,
-      name: data.bill.name
+      name: data.bill.name,
+      account: {id: data.accounts.from.id, name: data.accounts.from.name}
     };
   }
   trans.description = sugar.String(data.description).capitalize(false, true).raw;
