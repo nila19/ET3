@@ -24,7 +24,6 @@ const checkCityEditable = function (next) {
 };
 
 // setp 2: copy transaction data from input to transaction record.
-// {city, account.from, account.to, category, description, amount, transDt, adjust, adhoc}
 const buildTransInput = function (next) {
   const input = {
     city: data.city,

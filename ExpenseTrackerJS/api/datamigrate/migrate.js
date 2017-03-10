@@ -1,10 +1,10 @@
 
 const async = require('async');
 const sqlite3 = require('sqlite3').verbose();
-const mongoconfig = require('../api/config/mongodb-config');
+const mongoconfig = require('../config/mongodb-config');
 
-const config = require('../api/config/config');
-const log = require('../api/utils/logger');
+const config = require('../config/config');
+const log = require('../utils/logger');
 const accounts = require('./migrate-accounts');
 const bills = require('./migrate-bills');
 const categories = require('./migrate-categories');

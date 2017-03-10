@@ -1,7 +1,9 @@
 'use strict';
 
+const moment = require('moment');
 const numeral = require('numeral');
-const tallies = require('../api/models/TallyHistories')();
+const tallies = require('../models/TallyHistories')();
+const fmt = require('../config/formats');
 
 numeral.defaultFormat('0');
 numeral.nullFormat('');
@@ -11,15 +13,16 @@ const migrate = function (sqlite, mongo, log, next) {
     let count = 0;
 
     log.info('Tally Histories data started...');
-    sqlite.each('SELECT * FROM TALLY_HISTORY', function (err, row) {
+    sqlite.each('SELECT A.*, B.DESCRIPTION FROM TALLY_HISTORY A, ACCOUNT B WHERE A.ACCOUNT_ID = B.ACCOUNT_ID',
+    function (err, row) {
       if(err) {
         log.error(err);
       } else {
         const tally = {
           id: row.TALLY_SEQ,
-          acctId: row.ACCOUNT_ID,
+          account: {id: row.ACCOUNT_ID, name: row.DESCRIPTION},
           cityId: row.DATA_KEY,
-          tallyDt: numeral(row.TALLY_DATE).value(),
+          tallyDt: moment(numeral(row.TALLY_DATE).value()).format(fmt.YYYYMMDDHHmmss),
           balance: numeral(numeral(row.TALLY_BALANCE).format('0.00')).value(),
         };
 

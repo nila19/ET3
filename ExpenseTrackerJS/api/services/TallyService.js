@@ -1,14 +1,19 @@
 'use strict';
 
+const moment = require('moment');
 const async = require('async');
 const accounts = require('../models/Accounts')();
 const transactions = require('../models/Transactions')();
 const tallyhistories = require('../models/TallyHistories')();
 const sequences = require('../models/Sequences')();
+const fmt = require('../config/formats');
+
 let parms = null;
+let tallyDt = null;
 
 const tally = function (param, next) {
   parms = param;
+  tallyDt = moment().format(fmt.YYYYMMDDHHmmss);
 
   async.waterfall([fetchAccount, checkCityEditable, updateAccount, fetchTallySeq,
     insertTallyHistory, updateTrans], function (err) {
@@ -32,7 +37,7 @@ const checkCityEditable = function (account, next) {
   return next(null, account);
 };
 const updateAccount = function (account, next) {
-  accounts.update(parms.db, {id: account.id}, {$set: {tallyBalance: account.balance, tallyDt: parms.now}}).then(() => {
+  accounts.update(parms.db, {id: account.id}, {$set: {tallyBalance: account.balance, tallyDt: tallyDt}}).then(() => {
     return next(null, account);
   }).catch((err) => {
     parms.log.error(err);
@@ -48,13 +53,19 @@ const fetchTallySeq = function (account, next) {
   });
 };
 const insertTallyHistory = function (account, seq, next) {
-  tallyhistories.insert(parms.db, {id: seq.seq, acctId: account.id, cityId: account.cityId, tallyDt: parms.now,
-    balance: account.balance}).then(() => {
-      return next(null, account);
-    }).catch((err) => {
-      parms.log.error(err);
-      return next(err);
-    });
+  const tallyObj = {
+    id: seq.seq,
+    account: {id: account.id, name: account.name},
+    cityId: account.cityId,
+    tallyDt: tallyDt,
+    balance: account.balance};
+
+  tallyhistories.insert(parms.db, tallyObj).then(() => {
+    return next(null, account);
+  }).catch((err) => {
+    parms.log.error(err);
+    return next(err);
+  });
 };
 const updateTrans = function (account, next) {
   transactions.findForAcct(parms.db, account.cityId, account.id).then((trans) => {
@@ -62,7 +73,7 @@ const updateTrans = function (account, next) {
       if(tran.tallied) {
         return cb();
       }
-      transactions.update(parms.db, {id: tran.id}, {$set: {tallied: true, tallyDt: parms.now}}).then(() => {
+      transactions.update(parms.db, {id: tran.id}, {$set: {tallied: true, tallyDt: tallyDt}}).then(() => {
         return cb();
       }).catch((err) => {
         parms.log.error(err);

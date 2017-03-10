@@ -2,7 +2,9 @@
 
 const moment = require('moment');
 const numeral = require('numeral');
-const accounts = require('../api/models/Accounts')();
+const accounts = require('../models/Accounts')();
+const bills = require('../models/Bills')();
+const fmt = require('../config/formats');
 
 numeral.defaultFormat('0');
 numeral.nullFormat('');
@@ -33,7 +35,7 @@ const migrate = function (sqlite, mongo, log, next) {
           color: row.BG_COLOR,
           seq: row.DISPLAY_ORDER,
           tallyBalance: numeral(numeral(row.TALLY_BALANCE).format('0.00')).value() || 0,
-          tallyDt: numeral(row.TALLY_DATE).value() || 0,
+          tallyDt: moment(numeral(row.TALLY_DATE).value()).format(fmt.YYYYMMDDHHmmss) || 0,
           closingDay: numeral(row.CLOSING_DAY).value() || 0,
           dueDay: numeral(row.DUE_DAY).value() || 0,
           bills: null
@@ -43,29 +45,19 @@ const migrate = function (sqlite, mongo, log, next) {
           acct.bills = {
             last: {
               id: numeral(row.LAST_BILL_ID).value() || 0,
-              name: acct.name + ' #0',
-              billDt: numeral(row.LAST_BILL_DT).value() || 0,
-              dueDt: numeral(row.LAST_DUE_DT).value() || 0,
+              billDt: moment(numeral(row.LAST_BILL_DT).value()).format(fmt.YYYYMMDD) || 0,
+              dueDt: moment(numeral(row.LAST_DUE_DT).value()).format(fmt.YYYYMMDD) || 0,
               amount: numeral(numeral(row.LAST_BILL_AMT).format('0.00')).value() || 0
             },
             open: {
               id: numeral(row.OPEN_BILL_ID).value() || 0,
-              name: acct.name + ' #0',
-              billDt: numeral(row.OPEN_BILL_DT).value() || 0,
-              dueDt: numeral(row.OPEN_DUE_DT).value() || 0,
+              billDt: moment(numeral(row.OPEN_BILL_DT).value()).format(fmt.YYYYMMDD) || 0,
+              dueDt: moment(numeral(row.OPEN_DUE_DT).value()).format(fmt.YYYYMMDD) || 0,
               amount: numeral(numeral(row.OPEN_BILL_AMT).format('0.00')).value() || 0
             }
           };
-          if(acct.bills.last.id) {
-            const billDt = moment(acct.bills.last.billDt).format('YYYY-MM-DD');
-
-            acct.bills.last.name = acct.name + ' : ' + billDt + ' #' + acct.bills.last.id;
-          }
-          if(acct.bills.open.id) {
-            const billDt = moment(acct.bills.open.billDt).format('YYYY-MM-DD');
-
-            acct.bills.open.name = acct.name + ' : ' + billDt + ' #' + acct.bills.open.id;
-          }
+          acct.bills.last.name = bills.getName(acct, acct.bills.last);
+          acct.bills.open.name = bills.getName(acct, acct.bills.open);
         }
 
         accounts.insert(mongo, acct);

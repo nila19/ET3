@@ -4,11 +4,12 @@ const dt = require('moment');
 const sugar = require('sugar');
 const numeral = require('numeral');
 
-const mongo = require('../api/config/mongodb-config');
-const log = require('../api/utils/logger');
-const trans = require('../api/models/Transactions')();
-const bills = require('../api/models/Bills')();
-const monthUtils = require('../api/utils/month-utils');
+const mongo = require('../config/mongodb-config');
+const log = require('../utils/logger');
+const trans = require('../models/Transactions')();
+const bills = require('../models/Bills')();
+const monthUtils = require('../utils/month-utils');
+const billcloser = require('../services/BillCloserService');
 
 const queryTrans = function (mongo, log, next) {
   log.info('Query transactions started...');
@@ -67,12 +68,19 @@ const getTransMonths = function (mongo, log, next) {
   });
 };
 
+const closer = function (db, log, next) {
+  billcloser.execute({db: db, log: log}, next);
+};
+
 // debugger;
 const query = function () {
   mongo.connect(log, function (mongo) {
-    queryTrans(mongo, log, function (err) {
+    closer(mongo, log, function (err) {
+    // queryTrans(mongo, log, function (err) {
     // getTransMonths(mongo, log, function (err) {
-      log.error(err);
+      if(err) {
+        log.error(err);
+      }
       mongo.close();
     });
   });

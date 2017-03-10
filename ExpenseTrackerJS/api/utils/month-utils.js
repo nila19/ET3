@@ -3,6 +3,8 @@
 const moment = require('moment');
 const numeral = require('numeral');
 const async = require('async');
+const fmt = require('../config/formats');
+
 let dates = null;
 
 // utility methods to generate appropriate json..
@@ -10,18 +12,18 @@ const getMonth = function (date) {
   return {
     id: date,
     aggregate: false,
-    name: moment(date).format('MMM-YY'),
-    seq: numeral(moment(date).format('YYYYMM')).value(),
-    year: numeral(moment(date).format('YYYY')).value()
+    name: moment(date).format(fmt.MMMYY),
+    seq: numeral(moment(date).format(fmt.YYYYMM)).value(),
+    year: numeral(moment(date).format(fmt.YYYY)).value()
   };
 };
 const getYear = function (date) {
   return {
     id: date,
     aggregate: true,
-    name: moment(date).format('YYYY'),
-    seq: numeral(moment(date).format('YYYYMM')).value() + 1,
-    year: numeral(moment(date).format('YYYY')).value()
+    name: moment(date).format(fmt.YYYY),
+    seq: numeral(moment(date).format(fmt.YYYYMM)).value() + 1,
+    year: numeral(moment(date).format(fmt.YYYY)).value()
   };
 };
 // step 2.0 - build the months array structure.
@@ -48,7 +50,7 @@ const buildMonths = function (next) {
 
 // step 2.2 - check if current month is in the list, if not add it.
 const addCurrentMonth = function (months, next) {
-  const currMonth = getMonth(moment().valueOf());
+  const currMonth = getMonth(moment().format(fmt.YYYYMMDD));
   let currMonthPresent = false;
 
   months.forEach(function (month) {
@@ -68,7 +70,7 @@ const addYears = function (months, next) {
 
   months.forEach(function (month) {
     if(month.year) {
-      years[month.year] = moment().year(month.year).endOf('year').startOf('day').valueOf();
+      years[month.year] = moment().year(month.year).endOf('year').startOf('day').format(fmt.YYYYMMDD);
     }
   });
   for (const year in years) {

@@ -1,13 +1,13 @@
 'use strict';
 
 const async = require('async');
-const accounts = require('../api/models/Accounts')();
-const bills = require('../api/models/Bills')();
-const cities = require('../api/models/Cities')();
-const categories = require('../api/models/Categories')();
-const tallyhistories = require('../api/models/TallyHistories')();
-const transactions = require('../api/models/Transactions')();
-const sequences = require('../api/models/Sequences')();
+const accounts = require('../models/Accounts')();
+const bills = require('../models/Bills')();
+const cities = require('../models/Cities')();
+const categories = require('../models/Categories')();
+const tallyhistories = require('../models/TallyHistories')();
+const transactions = require('../models/Transactions')();
+const sequences = require('../models/Sequences')();
 let param = null;
 
 const setAccountsSeq = function (cityId, next) {
@@ -83,7 +83,7 @@ const setTransactionsSeq = function (cityId, next) {
     return next(err);
   });
 };
-
+// triggers all the migrate process.
 const migrate = function (mongo, log, next) {
   param = {
     db: mongo,

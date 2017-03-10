@@ -1,6 +1,6 @@
 'use strict';
 
-const categories = require('../api/models/Categories')();
+const categories = require('../models/Categories')();
 
 const migrate = function (sqlite, mongo, log, next) {
   sqlite.serialize(function () {

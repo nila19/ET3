@@ -1,6 +1,7 @@
 'use strict';
 
 const model = require('./Model');
+
 const schema = {
   id: 'int not-null primarykey autoincrement',
   name: 'string',
@@ -32,13 +33,13 @@ Bills.prototype.findForCity = function (db, cityId, paidInd) {
   return this.find(db, filter, {fields: {_id: 0}, sort: {billDt: -1}});
 };
 
-// unsed ???
-// bills.prototype.findForCityOpen = function (db, cityId) {
-//   return this.find(db, {
-//     cityId: cityId,
-//     closed: false
-//   }, {fields: {_id: 0}, sort: {billDt: -1}});
-// };
+// used by billcloser
+Bills.prototype.findForCityOpen = function (db, cityId) {
+  return this.find(db, {
+    cityId: cityId,
+    closed: false
+  }, {fields: {_id: 0}, sort: {billDt: -1}});
+};
 
 // paidInd == null, get all; paidInd = 'N', getUnpaid only, paidInd = 'Y', getPaid only
 Bills.prototype.findForAcct = function (db, acctId, paidInd) {
@@ -48,6 +49,14 @@ Bills.prototype.findForAcct = function (db, acctId, paidInd) {
     filter.balance = (paidInd === 'Y') ? 0: {$gt: 0};
   }
   return this.find(db, filter, {fields: {_id: 0}, sort: {billDt: -1}});
+};
+
+Bills.prototype.getName = function (acct, bill) {
+  if(bill.id) {
+    return acct.name + ' : ' + bill.billDt + ' #' + bill.id;
+  } else {
+    return acct.name + ' #0';
+  }
 };
 
 module.exports = function () {

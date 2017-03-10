@@ -1,6 +1,5 @@
 'use strict';
 
-const moment = require('moment');
 const tallyservice = require('../services/TallyService');
 const addservice = require('../services/AddService');
 const deleteservice = require('../services/DeleteService');
@@ -13,8 +12,7 @@ const tallyAccount = function (req, resp, acctId) {
   const param = {
     db: req.app.locals.db,
     log: req.app.locals.log,
-    acctId: acctId,
-    now: moment().valueOf()
+    acctId: acctId
   };
 
   tallyservice.tally(param, function (err) {

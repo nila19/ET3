@@ -44,6 +44,13 @@ Accounts.prototype.findForCityInactive = function (db, cityId) {
     active: false
   }, {fields: {_id: 0}, sort: {seq: 1}});
 };
+Accounts.prototype.findBillable = function (db, cityId) {
+  return this.find(db, {
+    cityId: cityId,
+    active: true,
+    billed: true
+  }, {fields: {_id: 0}, sort: {seq: 1}});
+};
 
 module.exports = function () {
   return new Accounts();

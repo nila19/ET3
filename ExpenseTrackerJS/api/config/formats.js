@@ -3,7 +3,10 @@
 'use strict';
 
 module.exports = {
-  date: {
-    YYYYMMDD: 'YYYYMMDD'
-  },
+  YYYYMMDD: 'YYYY-MM-DD',
+  YYYYMMDDHHmmss: 'YYYY-MM-DDTHH:mm:ssZ',
+  DDMMMYYYY: 'DD-MMM-YYYY',
+  YYYY: 'YYYY',
+  YYYYMM: 'YYYYMM',
+  MMMYY: 'MMM-YY'
 };

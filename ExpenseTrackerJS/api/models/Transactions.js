@@ -6,6 +6,7 @@ const moment = require('moment');
 const numeral = require('numeral');
 
 const config = require('../config/config');
+const fmt = require('../config/formats');
 const model = require('./Model');
 
 const schema = {
@@ -145,32 +146,33 @@ Transactions.prototype.buildSearchQueryOne = function (search, filter) {
   return filter;
 };
 Transactions.prototype.buildSearchQueryTwo = function (search, filter) {
-  const entry = moment(numeral(search.entryMonth).value());
-  const trans = moment(numeral(search.transMonth).value());
-
   // entry month
   if(search.entryMonth) {
+    const entry = moment(search.entryMonth);
+
     if(search.entryYear == 'true') {
       // set startDt as 31-Dec of previous year, since that it is > than.
       // set endDt as 1-Jan of next year, since that it is > than.
-      const yearBegin = entry.clone().month(0).date(0).valueOf();
-      const yearEnd = entry.clone().month(11).date(31).valueOf();
+      const yearBegin = entry.clone().month(0).date(0).format(fmt.YYYYMMDD);
+      const yearEnd = entry.clone().month(11).date(31).format(fmt.YYYYMMDD);
 
       filter.$and = [{entryMonth: {$gt: yearBegin}}, {entryMonth: {$lt: yearEnd}}];
     } else {
-      filter.entryMonth = entry.valueOf();
+      filter.entryMonth = entry.format(fmt.YYYYMMDD);
     }
   }
   // trans month
   if(search.transMonth) {
+    const trans = moment(search.transMonth);
+
     if(search.transYear == 'true') {
       // set startDt as 31-Dec of previous year, since that it is > than.
-      const yearBegin = trans.clone().month(0).date(0).valueOf();
-      const yearEnd = trans.clone().month(11).date(31).valueOf();
+      const yearBegin = trans.clone().month(0).date(0).format(fmt.YYYYMMDD);
+      const yearEnd = trans.clone().month(11).date(31).format(fmt.YYYYMMDD);
 
       filter.$and = [{transMonth: {$gt: yearBegin}}, {transMonth: {$lt: yearEnd}}];
     } else {
-      filter.transMonth = trans.valueOf();
+      filter.transMonth = trans.format(fmt.YYYYMMDD);
     }
   }
   return filter;
@@ -190,8 +192,8 @@ Transactions.prototype.findForMonthlySummary = function (db, cityId, regular, ad
 // get Transactions for the last 3 months excluding the current month.
 Transactions.prototype.findForForecast = function (db, cityId) {
   const thisMth = moment().date(1);
-  const beginMth = thisMth.clone().subtract(4, 'months').valueOf();
-  const endMth = thisMth.clone().subtract(1, 'months').valueOf();
+  const beginMth = thisMth.clone().subtract(4, 'months').format(fmt.YYYYMMDD);
+  const endMth = thisMth.clone().subtract(1, 'months').format(fmt.YYYYMMDD);
   const filter = {
     cityId: cityId,
     adhoc: false,

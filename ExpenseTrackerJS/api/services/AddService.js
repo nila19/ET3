@@ -5,9 +5,11 @@ const numeral = require('numeral');
 const async = require('async');
 const sugar = require('sugar');
 const accounts = require('../models/Accounts')();
+const bills = require('../models/Bills')();
 const transactions = require('../models/Transactions')();
 const sequences = require('../models/Sequences')();
 const cashService = require('./CashService');
+const fmt = require('../config/formats');
 
 let param = null; // {db, log}
 let data = null;  // {city, accounts {from:, to: }, category, description, amount, transDt, adjust, adhoc}
@@ -77,13 +79,13 @@ const copyTransData = function (next) {
   trans = {
     id: 0,
     cityId: data.city.id,
-    entryDt: moment().valueOf(),
-    entryMonth: moment().date(1).valueOf(),
+    entryDt: moment().format(fmt.YYYYMMDDHHmmss),
+    entryMonth: moment().date(1).format(fmt.YYYYMMDD),
     category: {id: 0, name: ' ~ '},
     description: sugar.String(data.description).capitalize(false, true).raw,
     amount: numeral(data.amount).value(),
-    transDt: moment(data.transDt, 'DD-MMM-YYYY').valueOf(),
-    transMonth: moment(data.transDt, 'DD-MMM-YYYY').date(1).valueOf(),
+    transDt: moment(data.transDt, fmt.DDMMMYYYY).format(fmt.YYYYMMDD),
+    transMonth: moment(data.transDt, fmt.DDMMMYYYY).date(1).format(fmt.YYYYMMDD),
     seq: 0,
     accounts: {from: null, to: null},
     adhoc: data.adhoc,
@@ -112,14 +114,12 @@ const copyAccountsData = function (next) {
       balanceAf: from.balance
     };
     if(from.billed && from.bills && from.bills.open) {
-      const billDt = moment(from.bills.open.billDt).format('YYYY-MM-DD');
-      const billname = from.name + ' : ' + billDt + ' #' + from.bills.open.id;
-
       trans.bill = {
         id: from.bills.open.id,
-        name: billname,
-        account: {id: from.id, name: from.name}
+        account: {id: from.id, name: from.name},
+        billDt: from.bills.open.billDt
       };
+      trans.bill.name = bills.getName(from, trans.bill);
     }
   } else {
     trans.accounts.from = {id: 0, name: '', balanceBf: 0, balanceAf: 0};

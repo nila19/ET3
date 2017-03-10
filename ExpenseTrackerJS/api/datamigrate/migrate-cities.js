@@ -1,7 +1,9 @@
 'use strict';
 
+const moment = require('moment');
 const numeral = require('numeral');
-const cities = require('../api/models/Cities')();
+const cities = require('../models/Cities')();
+const fmt = require('../config/formats');
 
 numeral.defaultFormat('0');
 numeral.nullFormat('');
@@ -21,8 +23,8 @@ const migrate = function (sqlite, mongo, log, next) {
           active: row.STATUS === 'A',
           default: row.DEFAULT_IND === 'Y',
           currency: row.CURRENCY,
-          startDt: numeral(row.START_DT).value(),
-          endDt: numeral(row.END_DT).value(),
+          startDt: moment(numeral(row.START_DT).value(), 'YYYYMMDD').format(fmt.YYYYMMDD),
+          endDt: moment(numeral(row.END_DT).value(), 'YYYYMMDD').format(fmt.YYYYMMDD),
         };
 
         cities.insert(mongo, city);

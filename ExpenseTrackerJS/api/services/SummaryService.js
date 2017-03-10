@@ -2,7 +2,9 @@
 
 const moment = require('moment');
 const async = require('async');
+const fmt = require('../config/formats');
 const serviceUtils = require('./SummaryServiceUtils');
+
 let param = null;
 let data = {categories: null, transMonths: null, transactions: null, fcTransactions: null};
 
@@ -116,7 +118,7 @@ const populateFcGrid = function (fcgrid, next) {
 
 // setp 4.2: embed the main grid with fctransaction data.
 const embedFcToGrid = function (grid, fcgrid, next) {
-  const idx = serviceUtils.getMonthIndex(data.transMonths, moment().valueOf());
+  const idx = serviceUtils.getMonthIndex(data.transMonths, moment().format(fmt.YYYYMMDD));
 
   for (const catId in fcgrid) {
     if (fcgrid.hasOwnProperty(catId)) {

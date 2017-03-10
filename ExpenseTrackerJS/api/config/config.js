@@ -14,4 +14,5 @@ module.exports = {
   thinList: 100,
   pct75: 0.75,
   pct125: 1.25,
+  startupBillCloser: true
 };

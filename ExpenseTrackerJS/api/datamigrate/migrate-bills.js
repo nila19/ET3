@@ -2,7 +2,8 @@
 
 const moment = require('moment');
 const numeral = require('numeral');
-const bills = require('../api/models/Bills')();
+const bills = require('../models/Bills')();
+const fmt = require('../config/formats');
 
 numeral.defaultFormat('0');
 numeral.nullFormat('');
@@ -21,21 +22,20 @@ const migrate = function (sqlite, mongo, log, next) {
           id: row.BILL_ID,
           cityId: row.DATA_KEY,
           account: {id: row.ACCOUNT_ID, name: row.DESCRIPTION},
-          createdDt: numeral(row.CREATED_DT).value(),
-          billDt: numeral(row.BILL_DT).value(),
-          dueDt: numeral(row.DUE_DT).value(),
+          createdDt: moment(numeral(row.CREATED_DT).value()).format(fmt.YYYYMMDDHHmmss),
+          billDt: moment(numeral(row.BILL_DT).value()).format(fmt.YYYYMMDD),
+          dueDt: moment(numeral(row.DUE_DT).value()).format(fmt.YYYYMMDD),
           closed: row.STATUS === 'C',
           amount: numeral(numeral(row.BILL_AMT).format('0.00')).value(),
           balance: numeral(numeral(row.BILL_BALANCE).format('0.00')).value(),
           payments: []
         };
-        const billDt = moment(numeral(row.BILL_DT).value()).format('YYYY-MM-DD');
 
-        bill.name = row.DESCRIPTION + ' : ' + billDt + ' #' + row.BILL_ID;
+        bill.name = bills.getName(bill.account, bill);
         if(row.BILL_PAID_DT || row.PAY_TRAN_ID) {
           bill.payments.push({
             id: row.PAY_TRAN_ID | 0,
-            transDt: numeral(row.BILL_PAID_DT).value(),
+            transDt: moment(numeral(row.BILL_PAID_DT).value()).format(fmt.YYYYMMDD),
             amount: numeral(numeral(row.BILL_AMT).format('0.00')).value()
           });
         }

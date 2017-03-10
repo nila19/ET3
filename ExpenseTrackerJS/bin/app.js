@@ -20,8 +20,10 @@ const app = express();
 
 const httpSuccessCodes = 400;
 
+const config = require('../api/config/config');
 // route config..
 const routes = require('../api/config/route-config');
+const billcloser = require('../api/services/BillCloserService');
 
 // store logger in app context for use from other components.
 app.locals.log = require('../api/utils/logger');
@@ -29,6 +31,11 @@ app.locals.log = require('../api/utils/logger');
 // establish DB connection to MongoDB..
 require('../api/config/mongodb-config').connect(app.locals.log, function (db) {
   app.locals.db = db;
+  if(config.startupBillCloser) {
+    billcloser.execute({db: app.locals.db, log: app.locals.log}, function () {
+      // do nothing.
+    });
+  }
 });
 
 app.set('views', path.join(__dirname, '../api', 'views'));

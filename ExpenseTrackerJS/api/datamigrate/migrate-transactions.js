@@ -2,7 +2,9 @@
 
 const moment = require('moment');
 const numeral = require('numeral');
-const transactions = require('../api/models/Transactions')();
+const transactions = require('../models/Transactions')();
+const bills = require('../models/Bills')();
+const fmt = require('../config/formats');
 
 numeral.defaultFormat('0');
 numeral.nullFormat('');
@@ -24,13 +26,13 @@ const migrate = function (sqlite, mongo, log, next) {
         const trans = {
           id: row.TRANS_ID,
           cityId: row.DATA_KEY,
-          entryDt: row.ENTRY_DATE,
-          entryMonth: row.ENTRY_MONTH,
+          entryDt: moment(row.ENTRY_DATE).format(fmt.YYYYMMDDHHmmss),
+          entryMonth: moment(row.ENTRY_MONTH).format(fmt.YYYYMMDD),
           category: {id: numeral(row.CATEGORY_ID).value(), name: row.MAIN_CATEGORY + ' ~ ' + row.SUB_CATEGORY},
           description: row.DESCRIPTION,
           amount: numeral(numeral(row.AMOUNT).format('0.00')).value(),
-          transDt: row.TRANS_DATE,
-          transMonth: row.TRANS_MONTH,
+          transDt: moment(row.TRANS_DATE).format(fmt.YYYYMMDD),
+          transMonth: moment(row.TRANS_MONTH).format(fmt.YYYYMMDD),
           seq: row.TRANS_SEQ,
           accounts: {},
           bill: null,
@@ -38,7 +40,7 @@ const migrate = function (sqlite, mongo, log, next) {
           adjust: row.ADJUST_IND === 'Y' ? true : false,
           status: row.STATUS === 'P' ? true : false,
           tallied: row.TALLY_IND === 'Y' ? true : false,
-          tallyDt: numeral(row.TALLY_DATE).value(),
+          tallyDt: moment(numeral(row.TALLY_DATE).value()).format(fmt.YYYYMMDDHHmmss),
         };
 
         if(row.FROM_ACCOUNT_ID) {
@@ -62,14 +64,12 @@ const migrate = function (sqlite, mongo, log, next) {
           trans.accounts.to = {id: 0, name: '', balanceBf: 0, balanceAf: 0};
         }
         if(row.FROM_BILL_ID) {
-          const billDt = moment(numeral(row.BILL_DT).value()).format('YYYY-MM-DD');
-          const billname = row.FROM_ACCOUNT_NAME + ' : ' + billDt + ' #' + row.FROM_BILL_ID;
-
           trans.bill = {
             id: numeral(row.FROM_BILL_ID).value(),
-            name: billname,
-            account: {id: trans.accounts.from.id, name: trans.accounts.from.name}
+            account: {id: trans.accounts.from.id, name: trans.accounts.from.name},
+            billDt: moment(numeral(row.BILL_DT).value()).format(fmt.YYYYMMDD)
           };
+          trans.bill.name = bills.getName(trans.bill.account, trans.bill);
         }
 
         transactions.insert(mongo, trans);

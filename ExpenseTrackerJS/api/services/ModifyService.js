@@ -8,6 +8,7 @@ const accounts = require('../models/Accounts')();
 const bills = require('../models/Bills')();
 const transactions = require('../models/Transactions')();
 const cashService = require('./CashService');
+const fmt = require('../config/formats');
 
 let param = null;
 let data = null;
@@ -221,8 +222,8 @@ const copyTransData = function (next) {
   trans.description = sugar.String(data.description).capitalize(false, true).raw;
   trans.amount = numeral(data.amount).value();
   if(trans.transDt !== data.transDt) {
-    trans.transDt = moment(data.transDt, 'DD-MMM-YYYY').valueOf();
-    trans.transMonth = moment(data.transDt, 'DD-MMM-YYYY').date(1).valueOf();
+    trans.transDt = moment(data.transDt, fmt.DDMMMYYYY).format(fmt.YYYYMMDD);
+    trans.transMonth = moment(data.transDt, fmt.DDMMMYYYY).date(1).format(fmt.YYYYMMDD);
   }
   trans.adhoc = data.adhoc;
   trans.adjust = data.adjust;
