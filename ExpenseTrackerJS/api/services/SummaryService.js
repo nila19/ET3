@@ -8,29 +8,31 @@ const transactions = require('../models/Transactions')();
 const monthUtils = require('../utils/month-utils');
 const cu = require('../utils/common-utils');
 
-const buildSummaryGrid = function (parms, next) {
-  let data = null;
+const buildSummary = function (parms) {
+  return new Promise(function (resolve, reject) {
+    let data = null;
 
-  getDataFromDB(parms).then((data1) => {
-    data = data1;
-    return buildEmptyGrid(data);
-  }).then((grid) => {
-    return populateGrid(data, grid);
-  }).then((grid) => {
-    return calcYearlySummary(data, grid);
-  }).then((grid) => {
-    return buildForecastGrid(parms, data, grid);
-  }).then((grid) => {
-    return weedInactiveCats(grid);
-  }).then((grid) => {
-    return sortGridByCategory(data, grid);
-  }).then((gridArr) => {
-    return calcTotalRow(data, gridArr);
-  }).then((gridArr) => {
-    return next(null, gridArr);
-  }).catch((err) => {
-    cu.logErr(parms.log, err);
-    return next(err);
+    getDataFromDB(parms).then((data1) => {
+      data = data1;
+      return buildEmptyGrid(data);
+    }).then((grid) => {
+      return populateGrid(data, grid);
+    }).then((grid) => {
+      return calcYearlySummary(data, grid);
+    }).then((grid) => {
+      return buildForecastGrid(parms, data, grid);
+    }).then((grid) => {
+      return weedInactiveCats(grid);
+    }).then((grid) => {
+      return sortGridByCategory(data, grid);
+    }).then((gridArr) => {
+      return calcTotalRow(data, gridArr);
+    }).then((gridArr) => {
+      return resolve(gridArr);
+    }).catch((err) => {
+      cu.logErr(parms.log, err);
+      return reject(err);
+    });
   });
 };
 
@@ -251,5 +253,5 @@ const getMonthIndex = function (months, date) {
 };
 
 module.exports = {
-  buildSummaryGrid: buildSummaryGrid,
+  buildSummary: buildSummary,
 };

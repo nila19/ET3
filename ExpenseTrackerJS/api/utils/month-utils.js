@@ -3,6 +3,7 @@
 const moment = require('moment');
 const numeral = require('numeral');
 const async = require('async');
+const cu = require('./common-utils');
 const fmt = require('../config/formats');
 
 // utility methods to generate appropriate json..
@@ -32,8 +33,8 @@ const buildMonthsList = function (dates, log) {
       return cb(null, dates);
     }, buildMonths, addCurrentMonth, addYears, sortMonths], function (err, months) {
       if(err) {
-        log.error(err);
-        reject(err);
+        cu.logErr(log, err);
+        return reject(err);
       }
       return resolve(months);
     });
