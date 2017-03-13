@@ -113,7 +113,8 @@
       aj.get('/startup/city/default', {}, loadDefaultCity);
     };
     const loadConnect = function (dt) {
-      data.connect = dt.data;
+      // if resp code is 0.
+      data.connect = (dt.code === 0);
       if (data.connect) {
         data.status += TEN;
         getDefaultCity();

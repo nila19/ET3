@@ -1,15 +1,12 @@
 'use strict';
 
 const transactions = require('../models/Transactions')();
-const error = 1000;
+const cu = require('../utils/common-utils');
 
 const doSearch = function (req, resp) {
-  transactions.findForSearch(req.app.locals.db, req.query).then((docs) => {
-    return resp.json({code: 0, data: docs});
-  }).catch((err) => {
-    req.app.locals.log.error(err);
-    return resp.json({code: error});
-  });
+  const promise = transactions.findForSearch(req.app.locals.db, req.query);
+
+  return cu.sendJson(promise, resp, req.app.locals.log);
 };
 
 module.exports = {

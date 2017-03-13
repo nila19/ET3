@@ -1,77 +1,62 @@
 'use strict';
 
-const async = require('async');
+const Promise = require('bluebird');
 const addservice = require('./AddService');
 const bills = require('../models/Bills')();
+const cu = require('../utils/common-utils');
 
-let param = null;
-let data = null;
-
-const payBill = function (params, data1, next) {
-  param = params;
-  data = data1;
-
-  async.waterfall([checkCityEditable, buildTransInput, addTransaction, updateBill], function (err, trans) {
-    logErr(param.log, err);
-    return next(err, trans);
-  });
-};
-
-// setp 1: check city is editable.
-const checkCityEditable = function (next) {
-  // TODO implement City editable check..
-  return next(null);
-};
-
-// setp 2: copy transaction data from input to transaction record.
-const buildTransInput = function (next) {
-  const input = {
-    city: data.city,
-    accounts: {from: data.account, to: data.bill.account},
-    category: null,
-    description: 'CC Bill Payment',
-    amount: data.bill.balance,
-    transDt: data.paidDt,
-    adhoc: false,
-    adjust: true
-  };
-
-  return next(null, input);
-};
-
-// step 4 : fetch transactions sequence from DB
-const addTransaction = function (input, next) {
-  addservice.addExpense(param, input, function (err, trans) {
-    logErr(param.log, err);
-    return next(err, trans);
-  });
-};
-
-// step 5 : save transaction to DB
-const updateBill = function (trans, next) {
-  const payment = {
-    id: trans.id,
-    transDt: trans.transDt,
-    amount: trans.amount
-  };
-  let balance = data.bill.balance - trans.amount;
-
-  if(balance > -0.01 && balance < 0.01) {
-    balance = 0;
-  }
-
-  bills.update(param.db, {id: data.bill.id}, {$set: {balance: balance}, $push: {payments: payment}}).then(() => {
-    return next(null, trans);
+const payBill = function (parms, data, next) {
+  cu.checkCityEditable(parms.db, data.city.id).then(() => {
+    return buildTransInput(data);
+  }).then((input) => {
+    return addservice.addExpensePromise(parms, input);
+  }).then((trans) => {
+    return updateBill(parms, data, trans);
+  }).then(() => {
+    return next();
   }).catch((err) => {
-    logErr(param.log, err);
+    cu.logErr(parms.log, err);
     return next(err);
   });
 };
 
-const logErr = function (log, err) {
-  if(err) {
-    log.error(err);
-  }
+// setp 2: copy transaction data from input to transaction record.
+const buildTransInput = function (data) {
+  return new Promise(function (resolve) {
+    const input = {
+      city: data.city,
+      accounts: {from: data.account, to: data.bill.account},
+      category: null,
+      description: 'CC Bill Payment',
+      amount: data.bill.balance,
+      transDt: data.paidDt,
+      adhoc: false,
+      adjust: true
+    };
+
+    return resolve(input);
+  });
+};
+// step 5 : save transaction to DB
+const updateBill = function (parms, data, trans) {
+  return new Promise(function (resolve, reject) {
+    const pmt = {
+      id: trans.id,
+      transDt: trans.transDt,
+      amount: trans.amount
+    };
+    let bal = data.bill.balance - trans.amount;
+
+    if(bal > -0.01 && bal < 0.01) {
+      bal = 0;
+    }
+
+    bills.update(parms.db, {id: data.bill.id}, {$set: {balance: bal}, $push: {payments: pmt}}).then(() => {
+      return resolve();
+    }).catch((err) => {
+      return reject(err);
+    });
+  });
 };
 
 module.exports = {

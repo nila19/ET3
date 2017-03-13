@@ -6,103 +6,48 @@ const deleteservice = require('../services/DeleteService');
 const modifyservice = require('../services/ModifyService');
 const billpayservice = require('../services/BillPayService');
 const swapservice = require('../services/SwapService');
-const error = 1000;
+const cu = require('../utils/common-utils');
+const config = require('../config/config');
 
 const tallyAccount = function (req, resp, acctId) {
-  const param = {
-    db: req.app.locals.db,
-    log: req.app.locals.log,
-    acctId: acctId
-  };
+  const param = cu.buildParm(req);
 
+  param.acctId = acctId;
   tallyservice.tally(param, function (err) {
-    if(err) {
-      param.log.error(err);
-      return resp.json({code: error});
-    } else {
-      return resp.json({code: 0, message: 'Account tallied successfully!!'});
-    }
+    return err ? resp.json({code: config.error, msg: err.message}) : resp.json({code: 0});
   });
 };
 
 const addExpense = function (req, resp) {
-  const param = {
-    db: req.app.locals.db,
-    log: req.app.locals.log
-  };
-
-  addservice.addExpense(param, req.body, function (err, trans) {
-    if(err) {
-      param.log.error(err);
-      return resp.json({code: error});
-    } else {
-      return resp.json({code: 0, data: trans});
-    }
+  addservice.addExpense(cu.buildParm(req), req.body, function (err, trans) {
+    return err ? resp.json({code: config.error}) : resp.json({code: 0, data: trans});
   });
 };
 
 const modifyExpense = function (req, resp) {
-  const param = {
-    db: req.app.locals.db,
-    log: req.app.locals.log
-  };
-
-  modifyservice.modifyExpense(param, req.body, function (err) {
-    if(err) {
-      param.log.error(err);
-      return resp.json({code: error});
-    } else {
-      return resp.json({code: 0});
-    }
+  modifyservice.modifyExpense(cu.buildParm(req), req.body, function (err) {
+    return err ? resp.json({code: config.error}) : resp.json({code: 0});
   });
 };
 
 const deleteExpense = function (req, resp, transId) {
-  const param = {
-    db: req.app.locals.db,
-    log: req.app.locals.log,
-    transId: transId
-  };
+  const param = cu.buildParm(req);
 
+  param.transId = transId;
   deleteservice.deleteExpense(param, function (err) {
-    if(err) {
-      param.log.error(err);
-      return resp.json({code: error});
-    } else {
-      return resp.json({code: 0});
-    }
+    return err ? resp.json({code: config.error}) : resp.json({code: 0});
   });
 };
 
 const swapExpenses = function (req, resp) {
-  const param = {
-    db: req.app.locals.db,
-    log: req.app.locals.log
-  };
-
-  swapservice.swapExpenses(param, req.body, function (err) {
-    if(err) {
-      param.log.error(err);
-      return resp.json({code: error});
-    } else {
-      return resp.json({code: 0});
-    }
+  swapservice.swapExpenses(cu.buildParm(req), req.body, function (err) {
+    return err ? resp.json({code: config.error}) : resp.json({code: 0});
   });
 };
 
 const payBill = function (req, resp) {
-  const param = {
-    db: req.app.locals.db,
-    log: req.app.locals.log
-  };
-
-  billpayservice.payBill(param, req.body, function (err, trans) {
-    if(err) {
-      param.log.error(err);
-      return resp.json({code: error});
-    } else {
-      return resp.json({code: 0, data: trans});
-    }
+  billpayservice.payBill(cu.buildParm(req), req.body, function (err, trans) {
+    return err ? resp.json({code: config.error}) : resp.json({code: 0, data: trans});
   });
 };
 

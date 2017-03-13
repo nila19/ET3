@@ -6,77 +6,54 @@ const cities = require('../models/Cities')();
 const categories = require('../models/Categories')();
 const transactions = require('../models/Transactions')();
 const monthUtils = require('../utils/month-utils');
-const error = 1000;
+const cu = require('../utils/common-utils');
+const config = require('../config/config');
 
 const canConnect = function (req, resp) {
-  accounts.findById(req.app.locals.db, 0).then(() => {
-    return resp.json({code: 0, data: true});
-  }).catch((err) => {
-    req.app.locals.log.error(err);
-    return resp.json({code: error, data: false});
-  });
+  const promise = accounts.findById(req.app.locals.db, 0);
+
+  return cu.sendJson(promise, resp, req.app.locals.log);
 };
 
 // **************************** city ****************************//
 const getAllCities = function (req, resp) {
-  cities.findAllCities(req.app.locals.db).then((docs) => {
-    return resp.json({code: 0, data: docs});
-  }).catch((err) => {
-    req.app.locals.log.error(err);
-    return resp.json({code: error});
-  });
+  const promise = cities.findAllCities(req.app.locals.db);
+
+  return cu.sendJson(promise, resp, req.app.locals.log);
 };
 const getDefaultCity = function (req, resp) {
-  cities.findDefault(req.app.locals.db).then((doc) => {
-    return resp.json({code: 0, data: doc});
-  }).catch((err) => {
-    req.app.locals.log.error(err);
-    return resp.json({code: error});
-  });
+  const promise = cities.findDefault(req.app.locals.db);
+
+  return cu.sendJson(promise, resp, req.app.locals.log);
 };
 const getCityById = function (req, resp, cityId) {
-  cities.findById(req.app.locals.db, cityId).then((doc) => {
-    return resp.json({code: 0, data: doc});
-  }).catch((err) => {
-    req.app.locals.log.error(err);
-    return resp.json({code: error});
-  });
+  const promise = cities.findById(req.app.locals.db, cityId);
+
+  return cu.sendJson(promise, resp, req.app.locals.log);
 };
 
 // **************************** account ****************************//
 const getActiveAccounts = function (req, resp) {
-  accounts.findForCityActive(req.app.locals.db, numeral(req.query.cityId).value()).then((docs) => {
-    return resp.json({code: 0, data: docs});
-  }).catch((err) => {
-    req.app.locals.log.error(err);
-    return resp.json({code: error});
-  });
+  const promise = accounts.findForCityActive(req.app.locals.db, numeral(req.query.cityId).value());
+
+  return cu.sendJson(promise, resp, req.app.locals.log);
 };
 const getInactiveAccounts = function (req, resp) {
-  accounts.findForCityInactive(req.app.locals.db, numeral(req.query.cityId).value()).then((docs) => {
-    return resp.json({code: 0, data: docs});
-  }).catch((err) => {
-    req.app.locals.log.error(err);
-    return resp.json({code: error});
-  });
+  const promise = accounts.findForCityInactive(req.app.locals.db, numeral(req.query.cityId).value());
+
+  return cu.sendJson(promise, resp, req.app.locals.log);
 };
 
 // **************************** categories ****************************//
 const getAllCategories = function (req, resp) {
-  categories.findForCity(req.app.locals.db, numeral(req.query.cityId).value()).then((docs) => {
-    return resp.json({code: 0, data: docs});
-  }).catch((err) => {
-    req.app.locals.log.error(err);
-    return resp.json({code: error});
-  });
+  const promise = categories.findForCity(req.app.locals.db, numeral(req.query.cityId).value());
+
+  return cu.sendJson(promise, resp, req.app.locals.log);
 };
 const getCategories = function (req, resp) {
-  categories.findForCityActive(req.app.locals.db, numeral(req.query.cityId).value()).then((docs) => {
-    return resp.json({code: 0, data: docs});
-  }).catch((err) => {
-    req.app.locals.log.error(err);
-    return resp.json({code: error});
-  });
+  const promise = categories.findForCityActive(req.app.locals.db, numeral(req.query.cityId).value());
+
+  return cu.sendJson(promise, resp, req.app.locals.log);
 };
 
 // **************************** description ****************************//
@@ -89,39 +66,32 @@ const getDescriptions = function (req, resp) {
     return resp.json({code: 0, data: desc});
   }).catch((err) => {
     req.app.locals.log.error(err);
-    return resp.json({code: error});
+    return resp.json({code: config.error});
   });
 };
 
 // **************************** months ****************************//
 const getEntryMonths = function (req, resp) {
-  transactions.findAllEntryMonths(req.app.locals.db, numeral(req.query.cityId).value()).then((docs) => {
-    monthUtils.buildMonthsList(docs, req.app.locals.log, function (err, dates) {
-      if(err) {
-        req.app.locals.log.error(err);
-        return resp.json({code: error});
-      } else {
-        return resp.json({code: 0, data: dates});
-      }
-    });
-  }).catch((err) => {
-    req.app.locals.log.error(err);
-    return resp.json({code: error});
-  });
+  const promise = transactions.findAllEntryMonths(req.app.locals.db, numeral(req.query.cityId).value());
+
+  return sendMonthsList(promise, resp, req.app.locals.log);
 };
+
 const getTransMonths = function (req, resp) {
-  transactions.findAllTransMonths(req.app.locals.db, numeral(req.query.cityId).value()).then((docs) => {
-    monthUtils.buildMonthsList(docs, req.app.locals.log, function (err, dates) {
-      if(err) {
-        req.app.locals.log.error(err);
-        return resp.json({code: error});
-      } else {
-        return resp.json({code: 0, data: dates});
-      }
-    });
+  const promise = transactions.findAllTransMonths(req.app.locals.db, numeral(req.query.cityId).value());
+
+  return sendMonthsList(promise, resp, req.app.locals.log);
+};
+
+// utility method.
+const sendMonthsList = function (promise, resp, log) {
+  promise.then((docs) => {
+    return monthUtils.buildMonthsList(docs, log);
+  }).then((months) => {
+    return resp.json({code: 0, data: months});
   }).catch((err) => {
-    req.app.locals.log.error(err);
-    return resp.json({code: error});
+    log.error(err);
+    return resp.json({code: config.error});
   });
 };
 

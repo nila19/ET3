@@ -6,93 +6,55 @@ const accounts = require('../models/Accounts')();
 const transactions = require('../models/Transactions')();
 const tallyhistories = require('../models/TallyHistories')();
 const sequences = require('../models/Sequences')();
+const cu = require('../utils/common-utils');
 const fmt = require('../config/formats');
 
-let parms = null;
-let tallyDt = null;
+const tally = function (parms, next) {
+  const tallyDt = moment().format(fmt.YYYYMMDDHHmmss);
+  let ac = null;
 
-const tally = function (param, next) {
-  parms = param;
-  tallyDt = moment().format(fmt.YYYYMMDDHHmmss);
-
-  async.waterfall([fetchAccount, checkCityEditable, updateAccount, fetchTallySeq,
-    insertTallyHistory, updateTrans], function (err) {
-    if(err) {
-      parms.log.error(err);
-    }
-    return next(err);
-  });
-};
-
-const fetchAccount = function (next) {
   accounts.findById(parms.db, parms.acctId).then((account) => {
-    return next(null, account);
-  }).catch((err) => {
-    parms.log.error(err);
-    return next(err);
-  });
-};
-const checkCityEditable = function (account, next) {
-  // TODO implement City editable check..
-  return next(null, account);
-};
-const updateAccount = function (account, next) {
-  accounts.update(parms.db, {id: account.id}, {$set: {tallyBalance: account.balance, tallyDt: tallyDt}}).then(() => {
-    return next(null, account);
-  }).catch((err) => {
-    parms.log.error(err);
-    return next(err);
-  });
-};
-const fetchTallySeq = function (account, next) {
-  sequences.getNextSeq(parms.db, {seqId: 'tallyhistories', cityId: account.cityId}).then((seq) => {
-    return next(null, account, seq);
-  }).catch((err) => {
-    parms.log.error(err);
-    return next(err);
-  });
-};
-const insertTallyHistory = function (account, seq, next) {
-  const tallyObj = {
-    id: seq.seq,
-    account: {id: account.id, name: account.name},
-    cityId: account.cityId,
-    tallyDt: tallyDt,
-    balance: account.balance};
-
-  tallyhistories.insert(parms.db, tallyObj).then(() => {
-    return next(null, account);
-  }).catch((err) => {
-    parms.log.error(err);
-    return next(err);
-  });
-};
-const updateTrans = function (account, next) {
-  transactions.findForAcct(parms.db, account.cityId, account.id).then((trans) => {
+    ac = account;
+    return cu.checkCityEditable(parms.db, ac.cityId);
+  }).then(() => {
+    return accounts.update(parms.db, {id: ac.id}, {$set: {tallyBalance: ac.balance, tallyDt: tallyDt}});
+  }).then(() => {
+    return sequences.getNextSeq(parms.db, {seqId: 'tallyhistories', cityId: ac.cityId});
+  }).then((seq) => {
+    return tallyhistories.insert(parms.db, buildTallyHistory(seq, ac, tallyDt));
+  }).then(() => {
+    return transactions.findForAcct(parms.db, ac.cityId, ac.id);
+  }).then((trans) => {
     async.each(trans, function (tran, cb) {
-      if(tran.tallied) {
-        return cb();
-      }
-      transactions.update(parms.db, {id: tran.id}, {$set: {tallied: true, tallyDt: tallyDt}}).then(() => {
-        return cb();
-      }).catch((err) => {
-        parms.log.error(err);
-        return cb(err);
-      });
-    }, function (err) {
-      logErr(parms.log, err);
-      return next(err);
+      return updateTran(parms.db, tran, tallyDt, cb);
     });
+  }).then(() => {
+    return next();
   }).catch((err) => {
-    logErr(parms.log, err);
+    cu.logErr(parms.log, err);
     return next(err);
   });
 };
 
-const logErr = function (log, err) {
-  if(err) {
-    log.error(err);
+const buildTallyHistory = function (seq, ac, tallyDt) {
+  return {
+    id: seq.seq,
+    account: {id: ac.id, name: ac.name},
+    cityId: ac.cityId,
+    tallyDt: tallyDt,
+    balance: ac.balance
+  };
+};
+
+const updateTran = function (db, tran, tallyDt, next) {
+  if(tran.tallied) {
+    return next();
   }
+  transactions.update(db, {id: tran.id}, {$set: {tallied: true, tallyDt: tallyDt}}).then(() => {
+    return next();
+  }).catch((err) => {
+    return next(err);
+  });
 };
 
 module.exports = {

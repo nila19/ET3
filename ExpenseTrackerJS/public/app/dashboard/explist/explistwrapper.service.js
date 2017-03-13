@@ -4,7 +4,7 @@
   'use strict';
 
   const explistwrapperService = function (els, ms, ss, acs, bs, aj, us, C, $timeout) {
-    const DELAY = 500; // milliseconds
+    const DELAY = 1000; // milliseconds
     const TEN = 10;
 
     const reloadExpenses = function () {

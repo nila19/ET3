@@ -2,7 +2,7 @@
 
 const numeral = require('numeral');
 const summaryService = require('../services/SummaryService');
-const error = 1000;
+const config = require('../config/config');
 
 const doSummary = function (req, resp) {
   const params = {
@@ -15,12 +15,7 @@ const doSummary = function (req, resp) {
   };
 
   summaryService.buildSummaryGrid(params, function (err, grid) {
-    if(err) {
-      req.app.locals.log.error(err);
-      return resp.json({code: error});
-    } else {
-      return resp.json({code: 0, data: grid});
-    }
+    return err ? resp.json({code: config.error}) : resp.json({code: 0, data: grid});
   });
 };
 

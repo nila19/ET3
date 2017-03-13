@@ -5,8 +5,6 @@ const numeral = require('numeral');
 const async = require('async');
 const fmt = require('../config/formats');
 
-let dates = null;
-
 // utility methods to generate appropriate json..
 const getMonth = function (date) {
   return {
@@ -26,20 +24,24 @@ const getYear = function (date) {
     year: numeral(moment(date).format(fmt.YYYY)).value()
   };
 };
+
 // step 2.0 - build the months array structure.
-const buildMonthsList = function (dates1, log, next) {
-  dates = dates1;
-  async.waterfall([buildMonths, addCurrentMonth, addYears, sortMonths], function (err, months) {
-    if(err) {
-      log.error(err);
-      return next(err);
-    }
-    return next(null, months);
+const buildMonthsList = function (dates, log) {
+  return new Promise(function (resolve, reject) {
+    async.waterfall([function (cb) {
+      return cb(null, dates);
+    }, buildMonths, addCurrentMonth, addYears, sortMonths], function (err, months) {
+      if(err) {
+        log.error(err);
+        reject(err);
+      }
+      return resolve(months);
+    });
   });
 };
 
 // step 2.1 - build the initial months list.
-const buildMonths = function (next) {
+const buildMonths = function (dates, next) {
   const months = [];
 
   dates.forEach(function (date) {

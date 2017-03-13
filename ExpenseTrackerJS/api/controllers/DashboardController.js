@@ -4,51 +4,37 @@ const numeral = require('numeral');
 const accounts = require('../models/Accounts')();
 const bills = require('../models/Bills')();
 const transactions = require('../models/Transactions')();
-const error = 1000;
+const cu = require('../utils/common-utils');
 
 // **************************** transactions ****************************//
 const getTransactionById = function (req, resp, transId) {
-  transactions.findById(req.app.locals.db, transId).then((doc) => {
-    return resp.json({code: 0, data: doc});
-  }).catch((err) => {
-    req.app.locals.log.error(err);
-    return resp.json({code: error});
-  });
+  const promise = transactions.findById(req.app.locals.db, transId);
+
+  return cu.sendJson(promise, resp, req.app.locals.log);
 };
 
 // **************************** bills ****************************//
 const getBills = function (req, resp) {
-  let promise = null;
+  const p = {
+    db: req.app.locals.db,
+    id: req.query.acctId ? numeral(req.query.acctId).value() : numeral(req.query.cityId).value(),
+    paidInd: req.query.paidInd
+  };
+  const promise = p.acctId ? bills.findForAcct(p.db, p.id, p.paidInd) : bills.findForCity(p.db, p.id, p.paidInd);
 
-  if(req.query.acctId) {
-    promise = bills.findForAcct(req.app.locals.db, numeral(req.query.acctId).value(), req.query.paidInd);
-  } else {
-    promise = bills.findForCity(req.app.locals.db, numeral(req.query.cityId).value(), req.query.paidInd);
-  }
-  promise.then((docs) => {
-    return resp.json({code: 0, data: docs});
-  }).catch((err) => {
-    req.app.locals.log.error(err);
-    return resp.json({code: error});
-  });
+  return cu.sendJson(promise, resp, req.app.locals.log);
 };
 const getBillById = function (req, resp, billId) {
-  bills.findById(req.app.locals.db, billId).then((doc) => {
-    return resp.json({code: 0, data: doc});
-  }).catch((err) => {
-    req.app.locals.log.error(err);
-    return resp.json({code: error});
-  });
+  const promise = bills.findById(req.app.locals.db, billId);
+
+  return cu.sendJson(promise, resp, req.app.locals.log);
 };
 
 // **************************** account ****************************//
 const getAccountById = function (req, resp, acctId) {
-  accounts.findById(req.app.locals.db, acctId).then((doc) => {
-    return resp.json({code: 0, data: doc});
-  }).catch((err) => {
-    req.app.locals.log.error(err);
-    return resp.json({code: error});
-  });
+  const promise = accounts.findById(req.app.locals.db, acctId);
+
+  return cu.sendJson(promise, resp, req.app.locals.log);
 };
 
 module.exports = {

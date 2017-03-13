@@ -237,7 +237,7 @@ Transactions.prototype.updateTrans = function (db, trans) {
   if(trans.bill) {
     mod.$set.bill = trans.bill;
   } else {
-    mod.$unset.bill = '';
+    mod.$unset = {bill: ''};
   }
 
   return this.update(db, filter, mod);

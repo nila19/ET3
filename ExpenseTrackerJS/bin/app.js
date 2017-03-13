@@ -32,9 +32,7 @@ app.locals.log = require('../api/utils/logger');
 require('../api/config/mongodb-config').connect(app.locals.log, function (db) {
   app.locals.db = db;
   if(config.startupBillCloser) {
-    billcloser.execute({db: app.locals.db, log: app.locals.log}, function () {
-      // do nothing.
-    });
+    billcloser.execute({db: app.locals.db, log: app.locals.log});
   }
 });
 
