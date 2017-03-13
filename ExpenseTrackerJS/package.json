@@ -25,8 +25,9 @@
     "sugar": "^2.0.4"
   },
   "scripts": {
-    "test": "node-debug bin/server.js --trace-sync-io | bunyan",
-    "start": "nodemon bin/server.js --trace-sync-io | bunyan"
+    "start": "nodemon bin/server.js --trace-sync-io | bunyan",
+    "debug": "node-debug bin/server.js | bunyan",
+    "migrate": "node api/datamigrate/migrate | bunyan"
   },
   "main": "bin/server.js",
   "devDependencies": {

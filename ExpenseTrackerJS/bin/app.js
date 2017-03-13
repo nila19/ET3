@@ -31,7 +31,7 @@ app.locals.log = require('../api/utils/logger');
 // establish DB connection to MongoDB..
 require('../api/config/mongodb-config').connect(app.locals.log, function (db) {
   app.locals.db = db;
-  if(config.startupBillCloser) {
+  if(config.billCloser) {
     billcloser.execute({db: app.locals.db, log: app.locals.log});
   }
 });
