@@ -10,7 +10,7 @@
             Modify {{$ctrl.data.expense.adjust?'Adjustment':'Expense'}}</h4>
       </div>
       <div class="modal-body">
-        <form name="modifyForm" novalidate="novalidate" ng-submit="$ctrl.modifyExpense(modifyForm.$valid)">
+        <form name="modifyForm" novalidate="novalidate" ng-submit="$ctrl.modifyExpense(modifyForm)">
           <div class="form-group">
             <label class="control-label">From Account</label>
             <input ng-model="$ctrl.data.expense.accounts.from" ng-change="$ctrl.clearBills()" type="text" class="form-control" uib-typeahead="acc as acc.name for acc in $ctrl.ta.accounts | filter:$viewValue" typeahead-show-hint="true" typeahead-min-length="0" typeahead-editable="false">

@@ -5,6 +5,7 @@
 
   angular.module('core').value('VALUES', {
     data: {
+      env: null,
       city: {},
       cities: [],
       categories: [],

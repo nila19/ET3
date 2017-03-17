@@ -13,35 +13,45 @@ const fmt = require('../config/formats');
 const cu = require('../utils/common-utils');
 
 const addExpense = function (parms, data, next) {
-  let tr = null;
-
-  cu.checkCityEditable(parms.db, data.city.id).then(() => {
-    return getAccountsInfo(parms, data);
-  }).then(() => {
-    return copyTransData(data);
-  }).then((trans) => {
-    tr = trans;
-    return copyAccountsData(data, tr);
-  }).then(() => {
-    return sequences.getNextSeq(parms.db, {seqId: 'transactions', cityId: data.city.id});
-  }).then((seq) => {
-    tr.id = seq.seq;
-    tr.seq = seq.seq;
-    return transactions.insert(parms.db, tr);
-  }).then(() => {
-    return cashService.transferCash({db: parms.db, from: data.accounts.from,
-      to: data.accounts.to, amount: tr.amount, seq: 0});
-  }).then(() => {
-    // re-fetch from DB to get the revised balances after cash transfer
-    return getAccountsInfo(parms, data);
-  }).then(() => {
-    return transactions.update(parms.db, {id: tr.id}, {$set: {'accounts.from.balanceAf': data.accounts.from.balance,
-      'accounts.to.balanceAf': data.accounts.to.balance}});
-  }).then(() => {
+  addExpensePromise(parms, data).then((tr) => {
     return next(null, tr);
   }).catch((err) => {
-    cu.logErr(parms.log, err);
     return next(err);
+  });
+};
+
+const addExpensePromise = function (parms, data) {
+  return new Promise(function (resolve, reject) {
+    let tr = null;
+
+    cu.checkCityEditable(parms.db, data.city.id).then(() => {
+      return getAccountsInfo(parms, data);
+    }).then(() => {
+      return copyTransData(data);
+    }).then((trans) => {
+      tr = trans;
+      return copyAccountsData(data, tr);
+    }).then(() => {
+      return sequences.getNextSeq(parms.db, {seqId: 'transactions', cityId: data.city.id});
+    }).then((seq) => {
+      tr.id = seq.seq;
+      tr.seq = seq.seq;
+      return transactions.insert(parms.db, tr);
+    }).then(() => {
+      return cashService.transferCash({db: parms.db, from: data.accounts.from,
+        to: data.accounts.to, amount: tr.amount, seq: 0});
+    }).then(() => {
+    // re-fetch from DB to get the revised balances after cash transfer
+      return getAccountsInfo(parms, data);
+    }).then(() => {
+      return transactions.update(parms.db, {id: tr.id}, {$set: {'accounts.from.balanceAf': data.accounts.from.balance,
+        'accounts.to.balanceAf': data.accounts.to.balance}});
+    }).then(() => {
+      return resolve(tr);
+    }).catch((err) => {
+      cu.logErr(parms.log, err);
+      return reject(err);
+    });
   });
 };
 
@@ -117,4 +127,5 @@ const copyAccountsData = function (data, trans) {
 
 module.exports = {
   addExpense: addExpense,
+  addExpensePromise: addExpensePromise
 };

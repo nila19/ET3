@@ -26,18 +26,18 @@ Model.prototype = {
   remove: function (db, filter) {
     return db.get(this.collection).remove(filter);
   },
-  removeAll: function (db) {
-    return db.get(this.collection).remove({});
-  },
+  // removeAll: function (db) {
+  //   return db.get(this.collection).remove({});
+  // },
   insert: function (db, data) {
     return db.get(this.collection).insert(data);
   },
   update: function (db, filter, mod, options) {
-    // TODO Embed the multi/upsert options based on input options.
-    return db.get(this.collection).update(filter, mod, options || {
-      multi: true,
-      upsert: true
-    });
+    let opt = {multi: true, upsert: true};
+
+    // embed the multi/upsert options based on input options.
+    opt = options ? Object.assign({}, opt, options) : opt;
+    return db.get(this.collection).update(filter, mod, opt);
   }
 };
 

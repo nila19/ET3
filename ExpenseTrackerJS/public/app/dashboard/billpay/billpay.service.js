@@ -20,13 +20,17 @@
       initForm();
     };
     const loadPayBill = function (dt) {
-      us.showMsg('Bill Pay', 'success');
-      bs.refreshBill(data.bill.id);
+      us.showMsg('Bill Pay', dt.code);
+      bs.data.loading = false;
+      if(dt.code === 0) {
 			// add the newly added Expense to the top of the Expenselist..
-      elws.addItem(dt.data.id);
+        elws.addItem(dt.data.id);
 
-      acs.refreshAccount(data.bill.account.id);
-      acs.refreshAccount(data.account.id);
+      // refresh accounts & bill
+        bs.refreshBill(data.bill.id);
+        acs.refreshAccount(data.bill.account.id);
+        acs.refreshAccount(data.account.id);
+      }
     };
     const payBill = function () {
       data.city = ms.data.menu.city;

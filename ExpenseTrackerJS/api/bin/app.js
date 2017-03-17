@@ -18,25 +18,25 @@ const helmet = require('helmet');
 const express = require('express');
 const app = express();
 
-const httpSuccessCodes = 400;
+const httpSuccess = 400;  // less than 400 are success codes.
 
-const config = require('../api/config/config');
-// route config..
-const routes = require('../api/config/route-config');
-const billcloser = require('../api/services/BillCloserService');
+const config = require('../config/config');
+const routes = require('../config/route-config');
+const mongo = require('../config/mongodb-config');
+const billcloser = require('../services/BillCloserService');
 
 // store logger in app context for use from other components.
-app.locals.log = require('../api/utils/logger');
+app.locals.log = require('../utils/logger');
 
 // establish DB connection to MongoDB..
-require('../api/config/mongodb-config').connect(app.locals.log, function (db) {
+mongo.connect(app.locals.log, function (db) {
   app.locals.db = db;
-  if(config.billCloser) {
+  if(config.billcloser) {
     billcloser.execute({db: app.locals.db, log: app.locals.log});
   }
 });
 
-app.set('views', path.join(__dirname, '../api', 'views'));
+app.set('views', path.join(__dirname, '..', 'views'));
 app.set('view engine', 'ejs');
 
 // list of middlewares in the order...
@@ -44,14 +44,14 @@ app.use(helmet());
 app.use(compression());
 app.use(morgan('dev', {
   skip: function (req, res) {
-    return res.statusCode < httpSuccessCodes;
+    return res.statusCode < httpSuccess;
   }
 }));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, '../public')));
-app.use(favicon(path.join(__dirname, '../public/images', 'favicon.ico')));
+app.use(express.static(path.join(__dirname, '../../public')));
+app.use(favicon(path.join(__dirname, '../../public/images', 'favicon.ico')));
 
 // inject application routes...
 routes.route(app);

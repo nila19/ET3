@@ -3,7 +3,7 @@
 (function (angular) {
   'use strict';
 
-  const addService = function (ms, acs, elws, aj, us, C) {
+  const addService = function (ms, acs, elws, aj, us) {
     const data = {
       showAdd: false,
       expense: {
@@ -27,15 +27,16 @@
     };
     const loadData = function (dt) {
       initForm();
-      us.showMsg('Add Expense', C.MSG.SUCCESS);
-			// add the newly added Expense to the top of the Expenselist..
-      elws.addItem(dt.data.id);
-
-      if (data.expense.accounts.from && data.expense.accounts.from.id) {
-        acs.refreshAccount(data.expense.accounts.from.id);
-      }
-      if (data.expense.accounts.to && data.expense.accounts.to.id) {
-        acs.refreshAccount(data.expense.accounts.to.id);
+      us.showMsg('Add Expense', dt.code);
+      if(dt.code === 0) {
+        // add the newly added Expense to the top of the Expenselist..
+        elws.addItem(dt.data.id);
+        if (data.expense.accounts.from && data.expense.accounts.from.id) {
+          acs.refreshAccount(data.expense.accounts.from.id);
+        }
+        if (data.expense.accounts.to && data.expense.accounts.to.id) {
+          acs.refreshAccount(data.expense.accounts.to.id);
+        }
       }
     };
     const addExpense = function () {
@@ -51,5 +52,5 @@
 
   angular.module('dashboard.add').factory('addService', addService);
   addService.$inject = ['etmenuService', 'accountsService', 'explistwrapperService',
-    'ajaxService', 'utilsService', 'CONSTANTS'];
+    'ajaxService', 'utilsService'];
 })(window.angular);

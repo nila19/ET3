@@ -48,11 +48,13 @@
       ms.data.loading = true;
       aj.get('/dashboard/account/' + id, {}, loadAccount);
     };
-    const loadTally = function () {
+    const loadTally = function (dt) {
       ms.data.loading = false;
-      us.showMsg('Tally', 'success');
-      refreshAccount(data.tallyOn);
-      ss.doSearch();
+      us.showMsg('Tally', dt.code);
+      if(dt.code === 0) {
+        refreshAccount(data.tallyOn);
+        ss.doSearch();
+      }
     };
     const tallyAccount = function (id) {
       ms.data.loading = true;

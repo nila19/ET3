@@ -37,21 +37,21 @@ const buildSummary = function (parms) {
 };
 
 // step - 0 : initial method to fetch all data from DB..
-const getDataFromDB = function (param) {
+const getDataFromDB = function (parms) {
   return new Promise(function (resolve, reject) {
     const data = {};
 
-    categories.findForCity(param.db, param.cityId).then((docs) => {
+    categories.findForCity(parms.db, parms.cityId).then((docs) => {
       data.categories = docs;
-      return transactions.findAllTransMonths(param.db, param.cityId);
+      return transactions.findAllTransMonths(parms.db, parms.cityId);
     }).then((docs) => {
-      return monthUtils.buildMonthsList(docs, param.log);
+      return monthUtils.buildMonthsList(docs, parms.log);
     }).then((months) => {
       data.transMonths = months;
-      return transactions.findForMonthlySummary(param.db, param.cityId, param.regular, param.adhoc);
+      return transactions.findForMonthlySummary(parms.db, parms.cityId, parms.regular, parms.adhoc);
     }).then((docs) => {
       data.transactions = docs;
-      return transactions.findForForecast(param.db, param.cityId);
+      return transactions.findForForecast(parms.db, parms.cityId);
     }).then((docs) => {
       data.fcTransactions = docs;
       resolve(data);
@@ -119,9 +119,9 @@ const calcYearlySummary = function (data, grid) {
 };
 
 // setp 4: build forecast grid, if the forecast flag is on. if the flag is not on, proceed forward.
-const buildForecastGrid = function (param, data, grid) {
+const buildForecastGrid = function (parms, data, grid) {
   return new Promise(function (resolve, reject) {
-    if(!param.forecast) {
+    if(!parms.forecast) {
       return resolve(grid);
     }
     buildEmptyGrid(data).then((fcgrid) => {

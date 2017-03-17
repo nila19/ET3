@@ -5,7 +5,7 @@ const runSequence = require('run-sequence');
 const gulpif = require('gulp-if');
 const plugins = require('gulp-load-plugins')();
 
-const gf = require('./bin/gulpfunctions');
+const gf = require('./api/bin/gulpfunctions');
 const src = gf.src;
 
 //* ******************************* tasks ********************************//

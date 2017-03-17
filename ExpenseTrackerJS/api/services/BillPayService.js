@@ -6,14 +6,17 @@ const bills = require('../models/Bills')();
 const cu = require('../utils/common-utils');
 
 const payBill = function (parms, data, next) {
+  let tr = null;
+
   cu.checkCityEditable(parms.db, data.city.id).then(() => {
     return buildTransInput(data);
   }).then((input) => {
     return addservice.addExpensePromise(parms, input);
   }).then((trans) => {
+    tr = trans;
     return updateBill(parms, data, trans);
   }).then(() => {
-    return next();
+    return next(null, tr);
   }).catch((err) => {
     cu.logErr(parms.log, err);
     return next(err);

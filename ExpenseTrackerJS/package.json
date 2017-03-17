@@ -16,6 +16,7 @@
     "ejs": "~2.5.5",
     "express": "^4.14.1",
     "helmet": "^3.4.0",
+    "minimist": "^1.2.0",
     "moment": "^2.17.1",
     "mongodb": "^2.2.22",
     "monk": "^4.0.0",
@@ -25,9 +26,12 @@
     "sugar": "^2.0.4"
   },
   "scripts": {
-    "start": "nodemon bin/server.js --trace-sync-io | bunyan",
-    "debug": "node-debug bin/server.js | bunyan",
-    "migrate": "node api/datamigrate/migrate | bunyan"
+    "prod": "node api/bin/server.js --region=prod | bunyan",
+    "dev": "node api/bin/server.js --region=dev | bunyan",
+    "nodemon": "nodemon api/bin/server.js --region=dev | bunyan",
+    "debug": "node-debug api/bin/server.js --trace-sync-io --region=dev | bunyan",
+    "migrate": "node api/datamigrate/migrate --region=dev | bunyan",
+    "test": "node api/bin/test.js --region=dev | bunyan"
   },
   "main": "bin/server.js",
   "devDependencies": {

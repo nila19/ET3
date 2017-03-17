@@ -15,67 +15,11 @@ const sequences = require('./migrate-sequences');
 const deleteAll = require('./delete-all');
 
 const sqlite = new sqlite3.Database(config.sqlite, sqlite3.OPEN_READONLY);
-let param = null;
+let parms = null;
 
-const account = function (next) {
-  accounts(param.sqlite, param.mongo, param.log, function () {
-    log.info('Accounts completed...');
-    next();
-  });
-};
-
-const bill = function (next) {
-  bills(param.sqlite, param.mongo, param.log, function () {
-    log.info('Bills completed...');
-    next();
-  });
-};
-
-const category = function (next) {
-  categories(param.sqlite, param.mongo, param.log, function () {
-    log.info('Categories completed...');
-    next();
-  });
-};
-
-const city = function (next) {
-  cities(param.sqlite, param.mongo, param.log, function () {
-    log.info('Cities completed...');
-    next();
-  });
-};
-
-const tally = function (next) {
-  tallies(param.sqlite, param.mongo, param.log, function () {
-    log.info('TallyHistory completed...');
-    next();
-  });
-};
-
-const transaction = function (next) {
-  transactions(param.sqlite, param.mongo, param.log, function () {
-    log.info('Transactions completed...');
-    next();
-  });
-};
-
-const sequence = function (next) {
-  sequences(param.mongo, param.log, function () {
-    log.info('Sequence completed...');
-    next();
-  });
-};
-
-const clear = function (next) {
-  deleteAll(param.mongo, param.log, function () {
-    log.info('Delete completed...');
-    next();
-  });
-};
-
-const main = function (next) {
+const main = function () {
   mongoconfig.connect(log, function (mongo) {
-    param = {
+    parms = {
       log: log,
       mongo: mongo,
       sqlite: sqlite
@@ -85,19 +29,45 @@ const main = function (next) {
     async.waterfall([clear, account, bill, category, city, tally,
       transaction, sequence], function (err) {
       if(err) {
-        param.log.error(err);
-        return next(err);
+        parms.log.error(err);
       }
       sqlite.close();
       mongo.close();
-      return next();
+      log.info('***** Migration activities completed...!!!!!');
     });
   });
 };
 
-main(function (err) {
-  if(err) {
-    log.error(err);
-  }
-  log.info('***** Migration activities completed...!!!!!');
-});
+const clear = function (next) {
+  deleteAll(parms.mongo, parms.log, next);
+};
+
+const account = function (next) {
+  accounts(parms.sqlite, parms.mongo, parms.log, next);
+};
+
+const bill = function (next) {
+  bills(parms.sqlite, parms.mongo, parms.log, next);
+};
+
+const category = function (next) {
+  categories(parms.sqlite, parms.mongo, parms.log, next);
+};
+
+const city = function (next) {
+  cities(parms.sqlite, parms.mongo, parms.log, next);
+};
+
+const tally = function (next) {
+  tallies(parms.sqlite, parms.mongo, parms.log, next);
+};
+
+const transaction = function (next) {
+  transactions(parms.sqlite, parms.mongo, parms.log, next);
+};
+
+const sequence = function (next) {
+  sequences(parms.mongo, parms.log, next);
+};
+
+main();

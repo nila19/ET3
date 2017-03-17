@@ -18,9 +18,9 @@ const getBills = function (req, resp) {
   const p = {
     db: req.app.locals.db,
     id: req.query.acctId ? numeral(req.query.acctId).value() : numeral(req.query.cityId).value(),
-    paidInd: req.query.paidInd
+    paid: req.query.paidInd
   };
-  const promise = p.acctId ? bills.findForAcct(p.db, p.id, p.paidInd) : bills.findForCity(p.db, p.id, p.paidInd);
+  const promise = req.query.acctId ? bills.findForAcct(p.db, p.id, p.paid) : bills.findForCity(p.db, p.id, p.paid);
 
   return cu.sendJson(promise, resp, req.app.locals.log);
 };

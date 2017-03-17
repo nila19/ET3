@@ -14,8 +14,8 @@
     const isNull = function (e) {
       return !e || !e.id;
     };
-    const addExpense = function (valid) {
-      if (valid) {
+    const addExpense = function (form) {
+      if (form.$valid) {
         if (as.data.adjust && (isNull(as.data.accounts.from) && isNull(as.data.accounts.to))) {
           us.show('Select at least one of From, To accounts!!', C.MSG.WARNING);
           return false;

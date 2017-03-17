@@ -13,6 +13,7 @@
       menu: {
         city: {},
         cities: [],
+        env: null
       },
       CURRENCY: C.CURRENCY
     };

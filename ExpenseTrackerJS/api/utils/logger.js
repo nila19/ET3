@@ -7,19 +7,15 @@ const config = require('../config/config');
 
 const log = bunyan.createLogger({
   name: 'ExpenseTracker',
-  streams: [
-    {
-      type: 'rotating-file',
-      path: config.log.path,
-      // monthly rotation
-      period: config.log.period,
-      // keep 12 back copies
-      count: config.log.count
-    }, {
+  streams: [{
+    type: 'rotating-file',
+    path: config.log.path,
+    period: config.log.period,
+    count: config.log.count
+  }, {
       // log to console
-      stream: process.stdout
-    }
-  ],
+    stream: process.stdout
+  }],
   serializers: {
     req: bunyan.stdSerializers.req,
     res: bunyan.stdSerializers.res,

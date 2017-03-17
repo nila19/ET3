@@ -35,9 +35,24 @@ const checkCityEditable = function (db, id) {
   });
 };
 
+const checkAccountsActive = function (finImpact, from, to) {
+  return new Promise(function (resolve, reject) {
+    if(!finImpact) {
+      return resolve();
+    } else if(from && from.id && !from.active) {
+      return reject(new Error('Change invalid. Account(s) involved are not active...'));
+    } else if(to && to.id && !to.active) {
+      return reject(new Error('Change invalid. Account(s) involved are not active...'));
+    } else {
+      return resolve();
+    }
+  });
+};
+
 module.exports = {
   buildParm: buildParm,
   logErr: logErr,
   sendJson: sendJson,
-  checkCityEditable: checkCityEditable
+  checkCityEditable: checkCityEditable,
+  checkAccountsActive: checkAccountsActive
 };

@@ -13,6 +13,7 @@ const cu = require('../utils/common-utils');
 
 const modifyExpense = function (parms, data, next) {
   let tr = null;
+  const traccts = {};
   let finImpact = null;
   let billChange = null;
 
@@ -20,15 +21,18 @@ const modifyExpense = function (parms, data, next) {
   transactions.findById(parms.db, data.id).then((tran) => {
     tr = tran;
     return cu.checkCityEditable(parms.db, tr.cityId);
-    // TODO check if both accounts are active ??
   }).then(() => {
-    return getAccountsInfo(parms, data);
+    return getAccountsInfo(parms, data, tr, traccts);
   }).then(() => {
-    finImpact = checkFinImpact(data, tr);
-    return checkAccountsActive(data, finImpact);
+    return checkFinImpact(data, tr);
+  }).then((fi) => {
+    finImpact = fi;
+    return cu.checkAccountsActive(finImpact, data.accounts.from, data.accounts.to);
   }).then(() => {
-    billChange = checkBillChangeNeeded(data, tr);
-    return modifyBillBalance(parms, data, tr, billChange);
+    return checkBillChangeNeeded(data, tr);
+  }).then((bc) => {
+    billChange = bc;
+    return modifyBillBalance(parms, data, tr, traccts, billChange);
   }).then(() => {
     return adjustCash(parms, data, tr, finImpact);
   }).then(() => {
@@ -45,15 +49,19 @@ const modifyExpense = function (parms, data, next) {
   });
 };
 
-const getAccountsInfo = function (parms, data) {
+const getAccountsInfo = function (parms, data, tr, traccts) {
   return new Promise(function (resolve, reject) {
     const promises = [];
 
     promises.push(accounts.findById(parms.db, data.accounts.from ? data.accounts.from.id: 0));
     promises.push(accounts.findById(parms.db, data.accounts.to ? data.accounts.to.id: 0));
+    promises.push(accounts.findById(parms.db, tr.accounts.from ? tr.accounts.from.id: 0));
+    promises.push(accounts.findById(parms.db, tr.accounts.to ? tr.accounts.to.id: 0));
     Promise.all(promises).then((accounts) => {
       data.accounts.from = accounts[0];
       data.accounts.to = accounts[1];
+      traccts.from = accounts[2];
+      traccts.to = accounts[3];
       return resolve();
     }).catch((err) => {
       return reject(err);
@@ -62,51 +70,40 @@ const getAccountsInfo = function (parms, data) {
 };
 
 const checkFinImpact = function (data, trans) {
-  let finImpact = false;
+  return new Promise(function (resolve) {
+    let finImpact = false;
 
-  if(trans.amount != data.amount) {
-    finImpact = true;
-  } else if(trans.accounts.from.id != data.accounts.from.id) {
-    finImpact = true;
-  } else if(trans.adjust && trans.accounts.to.id != data.accounts.to.id) {
-    finImpact = true;
-  }
-  return finImpact;
-};
-
-const checkAccountsActive = function (data, finImpact) {
-  return new Promise(function (resolve, reject) {
-    if(!finImpact) {
-      return resolve();
-    } else if(data.accounts.from.id && !data.accounts.from.active) {
-      return reject(new Error('Modification invalid. Account(s) involved not active...'));
-    } else if(data.adjust && data.accounts.to.id && !data.accounts.to.active) {
-      return reject(new Error('Modification invalid. Account(s) involved not active...'));
-    } else {
-      return resolve();
+    if(trans.amount != data.amount) {
+      finImpact = true;
+    } else if(trans.accounts.from.id != data.accounts.from.id) {
+      finImpact = true;
+    } else if(trans.adjust && trans.accounts.to.id != data.accounts.to.id) {
+      finImpact = true;
     }
+    return resolve(finImpact);
   });
 };
 
 // step 4: check if there is any change in bill & if a modification to bill is needed.
 const checkBillChangeNeeded = function (data, trans) {
-  let billChange = false;
+  return new Promise(function (resolve) {
+    let billChange = false;
 
-  // if no bill before & after change, then skip.
-  if(!trans.bill && !data.bill) {
-    billChange = false;
-  } else if(trans.bill && !data.bill || !trans.bill && data.bill) {
-    billChange = true;
-  } else if (trans.bill.id !== data.bill.id) {
-    billChange = true;
-  } else if (trans.amount !== data.amount) {
-    billChange = true;
-  }
-
-  return billChange;
+    // if no bill before & after change, then skip.
+    if(!trans.bill && !data.bill) {
+      billChange = false;
+    } else if(trans.bill && !data.bill || !trans.bill && data.bill) {
+      billChange = true;
+    } else if (trans.bill.id !== data.bill.id) {
+      billChange = true;
+    } else if (trans.amount !== data.amount) {
+      billChange = true;
+    }
+    return resolve(billChange);
+  });
 };
 
-const modifyBillBalance = function (parms, data, tran, billChange) {
+const modifyBillBalance = function (parms, data, tran, traccts, billChange) {
   return new Promise(function (resolve, reject) {
     if(!billChange) {
       return resolve();
@@ -117,10 +114,20 @@ const modifyBillBalance = function (parms, data, tran, billChange) {
     if(tran.bill) {
       promises.push(bills.findOneAndUpdate(parms.db, {id: tran.bill.id},
         {$inc: {amount: -tran.amount, balance: -tran.amount}}));
+      // if that bill is the last-bill, update the bill amount @ the account as well.
+      if(tran.bill.id === traccts.from.bills.last.id) {
+        promises.push(accounts.findOneAndUpdate(parms.db, {id: traccts.from.id},
+          {$inc: {'bills.last.amount': -tran.amount}}));
+      }
     }
     if(data.bill) {
       promises.push(bills.findOneAndUpdate(parms.db, {id: data.bill.id},
         {$inc: {amount: data.amount, balance: data.amount}}));
+      // if that bill is the last-bill, update the bill amount @ the account as well.
+      if(data.bill.id === data.accounts.from.bills.last.id) {
+        promises.push(accounts.findOneAndUpdate(parms.db, {id: data.accounts.from.id},
+          {$inc: {'bills.last.amount': data.amount}}));
+      }
     }
     Promise.all(promises).then(() => {
       return resolve();

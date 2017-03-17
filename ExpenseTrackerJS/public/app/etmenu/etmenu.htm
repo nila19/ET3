@@ -20,7 +20,7 @@
         </a>
       </div>
       <div class="navbar-right">
-        <span class="btn btn-success no-btn">
+        <span class="btn no-btn" ng-class="{'btn-danger':$ctrl.data.menu.env!=='PROD','btn-success':$ctrl.data.menu.env==='PROD'}">
           <i ng-if="$ctrl.data.menu.city.currency === $ctrl.data.CURRENCY.USD" class="material-icons">attach_money</i>
           <i ng-if="$ctrl.data.menu.city.currency === $ctrl.data.CURRENCY.INR" class="material-icons">euro_symbol</i>
         </span>

@@ -10,9 +10,12 @@ const cu = require('../utils/common-utils');
 const config = require('../config/config');
 
 const canConnect = function (req, resp) {
-  const promise = accounts.findById(req.app.locals.db, 0);
-
-  return cu.sendJson(promise, resp, req.app.locals.log);
+  accounts.findById(req.app.locals.db, 0).then(() => {
+    return resp.json({code: 0, data: {env: config.env}});
+  }).catch((err) => {
+    req.app.locals.log.error(err);
+    return resp.json({code: config.error});
+  });
 };
 
 // **************************** city ****************************//

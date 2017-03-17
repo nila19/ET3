@@ -1,22 +1,21 @@
 /* eslint no-process-exit: "off"*/
-
 'use strict';
 
 const onError = function (err, app) {
   if (err.syscall !== 'listen') {
     throw err;
   }
-  const bind = 'Port : ' + app.get('port');
+  const port = 'Port : ' + app.get('port');
   const log = app.locals.log;
 
   // handle specific listen errors with friendly messages
   switch (err.code) {
     case 'EACCES':
-      log.error(log.chalk.magenta(bind + ' requires elevated privileges'));
+      log.error(log.chalk.magenta(port + ' requires elevated privileges'));
       process.exit(1);
       break;
     case 'EADDRINUSE':
-      log.error(log.chalk.magenta(bind + ' is already in use'));
+      log.error(log.chalk.magenta(port + ' is already in use'));
       process.exit(1);
       break;
     default:
@@ -36,22 +35,7 @@ const unCaught = function (err, app) {
   log.error(err);
 };
 
-// normalize a port into a number, string, or false.
-const normalizePort = function (val) {
-  const port = parseInt(val, 10);
-
-  // named pipe
-  if (isNaN(port)) {
-    return val;
-  }
-  if (port >= 0) {
-    return port;
-  }
-  return false;
-};
-
 module.exports = {
-  normalizePort: normalizePort,
   onError: onError,
   onListening: onListening,
   unCaught: unCaught

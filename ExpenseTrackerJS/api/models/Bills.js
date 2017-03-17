@@ -24,11 +24,11 @@ const Bills = function () {
 
 Bills.prototype = model('bills');
 // paidInd == null, get all; paidInd = 'N', getUnpaid only, paidInd = 'Y', getPaid only
-Bills.prototype.findForCity = function (db, cityId, paidInd) {
+Bills.prototype.findForCity = function (db, cityId, paid) {
   const filter = {cityId: cityId, closed: true};
 
-  if(paidInd) {
-    filter.balance = (paidInd === 'Y') ? 0: {$gt: 0};
+  if(paid) {
+    filter.balance = (paid === 'Y') ? 0: {$gt: 0};
   }
   return this.find(db, filter, {fields: {_id: 0}, sort: {billDt: -1}});
 };
@@ -42,11 +42,12 @@ Bills.prototype.findForCityOpen = function (db, cityId) {
 };
 
 // paidInd == null, get all; paidInd = 'N', getUnpaid only, paidInd = 'Y', getPaid only
-Bills.prototype.findForAcct = function (db, acctId, paidInd) {
-  const filter = {'account.id': acctId, closed: true};
+Bills.prototype.findForAcct = function (db, acctId, paid) {
+  const filter = {'account.id': acctId};
 
-  if(paidInd) {
-    filter.balance = (paidInd === 'Y') ? 0: {$gt: 0};
+  if(paid) {
+    filter.balance = (paid === 'Y') ? 0: {$gt: 0};
+    filter.closed = true;
   }
   return this.find(db, filter, {fields: {_id: 0}, sort: {billDt: -1}});
 };

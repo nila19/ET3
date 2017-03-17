@@ -25,7 +25,7 @@
     <div class="card-content">
       <div class="tab-content">
         <div class="tab-pane" ng-class="{'active':!$ctrl.data.expense.adjust}">
-          <form name="addExpForm" novalidate="novalidate" ng-submit="$ctrl.addExpense(addExpForm.$valid)">
+          <form name="addExpForm" novalidate="novalidate" ng-submit="$ctrl.addExpense(addExpForm)">
             <div class="row">
               <div class="col-md-4">
                 <div class="form-group label-floating">
@@ -82,7 +82,7 @@
           </form>
         </div>
         <div class="tab-pane" ng-class="{'active':$ctrl.data.expense.adjust}">
-          <form name="addAdjForm" novalidate="novalidate" ng-submit="$ctrl.addExpense(addAdjForm.$valid)">
+          <form name="addAdjForm" novalidate="novalidate" ng-submit="$ctrl.addExpense(addAdjForm)">
             <div class="row">
               <div class="col-md-4">
                 <div class="form-group label-floating">

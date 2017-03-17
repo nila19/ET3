@@ -6,7 +6,7 @@ const config = require('./config');
 module.exports = {
   connect: function (log, next) {
     monk(config.dburl).then((db) => {
-      log.info('Connected to database...');
+      log.info('Connected to :: ' + config.dburl);
       next(db);
     }).catch((err) => {
       log.error(log.chalk.magenta(err));

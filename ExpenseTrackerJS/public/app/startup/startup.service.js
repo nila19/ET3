@@ -116,6 +116,7 @@
       // if resp code is 0.
       data.connect = (dt.code === 0);
       if (data.connect) {
+        V.data.env = dt.data.env;
         data.status += TEN;
         getDefaultCity();
       }

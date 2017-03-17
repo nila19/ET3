@@ -10,6 +10,7 @@ const trans = require('../models/Transactions')();
 const bills = require('../models/Bills')();
 const monthUtils = require('../utils/month-utils');
 const billcloser = require('../services/BillCloserService');
+const argv = require('minimist')(process.argv.slice(2));
 
 const queryTrans = function (mongo, log, next) {
   log.info('Query transactions started...');
@@ -36,7 +37,21 @@ const queryTrans = function (mongo, log, next) {
 };
 
 const queryBills = function (mongo, log, next) {
-  bills.find(mongo, {id: 95}).then((docs) => {
+  bills.find(mongo, {id: 98}).then((docs) => {
+    log.info('************** TEST **************...');
+    docs.forEach(function (row) {
+      log.info(JSON.stringify(row));
+    });
+    log.info('************** DONE TEST **************...');
+    return next();
+  }).catch((err) => {
+    log.error(err);
+    return next();
+  });
+};
+
+const queryTran = function (mongo, log, next) {
+  trans.find(mongo, {'bill.id': 98}, {fields: {_id: 0, amount: 1}}).then((docs) => {
     log.info('************** TEST **************...');
     docs.forEach(function (row) {
       log.info(JSON.stringify(row));
@@ -68,14 +83,21 @@ const getTransMonths = function (mongo, log, next) {
   });
 };
 
-const closer = function (db, log, next) {
-  billcloser.execute({db: db, log: log}, next);
+const closer = function () {
+  mongo.connect(log, function (mongo) {
+    billcloser.execute({db: mongo, log: log}, function (err) {
+      if(err) {
+        log.error(err);
+      }
+      mongo.close();
+    });
+  });
 };
 
 // debugger;
 const query = function () {
   mongo.connect(log, function (mongo) {
-    closer(mongo, log, function (err) {
+    queryBills(mongo, log, function (err) {
     // queryTrans(mongo, log, function (err) {
     // getTransMonths(mongo, log, function (err) {
       if(err) {
@@ -94,8 +116,17 @@ const obj = {
   final: numeral(numeral(bal1).format('0.00')).value()
 };
 
-// log.info(JSON.stringify(obj));
+const test = function () {
+  mongo.connect(log, function (mongo) {
+    log.info('MAIN PARMS = ' + JSON.stringify(argv));
+    mongo.close();
+  });
+};
 
+// test();
+
+// log.info(JSON.stringify(obj));
+// closer();
 query();
 // const tally2 = dt().subtract(4, 'hours');
 // log.info(tally2.valueOf() + ' - ' + dt().isSame(tally2, 'day'));

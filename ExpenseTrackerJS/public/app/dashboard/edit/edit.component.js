@@ -11,8 +11,8 @@
       vm.data = es.data;
       vm.ta = V.data;
     };
-    const modifyExpense = function (valid) {
-      if (valid) {
+    const modifyExpense = function (form) {
+      if (form.$valid) {
         // clear bill if it does not belong to the same from account.
         if(es.data.expense.accounts.from.id && es.data.expense.bill) {
           if(es.data.expense.accounts.from.id !== es.data.expense.bill.account.id) {
