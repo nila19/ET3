@@ -54,6 +54,8 @@
       }, loadInactiveAccounts);
     };
     const loadAccounts = function (dt) {
+      V.data.accounts = [];
+      V.data.allAccounts = [];
       angular.forEach(dt.data, function (ac) {
         V.data.accounts.push(ac);
         V.data.allAccounts.push(ac);

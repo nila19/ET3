@@ -43,17 +43,10 @@ const buildTransInput = function (data) {
 // step 5 : save transaction to DB
 const updateBill = function (parms, data, trans) {
   return new Promise(function (resolve, reject) {
-    const pmt = {
-      id: trans.id,
-      transDt: trans.transDt,
-      amount: trans.amount
-    };
+    const pmt = {id: trans.id, transDt: trans.transDt, amount: trans.amount};
     let bal = data.bill.balance - trans.amount;
 
-    if(bal > -0.01 && bal < 0.01) {
-      bal = 0;
-    }
-
+    bal = (bal > -0.01 && bal < 0.01) ? 0 : bal;
     bills.update(parms.db, {id: data.bill.id}, {$set: {balance: bal}, $push: {payments: pmt}}).then(() => {
       return resolve();
     }).catch((err) => {

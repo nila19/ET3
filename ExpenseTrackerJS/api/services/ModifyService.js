@@ -13,7 +13,6 @@ const cu = require('../utils/common-utils');
 
 const modifyExpense = function (parms, data, next) {
   let tr = null;
-  const traccts = {};
   let finImpact = null;
   let billChange = null;
 
@@ -22,7 +21,7 @@ const modifyExpense = function (parms, data, next) {
     tr = tran;
     return cu.checkCityEditable(parms.db, tr.cityId);
   }).then(() => {
-    return getAccountsInfo(parms, data, tr, traccts);
+    return getAccountsInfo(parms, data);
   }).then(() => {
     return checkFinImpact(data, tr);
   }).then((fi) => {
@@ -32,7 +31,7 @@ const modifyExpense = function (parms, data, next) {
     return checkBillChangeNeeded(data, tr);
   }).then((bc) => {
     billChange = bc;
-    return modifyBillBalance(parms, data, tr, traccts, billChange);
+    return modifyBillBalance(parms, data, tr, billChange);
   }).then(() => {
     return adjustCash(parms, data, tr, finImpact);
   }).then(() => {
@@ -49,19 +48,15 @@ const modifyExpense = function (parms, data, next) {
   });
 };
 
-const getAccountsInfo = function (parms, data, tr, traccts) {
+const getAccountsInfo = function (parms, data) {
   return new Promise(function (resolve, reject) {
     const promises = [];
 
     promises.push(accounts.findById(parms.db, data.accounts.from ? data.accounts.from.id: 0));
     promises.push(accounts.findById(parms.db, data.accounts.to ? data.accounts.to.id: 0));
-    promises.push(accounts.findById(parms.db, tr.accounts.from ? tr.accounts.from.id: 0));
-    promises.push(accounts.findById(parms.db, tr.accounts.to ? tr.accounts.to.id: 0));
     Promise.all(promises).then((accounts) => {
       data.accounts.from = accounts[0];
       data.accounts.to = accounts[1];
-      traccts.from = accounts[2];
-      traccts.to = accounts[3];
       return resolve();
     }).catch((err) => {
       return reject(err);
@@ -103,7 +98,7 @@ const checkBillChangeNeeded = function (data, trans) {
   });
 };
 
-const modifyBillBalance = function (parms, data, tran, traccts, billChange) {
+const modifyBillBalance = function (parms, data, tr, billChange) {
   return new Promise(function (resolve, reject) {
     if(!billChange) {
       return resolve();
@@ -111,23 +106,13 @@ const modifyBillBalance = function (parms, data, tran, traccts, billChange) {
     const promises = [];
 
     // reverse the trans balance & add the 'data' balance.
-    if(tran.bill) {
-      promises.push(bills.findOneAndUpdate(parms.db, {id: tran.bill.id},
-        {$inc: {amount: -tran.amount, balance: -tran.amount}}));
-      // if that bill is the last-bill, update the bill amount @ the account as well.
-      if(tran.bill.id === traccts.from.bills.last.id) {
-        promises.push(accounts.findOneAndUpdate(parms.db, {id: traccts.from.id},
-          {$inc: {'bills.last.amount': -tran.amount}}));
-      }
+    if(tr.bill) {
+      promises.push(bills.findOneAndUpdate(parms.db, {id: tr.bill.id},
+        {$inc: {amount: -tr.amount, balance: -tr.amount}}));
     }
     if(data.bill) {
       promises.push(bills.findOneAndUpdate(parms.db, {id: data.bill.id},
         {$inc: {amount: data.amount, balance: data.amount}}));
-      // if that bill is the last-bill, update the bill amount @ the account as well.
-      if(data.bill.id === data.accounts.from.bills.last.id) {
-        promises.push(accounts.findOneAndUpdate(parms.db, {id: data.accounts.from.id},
-          {$inc: {'bills.last.amount': data.amount}}));
-      }
     }
     Promise.all(promises).then(() => {
       return resolve();
@@ -137,14 +122,14 @@ const modifyBillBalance = function (parms, data, tran, traccts, billChange) {
   });
 };
 
-const adjustCash = function (parms, data, trans, finImpact) {
+const adjustCash = function (parms, data, tr, finImpact) {
   return new Promise(function (resolve, reject) {
     if(!finImpact) {
       return resolve();
     }
     // reverse the from / to accounts to reverse cash first.
-    cashService.transferCash({db: parms.db, from: trans.accounts.to,
-      to: trans.accounts.from, amount: trans.amount, seq: trans.seq}).then(() => {
+    cashService.transferCash({db: parms.db, from: tr.accounts.to,
+      to: tr.accounts.from, amount: tr.amount, seq: tr.seq}).then(() => {
         return cashService.transferCash({db: parms.db, from: data.accounts.from,
           to: data.accounts.to, amount: data.amount, seq: data.seq});
       }).then(() => {

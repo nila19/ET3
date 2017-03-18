@@ -6,6 +6,7 @@ const numeral = require('numeral');
 
 const mongo = require('../config/mongodb-config');
 const log = require('../utils/logger');
+const accounts = require('../models/Accounts')();
 const trans = require('../models/Transactions')();
 const bills = require('../models/Bills')();
 const monthUtils = require('../utils/month-utils');
@@ -38,6 +39,20 @@ const queryTrans = function (mongo, log, next) {
 
 const queryBills = function (mongo, log, next) {
   bills.find(mongo, {id: 98}).then((docs) => {
+    log.info('************** TEST **************...');
+    docs.forEach(function (row) {
+      log.info(JSON.stringify(row));
+    });
+    log.info('************** DONE TEST **************...');
+    return next();
+  }).catch((err) => {
+    log.error(err);
+    return next();
+  });
+};
+
+const queryAccount = function (mongo, log, next) {
+  accounts.findForCityActive(mongo, 20140301).then((docs) => {
     log.info('************** TEST **************...');
     docs.forEach(function (row) {
       log.info(JSON.stringify(row));
@@ -97,7 +112,7 @@ const closer = function () {
 // debugger;
 const query = function () {
   mongo.connect(log, function (mongo) {
-    queryBills(mongo, log, function (err) {
+    queryAccount(mongo, log, function (err) {
     // queryTrans(mongo, log, function (err) {
     // getTransMonths(mongo, log, function (err) {
       if(err) {

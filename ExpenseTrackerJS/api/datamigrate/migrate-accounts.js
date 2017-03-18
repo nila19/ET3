@@ -3,7 +3,6 @@
 const moment = require('moment');
 const numeral = require('numeral');
 const accounts = require('../models/Accounts')();
-const bills = require('../models/Bills')();
 const fmt = require('../config/formats');
 
 numeral.defaultFormat('0');
@@ -45,19 +44,11 @@ const migrate = function (sqlite, mongo, log, next) {
           acct.bills = {
             last: {
               id: numeral(row.LAST_BILL_ID).value() || 0,
-              billDt: moment(numeral(row.LAST_BILL_DT).value()).format(fmt.YYYYMMDD) || 0,
-              dueDt: moment(numeral(row.LAST_DUE_DT).value()).format(fmt.YYYYMMDD) || 0,
-              amount: numeral(numeral(row.LAST_BILL_AMT).format('0.00')).value() || 0
             },
             open: {
               id: numeral(row.OPEN_BILL_ID).value() || 0,
-              billDt: moment(numeral(row.OPEN_BILL_DT).value()).format(fmt.YYYYMMDD) || 0,
-              dueDt: moment(numeral(row.OPEN_DUE_DT).value()).format(fmt.YYYYMMDD) || 0,
-              amount: numeral(numeral(row.OPEN_BILL_AMT).format('0.00')).value() || 0
             }
           };
-          acct.bills.last.name = bills.getName(acct, acct.bills.last);
-          acct.bills.open.name = bills.getName(acct, acct.bills.open);
         }
 
         accounts.insert(mongo, acct);

@@ -72,8 +72,7 @@ const closeEachBill = function (parms, bill) {
       return bills.update(parms.db, {id: bill.id}, {$set: {amount: bill.amount, balance: bill.amount,
         closed: true}});
     }).then(() => {
-      return accounts.update(parms.db, {id: bill.account.id}, {$set: {'bills.last':
-      {id: bill.id, name: bill.name, billDt: bill.billDt, dueDt: bill.dueDt, amount: bill.amount}}});
+      return accounts.update(parms.db, {id: bill.account.id}, {$set: {'bills.last': {id: bill.id}}});
     }).then(() => {
       return resolve();
     }).catch((err) => {

@@ -10,10 +10,10 @@
         <h3 class="title">{{acct.balance | currency:''}}</h3>
       </div>
       <div class="card-footer">
-        <div ng-if="acct.billed && !acct.bills.last.amount" class="stats">
+        <div ng-if="acct.billed && !acct.bills.last.balance" class="stats">
           <i class="material-icons text-info">schedule</i> &nbsp;Next Bill on {{acct.bills.open.billDt | date:'dd-MMM'}}
         </div>
-        <div ng-if="acct.billed && acct.bills.last.amount" class="stats">
+        <div ng-if="acct.billed && acct.bills.last.balance" class="stats">
           <i class="material-icons text-warning">local_offer</i> {{acct.bills.last.amount | currency:'$ '}} (Due on {{acct.bills.last.dueDt | date:'dd-MMM'}})
         </div>
         <div ng-if="!acct.billed" class="stats">

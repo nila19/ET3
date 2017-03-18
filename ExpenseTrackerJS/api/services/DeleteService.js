@@ -24,7 +24,7 @@ const deleteExpense = function (parms, next) {
     return cashService.transferCash({db: parms.db, from: accts.to, to: accts.from,
       amount: tr.amount, seq: tr.seq});
   }).then(() => {
-    return modifyBillBalance(parms, tr, accts);
+    return modifyBillBalance(parms, tr);
   }).then(() => {
     return transactions.remove(parms.db, {id: parms.transId});
   }).then(() => {
@@ -54,21 +54,13 @@ const getAccountsInfo = function (parms, tr) {
 };
 
 // step 4: if the expense has been included in a bill, deduct the bill amount & balance.
-const modifyBillBalance = function (parms, tr, accts) {
+const modifyBillBalance = function (parms, tr) {
   return new Promise(function (resolve, reject) {
     if(!tr.bill) {
       return resolve();
     }
-    const promises = [];
 
-    promises.push(bills.findOneAndUpdate(parms.db, {id: tr.bill.id},
-      {$inc: {amount: -tr.amount, balance: -tr.amount}}));
-    if(tr.bill.id === accts.from.bills.last.id) {
-      promises.push(accounts.findOneAndUpdate(parms.db, {id: accts.from.id},
-        {$inc: {'bills.last.amount': -tr.amount}}));
-    }
-
-    Promise.all(promises).then(() => {
+    bills.findOneAndUpdate(parms.db, {id: tr.bill.id}, {$inc: {amount: -tr.amount, balance: -tr.amount}}).then(() => {
       return resolve();
     }).catch((err) => {
       return reject(err);

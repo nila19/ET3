@@ -27,7 +27,7 @@
           <div class="form-group">
             <div class="col-md-6">
               <label class="control-label">Pay From </label>
-              <input ng-model="$ctrl.data.account" type="text" class="form-control" required uib-typeahead="acc as acc.name for acc in $ctrl.ta.accounts | filter:$viewValue" typeahead-show-hint="true" typeahead-min-length="0" typeahead-editable="false">
+              <input ng-model="$ctrl.data.account" type="text" class="form-control" required uib-typeahead="acc as acc.name for acc in $ctrl.ta.accounts | filter: {cash: true} | filter:$viewValue" typeahead-show-hint="true" typeahead-min-length="0" typeahead-editable="false">
             </div>
             <div class="col-md-6">
               <label class="control-label">Date</label>

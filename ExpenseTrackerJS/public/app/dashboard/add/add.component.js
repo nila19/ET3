@@ -14,11 +14,21 @@
     const isNull = function (e) {
       return !e || !e.id;
     };
+    const id = function (e) {
+      return (e && e.id) ? e.id : 0;
+    };
     const addExpense = function (form) {
       if (form.$valid) {
-        if (as.data.adjust && (isNull(as.data.accounts.from) && isNull(as.data.accounts.to))) {
-          us.show('Select at least one of From, To accounts!!', C.MSG.WARNING);
-          return false;
+        if (as.data.expense.adjust) {
+          const accts = as.data.expense.accounts;
+
+          if(isNull(accts.from) && isNull(accts.to)) {
+            us.show('Select at least one of From, To accounts!!', C.MSG.WARNING);
+            return false;
+          } else if(id(accts.from) && id(accts.to) && (id(accts.from) === id(accts.to))) {
+            us.show('From & To accounts cannot be the same!!', C.MSG.WARNING);
+            return false;
+          }
         }
         as.addExpense();
       }
