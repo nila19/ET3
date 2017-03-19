@@ -10,16 +10,16 @@ public class SearchUI implements java.io.Serializable {
 	private int city;
 
 	private int categoryId;
+	private int accountId;
+	private int billId;
 	private String description = "";
 	private double amount;
 	private long transMonth;
-	private boolean transMonthAggr;
 	private long entryMonth;
-	private boolean entryMonthAggr;
 	private Date dtTransMonth;
 	private Date dtEntryMonth;
-	private int accountId;
-	private int billId;
+	private boolean transMonthAggr;
+	private boolean entryMonthAggr;
 	private char adjustInd;
 	private char adhocInd;
 	private boolean thinList = true;
