@@ -64,8 +64,6 @@
       }
     };
 
-    init();
-
     // ***** exposed functions ******//
     vm.hasPrevPageSet = hasPrevPageSet;
     vm.hasNextPageSet = hasNextPageSet;
@@ -78,12 +76,14 @@
     vm.clearFilter = clearFilter;
     vm.showOpenBills = showOpenBills;
     vm.showClosedBills = showClosedBills;
+
+    init();
   };
 
   angular.module('dashboard.bills').component('bills', {
     templateUrl: 'dashboard/bills/bills.htm',
     controller: BillsController
   });
-  BillsController.$inject = ['billswrapperService', 'billsService', 'accountsService',
-    'explistwrapperService', 'explistService', 'searchService'];
+  BillsController.$inject = ['billswrapperService', 'billsService', 'accountsService', 'explistwrapperService',
+    'explistService', 'searchService'];
 })(window.angular);

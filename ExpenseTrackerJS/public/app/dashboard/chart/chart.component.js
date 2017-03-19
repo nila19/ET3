@@ -27,12 +27,12 @@
       cs.renderChart();
     };
 
-    init();
-
     vm.hasPrevPage = hasPrevPage;
     vm.hasNextPage = hasNextPage;
     vm.prevPage = prevPage;
     vm.nextPage = nextPage;
+
+    init();
   };
 
   angular.module('dashboard.chart').component('chart', {

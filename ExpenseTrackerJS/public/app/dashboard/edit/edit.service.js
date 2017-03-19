@@ -109,6 +109,6 @@
   };
 
   angular.module('dashboard.edit').factory('editService', editService);
-  editService.$inject = ['etmenuService', 'explistwrapperService', 'accountsService', 'billsService',
-    'ajaxService', 'utilsService', 'VALUES'];
+  editService.$inject = ['etmenuService', 'explistwrapperService', 'accountsService', 'billsService', 'ajaxService',
+    'utilsService', 'VALUES'];
 })(window.angular);

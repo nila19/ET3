@@ -82,6 +82,6 @@
   };
 
   angular.module('dashboard.accounts').factory('accountsService', accountsService);
-  accountsService.$inject = ['etmenuService', 'dashboardService', 'billsService',
-    'explistService', 'searchService', 'utilsService', 'ajaxService', 'CONSTANTS'];
+  accountsService.$inject = ['etmenuService', 'dashboardService', 'billsService', 'explistService', 'searchService',
+    'utilsService', 'ajaxService', 'CONSTANTS'];
 })(window.angular);

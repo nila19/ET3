@@ -51,6 +51,5 @@
   };
 
   angular.module('dashboard.add').factory('addService', addService);
-  addService.$inject = ['etmenuService', 'accountsService', 'explistwrapperService',
-    'ajaxService', 'utilsService'];
+  addService.$inject = ['etmenuService', 'accountsService', 'explistwrapperService', 'ajaxService', 'utilsService'];
 })(window.angular);

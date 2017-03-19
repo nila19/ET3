@@ -59,8 +59,6 @@
       }
     };
 
-    init();
-
     // ***** exposed functions ******//
     vm.hasPrevPageSet = hasPrevPageSet;
     vm.hasNextPageSet = hasNextPageSet;
@@ -73,6 +71,8 @@
     vm.swapExpense = swapExpense;
     vm.clearFilter = clearFilter;
     vm.toggleThinList = toggleThinList;
+
+    init();
   };
 
   angular.module('dashboard.explist').component('explist', {

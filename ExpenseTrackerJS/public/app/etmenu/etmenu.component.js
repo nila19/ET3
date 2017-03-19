@@ -40,30 +40,18 @@
       }
     };
 
-    // const reloadCurrentPage = function () {
-    //   if (ms.data.page === C.PAGES.DASHBOARD) {
-    //     $location.path('/dashboard');
-    //   }
-    //   if (ms.data.page === C.PAGES.SUMMARY) {
-    //     $location.path('/summary');
-    //   }
-    //   if (ms.data.page === C.PAGES.SEARCH) {
-    //     $location.path('/search');
-    //   }
-    // };
-
-    init();
-
     // ***** exposed functions ******//
     vm.toggleMoreAccounts = toggleMoreAccounts;
     vm.toggleChart = toggleChart;
     vm.changeCity = changeCity;
+
+    init();
   };
 
   angular.module('etmenu').component('etmenu', {
     templateUrl: 'etmenu/etmenu.htm',
     controller: ETMenuController
   });
-  ETMenuController.$inject = ['etmenuService', 'dashboardFlagsService', 'startupService',
-    'utilsService', 'CONSTANTS', 'VALUES', '$location', '$timeout', '$route'];
+  ETMenuController.$inject = ['etmenuService', 'dashboardFlagsService', 'startupService', 'utilsService', 'CONSTANTS',
+    'VALUES', '$location', '$timeout', '$route'];
 })(window.angular);

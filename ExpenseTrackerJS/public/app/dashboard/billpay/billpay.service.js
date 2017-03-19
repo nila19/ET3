@@ -45,6 +45,6 @@
   };
 
   angular.module('dashboard.billpay').factory('billpayService', billpayService);
-  billpayService.$inject = ['etmenuService', 'billsService', 'accountsService',
-    'explistwrapperService', 'ajaxService', 'utilsService'];
+  billpayService.$inject = ['etmenuService', 'billsService', 'accountsService', 'explistwrapperService', 'ajaxService',
+    'utilsService'];
 })(window.angular);

@@ -89,7 +89,6 @@
     const swapExpense = function (idx1, idx2) {
       const id1 = els.data.rows[idx1].id;
       const id2 = els.data.rows[idx2].id;
-
       const code = (id1 * TEN) + id2; // unique code to identify.
 
       swapPool.push({
@@ -124,7 +123,6 @@
   };
 
   angular.module('dashboard.explist').factory('explistwrapperService', explistwrapperService);
-  explistwrapperService.$inject = ['explistService', 'etmenuService', 'searchService',
-    'accountsService', 'billsService', 'ajaxService', 'utilsService', 'CONSTANTS',
-    '$timeout'];
+  explistwrapperService.$inject = ['explistService', 'etmenuService', 'searchService', 'accountsService',
+    'billsService', 'ajaxService', 'utilsService', 'CONSTANTS', '$timeout'];
 })(window.angular);

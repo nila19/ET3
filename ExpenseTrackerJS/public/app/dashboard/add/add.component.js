@@ -34,10 +34,10 @@
       }
     };
 
-    init();
-
-		// ***** exposed functions ******//
+    // ***** exposed functions ******//
     vm.addExpense = addExpense;
+
+    init();
   };
 
   angular.module('dashboard.add').component('add', {

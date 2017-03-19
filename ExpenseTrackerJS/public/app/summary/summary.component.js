@@ -59,8 +59,6 @@
       sms.loadCurrentPage();
     };
 
-    init();
-
     // ***** exposed functions ******//
     vm.loadSummary = loadSummary;
     vm.hasPrevPage = hasPrevPage;
@@ -68,12 +66,14 @@
     vm.prevPage = prevPage;
     vm.nextPage = nextPage;
     vm.listExpenses = listExpenses;
+
+    init();
   };
 
   angular.module('summary').component('summary', {
     templateUrl: 'summary/summary.htm',
     controller: SummaryController
   });
-  SummaryController.$inject = ['summaryService', 'searchService', 'etmenuService', 'CONSTANTS',
-    'VALUES', '$location', '$timeout'];
+  SummaryController.$inject = ['summaryService', 'searchService', 'etmenuService', 'CONSTANTS', 'VALUES', '$location',
+    '$timeout'];
 })(window.angular);

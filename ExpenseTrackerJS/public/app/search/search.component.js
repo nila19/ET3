@@ -41,16 +41,16 @@
       ss.doSearch();
     };
 
-    init();
-
     // ***** exposed functions ******//
     vm.doSearch = doSearch;
+
+    init();
   };
 
   angular.module('search').component('search', {
     templateUrl: 'search/search.htm',
     controller: SearchController
   });
-  SearchController.$inject = ['searchService', 'etmenuService', 'startupService',
-    'explistService', 'utilsService', 'CONSTANTS', 'VALUES', '$routeParams', '$timeout'];
+  SearchController.$inject = ['searchService', 'etmenuService', 'startupService', 'explistService', 'utilsService',
+    'CONSTANTS', 'VALUES', '$routeParams', '$timeout'];
 })(window.angular);

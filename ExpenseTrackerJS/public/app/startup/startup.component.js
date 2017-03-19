@@ -7,7 +7,6 @@
     const vm = this;
     const WAIT = 500; // milliseconds
 
-		// ***** function declarations *****//
     const init = function () {
       vm.data = sus.data;
       sus.loadAll();
@@ -30,6 +29,5 @@
     templateUrl: 'startup/startup.htm',
     controller: StartupController
   });
-  StartupController.$inject = ['startupService', 'etmenuService', 'CONSTANTS', 'VALUES',
-    '$location', '$timeout'];
+  StartupController.$inject = ['startupService', 'etmenuService', 'CONSTANTS', 'VALUES', '$location', '$timeout'];
 })(window.angular);

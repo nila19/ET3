@@ -62,13 +62,13 @@
       es.deleteExpense();
     };
 
-    init();
-
     // ***** exposed functions ******//
     vm.modifyExpense = modifyExpense;
     vm.deleteExpense = deleteExpense;
     vm.loadBills = loadBills;
     vm.clearBills = clearBills;
+
+    init();
   };
 
   angular.module('dashboard.edit').component('edit', {

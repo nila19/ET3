@@ -3,8 +3,7 @@
 (function (angular) {
   'use strict';
 
-  const DashboardController = function (dws, ds, dfs, ms, els, ss, C, V, $timeout) {
-    // const vm = this;
+  const DashboardController = function (dws, dfs, ms, els, C, V, $timeout) {
     const WAIT = 100; // milliseconds
 
     const init = function () {
@@ -36,7 +35,6 @@
     templateUrl: 'dashboard/dashboard.htm',
     controller: DashboardController
   });
-  DashboardController.$inject = ['dashboardwrapperService', 'dashboardService',
-    'dashboardFlagsService', 'etmenuService', 'explistService', 'searchService',
-    'CONSTANTS', 'VALUES', '$timeout'];
+  DashboardController.$inject = ['dashboardwrapperService', 'dashboardFlagsService', 'etmenuService',
+    'explistService', 'CONSTANTS', 'VALUES', '$timeout'];
 })(window.angular);

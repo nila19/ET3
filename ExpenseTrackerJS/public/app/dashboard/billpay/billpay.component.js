@@ -11,7 +11,6 @@
       vm.data = bps.data;
       vm.ta = V.data;
     };
-
     const payBill = function (form) {
       if (form.$valid) {
         bs.data.loading = true;
@@ -20,10 +19,10 @@
       }
     };
 
-    init();
-
-		// ***** exposed functions ******//
+    // ***** exposed functions ******//
     vm.payBill = payBill;
+
+    init();
   };
 
   angular.module('dashboard.billpay').component('billpay', {
