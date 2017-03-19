@@ -1,0 +1,122 @@
+<!--   Edit Modal Windows   -->
+
+<div class="modal fade" id="model_Modify" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
+        <h4 class="modal-title text-warning text-uppercase">
+            <i class="material-icons">{{$ctrl.data.expense.adjust?'transform':'add_shopping_cart'}}</i>
+            Modify {{$ctrl.data.expense.adjust?'Adjustment':'Expense'}}</h4>
+      </div>
+      <div class="modal-body">
+        <form name="modifyForm" novalidate="novalidate" ng-submit="$ctrl.modifyExpense(modifyForm)">
+          <div class="form-group">
+            <label class="control-label">From Account</label>
+            <input ng-model="$ctrl.data.expense.accounts.from" ng-change="$ctrl.clearBills()" type="text" class="form-control" uib-typeahead="acc as acc.name for acc in $ctrl.ta.accounts | filter:$viewValue" typeahead-show-hint="true" typeahead-min-length="0" typeahead-editable="false">
+          </div>
+          <div ng-if="$ctrl.data.expense.adjust" class="form-group">
+            <label class="control-label">To Account</label>
+            <input ng-model="$ctrl.data.expense.accounts.to" type="text" class="form-control" uib-typeahead="acc as acc.name for acc in $ctrl.ta.accounts | filter:$viewValue" typeahead-show-hint="true" typeahead-min-length="0" typeahead-editable="false">
+          </div>
+          <div ng-if="!$ctrl.data.expense.adjust && $ctrl.data.expense.accounts.from.billed" class="form-group">
+            <div class="row">
+              <div class="col-md-11">
+                <label class="control-label">Bill</label>
+                <input ng-model="$ctrl.data.expense.bill" type="text" class="form-control" uib-typeahead="bill as bill.name for bill in $ctrl.ta.bills | filter:$viewValue" typeahead-show-hint="true" typeahead-min-length="0" typeahead-editable="false">
+              </div>
+              <div class="col-md-1">
+                <button type="button" ng-click="$ctrl.loadBills()" class="btn btn-primary btn-xs"><i class="material-icons">list</i></button>
+              </div>
+            </div>
+          </div>
+          <div ng-if="!$ctrl.data.expense.adjust" class="form-group">
+            <label class="control-label">Category</label>
+            <input ng-model="$ctrl.data.expense.category" type="text" class="form-control" uib-typeahead="cat as cat.name for cat in $ctrl.ta.categories | filter:$viewValue" typeahead-show-hint="true" typeahead-min-length="0" typeahead-editable="false">
+          </div>
+          <div class="form-group">
+            <label class="control-label">Description</label>
+            <input ng-model="$ctrl.data.expense.description" type="text" class="form-control" required uib-typeahead="desc for desc in $ctrl.ta.descriptions | filter:$viewValue | limitTo:8">
+          </div>
+          <div class="form-group">
+            <div class="row">
+              <div class="col-md-4">
+                <label class="control-label">Amount</label>
+                <input ng-model="$ctrl.data.expense.amount" xx-amount type="text" class="form-control" required>
+              </div>
+              <div class="col-md-4">
+                <label class="control-label">Date</label>
+                <input ng-model="$ctrl.data.expense.transDt" xx-date type="text" class="form-control" required data-provide="datepicker" data-date-format="dd-M-yyyy">
+              </div>
+              <div class="col-md-4">
+                <div ng-if="!$ctrl.data.expense.adjust">
+                  <label> <input type="checkbox" ng-model="$ctrl.data.expense.adhoc" class="form-control">Adhoc</label>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <span ng-if="$ctrl.data.loading" class="btn btn-simple btn-xs no-btn"><img alt="loading..." style="width:20px;height:20px;" ng-src="loading.gif"></span>&nbsp;
+            <button type="submit" ng-disabled="modifyForm.$invalid" class="btn btn-warning pull-right" tooltip rel="tooltip" title="Save"><i class="material-icons">save</i></button>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer"></div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="model_Delete" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
+        <h4 class="modal-title text-danger text-uppercase">
+            <i class="material-icons">{{$ctrl.data.expense.adjust?'transform':'add_shopping_cart'}}</i>
+            Delete {{$ctrl.data.expense.adjust?'Adjustment':'Expense'}}</h4>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="form-group">
+            <label class="control-label">From Account</label>
+            <input ng-model="$ctrl.data.expense.accounts.from.name" type="text" class="form-control" disabled="disabled">
+          </div>
+          <div ng-if="$ctrl.data.expense.adjust" class="form-group">
+            <label class="control-label">To Account</label>
+            <input ng-model="$ctrl.data.expense.accounts.to.name" type="text" class="form-control" disabled="disabled">
+          </div>
+          <div ng-if="!$ctrl.data.expense.adjust" class="form-group">
+            <label class="control-label">Category</label>
+            <input ng-model="$ctrl.data.expense.category.name" type="text" class="form-control" disabled="disabled">
+          </div>
+          <div class="form-group">
+            <label class="control-label">Description</label>
+            <input ng-model="$ctrl.data.expense.description" type="text" class="form-control" disabled="disabled">
+          </div>
+          <div class="form-group">
+            <div class="row">
+              <div class="col-md-4">
+                <label class="control-label">Amount</label>
+                <input ng-model="$ctrl.data.expense.amount" xx-amount type="text" class="form-control" disabled="disabled">
+              </div>
+              <div class="col-md-4">
+                <label class="control-label">Date</label>
+                <input ng-model="$ctrl.data.expense.transDt" xx-date type="text" class="form-control" disabled="disabled">
+              </div>
+              <div class="col-md-4">
+                <div ng-if="!$ctrl.data.expense.adjust">
+                  <label> <input type="checkbox" ng-model="$ctrl.data.expense.adhoc" class="form-control" disabled="disabled">Adhoc</label>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <span ng-if="$ctrl.data.loading" class="btn btn-simple btn-xs no-btn"><img alt="loading..." style="width:20px;height:20px;" ng-src="loading.gif"></span>&nbsp;
+            <button type="button" ng-click="$ctrl.deleteExpense()" class="btn btn-danger pull-right" tooltip rel="tooltip" title="Delete Expense"><i class="material-icons">delete</i></button>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer"></div>
+    </div>
+  </div>
+</div>

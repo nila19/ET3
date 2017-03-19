@@ -1,0 +1,28 @@
+<div class="wrapper">
+  <div class="main-panel">
+
+    <div class="content">
+      <div class="container-fluid">
+
+        <div class="row">
+          <div class="col-md-2">&nbsp;</div>
+          <div class="col-md-8">
+            <div class="card card-stats">
+              <div ng-if="$ctrl.data.connect" class="card-content">
+                <h3 class="title text-left">Loading... {{$ctrl.data.status}}%</h3>
+                <uib-progressbar class="progress-striped active progtall" value="$ctrl.data.status" type="primary"></uib-progressbar>
+              </div>
+              <div ng-if="!$ctrl.data.connect" class="card-content">
+                <h3 class="title text-left">Unable to connect to backend...</h3>
+                <p class="category text-left">Please check if the server is up...</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-2">&nbsp;</div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</div>

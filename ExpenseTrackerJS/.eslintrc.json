@@ -1,0 +1,95 @@
+{
+  "extends": ["eslint:recommended", "google"],
+  "rules": {
+    "max-len": [2, 120, 2],
+    "new-cap": ["error", {
+      "newIsCapExceptions": ["express"],
+      "capIsNewExceptions": ["Router"]
+    }],
+    "require-jsdoc": ["error", {
+      "require": {
+        "FunctionDeclaration": false,
+        "MethodDefinition": false,
+        "ClassDeclaration": true
+      }
+    }],
+    "func-style": ["error", "expression", {
+      "allowArrowFunctions": true
+    }],
+    "padded-blocks": ["error", "never"],
+    "indent": ["error", 2, {
+      "SwitchCase": 1
+    }],
+    "sort-keys": "off",
+    "quotes": ["error", "single"],
+    "prefer-const": "error",
+    "multiline-ternary": ["error", "never"],
+    "no-ternary": "off",
+    "prefer-template": "off",
+    "no-useless-concat": "error",
+    "one-var-declaration-per-line": ["error", "always"],
+    "one-var": ["error", "never"],
+    "capitalized-comments": ["error", "never", {
+      "ignorePattern": "TODO|FIXME"
+    }],
+    "prefer-destructuring": "off",
+    "no-magic-numbers": ["error", {
+      "ignore": [0, 1, 2, 3, 4, 5, -1, 11, 31, 0.01, -0.01],
+      "ignoreArrayIndexes": true,
+      "enforceConst": true,
+      "detectObjects": true
+    }],
+    "newline-after-var": ["error", "always"],
+    "no-extra-semi": "error",
+    "newline-before-return": "off",
+    "quote-props": ["error", "as-needed"],
+    "object-shorthand": ["error", "never"],
+    "comma-dangle": ["error", "only-multiline"],
+    "func-names": ["error", "never"],
+    "no-param-reassign": "error",
+    "max-params": ["error", 10],
+    "max-statements": ["error", 30],
+    "prefer-arrow-callback": "off",
+    "no-unused-vars": ["error", {
+      "argsIgnorePattern": "next"
+    }],
+    "no-implicit-coercion": "error",
+    "id-length": ["error", {
+      "min": 1,
+      "max": 30,
+      "exceptions": ["i", "j", "$"]
+    }],
+    "no-plusplus": ["error", {
+      "allowForLoopAfterthoughts": true
+    }],
+    "space-before-function-paren": ["error", {
+      "anonymous": "always",
+      "named": "never",
+      "asyncArrow": "always"
+    }],
+    "linebreak-style": "off",
+    "no-undef": "error",
+    "operator-linebreak": ["warn", "none"],
+    "newline-per-chained-call": "off",
+    "no-unreachable": "error",
+    "no-use-before-define": "off",
+    "callback-return": "warn",
+    "global-require": "warn",
+    "handle-callback-err": "warn",
+    "no-path-concat": "error",
+    "no-process-env": "warn",
+    "no-process-exit": "warn",
+    "no-sync": "warn"
+  },
+  "env": {
+    "es6": true,
+    "node": true,
+    "mongo": true
+  },
+  "globals": {
+    "window": true,
+    "toastr": true,
+    "$": true,
+    "moment": true
+  }
+}

@@ -1,0 +1,22 @@
+<!-- Monthly Trend Chart -->
+<div ng-show="$ctrl.data.showChart" class="col-md-6">
+  <div class="card">
+    <div class="card-header card-chart" data-background-color="blue">
+      <div class="ct-chart" id="{{$ctrl.data.tagId}}"></div>
+    </div>
+    <div class="card-content"></div>
+    <div class="card-footer">
+      <div class="stats">
+        <button type="button" class="btn btn-simple btn-xs">
+          <i class="material-icons">schedule</i>
+        </button>&nbsp;Monthly Expenses Trend
+        <button type="button" ng-disabled="!$ctrl.hasNextPage()" ng-click="$ctrl.nextPage()" class="btn btn-primary btn-xs pull-right">
+          <i class="material-icons">skip_next</i>
+        </button>
+        <button type="button" ng-disabled="!$ctrl.hasPrevPage()" ng-click="$ctrl.prevPage()" class="btn btn-primary btn-xs pull-right">
+          <i class="material-icons">skip_previous</i>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

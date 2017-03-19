@@ -1,0 +1,98 @@
+<!-- Expense List -->
+<div class="row">
+  <div class="col-md-12">
+    <div class="card">
+      <div class="card-header" data-background-color="blue">
+        <h4 class="title text-uppercase">Expense List</h4>
+      </div>
+      <div class="card-content table-responsive">
+        <table class="table table-hover">
+          <thead class="text-warning text-uppercase">
+            <tr>
+              <th width="6%">&nbsp;</th>
+              <th width="10%">Entry Date</th>
+              <th width="6%">Trans</th>
+              <th width="12%">Category</th>
+              <th width="15%">Description</th>
+              <th width="6%" class="text-right">Amount</th>
+              <th width="10%" class="text-right">From A/C</th>
+              <th width="6%" class="text-right">From $ -></th>
+              <th width="6%" class="text-right">From $</th>
+              <th width="10%" class="text-right">To A/C</th>
+              <th width="5%" class="text-right">To $ -></th>
+              <th width="5%" class="text-right">To $</th>
+              <th width="3%">&nbsp;</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-repeat="trans in $ctrl.data.pgData.rows" ng-class="{'text-info':!trans.tallied}">
+              <td class="td-actions text-right">
+                <button type="button" ng-click="$ctrl.showModifyExpense(trans.id)" class="btn btn-warning btn-simple btn-xs">
+                  <i class="material-icons">mode_edit</i>
+                </button>
+                <button type="button" ng-click="$ctrl.showDeleteExpense(trans.id)" class="btn btn-danger btn-simple btn-xs">
+                  <i class="material-icons">delete</i>
+                </button>
+                <button type="button" ng-click="$ctrl.swapExpense(trans.id, -1)" class="btn btn-primary btn-simple btn-xs">
+                  <i class="material-icons">arrow_upward</i>
+                </button>
+                <button type="button" ng-click="$ctrl.swapExpense(trans.id, 1)" class="btn btn-primary btn-simple btn-xs">
+                  <i class="material-icons">arrow_downward</i>
+                </button>
+              </td>
+              <td>{{trans.entryDt | date:'dd-MMM-yy h:mm a'}}</td>
+              <td>{{trans.transDt | date:'dd-MMM'}}</td>
+              <td>{{trans.category.name}}</td>
+              <td>{{trans.description}}</td>
+              <td class="text-right">{{trans.amount | currency:''}}</td>
+              <td class="text-right">{{trans.accounts.from.name}}</td>
+              <td class="text-right">{{trans.accounts.from.balanceBf | currency:''}}</td>
+              <td class="text-right">{{trans.accounts.from.balanceAf | currency:''}}</td>
+              <td class="text-right">{{trans.accounts.to.name}}</td>
+              <td class="text-right">{{trans.accounts.to.balanceBf | currency:''}}</td>
+              <td class="text-right">{{trans.accounts.to.balanceAf | currency:''}}</td>
+              <td class="td-actions text-right">
+                <span tooltip rel="tooltip" title="{{trans.adhoc?'Adhoc Expense':trans.adjust?'Adjustment':''}}" class="btn btn-primary btn-simple btn-xs no-btn">
+                  <i ng-if="trans.adhoc" class="material-icons">card_giftcard</i><i ng-if="trans.adjust" class="material-icons">transform</i>
+                </span>&nbsp;
+              </td>
+            </tr>
+          </tbody>
+          <tfoot>
+            <tr>
+              <td colspan="5">&nbsp;</td>
+              <td class="text-right"><strong>{{$ctrl.data.total | currency:''}}</strong></td>
+              <td>
+                <span ng-switch="$ctrl.data.thinList.toString()" ng-click="$ctrl.toggleThinList()" class="btn btn-simple btn-xs btn-warning">
+                  <i ng-switch-when="true" class="material-icons">visibility_off</i>
+                  <i ng-switch-when="false" class="material-icons">visibility</i>
+                </span>
+              </td>
+              <td><span ng-if="$ctrl.data.loading" class="btn btn-simple btn-xs no-btn"><img alt="loading..." style="width:20px;height:20px;" ng-src="loading.gif"></span>&nbsp;</td>
+              <td>
+                <div class="stats">
+                  <button ng-if="$ctrl.data.filterApplied" ng-click="$ctrl.clearFilter()" type="button" tooltip rel="tooltip" title="Clear Filter" class="btn btn-primary btn-xs">
+                    <i class="material-icons">filter_list</i>
+                  </button>
+                </div>
+              </td>
+              <td colspan="3">
+                <ul class="pagination pagination-primary etPaginate">
+                  <li>
+                    <a href="" ng-show="$ctrl.hasPrevPageSet()" ng-click="$ctrl.prevPageSet()">
+                      <</a>
+                  </li>
+                  <li ng-repeat="i in [0, 1, 2, 3, 4]" ng-class="{'active':$ctrl.data.currPageNo===$ctrl.page(i)}">
+                    <a href="" ng-show="$ctrl.page(i)<=$ctrl.data.maxPageNo" ng-click="$ctrl.loadPage($ctrl.page(i))">{{$ctrl.page(i)+1}}</a>
+                  </li>
+                  <li><a href="" ng-show="$ctrl.hasNextPageSet()" ng-click="$ctrl.nextPageSet()">></a></li>
+                </ul>
+              </td>
+              <td><em>{{$ctrl.data.maxPageNo + 1}}</em></td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
