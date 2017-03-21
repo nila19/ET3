@@ -2,6 +2,7 @@
 
 const Promise = require('bluebird');
 const moment = require('moment');
+const numeral = require('numeral');
 const fmt = require('../config/formats');
 const categories = require('../models/Categories')();
 const transactions = require('../models/Transactions')();
@@ -235,6 +236,11 @@ const calcTotalRow = function (data, gridArr) {
         totalui.amount[ii] += ui.amount[ii];
       });
     });
+
+    totalui.amount.forEach(function (amt, i) {
+      totalui.amount[i] = numeral(numeral(amt).format('0.00')).value();
+    });
+
     gridArr.unshift(totalui);
     return resolve(gridArr);
   });
