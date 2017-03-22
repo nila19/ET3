@@ -1,27 +1,13 @@
 'use strict';
 
+const _ = require('lodash');
 const plugins = require('gulp-load-plugins')();
-
-// converts all object property values into an array.
-const toArray = function (obj) {
-  const arr = [];
-
-  for (const key in obj) {
-    // check if the property is directly on the object & not inherited from prototype.
-    if (Object.prototype.hasOwnProperty.call(obj, key)) {
-      arr.push(obj[key]);
-    }
-  }
-  return arr;
-};
 
 const buildExcludes = function (...args) {
   const excludes = [];
   // add the declared paths from path.excludes to a temp array.
-  let paths = toArray(path.excludes);
-
   // add any additional paths arguments to the array.
-  paths = paths.concat(args);
+  const paths = _.values(path.excludes).concat(args);
 
   // negate the path names.
   paths.forEach(function (path) {
@@ -79,7 +65,7 @@ const src = {
     less: [path.public.less].concat(buildExcludes())
   },
   server: {
-    js: toArray(path.server.js).concat(buildExcludes()),
+    js: _.values(path.server.js).concat(buildExcludes()),
     ejs: [path.server.ejs].concat(buildExcludes())
   }
 };

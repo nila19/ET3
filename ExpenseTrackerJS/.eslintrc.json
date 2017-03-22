@@ -10,7 +10,7 @@
       "require": {
         "FunctionDeclaration": false,
         "MethodDefinition": false,
-        "ClassDeclaration": true
+        "ClassDeclaration": false
       }
     }],
     "func-style": ["error", "expression", {

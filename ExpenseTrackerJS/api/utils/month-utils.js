@@ -3,6 +3,7 @@
 const moment = require('moment');
 const numeral = require('numeral');
 const async = require('async');
+const _ = require('lodash');
 const cu = require('./common-utils');
 const fmt = require('../config/formats');
 
@@ -53,43 +54,23 @@ const buildMonths = function (dates, next) {
 
 // step 2.2 - check if current month is in the list, if not add it.
 const addCurrentMonth = function (months, next) {
-  const currMonth = getMonth(moment().format(fmt.YYYYMMDD));
-  let currMonthPresent = false;
-
-  months.forEach(function (month) {
-    if(month.seq === currMonth.seq) {
-      currMonthPresent = true;
-    }
-  });
-  if(!currMonthPresent) {
-    months.push(currMonth);
+  if(!_.find(months, ['seq', getMonth(moment().format(fmt.YYYYMMDD)).seq])) {
+    months.push(getMonth(moment().format(fmt.YYYYMMDD)));
   }
   return next(null, months);
 };
 
 // step 2.3 - extract all years from the months list & add them to the list..
 const addYears = function (months, next) {
-  const years = {};
-
-  months.forEach(function (month) {
-    if(month.year) {
-      years[month.year] = moment().year(month.year).endOf('year').startOf('day').format(fmt.YYYYMMDD);
-    }
+  _.forEach(_.uniqBy(months, 'year'), function (m) {
+    months.push(getYear(moment().year(m.year).endOf('year').startOf('day').format(fmt.YYYYMMDD)));
   });
-  for (const year in years) {
-    if (years.hasOwnProperty(year)) {
-      months.push(getYear(years[year]));
-    }
-  }
   return next(null, months);
 };
 
 // step 2.4 - sort the months list based on the 'seq' in reverse.
 const sortMonths = function (months, next) {
-  months.sort(function (aa, bb) {
-    return (aa.seq > bb.seq) ? -1 : ((bb.seq > aa.seq) ? 1 : 0);
-  });
-  return next(null, months);
+  return next(null, _.orderBy(months, ['seq'], ['desc']));
 };
 
 module.exports = {

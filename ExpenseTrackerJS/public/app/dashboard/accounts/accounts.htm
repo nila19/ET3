@@ -2,7 +2,7 @@
 <div class="row" ng-repeat="row in $ctrl.data.rows track by $index" ng-if="(($index == 0 && $ctrl.data.showAcctsRowOne) || ($index > 0 && $ctrl.data.showAcctsMore))">
   <div class="col-lg-2 col-md-4 col-sm-6" ng-repeat="acct in row.cols">
     <div class="card card-stats">
-      <div class="card-header" data-background-color="{{$ctrl.data.filterBy === acct.id? 'orange' : acct.color}}">
+      <div class="card-header animated" ng-class="{'pulse': $ctrl.in === acct.id}" ng-mouseenter="$ctrl.in = acct.id;" ng-mouseleave="$ctrl.in = 0;" data-background-color="{{$ctrl.data.filterBy === acct.id? 'orange' : acct.color}}">
         <a href="" ng-click="$ctrl.filterAccount(acct.id)"><i class="material-icons">{{acct.icon}}</i></a>
       </div>
       <div class="card-content">

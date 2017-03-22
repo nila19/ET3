@@ -3,10 +3,11 @@
 const Promise = require('bluebird');
 const moment = require('moment');
 const numeral = require('numeral');
+const _ = require('lodash');
 const fmt = require('../config/formats');
 const categories = require('../models/Categories')();
 const transactions = require('../models/Transactions')();
-const monthUtils = require('../utils/month-utils');
+const mu = require('../utils/month-utils');
 const cu = require('../utils/common-utils');
 
 const buildSummary = function (parms) {
@@ -42,19 +43,19 @@ const getDataFromDB = function (parms) {
   return new Promise(function (resolve, reject) {
     const data = {};
 
-    categories.findForCity(parms.db, parms.cityId).then((docs) => {
-      data.categories = docs;
+    categories.findForCity(parms.db, parms.cityId).then((cats) => {
+      data.cats = cats;
       return transactions.findAllTransMonths(parms.db, parms.cityId);
-    }).then((docs) => {
-      return monthUtils.buildMonthsList(docs, parms.log);
     }).then((months) => {
-      data.transMonths = months;
+      return mu.buildMonthsList(months, parms.log);
+    }).then((months) => {
+      data.months = months;
       return transactions.findForMonthlySummary(parms.db, parms.cityId, parms.regular, parms.adhoc);
-    }).then((docs) => {
-      data.transactions = docs;
+    }).then((trans) => {
+      data.trans = trans;
       return transactions.findForForecast(parms.db, parms.cityId);
-    }).then((docs) => {
-      data.fcTransactions = docs;
+    }).then((trans) => {
+      data.fctrans = trans;
       resolve(data);
     }).catch((err) => {
       reject(err);
@@ -66,15 +67,10 @@ const getDataFromDB = function (parms) {
 const buildEmptyGrid = function (data) {
   return new Promise(function (resolve) {
     const grid = {};
+    const len = data.months.length;
 
-    data.categories.forEach(function (category) {
-      const ui = {category: category, amount: [], count: []};
-
-      data.transMonths.forEach(function () {
-        ui.amount.push(0);
-        ui.count.push(0);
-      });
-      grid[category.id] = ui;
+    data.cats.forEach(function (cat) {
+      grid[cat.id] = {category: cat, amount: _.fill(Array(len), 0), count: _.fill(Array(len), 0)};
     });
     return resolve(grid);
   });
@@ -83,11 +79,11 @@ const buildEmptyGrid = function (data) {
 // setp 2: populate the grid with transaction data.
 const populateGrid = function (data, grid) {
   return new Promise(function (resolve) {
-    data.transactions.forEach(function (tran) {
-      const ui = grid[tran.category.id];
-      const idx = getMonthIndex(data.transMonths, tran.transMonth);
+    data.trans.forEach(function (tr) {
+      const ui = grid[tr.category.id];
+      const idx = _.findIndex(data.months, ['seq', mu.getMonth(tr.transMonth).seq]);
 
-      ui.amount[idx] += tran.amount;
+      ui.amount[idx] += tr.amount;
       ui.count[idx] += 1;
     });
     return resolve(grid);
@@ -99,18 +95,14 @@ const populateGrid = function (data, grid) {
 // pick only the non-aggregate months for totaling.
 const calcYearlySummary = function (data, grid) {
   return new Promise(function (resolve) {
-    data.transMonths.forEach(function (year, ii) {
+    data.months.forEach(function (year, ii) {
       if(year.aggregate) {
-        data.transMonths.forEach(function (month, jj) {
+        data.months.forEach(function (month, jj) {
           if(!month.aggregate && year.year === month.year) {
-            for (const catId in grid) {
-              if (grid.hasOwnProperty(catId)) {
-                const ui = grid[catId];
-
-                ui.amount[ii] += ui.amount[jj];
-                ui.count[ii] += ui.count[jj];
-              }
-            }
+            _.forIn(grid, function (ui) {
+              ui.amount[ii] += ui.amount[jj];
+              ui.count[ii] += ui.count[jj];
+            });
           }
         });
       }
@@ -140,20 +132,16 @@ const buildForecastGrid = function (parms, data, grid) {
 // setp 4.1: populate the forecast grid with fctransaction data.
 const populateFcGrid = function (data, fcgrid) {
   return new Promise(function (resolve) {
-    data.fcTransactions.forEach(function (trans) {
-      const ui = fcgrid[trans.category.id];
+    data.fctrans.forEach(function (tr) {
+      const ui = fcgrid[tr.category.id];
 
-      ui.amount[0] += trans.amount;
+      ui.amount[0] += tr.amount;
       ui.count[0] += 1;
     });
-    for (const catId in fcgrid) {
-      if (fcgrid.hasOwnProperty(catId)) {
-        const fcui = fcgrid[catId];
-
-        fcui.amount[0] = fcui.amount[0] / 3;
-        fcui.count[0] = fcui.count[0] / 3;
-      }
-    }
+    _.forIn(fcgrid, function (fcui) {
+      fcui.amount[0] = fcui.amount[0] / 3;
+      fcui.count[0] = fcui.count[0] / 3;
+    });
     return resolve(fcgrid);
   });
 };
@@ -161,19 +149,16 @@ const populateFcGrid = function (data, fcgrid) {
 // setp 4.2: embed the main grid with fctransaction data.
 const embedFcToGrid = function (data, grid, fcgrid) {
   return new Promise(function (resolve) {
-    const idx = getMonthIndex(data.transMonths, moment().format(fmt.YYYYMMDD));
+    const idx = _.findIndex(data.months, ['seq', mu.getMonth(moment().format(fmt.YYYYMMDD)).seq]);
 
-    for (const catId in fcgrid) {
-      if (fcgrid.hasOwnProperty(catId)) {
-        const fcui = fcgrid[catId];
-        const ui = grid[catId];
+    _.forIn(fcgrid, function (fcui, id) {
+      const ui = grid[id];
 
-        if(ui.amount[idx] < fcui.amount[0]) {
-          ui.amount[idx] = fcui.amount[0];
-          ui.count[idx] = fcui.count[0];
-        }
+      if(ui.amount[idx] < fcui.amount[0]) {
+        ui.amount[idx] = fcui.amount[0];
+        ui.count[idx] = fcui.count[0];
       }
-    }
+    });
     return resolve(grid);
   });
 };
@@ -183,24 +168,11 @@ const weedInactiveCats = function (grid) {
   return new Promise(function (resolve) {
     const weeds = [];
 
-    for (const catId in grid) {
-      if (grid.hasOwnProperty(catId)) {
-        const ui = grid[catId];
-
-        if(!ui.category.active) {
-          let nonzero = false;
-
-          ui.amount.forEach(function (amt) {
-            if(amt !== 0) {
-              nonzero = true;
-            }
-          });
-          if(!nonzero) {
-            weeds.push(catId);
-          }
-        }
+    _.forIn(grid, function (ui, id) {
+      if(!ui.category.active && !_.some(ui.amount, Boolean)) {
+        weeds.push(id);
       }
-    }
+    });
     weeds.forEach(function (weed) {
       delete grid[weed];
     });
@@ -213,9 +185,9 @@ const sortGridByCategory = function (data, grid) {
   return new Promise(function (resolve) {
     const gridArr = [];
 
-    data.categories.forEach(function (category) {
-      if(grid[category.id]) {
-        gridArr.push(grid[category.id]);
+    data.cats.forEach(function (cat) {
+      if(grid[cat.id]) {
+        gridArr.push(grid[cat.id]);
       }
     });
     return resolve(gridArr);
@@ -225,18 +197,14 @@ const sortGridByCategory = function (data, grid) {
 // setp 7: calculate monthly total row & add it as top row.
 const calcTotalRow = function (data, gridArr) {
   return new Promise(function (resolve) {
-    const totalui = {amount: [], count: []};
+    const len = data.months.length;
+    const totalui = {amount: _.fill(Array(len), 0), count: _.fill(Array(len), 0)};
 
-    data.transMonths.forEach(function () {
-      totalui.amount.push(0);
-      totalui.count.push(0);
-    });
     gridArr.forEach(function (ui) {
-      data.transMonths.forEach(function (month, ii) {
+      data.months.forEach(function (month, ii) {
         totalui.amount[ii] += ui.amount[ii];
       });
     });
-
     totalui.amount.forEach(function (amt, i) {
       totalui.amount[i] = numeral(numeral(amt).format('0.00')).value();
     });
@@ -244,18 +212,6 @@ const calcTotalRow = function (data, gridArr) {
     gridArr.unshift(totalui);
     return resolve(gridArr);
   });
-};
-// utility function
-const getMonthIndex = function (months, date) {
-  const month = monthUtils.getMonth(date);
-  let pos = -1;
-  let i = 0;
-
-  while (i < months.length && pos < 0) {
-    pos = (month.seq === months[i].seq) ? i : -1;
-    i += 1;
-  }
-  return pos;
 };
 
 module.exports = {
