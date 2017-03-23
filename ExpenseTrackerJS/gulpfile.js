@@ -1,9 +1,14 @@
+/* eslint no-sync: "off" */
+
 'use strict';
 
 const gulp = require('gulp');
 const runSequence = require('run-sequence');
+const streamqueue = require('streamqueue');
 const gulpif = require('gulp-if');
 const plugins = require('gulp-load-plugins')();
+const del = require('del');
+const fs = require('fs');
 
 const gf = require('./api/bin/gulpfunctions');
 const src = gf.src;
@@ -44,16 +49,40 @@ gulp.task('server-ejs', function () {
 });
 
 gulp.task('public', function (next) {
-  return runSequence('public-js', 'public-less', function () {
-    gf.log('PUBLIC processing', 'COMPLETED');
-    next();
-  });
+  return runSequence('public-js-clean', 'public-js', 'public-js-merge-modules', 'public-js-merge-rest',
+    'public-less', function () {
+      gf.log('PUBLIC processing', 'COMPLETED');
+      next();
+    });
 });
 
 gulp.task('public-js', function () {
   const pipe = gulp.src(src.public.js).pipe(plugins.eslint()).pipe(plugins.eslint.format());
 
   return pipe.pipe(plugins.eslint.failAfterError());
+});
+
+gulp.task('public-js-clean', function () {
+  if(fs.existsSync(gf.dest.folder + '/' + gf.dest.file.modules)) {
+    del.sync(gf.dest.folder + '/' + gf.dest.file.modules);
+  }
+  if(fs.existsSync(gf.dest.folder + '/' + gf.dest.file.rest)) {
+    del.sync(gf.dest.folder + '/' + gf.dest.file.rest);
+  }
+});
+
+gulp.task('public-js-merge-modules', function () {
+  return streamqueue({objectMode: true}, gulp.src(src.public.minify.modules))
+		.pipe(gulpif(gf.flag.merge, plugins.concat(gf.dest.file.modules)))
+		.pipe(gulpif(gf.flag.minify, plugins.uglify()))
+		.pipe(gulp.dest(gf.dest.folder));
+});
+
+gulp.task('public-js-merge-rest', function () {
+  return streamqueue({objectMode: true}, gulp.src(src.public.minify.rest))
+		.pipe(gulpif(gf.flag.merge, plugins.concat(gf.dest.file.rest)))
+		.pipe(gulpif(gf.flag.minify, plugins.uglify()))
+		.pipe(gulp.dest(gf.dest.folder));
 });
 
 gulp.task('public-less', function () {

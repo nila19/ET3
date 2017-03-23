@@ -36,7 +36,11 @@ const path = {
     js: dir.public + '/**/*.js',
     less: dir.public + '/**/*.less',
     htm: dir.public + '/**/*.htm',
-    images: dir.public + '/images/**/*.*'
+    images: dir.public + '/images/**/*.*',
+    minify: {
+      modules: dir.public + '/**/*.module.js',
+      rest: dir.public + '/**/*.js',
+    }
   },
   server: {
     js: {
@@ -55,14 +59,20 @@ const flag = {
   prod: Boolean(plugins.util.env.prod),
   // gulp --merge
   merge: Boolean(plugins.util.env.merge),
-  // gulp --merge
+  // gulp --minify
+  minify: Boolean(plugins.util.env.minify),
+  // gulp --maps
   maps: Boolean(plugins.util.env.maps)
 };
 
 const src = {
   public: {
     js: [path.public.js].concat(buildExcludes()),
-    less: [path.public.less].concat(buildExcludes())
+    less: [path.public.less].concat(buildExcludes()),
+    minify: {
+      modules: [path.public.minify.modules].concat(buildExcludes()),
+      rest: [path.public.minify.rest].concat(buildExcludes(path.public.minify.modules))
+    }
   },
   server: {
     js: _.values(path.server.js).concat(buildExcludes()),
@@ -70,8 +80,17 @@ const src = {
   }
 };
 
+const dest = {
+  folder: dir.public + '/app',
+  file: {
+    modules: 'app.all.module.js',
+    rest: 'app.all.js'
+  }
+};
+
 module.exports = {
   flag: flag,
   src: src,
+  dest: dest,
   log: log
 };

@@ -1,4 +1,3 @@
-
 /***** bootstrap.css  												*****/
 /***** 		#1615 - Changed padding from 15px to 5px 				*****/
 /***** material-dashboard.css 										*****/
@@ -14,48 +13,65 @@
 /***** 		#3562 - Changed padding from 15px 20px to 10px 10px 	*****/
 /***** 		#3562 - Changed padding from 15px 20px to 10px 10px 	*****/
 /***** 		#1941 - Changed margin from 27px 0 0 0 to 10px 0 0 0 	*****/
-
-@blue-l: rgba(69, 212, 230, 0.70);
-@orange-l: rgba(255, 162, 26, 0.50); 
+@blue-l: #ade5ee;
+@blue-l2: #5bcbde;
+@orange-l: #ffdb67;
+@orange-d: #ffb74d;
 @white: #ffffff;
 
 .bg(@bg) {
-	background-color: @bg;
+    background-color: @bg;
 }
+
 .bg(@bg, @color) {
-	background-color: @bg;
-	color: @color;
+    background-color: @bg;
+    color: @color;
 }
 
 .sumDetailCell {
-	cursor: pointer;
-	&:hover { .bg(@blue-l, @white); }
+    cursor: pointer;
+
+    &:hover {
+        .bg(@blue-l, @white);
+    }
 }
+
+.sumDetailYear {
+    .bg(@blue-l2, @white);
+}
+
 .sumTotalCell {
-	cursor: pointer;
-	&:hover { .bg(@orange-l, @white); }
+    cursor: pointer;
+
+    &:hover {
+        .bg(@orange-l, @white);
+    }
+}
+
+.sumTotalYear {
+    .bg(@orange-d, @white);
 }
 
 .no-btn {
-	cursor: default;
+    cursor: default;
 }
 
 .progtall {
-	height: 40px;
-}
-.etPaginate {
-	margin: 0px 0;
+    height: 40px;
 }
 
+.etPaginate {
+    margin: 0;
+}
 /* Unused */
 .selAcc {
-/*  box-shadow: 0 12px 20px -10px rgba(244, 67, 54, 0.28), 0 4px 20px 0px rgba(0, 0, 0, 0.12), 0 7px 8px -5px rgba(244, 67, 54, 0.2);*/
-  box-shadow: 5px 8px 15px 0px rgba(255, 152, 0, 0.4);
+    /*  box-shadow: 0 12px 20px -10px rgba(244, 67, 54, 0.28), 0 4px 20px 0px rgba(0, 0, 0, 0.12), 0 7px 8px -5px rgba(244, 67, 54, 0.2);*/
+    box-shadow: 5px 8px 15px 0 rgba(255, 152, 0, 0.4);
 }
 
 .appRow {
-  margin-right: 15px;
-  margin-left: 15px;
-  padding-right: 15px;
-  padding-left: 15px;
+    margin-right: 15px;
+    margin-left: 15px;
+    padding-right: 15px;
+    padding-left: 15px;
 }

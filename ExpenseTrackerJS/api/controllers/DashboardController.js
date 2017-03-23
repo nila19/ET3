@@ -1,6 +1,6 @@
 'use strict';
 
-const numeral = require('numeral');
+const _ = require('lodash');
 const accounts = require('../models/Accounts')();
 const bills = require('../models/Bills')();
 const transactions = require('../models/Transactions')();
@@ -17,7 +17,7 @@ const getTransactionById = function (req, resp, transId) {
 const getBills = function (req, resp) {
   const p = {
     db: req.app.locals.db,
-    id: req.query.acctId ? numeral(req.query.acctId).value() : numeral(req.query.cityId).value(),
+    id: req.query.acctId ? _.toNumber(req.query.acctId) : _.toNumber(req.query.cityId),
     paid: req.query.paidInd
   };
   const promise = req.query.acctId ? bills.findForAcct(p.db, p.id, p.paid) : bills.findForCity(p.db, p.id, p.paid);

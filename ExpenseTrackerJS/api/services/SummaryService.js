@@ -2,7 +2,6 @@
 
 const Promise = require('bluebird');
 const moment = require('moment');
-const numeral = require('numeral');
 const _ = require('lodash');
 const fmt = require('../config/formats');
 const categories = require('../models/Categories')();
@@ -15,21 +14,29 @@ const buildSummary = function (parms) {
     let data = null;
 
     getDataFromDB(parms).then((data1) => {
+      parms.log.info('10. getDataFromDB');
       data = data1;
       return buildEmptyGrid(data);
     }).then((grid) => {
+      parms.log.info('11. buildEmptyGrid');
       return populateGrid(data, grid);
     }).then((grid) => {
+      parms.log.info('12. populateGrid');
       return calcYearlySummary(data, grid);
     }).then((grid) => {
+      parms.log.info('13. calcYearlySummary');
       return buildForecastGrid(parms, data, grid);
     }).then((grid) => {
+      parms.log.info('14. buildForecastGrid');
       return weedInactiveCats(grid);
     }).then((grid) => {
+      parms.log.info('15. weedInactiveCats');
       return sortGridByCategory(data, grid);
     }).then((gridArr) => {
+      parms.log.info('16. sortGridByCategory');
       return calcTotalRow(data, gridArr);
     }).then((gridArr) => {
+      parms.log.info('17. calcTotalRow');
       return resolve(gridArr);
     }).catch((err) => {
       cu.logErr(parms.log, err);
@@ -81,7 +88,8 @@ const populateGrid = function (data, grid) {
   return new Promise(function (resolve) {
     data.trans.forEach(function (tr) {
       const ui = grid[tr.category.id];
-      const idx = _.findIndex(data.months, ['seq', mu.getMonth(tr.transMonth).seq]);
+      const mth = _.split(tr.transMonth, '-');
+      const idx = _.findIndex(data.months, ['seq', _.toNumber(mth[0] + mth[1])]);
 
       ui.amount[idx] += tr.amount;
       ui.count[idx] += 1;
@@ -149,7 +157,7 @@ const populateFcGrid = function (data, fcgrid) {
 // setp 4.2: embed the main grid with fctransaction data.
 const embedFcToGrid = function (data, grid, fcgrid) {
   return new Promise(function (resolve) {
-    const idx = _.findIndex(data.months, ['seq', mu.getMonth(moment().format(fmt.YYYYMMDD)).seq]);
+    const idx = _.findIndex(data.months, ['seq', _.toNumber(moment().format(fmt.YYYYMM))]);
 
     _.forIn(fcgrid, function (fcui, id) {
       const ui = grid[id];
@@ -206,7 +214,7 @@ const calcTotalRow = function (data, gridArr) {
       });
     });
     totalui.amount.forEach(function (amt, i) {
-      totalui.amount[i] = numeral(numeral(amt).format('0.00')).value();
+      totalui.amount[i] = _.round(amt, 2);
     });
 
     gridArr.unshift(totalui);

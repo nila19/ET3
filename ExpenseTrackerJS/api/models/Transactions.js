@@ -2,8 +2,8 @@
 
 'use strict';
 
+const _ = require('lodash');
 const moment = require('moment');
-const numeral = require('numeral');
 
 const config = require('../config/config');
 const fmt = require('../config/formats');
@@ -139,7 +139,7 @@ class Transactions extends Model {
   }
   findForSearch(db, search) {
     const options = {fields: {_id: 0}, sort: {seq: -1}};
-    let filter = {cityId: numeral(search.cityId).value()};
+    let filter = {cityId: _.toNumber(search.cityId)};
 
     filter = this.buildSearchQueryOne(search, filter);
     filter = this.buildSearchQueryTwo(search, filter);
@@ -153,16 +153,16 @@ class Transactions extends Model {
   buildSearchQueryOne(search, filter) {
     // account id
     if(search.acctId) {
-      filter.$or = [{'accounts.from.id': numeral(search.acctId).value()},
-        {'accounts.to.id': numeral(search.acctId).value()}];
+      filter.$or = [{'accounts.from.id': _.toNumber(search.acctId)},
+        {'accounts.to.id': _.toNumber(search.acctId)}];
     }
     // bill id
     if(search.billId) {
-      filter['bill.id'] = numeral(search.billId).value();
+      filter['bill.id'] = _.toNumber(search.billId);
     }
     // category id
     if(search.catId) {
-      filter['category.id'] = numeral(search.catId).value();
+      filter['category.id'] = _.toNumber(search.catId);
     }
     // description
     if(search.description) {
@@ -170,8 +170,8 @@ class Transactions extends Model {
     }
     // amount
     if(search.amount) {
-      const amt75 = numeral(search.amount).multiply(config.pct75).value();
-      const amt125 = numeral(search.amount).multiply(config.pct125).value();
+      const amt75 = _.toNumber(search.amount) * config.pct75;
+      const amt125 = _.toNumber(search.amount) * config.pct125;
 
       filter.$and = [{amount: {$gt: amt75}}, {amount: {$lt: amt125}}];
     }

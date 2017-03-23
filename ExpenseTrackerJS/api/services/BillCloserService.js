@@ -1,7 +1,7 @@
 'use strict';
 
+const _ = require('lodash');
 const Promise = require('bluebird');
-const numeral = require('numeral');
 const moment = require('moment');
 const bills = require('../models/Bills')();
 const cities = require('../models/Cities')();
@@ -65,7 +65,7 @@ const closeEachBill = function (parms, b) {
       trans.forEach(function (tr) {
         amt += tr.amount;
       });
-      amt = numeral(numeral(amt).format('0.00')).value();
+      amt = _.round(amt, 2);
       return accounts.findById(parms.db, b.account.id);
     }).then((acct) => {
       b.amount = acct.cash ? amt * -1 : amt;
@@ -116,7 +116,7 @@ const createEachBill = function (parms, city, ac, stats) {
       if(!isNewBillNeeded(ac, bill)) {
         return resolve();
       } else {
-        sequences.getNextSeq(parms.db, {seqId: 'bills', cityId: city.id}).then((seq) => {
+        sequences.getNextSeq(parms.db, {table: 'bills', cityId: city.id}).then((seq) => {
           return buildEmptyBill(city, ac, seq.seq);
         }).then((bill) => {
           b = bill;

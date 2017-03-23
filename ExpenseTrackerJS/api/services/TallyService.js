@@ -19,7 +19,7 @@ const tally = function (parms, next) {
   }).then(() => {
     return accounts.update(parms.db, {id: ac.id}, {$set: {tallyBalance: ac.balance, tallyDt: tallyDt}});
   }).then(() => {
-    return sequences.getNextSeq(parms.db, {seqId: 'tallyhistories', cityId: ac.cityId});
+    return sequences.getNextSeq(parms.db, {table: 'tallyhistories', cityId: ac.cityId});
   }).then((seq) => {
     return tallyhistories.insert(parms.db, buildTallyHistory(seq, ac, tallyDt));
   }).then(() => {

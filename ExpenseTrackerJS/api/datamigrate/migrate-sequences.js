@@ -12,7 +12,7 @@ let param = null;
 
 const setAccountsSeq = function (cityId, next) {
   accounts.findOne(param.db, {cityId: cityId}, {sort: {id: -1}}).then((doc) => {
-    sequences.insert(param.db, {seqId: 'accounts', cityId: cityId, seq: doc.id + 1}).then(() => {
+    sequences.insert(param.db, {table: 'accounts', cityId: cityId, seq: doc.id + 1}).then(() => {
       return next(null, cityId);
     }).catch((err) => {
       param.log.info('Error @ setAccountsSeq sequences.insert. - ' + cityId + ' : ' + doc.id);
@@ -29,7 +29,7 @@ const setBillsSeq = function (cityId, next) {
   bills.findOne(param.db, {cityId: cityId}, {sort: {id: -1}}).then((doc) => {
     const doc1 = (doc && doc.id) ? doc : {id: 0};
 
-    sequences.insert(param.db, {seqId: 'bills', cityId: cityId, seq: (doc1.id + 1)}).then(() => {
+    sequences.insert(param.db, {table: 'bills', cityId: cityId, seq: (doc1.id + 1)}).then(() => {
       return next(null, cityId);
     }).catch((err) => {
       param.log.info('Error @ setBillsSeq sequences.insert. - ' + cityId + ' : ' + doc1.id);
@@ -44,7 +44,7 @@ const setBillsSeq = function (cityId, next) {
 };
 const setCategoriesSeq = function (cityId, next) {
   categories.findOne(param.db, {cityId: cityId}, {sort: {id: -1}}).then((doc) => {
-    sequences.insert(param.db, {seqId: 'categories', cityId: cityId, seq: doc.id + 1}).then(() => {
+    sequences.insert(param.db, {table: 'categories', cityId: cityId, seq: doc.id + 1}).then(() => {
       return next(null, cityId);
     }).catch((err) => {
       param.log.error(err);
@@ -59,7 +59,7 @@ const setTallyHistoriesSeq = function (cityId, next) {
   tallyhistories.findOne(param.db, {cityId: cityId}, {sort: {id: -1}}).then((doc) => {
     const doc1 = (doc && doc.id) ? doc : {id: 0};
 
-    sequences.insert(param.db, {seqId: 'tallyhistories', cityId: cityId, seq: (doc1.id + 1)}).then(() => {
+    sequences.insert(param.db, {table: 'tallyhistories', cityId: cityId, seq: (doc1.id + 1)}).then(() => {
       return next(null, cityId);
     }).catch((err) => {
       param.log.error(err);
@@ -72,7 +72,7 @@ const setTallyHistoriesSeq = function (cityId, next) {
 };
 const setTransactionsSeq = function (cityId, next) {
   transactions.findOne(param.db, {cityId: cityId}, {sort: {id: -1}}).then((doc) => {
-    sequences.insert(param.db, {seqId: 'transactions', cityId: cityId, seq: doc.id + 1}).then(() => {
+    sequences.insert(param.db, {table: 'transactions', cityId: cityId, seq: doc.id + 1}).then(() => {
       return next(null, cityId);
     }).catch((err) => {
       param.log.error(err);

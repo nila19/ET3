@@ -16,13 +16,13 @@
     const cols = C.SIZES.ACCTS_COL;
 
     const buildRows = function () {
-      data.rows = [];
-      for (let i = 0; i < data.maxRows; i++) {
-        const row = {
-          idx: i
-        };
+      const i = {i: 0};
 
-        row.cols = data.accts.slice(i * cols, (i + 1) * cols);
+      data.rows = [];
+      for (i.i = 0; i.i < data.maxRows; i.i++) {
+        const row = {idx: i.i};
+
+        row.cols = data.accts.slice(i.i * cols, (i.i + 1) * cols);
         data.rows.push(row);
       }
     };
@@ -33,9 +33,7 @@
       buildRows();
     };
     const loadAllAccounts = function () {
-      const input = {
-        cityId: ms.data.menu.city.id,
-      };
+      const input = {cityId: ms.data.menu.city.id};
 
       aj.query('/startup/accounts', input, loadData);
     };

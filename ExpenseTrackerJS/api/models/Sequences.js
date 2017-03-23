@@ -2,7 +2,7 @@
 
 const Model = require('./Model');
 const schema = {
-  seqId: 'string not-null primarykey',
+  table: 'string not-null primarykey',
   cityId: 'int not-null',
   seq: 'int not-null',
 };

@@ -32,7 +32,7 @@ const addExpensePromise = function (parms, data) {
       tr = trans;
       return copyAccountsData(data, tr);
     }).then(() => {
-      return sequences.getNextSeq(parms.db, {seqId: 'transactions', cityId: data.city.id});
+      return sequences.getNextSeq(parms.db, {table: 'transactions', cityId: data.city.id});
     }).then((seq) => {
       tr.id = seq.seq;
       tr.seq = seq.seq;

@@ -6,26 +6,26 @@
   const utilsService = function (C) {
     const DELAY = 2000; // milliseconds
     const getObjectOf = function (arr, id) {
-      let o = null;
+      const o = {o: null, i: 0};
 
-      for (let i = 0; i < arr.length; i++) {
-        if (arr[i].id === Number(id)) {
-          o = arr[i];
+      for (o.i = 0; o.i < arr.length; o.i++) {
+        if (arr[o.i].id === Number(id)) {
+          o.o = arr[o.i];
           break;
         }
       }
-      return o;
+      return o.o;
     };
     const getIndexOf = function (arr, id) {
-      let idx = null;
+      const i = {idx: null, i: 0};
 
-      for (let i = 0; i < arr.length; i++) {
-        if (arr[i].id === Number(id)) {
-          idx = i;
+      for (i.i = 0; i.i < arr.length; i.i++) {
+        if (arr[i.i].id === Number(id)) {
+          i.idx = i.i;
           break;
         }
       }
-      return idx;
+      return i.idx;
     };
 		// popup message
     const showMsg = function (action, code) {

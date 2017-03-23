@@ -6,6 +6,12 @@
   const explistwrapperService = function (els, ms, ss, acs, bs, aj, us, C, $timeout) {
     const DELAY = 1000; // milliseconds
     const TEN = 10;
+    const data = {
+      swapPool: [],
+      tempPool: [],
+      publishing: false,
+      looperOn: false
+    };
 
     const reloadExpenses = function () {
       ss.data.thinList = els.data.thinList;
@@ -42,48 +48,44 @@
     };
 
 		// swap Expenses.
-    const swapPool = [];
-    let tempPool = [];
-    let publishing = false;
-    let looperOn = false;
     const resetSwapPool = function () {
-      angular.forEach(tempPool, function (temp) {
-        let idx = -1;
+      angular.forEach(data.tempPool, function (temp) {
+        const i = {idx: -1, i: 0};
 
-        for (let i = 0; i < swapPool.length; i++) {
-          if (temp.code === swapPool[i].code) {
-            idx = i;
+        for (i.i = 0; i.i < data.swapPool.length; i.i++) {
+          if (temp.code === data.swapPool[i.i].code) {
+            i.idx = i.i;
             break;
           }
         }
-        if (idx > -1) {
-          swapPool.splice(idx, 1);
+        if (i.idx > -1) {
+          data.swapPool.splice(i.idx, 1);
         }
       });
-      publishing = false;
+      data.publishing = false;
       els.data.loading = false;
     };
     const publishSwap = function () {
-      tempPool = [];
-      angular.forEach(swapPool, function (swap) {
-        tempPool.push(swap);
+      data.tempPool = [];
+      angular.forEach(data.swapPool, function (swap) {
+        data.tempPool.push(swap);
       });
 
       // console.log('Publishing swaps...' + tempPool.length);
       els.data.loading = true;
-      aj.post('/edit/swap/' + ms.data.menu.city.id, tempPool, resetSwapPool);
+      aj.post('/edit/swap/' + ms.data.menu.city.id, data.tempPool, resetSwapPool);
     };
     const looper = function () {
-      if (swapPool.length > 0) {
-        if (!publishing) {
-          publishing = true;
+      if (data.swapPool.length > 0) {
+        if (!data.publishing) {
+          data.publishing = true;
           publishSwap();
         }
         $timeout(function () {
           looper();
         }, DELAY);
       } else {
-        looperOn = false;
+        data.looperOn = false;
       }
     };
     const swapExpense = function (idx1, idx2) {
@@ -91,7 +93,7 @@
       const id2 = els.data.rows[idx2].id;
       const code = (id1 * TEN) + id2; // unique code to identify.
 
-      swapPool.push({
+      data.swapPool.push({
         code: code,
         fromTrans: id1,
         toTrans: id2
@@ -104,8 +106,8 @@
       els.data.rows[idx2] = trans1;
       els.loadCurrentPage();
 
-      if (!looperOn) {
-        looperOn = true;
+      if (!data.looperOn) {
+        data.looperOn = true;
         $timeout(function () {
           looper();
         }, DELAY);
