@@ -3,17 +3,25 @@
 (function (angular) {
   'use strict';
 
-  const startupService = function (ms, aj, C, V) {
+  const startupService = function (ms, aj, C, V, $timeout) {
     const data = {
       status: 0,
       connect: false,
       loadInitiated: false
     };
     const TEN = 10;
+    const TOTAL = 100;
+    const wait = 10;  // milliseconds
 
-    const loadingComplete = function () {
-      // console.log('@ StartupService: Loading startup components COMPLETED...');
-      ms.data.loading = false;
+    const checkLoadingComplete = function () {
+      if (data.status >= TOTAL) {
+        // console.log('@ StartupService: Loading startup components COMPLETED...');
+        ms.data.loading = false;
+      } else {
+        $timeout(function () {
+          checkLoadingComplete();
+        }, wait);
+      }
     };
     const loadEntryMonths = function (dt) {
       V.data.entryMonths = [];
@@ -21,12 +29,9 @@
         V.data.entryMonths.push(entryMonth);
       });
       data.status += TEN;
-      loadingComplete();
     };
     const getEntryMonths = function (city) {
-      aj.query('/startup/months/entry', {
-        cityId: city.id
-      }, loadEntryMonths);
+      aj.query('/startup/months/entry', {cityId: city.id}, loadEntryMonths);
     };
     const loadTransMonths = function (dt) {
       V.data.transMonths = [];
@@ -34,24 +39,18 @@
         V.data.transMonths.push(transMonth);
       });
       data.status += TEN;
-      getEntryMonths(V.data.city);
     };
     const getTransMonths = function (city) {
-      aj.query('/startup/months/trans', {
-        cityId: city.id
-      }, loadTransMonths);
+      aj.query('/startup/months/trans', {cityId: city.id}, loadTransMonths);
     };
     const loadInactiveAccounts = function (dt) {
       angular.forEach(dt.data, function (ac) {
         V.data.allAccounts.push(ac);
       });
       data.status += TEN;
-      getTransMonths(V.data.city);
     };
     const getInactiveAccounts = function (city) {
-      aj.query('/startup/accounts/inactive', {
-        cityId: city.id
-      }, loadInactiveAccounts);
+      aj.query('/startup/accounts/inactive', {cityId: city.id}, loadInactiveAccounts);
     };
     const loadAccounts = function (dt) {
       V.data.accounts = [];
@@ -61,47 +60,34 @@
         V.data.allAccounts.push(ac);
       });
       data.status += TEN;
-      getInactiveAccounts(V.data.city);
     };
     const getAccounts = function (city) {
-      aj.query('/startup/accounts', {
-        cityId: city.id
-      }, loadAccounts);
+      aj.query('/startup/accounts', {cityId: city.id}, loadAccounts);
     };
     const loadDescriptions = function (dt) {
       V.data.descriptions = dt.data;
       data.status += TEN;
-      getAccounts(V.data.city);
     };
     const getDescriptions = function (city) {
-      aj.query('/startup/descriptions', {
-        cityId: city.id
-      }, loadDescriptions);
+      aj.query('/startup/descriptions', {cityId: city.id}, loadDescriptions);
     };
     const loadAllCategories = function (dt) {
       V.data.allCategories = dt.data;
       data.status += TEN;
-      getDescriptions(V.data.city);
     };
     const getAllCategories = function (city) {
-      aj.query('/startup/categories/all', {
-        cityId: city.id
-      }, loadAllCategories);
+      aj.query('/startup/categories/all', {cityId: city.id}, loadAllCategories);
     };
     const loadCategories = function (dt) {
       V.data.categories = dt.data;
       data.status += TEN;
-      getAllCategories(V.data.city);
     };
     const getCategories = function (city) {
-      aj.query('/startup/categories', {
-        cityId: city.id
-      }, loadCategories);
+      aj.query('/startup/categories', {cityId: city.id}, loadCategories);
     };
     const loadCities = function (dt) {
       V.data.cities = dt.data;
       data.status += TEN;
-      getCategories(V.data.city);
     };
     const getCities = function () {
       aj.query('/startup/cities', {}, loadCities);
@@ -110,6 +96,14 @@
       V.data.city = dt.data;
       data.status += TEN;
       getCities();
+      getCategories(V.data.city);
+      getAllCategories(V.data.city);
+      getDescriptions(V.data.city);
+      getAccounts(V.data.city);
+      getInactiveAccounts(V.data.city);
+      getTransMonths(V.data.city);
+      getEntryMonths(V.data.city);
+      checkLoadingComplete();
     };
     const getDefaultCity = function () {
       aj.get('/startup/city/default', {}, loadDefaultCity);
@@ -148,5 +142,5 @@
   };
 
   angular.module('startup').factory('startupService', startupService);
-  startupService.$inject = ['etmenuService', 'ajaxService', 'CONSTANTS', 'VALUES'];
+  startupService.$inject = ['etmenuService', 'ajaxService', 'CONSTANTS', 'VALUES', '$timeout'];
 })(window.angular);

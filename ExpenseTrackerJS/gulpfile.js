@@ -48,15 +48,18 @@ gulp.task('server-ejs', function () {
   return gulp.src(src.server.ejs).pipe(plugins.ejs());
 });
 
-gulp.task('public', function (next) {
-  return runSequence('public-js-clean', 'public-js', 'public-js-merge-modules', 'public-js-merge-rest',
-    'public-less', function () {
-      gf.log('PUBLIC processing', 'COMPLETED');
-      next();
-    });
+gulp.task('public', ['public-js', 'public-less'], function () {
+  gf.log('PUBLIC processing', 'COMPLETED');
 });
 
-gulp.task('public-js', function () {
+gulp.task('public-js', function (next) {
+  return runSequence('public-js-eslint', 'public-js-merge-modules', 'public-js-merge-rest', function () {
+    gf.log('PUBLIC js processing', 'COMPLETED');
+    next();
+  });
+});
+
+gulp.task('public-js-eslint', ['public-js-clean'], function () {
   const pipe = gulp.src(src.public.js).pipe(plugins.eslint()).pipe(plugins.eslint.format());
 
   return pipe.pipe(plugins.eslint.failAfterError());

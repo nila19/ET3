@@ -14,29 +14,21 @@ const buildSummary = function (parms) {
     let data = null;
 
     getDataFromDB(parms).then((data1) => {
-      parms.log.info('10. getDataFromDB');
       data = data1;
       return buildEmptyGrid(data);
     }).then((grid) => {
-      parms.log.info('11. buildEmptyGrid');
       return populateGrid(data, grid);
     }).then((grid) => {
-      parms.log.info('12. populateGrid');
       return calcYearlySummary(data, grid);
     }).then((grid) => {
-      parms.log.info('13. calcYearlySummary');
       return buildForecastGrid(parms, data, grid);
     }).then((grid) => {
-      parms.log.info('14. buildForecastGrid');
       return weedInactiveCats(grid);
     }).then((grid) => {
-      parms.log.info('15. weedInactiveCats');
       return sortGridByCategory(data, grid);
     }).then((gridArr) => {
-      parms.log.info('16. sortGridByCategory');
       return calcTotalRow(data, gridArr);
     }).then((gridArr) => {
-      parms.log.info('17. calcTotalRow');
       return resolve(gridArr);
     }).catch((err) => {
       cu.logErr(parms.log, err);

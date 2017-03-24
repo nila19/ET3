@@ -3,52 +3,20 @@
 (function (angular) {
   'use strict';
 
-  const dashboardwrapperService = function (ds, ms, acs, ss, els, elws, bs, cs, $timeout) {
-    const wait = 200;
-    const stepFive = function () {
+  const dashboardwrapperService = function (ds, ms, acs, ss, els, elws, bs) {
+    const loadComplete = function () {
 			// don't wait for Step 4 to be complete... Reduces the page loading time.
       ms.data.loading = false;
       ds.data.loading.on = false;
-    };
-    const stepFour = function () {
-      if (ds.data.loading.donestep === 3) {
-				// cs.loadChart();
-        stepFive();
-      } else {
-        $timeout(function () {
-          stepFour();
-        }, wait);
-      }
-    };
-    const stepThree = function () {
-      if (ds.data.loading.donestep === 2) {
-        elws.reloadExpenses();
-        stepFour();
-      } else {
-        $timeout(function () {
-          stepThree();
-        }, wait);
-      }
-    };
-    const stepTwo = function () {
-      if (ds.data.loading.donestep === 1) {
-        bs.loadAllBills();
-        stepThree();
-      } else {
-        $timeout(function () {
-          stepTwo();
-        }, wait);
-      }
-    };
-    const stepOne = function () {
-      acs.loadAllAccounts();
-      stepTwo();
     };
     const loadPage = function () {
       ms.data.loading = true;
       ds.data.loading.on = true;
       ds.data.loading.donestep = 0;
-      stepOne();
+      acs.loadAllAccounts();
+      bs.loadAllBills();
+      elws.reloadExpenses();
+      loadComplete();
     };
     const initialize = function () {
       els.data.thinList = true;
@@ -72,5 +40,5 @@
 
   angular.module('dashboard').factory('dashboardwrapperService', dashboardwrapperService);
   dashboardwrapperService.$inject = ['dashboardService', 'etmenuService', 'accountsService', 'searchService',
-    'explistService', 'explistwrapperService', 'billsService', 'chartService', '$timeout'];
+    'explistService', 'explistwrapperService', 'billsService'];
 })(window.angular);

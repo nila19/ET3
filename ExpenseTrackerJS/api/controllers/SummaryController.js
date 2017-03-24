@@ -15,9 +15,7 @@ const doSummary = function (req, resp) {
     forecast: req.query.forecast && req.query.forecast == 'true'
   };
 
-  parms.log.info('0. doSummary');
   summaryService.buildSummary(parms).then((grid) => {
-    parms.log.info('20. buildSummary');
     return resp.json({code: 0, data: grid});
   }).catch((err) => {
     return resp.json({code: config.error, msg: err});
