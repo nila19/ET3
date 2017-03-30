@@ -33,13 +33,13 @@ const path = {
     theme: dir.public + '/theme/**/*.*'
   },
   public: {
-    js: dir.public + '/**/*.js',
-    less: dir.public + '/**/*.less',
-    htm: dir.public + '/**/*.htm',
+    js: dir.public + '/app/**/*.js',
+    less: dir.public + '/css/**/*.less',
+    htm: dir.public + '/app/**/*.htm',
     images: dir.public + '/images/**/*.*',
     minify: {
-      modules: dir.public + '/**/*.module.js',
-      rest: dir.public + '/**/*.js',
+      modules: dir.public + '/app/**/*.module.js',
+      rest: dir.public + '/app/**/*.js',
     }
   },
   server: {
@@ -81,7 +81,7 @@ const src = {
 };
 
 const dest = {
-  folder: dir.public + '/app',
+  folder: dir.public + '/dist',
   file: {
     modules: 'app.all.module.js',
     rest: 'app.all.js'

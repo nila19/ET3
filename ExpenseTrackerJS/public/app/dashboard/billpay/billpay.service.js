@@ -14,6 +14,8 @@
     const initForm = function () {
       data.account = '';
       data.paidDt = '';
+      data.bill.balance = _.round(data.bill.balance, 2);
+      data.bill.amount = _.round(data.bill.amount, 2);
     };
     const loadData = function (dt) {
       data.bill = dt;

@@ -95,15 +95,7 @@
     const loadDefaultCity = function (dt) {
       V.data.city = dt.data;
       data.status += TEN;
-      getCities();
-      getCategories(V.data.city);
-      getAllCategories(V.data.city);
-      getDescriptions(V.data.city);
-      getAccounts(V.data.city);
-      getInactiveAccounts(V.data.city);
-      getTransMonths(V.data.city);
-      getEntryMonths(V.data.city);
-      checkLoadingComplete();
+      loadAllForCity();
     };
     const getDefaultCity = function () {
       aj.get('/startup/city/default', {}, loadDefaultCity);
@@ -115,6 +107,7 @@
         V.data.env = dt.data.env;
         data.status += TEN;
         getDefaultCity();
+        getCities();
       }
     };
     const connect = function () {
@@ -128,10 +121,20 @@
         connect();
       }
     };
+    const loadAllForCity = function () {
+      getCategories(V.data.city);
+      getAllCategories(V.data.city);
+      getDescriptions(V.data.city);
+      getAccounts(V.data.city);
+      getInactiveAccounts(V.data.city);
+      getTransMonths(V.data.city);
+      getEntryMonths(V.data.city);
+      checkLoadingComplete();
+    };
     const loadOthers = function () {
       ms.data.loading = true;
       // console.log('@ StartupService: Loading items on city change...');
-      getCategories(V.data.city);
+      loadAllForCity();
     };
 
     return {

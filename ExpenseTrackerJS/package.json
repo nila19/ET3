@@ -33,17 +33,22 @@
     "nodebug": "nodemon --inspect --debug-brk api/bin/server.js --region=dev | bunyan",
     "inspect": "node --inspect --debug-brk api/bin/server.js --region=dev | bunyan",
     "migrate": "node api/datamigrate/migrate --region=dev | bunyan",
-    "test": "node api/bin/test.js --region=dev | bunyan"
+    "test": "node api/bin/test.js --region=dev | bunyan",
+    "webpack": "webpack --colors"
   },
   "main": "bin/server.js",
   "devDependencies": {
+    "angular": "^1.6.3",
     "bower": "^1.8.0",
+    "chart.js": "^2.5.0",
+    "css-loader": "^0.27.3",
     "del": "^2.2.2",
     "eslint": "^3.15.0",
     "eslint-config-google": "^0.7.1",
     "eslint-config-standard": "^6.2.1",
     "eslint-plugin-promise": "^3.4.2",
     "eslint-plugin-standard": "^2.0.1",
+    "extract-text-webpack-plugin": "^2.1.0",
     "gulp": "^3.9.1",
     "gulp-clean-css": "^2.3.2",
     "gulp-concat": "latest",
@@ -57,8 +62,10 @@
     "gulp-sourcemaps": "^1.9.1",
     "gulp-uglify": "latest",
     "gulp-util": "latest",
+    "jquery": "^3.2.1",
     "run-sequence": "^1.2.2",
     "sqlite3": "^3.1.8",
-    "streamqueue": "^1.1.1"
+    "streamqueue": "^1.1.1",
+    "webpack": "^2.3.1"
   }
 }

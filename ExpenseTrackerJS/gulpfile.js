@@ -14,7 +14,11 @@ const gf = require('./api/bin/gulpfunctions');
 const src = gf.src;
 
 //* ******************************* tasks ********************************//
-gulp.task('default', function (next) {
+gulp.task('default', function () {
+  gf.log('Usage : gulp [all | watch] --merge --minify');
+});
+
+gulp.task('all', function (next) {
   return runSequence('server', 'public', function () {
     gf.log('default', 'END');
     gf.log('COMPLETED ALL DEFAULT TASKS');
@@ -22,7 +26,7 @@ gulp.task('default', function (next) {
   });
 });
 
-gulp.task('watch', ['default'], function () {
+gulp.task('watch', ['all'], function () {
   gulp.watch(src.public.js, ['public-js']);
   gulp.watch(src.public.less, ['public-less']);
   gulp.watch(src.server.js, ['server-js']);
