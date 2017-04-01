@@ -1,6 +1,7 @@
 /* eslint no-console: 'off'*/
 
-// first commit in dev2
+// first commit in dev2. modifying it..
+// second commt.
 
 const path = require('path');
 const webpack = require('webpack');

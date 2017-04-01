@@ -10,6 +10,8 @@
 
 // const ngBoot = require('./public/bower_components/angular-bootstrap/ui-bootstrap-tpls.min');
 
+// additional changes..
+
 import jQuery from 'jquery';
 import _ from 'lodash';
 import angular from 'angular';
