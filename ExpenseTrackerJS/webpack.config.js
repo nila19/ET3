@@ -1,5 +1,7 @@
 /* eslint no-console: 'off'*/
 
+// first commit in dev2
+
 const path = require('path');
 const webpack = require('webpack');
 // const ExtractTextPlugin = require('extract-text-webpack-plugin');
