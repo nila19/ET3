@@ -1,33 +1,33 @@
 /* eslint no-unused-vars: 'off'*/
 
 // import './public/bower_components/bootstrap/dist/css/bootstrap.css';
-import './public/bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.css';
-import './public/bower_components/animate.css/animate.css';
-import './public/theme/css/material-dashboard.css';
 // import './public/theme/css/font-awesome.min.css';
-import './public/theme/css/fonts.css';
 
-const jQuery = require('./public/bower_components/jquery/dist/jquery');
-const _ = require('./public/bower_components/lodash/dist/lodash');
+// import './public/bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.css';
+// import './public/bower_components/animate.css/animate.css';
+// import './public/theme/css/material-dashboard.css';
+// import './public/theme/css/fonts.css';
 
-window.jQuery = jQuery;
-window._ = _;
+// const ngBoot = require('./public/bower_components/angular-bootstrap/ui-bootstrap-tpls.min');
 
-const Chart = require('./public/bower_components/chart.js/dist/Chart');
-const boot = require('./public/bower_components/bootstrap/dist/js/bootstrap.min');
-const less = require('./public/bower_components/less/dist/less.min');
-const moment = require('./public/bower_components/moment/min/moment.min');
+import jQuery from 'jquery';
+import _ from 'lodash';
+import angular from 'angular';
+import 'chart.js';
+import 'bootstrap';
+import 'less';
+import 'moment';
 
-const angular = require('./public/bower_components/angular/angular');
+import 'angular-resource';
+import 'angular-route';
+import 'angular-animate';
+import 'angular-chart';
+import 'angular-bootstrap';
+import 'bootstrap-datepicker';
 
-window.angular = angular;
-
-const ngAnimate = require('./public/bower_components/angular-animate/angular-animate');
-const ngRoute = require('./public/bower_components/angular-route/angular-route');
-const ngResource = require('./public/bower_components/angular-resource/angular-resource');
-const ngChart = require('./public/bower_components/angular-chart.js/dist/angular-chart');
-const ngBoot = require('./public/bower_components/angular-bootstrap/ui-bootstrap-tpls.min');
-const datePicker = require('./public/bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min');
+// window.jQuery = jQuery;
+// window._ = _;
+// window.angular = angular;
 
 const mat = require('./public/theme/js/material.min');
 const matdb = require('./public/theme/js/material-dashboard');
