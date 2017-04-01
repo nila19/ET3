@@ -49,10 +49,11 @@
                       <th ng-repeat="month in $ctrl.data.pgData.months" class="text-right"><strong>{{month.name}}</strong></th>
                     </tr>
                     <tr class="text-warning">
+                      <th class="td-actions text-left">
+                        <a class="btn btn-primary btn-simple btn-sm no-btn"><i class="material-icons">account_balance</i></a></th>
                       <th class="text-right">&nbsp;</th>
                       <th class="text-right">&nbsp;</th>
-                      <th class="text-right">&nbsp;</th>
-                      <th ng-repeat="total in $ctrl.data.pgData.totalrow track by $index" class="text-right sumTotalCell">
+                      <th ng-repeat="total in $ctrl.data.pgData.totalrow track by $index" class="text-right sumTotalCell" ng-class="{'sumTotalYear': $ctrl.data.pgData.months[$index].aggregate}">
                         <span ng-click="$ctrl.listExpenses(0, $index)"><strong>{{$ctrl.data.pgData.totalrow[$index] | currency}}</strong></span>
                       </th>
                     </tr>
@@ -69,7 +70,7 @@
                         <span ng-switch-when="true">{{row.category.subDesc}}</span>
                         <span ng-switch-when="false"><em>{{row.category.subDesc}}</em></span>
                       </td>
-                      <td ng-repeat="amt in row.amount track by $index" ng-switch="$ctrl.data.pgData.months[$index].aggregate.toString()" class="text-right sumDetailCell">
+                      <td ng-repeat="amt in row.amount track by $index" ng-switch="$ctrl.data.pgData.months[$index].aggregate.toString()" class="text-right sumDetailCell" ng-class="{'sumDetailYear': $ctrl.data.pgData.months[$index].aggregate}">
                         <span ng-switch-when="false" ng-click="$ctrl.listExpenses(row.category, $index)">{{row.amount[$index] | currency}}</span>
                         <span ng-switch-when="true" ng-click="$ctrl.listExpenses(row.category, $index)"><strong>{{row.amount[$index] | currency}}</strong></span>
                       </td>

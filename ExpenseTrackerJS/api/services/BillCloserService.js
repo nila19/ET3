@@ -1,7 +1,7 @@
 'use strict';
 
+const _ = require('lodash');
 const Promise = require('bluebird');
-const numeral = require('numeral');
 const moment = require('moment');
 const bills = require('../models/Bills')();
 const cities = require('../models/Cities')();
@@ -57,22 +57,22 @@ const closeBills = function (parms, city, stats) {
 };
 
 // step 2.2: close each bill.
-const closeEachBill = function (parms, bill) {
+const closeEachBill = function (parms, b) {
   return new Promise(function (resolve, reject) {
     let amt = 0;
 
-    transactions.findForAcct(parms.db, bill.cityId, bill.account.id, bill.id).then((trans) => {
+    transactions.findForAcct(parms.db, b.cityId, b.account.id, b.id).then((trans) => {
       trans.forEach(function (tr) {
         amt += tr.amount;
       });
-      amt = numeral(numeral(amt).format('0.00')).value();
-      return accounts.findById(parms.db, bill.account.id);
+      amt = _.round(amt, 2);
+      return accounts.findById(parms.db, b.account.id);
     }).then((acct) => {
-      bill.amount = acct.cash ? amt * -1 : amt;
-      return bills.update(parms.db, {id: bill.id}, {$set: {amount: bill.amount, balance: bill.amount,
+      b.amount = acct.cash ? amt * -1 : amt;
+      return bills.update(parms.db, {id: b.id}, {$set: {amount: b.amount, balance: b.amount,
         closed: true}});
     }).then(() => {
-      return accounts.update(parms.db, {id: bill.account.id}, {$set: {'bills.last': {id: bill.id}}});
+      return accounts.update(parms.db, {id: b.account.id}, {$set: {'bills.last': {id: b.id, name: b.name}}});
     }).then(() => {
       return resolve();
     }).catch((err) => {
@@ -116,14 +116,13 @@ const createEachBill = function (parms, city, ac, stats) {
       if(!isNewBillNeeded(ac, bill)) {
         return resolve();
       } else {
-        sequences.getNextSeq(parms.db, {seqId: 'bills', cityId: city.id}).then((seq) => {
+        sequences.getNextSeq(parms.db, {table: 'bills', cityId: city.id}).then((seq) => {
           return buildEmptyBill(city, ac, seq.seq);
         }).then((bill) => {
           b = bill;
           return bills.insert(parms.db, bill);
         }).then(() => {
-          return accounts.update(parms.db, {id: b.account.id}, {$set: {'bills.open':
-            {id: b.id, name: b.name, billDt: b.billDt, dueDt: b.dueDt, amount: b.amount}}});
+          return accounts.update(parms.db, {id: b.account.id}, {$set: {'bills.open': {id: b.id, name: b.name}}});
         }).then(() => {
           stats.opened += 1;
           return resolve();

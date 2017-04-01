@@ -1,6 +1,6 @@
 'use strict';
 
-const numeral = require('numeral');
+const _ = require('lodash');
 const express = require('express');
 const router = express.Router();
 const error = require('./error-route');
@@ -28,7 +28,7 @@ router.get('/city/default', function (req, res, next) {
 });
 
 router.get('/city/:cityId', function (req, res, next) {
-  startup.getCityById(req, res, numeral(req.params.cityId).value());
+  startup.getCityById(req, res, _.toNumber(req.params.cityId));
 });
 
 router.get('/accounts', function (req, res, next) {

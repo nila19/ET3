@@ -22,12 +22,10 @@
     };
 
     const calTotal = function () {
-      let tot = 0;
-
+      data.total = 0;
       data.rows.forEach(function (row) {
-        tot += row.amount;
+        data.total += row.amount;
       });
-      data.total = tot;
     };
     const loadCurrentPage = function () {
       const pg = data.currPageNo;

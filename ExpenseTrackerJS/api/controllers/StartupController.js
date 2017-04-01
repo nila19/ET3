@@ -1,6 +1,6 @@
 'use strict';
 
-const numeral = require('numeral');
+const _ = require('lodash');
 const accounts = require('../models/Accounts')();
 const cities = require('../models/Cities')();
 const categories = require('../models/Categories')();
@@ -37,31 +37,31 @@ const getCityById = function (req, resp, cityId) {
 
 // **************************** account ****************************//
 const getActiveAccounts = function (req, resp) {
-  const promise = accounts.findForCityActive(req.app.locals.db, numeral(req.query.cityId).value());
+  const promise = accounts.findForCityActive(req.app.locals.db, _.toNumber(req.query.cityId));
 
   return cu.sendJson(promise, resp, req.app.locals.log);
 };
 const getInactiveAccounts = function (req, resp) {
-  const promise = accounts.findForCityInactive(req.app.locals.db, numeral(req.query.cityId).value());
+  const promise = accounts.findForCityInactive(req.app.locals.db, _.toNumber(req.query.cityId));
 
   return cu.sendJson(promise, resp, req.app.locals.log);
 };
 
 // **************************** categories ****************************//
 const getAllCategories = function (req, resp) {
-  const promise = categories.findForCity(req.app.locals.db, numeral(req.query.cityId).value());
+  const promise = categories.findForCity(req.app.locals.db, _.toNumber(req.query.cityId));
 
   return cu.sendJson(promise, resp, req.app.locals.log);
 };
 const getCategories = function (req, resp) {
-  const promise = categories.findForCityActive(req.app.locals.db, numeral(req.query.cityId).value());
+  const promise = categories.findForCityActive(req.app.locals.db, _.toNumber(req.query.cityId));
 
   return cu.sendJson(promise, resp, req.app.locals.log);
 };
 
 // **************************** description ****************************//
 const getDescriptions = function (req, resp) {
-  transactions.findAllDescriptions(req.app.locals.db, numeral(req.query.cityId).value()).then((docs) => {
+  transactions.findAllDescriptions(req.app.locals.db, _.toNumber(req.query.cityId)).then((docs) => {
     const desc = docs.map(function (a) {
       return a['_id'];
     });
@@ -75,13 +75,13 @@ const getDescriptions = function (req, resp) {
 
 // **************************** months ****************************//
 const getEntryMonths = function (req, resp) {
-  const promise = transactions.findAllEntryMonths(req.app.locals.db, numeral(req.query.cityId).value());
+  const promise = transactions.findAllEntryMonths(req.app.locals.db, _.toNumber(req.query.cityId));
 
   return sendMonthsList(promise, resp, req.app.locals.log);
 };
 
 const getTransMonths = function (req, resp) {
-  const promise = transactions.findAllTransMonths(req.app.locals.db, numeral(req.query.cityId).value());
+  const promise = transactions.findAllTransMonths(req.app.locals.db, _.toNumber(req.query.cityId));
 
   return sendMonthsList(promise, resp, req.app.locals.log);
 };

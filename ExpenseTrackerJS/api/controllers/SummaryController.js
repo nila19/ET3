@@ -1,6 +1,6 @@
 'use strict';
 
-const numeral = require('numeral');
+const _ = require('lodash');
 const summaryService = require('../services/SummaryService');
 const chartService = require('../services/ChartService');
 const config = require('../config/config');
@@ -9,7 +9,7 @@ const doSummary = function (req, resp) {
   const parms = {
     db: req.app.locals.db,
     log: req.app.locals.log,
-    cityId: numeral(req.query.cityId).value(),
+    cityId: _.toNumber(req.query.cityId),
     regular: req.query.regular && req.query.regular == 'true',
     adhoc: req.query.adhoc && req.query.adhoc == 'true',
     forecast: req.query.forecast && req.query.forecast == 'true'
@@ -26,7 +26,7 @@ const doChart = function (req, resp) {
   const parms = {
     db: req.app.locals.db,
     log: req.app.locals.log,
-    cityId: numeral(req.query.cityId).value(),
+    cityId: _.toNumber(req.query.cityId),
     forecast: false
   };
 

@@ -3,5 +3,5 @@
 (function (angular) {
   'use strict';
 
-  angular.module('dashboard.chart', ['core']);
+  angular.module('dashboard.chart', ['core', 'chart.js']);
 })(window.angular);

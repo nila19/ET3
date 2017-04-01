@@ -1,8 +1,9 @@
 /* eslint no-magic-numbers: "off", no-unused-vars: "off" */
 
 const dt = require('moment');
-const sugar = require('sugar');
+const sugar = require('sugar/string');
 const numeral = require('numeral');
+const _ = require('lodash/string');
 
 const mongo = require('../config/mongodb-config');
 const log = require('../utils/logger');
@@ -17,10 +18,6 @@ const queryTrans = function (mongo, log, next) {
   log.info('Query transactions started...');
   // const filter = {acctId: 60, cityId: 20140301, adjust: 'Y', description: 'paym', thinList: true};
   // bills.find(mongo, {acctId: 81, 'payments.amount': {$gt: 500}}).then((docs) => {
-  const msg = sugar.String('someone sAid somEThing SOMEWHERE.. also nothing..').capitalize(true, true);
-
-  log.info('msg =' + msg.raw + '::');
-
   // trans.findForSearch(mongo, filter).then((docs) => {
   trans.findForAcctbySeq(mongo, 20140301, 68, 5840).then((doc) => {
     log.info('************** TEST **************...');
@@ -138,10 +135,15 @@ const test = function () {
   });
 };
 
+const msg = 'someone sAid somEThing SOMEWHERE.. also nothing..';
+
+log.info('Sugarized =' + sugar.String(msg).capitalize(false, true).raw + '::');
+log.info('lodashed =' + _.startCase(msg) + '::');
+
 // test();
 
 // log.info(JSON.stringify(obj));
 // closer();
-query();
+// query();
 // const tally2 = dt().subtract(4, 'hours');
 // log.info(tally2.valueOf() + ' - ' + dt().isSame(tally2, 'day'));

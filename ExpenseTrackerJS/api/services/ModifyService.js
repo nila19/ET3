@@ -1,9 +1,9 @@
 'use strict';
 
+const _ = require('lodash');
 const Promise = require('bluebird');
 const moment = require('moment');
-const numeral = require('numeral');
-const sugar = require('sugar');
+const sugar = require('sugar/string');
 const accounts = require('../models/Accounts')();
 const bills = require('../models/Bills')();
 const transactions = require('../models/Transactions')();
@@ -16,7 +16,7 @@ const modifyExpense = function (parms, data, next) {
   let finImpact = null;
   let billChange = null;
 
-  data.amount = numeral(data.amount).value();
+  data.amount = _.toNumber(data.amount);
   transactions.findById(parms.db, data.id).then((tran) => {
     tr = tran;
     return cu.checkCityEditable(parms.db, tr.cityId);
@@ -157,7 +157,7 @@ const copyTransData = function (data, trans) {
       };
     }
     trans.description = sugar.String(data.description).capitalize(false, true).raw;
-    trans.amount = numeral(data.amount).value();
+    trans.amount = _.toNumber(data.amount);
     if(trans.transDt !== data.transDt) {
       trans.transDt = moment(data.transDt, fmt.DDMMMYYYY).format(fmt.YYYYMMDD);
       trans.transMonth = moment(data.transDt, fmt.DDMMMYYYY).date(1).format(fmt.YYYYMMDD);

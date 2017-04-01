@@ -1,13 +1,13 @@
-/* eslint no-magic-numbers: "off", no-console: "off" */
+/* eslint no-magic-numbers: "off"*/
 
 'use strict';
 
+const _ = require('lodash');
 const moment = require('moment');
-const numeral = require('numeral');
 
 const config = require('../config/config');
 const fmt = require('../config/formats');
-const model = require('./Model');
+const Model = require('./Model');
 
 const schema = {
   id: 'int not-null primarykey autoincrement',
@@ -45,7 +45,6 @@ const schema = {
   tallyDt: 'timestamp',
   FLAGS: {}
 };
-
 const searchUI = {
   cityId: 'int',
   acctId: 'int',
@@ -62,186 +61,163 @@ const searchUI = {
   thinList: 'boolean',
 };
 
-const Transactions = function () {
-  // do nothing
-  this.FLAGS = schema.FLAGS;
-};
+class Transactions extends Model {
+  constructor() {
+    super('transactions');
+    this.schema = schema;
+    this.searchUI = searchUI;
+  }
+  findForCity(db, cityId) {
+    return super.find(db, {cityId: cityId}, {fields: {_id: 0}, sort: {seq: -1}});
+  }
+  findForAcct(db, cityId, acctId, billId) {
+    const filter = {cityId: cityId};
 
-Transactions.prototype = model('transactions');
-Transactions.prototype.findForCity = function (db, cityId) {
-  return this.find(db, {cityId: cityId}, {fields: {_id: 0}, sort: {seq: -1}});
-};
-Transactions.prototype.findForAcct = function (db, cityId, acctId, billId) {
-  const filter = {
-    cityId: cityId,
-  };
+    if(billId) {
+      filter['bill.id'] = billId;
+    } else {
+      filter.$or = [{'accounts.from.id': acctId}, {'accounts.to.id': acctId}];
+    }
+    return super.find(db, filter, {fields: {_id: 0}, sort: {seq: -1}});
+  }
+  findPrevious(db, cityId, acctId, seq) {
+    const filter = {cityId: cityId, seq: {$lt: seq}};
 
-  if(billId) {
-    filter['bill.id'] = billId;
-  } else {
     filter.$or = [{'accounts.from.id': acctId}, {'accounts.to.id': acctId}];
+    return super.findOne(db, filter, {fields: {_id: 0}, sort: {seq: -1}});
   }
-  return this.find(db, filter, {fields: {_id: 0}, sort: {seq: -1}});
-};
-Transactions.prototype.findPrevious = function (db, cityId, acctId, seq) {
-  const filter = {
-    cityId: cityId,
-    seq: {$lt: seq}
-  };
+  findForMonthlySummary(db, cityId, regular, adhoc) {
+    const filter = {cityId: cityId, adjust: false};
 
-  filter.$or = [{'accounts.from.id': acctId}, {'accounts.to.id': acctId}];
-  return this.findOne(db, filter, {fields: {_id: 0}, sort: {seq: -1}});
-};
-Transactions.prototype.findForSearch = function (db, search) {
-  // dummy usage
-  searchUI.acctId;
+    if(!(regular && adhoc)) {
+      filter.adhoc = (regular && !adhoc) ? false : true;
+    }
+    return super.find(db, filter, {fields: {_id: 0}, sort: {seq: -1}});
+  }
+  // get Transactions for the last 3 months excluding the current month.
+  findForForecast(db, cityId) {
+    const thisMth = moment().date(1);
+    const beginMth = thisMth.clone().subtract(4, 'months').format(fmt.YYYYMMDD);
+    const endMth = thisMth.clone().subtract(1, 'months').format(fmt.YYYYMMDD);
+    const filter = {cityId: cityId, adhoc: false, adjust: false, transMonth: {$gt: beginMth, $lte: endMth}};
 
-  const options = {fields: {_id: 0}, sort: {seq: -1}};
-  let filter = {
-    cityId: numeral(search.cityId).value(),
-  };
+    return super.find(db, filter, {fields: {_id: 0}, sort: {seq: -1}});
+  }
+  findAllEntryMonths(db, cityId) {
+    return super.distinct(db, 'entryMonth', {cityId: cityId}, {fields: {_id: 0}, sort: {entryMonth: -1}});
+  }
+  findAllTransMonths(db, cityId) {
+    return super.distinct(db, 'transMonth', {cityId: cityId}, {fields: {_id: 0}, sort: {transMonth: -1}});
+  }
+  findAllDescriptions(db, cityId) {
+    return db.get(this.collection).aggregate([{$match: {cityId: cityId}},
+      {$group: {_id: '$description', count: {$sum: 1}}}, {$sort: {count: -1}}]);
+  }
+  updateTrans(db, trans) {
+    const filter = {cityId: trans.cityId, id: trans.id};
+    const mod = {
+      $set: {
+        category: trans.category,
+        description: trans.description,
+        amount: trans.amount,
+        transDt: trans.transDt,
+        transMonth: trans.transMonth,
+        adhoc: trans.adhoc,
+        adjust: trans.adjust,
+        tallied: trans.tallied,
+        tallyDt: trans.tallyDt,
+        accounts: trans.accounts
+      }
+    };
 
-  filter = this.buildSearchQueryOne(search, filter);
-  filter = this.buildSearchQueryTwo(search, filter);
-
-  // thin list
-  if(search.thinList == 'true') {
-    options.limit = config.thinList;
-  }
-  return this.find(db, filter, options);
-};
-Transactions.prototype.buildSearchQueryOne = function (search, filter) {
-  // account id
-  if(search.acctId) {
-    filter.$or = [{'accounts.from.id': numeral(search.acctId).value()},
-    {'accounts.to.id': numeral(search.acctId).value()}];
-  }
-  // bill id
-  if(search.billId) {
-    filter['bill.id'] = numeral(search.billId).value();
-  }
-  // category id
-  if(search.catId) {
-    filter['category.id'] = numeral(search.catId).value();
-  }
-  // description
-  if(search.description) {
-    filter.description = {$regex: new RegExp(search.description, 'gi')};
-  }
-  // amount
-  if(search.amount) {
-    const amt75 = numeral(search.amount).multiply(config.pct75).value();
-    const amt125 = numeral(search.amount).multiply(config.pct125).value();
-
-    filter.$and = [{amount: {$gt: amt75}}, {amount: {$lt: amt125}}];
-  }
-  // adhoc ind
-  if(search.adhoc) {
-    filter.adhoc = search.adhoc === 'Y';
-  }
-  // adjust ind
-  if(search.adjust) {
-    filter.adjust = search.adjust === 'Y';
-  }
-  return filter;
-};
-Transactions.prototype.buildSearchQueryTwo = function (search, filter) {
-  // entry month
-  if(search.entryMonth) {
-    const entry = moment(search.entryMonth);
-
-    if(search.entryYear == 'true') {
-      // set startDt as 31-Dec of previous year, since that it is > than.
-      // set endDt as 1-Jan of next year, since that it is > than.
-      const yearBegin = entry.clone().month(0).date(0).format(fmt.YYYYMMDD);
-      const yearEnd = entry.clone().month(11).date(31).format(fmt.YYYYMMDD);
-
-      filter.$and = [{entryMonth: {$gt: yearBegin}}, {entryMonth: {$lt: yearEnd}}];
+    if(trans.bill) {
+      mod.$set.bill = trans.bill;
     } else {
-      filter.entryMonth = entry.format(fmt.YYYYMMDD);
+      mod.$unset = {bill: ''};
     }
+    return super.update(db, filter, mod);
   }
-  // trans month
-  if(search.transMonth) {
-    const trans = moment(search.transMonth);
+  findForSearch(db, search) {
+    const options = {fields: {_id: 0}, sort: {seq: -1}};
+    let filter = {cityId: _.toNumber(search.cityId)};
 
-    if(search.transYear == 'true') {
-      // set startDt as 31-Dec of previous year, since that it is > than.
-      const yearBegin = trans.clone().month(0).date(0).format(fmt.YYYYMMDD);
-      const yearEnd = trans.clone().month(11).date(31).format(fmt.YYYYMMDD);
-
-      filter.$and = [{transMonth: {$gt: yearBegin}}, {transMonth: {$lt: yearEnd}}];
-    } else {
-      filter.transMonth = trans.format(fmt.YYYYMMDD);
+    filter = this.buildSearchQueryOne(search, filter);
+    filter = this.buildSearchQueryTwo(search, filter);
+    // thin list
+    if(search.thinList == 'true') {
+      options.limit = config.thinList;
     }
+    return super.find(db, filter, options);
   }
-  return filter;
-};
-
-Transactions.prototype.findForMonthlySummary = function (db, cityId, regular, adhoc) {
-  const filter = {
-    cityId: cityId,
-    adjust: false,
-  };
-
-  if(!(regular && adhoc)) {
-    filter.adhoc = (regular && !adhoc) ? false : true;
-  }
-  return this.find(db, filter, {fields: {_id: 0}, sort: {seq: -1}});
-};
-// get Transactions for the last 3 months excluding the current month.
-Transactions.prototype.findForForecast = function (db, cityId) {
-  const thisMth = moment().date(1);
-  const beginMth = thisMth.clone().subtract(4, 'months').format(fmt.YYYYMMDD);
-  const endMth = thisMth.clone().subtract(1, 'months').format(fmt.YYYYMMDD);
-  const filter = {
-    cityId: cityId,
-    adhoc: false,
-    adjust: false,
-    transMonth: {$gt: beginMth, $lte: endMth}
-  };
-
-  return this.find(db, filter, {fields: {_id: 0}, sort: {seq: -1}});
-};
-Transactions.prototype.findAllEntryMonths = function (db, cityId) {
-  return this.distinct(db, 'entryMonth', {cityId: cityId}, {fields: {_id: 0}, sort: {entryMonth: -1}});
-};
-Transactions.prototype.findAllTransMonths = function (db, cityId) {
-  return this.distinct(db, 'transMonth', {cityId: cityId}, {fields: {_id: 0}, sort: {transMonth: -1}});
-};
-Transactions.prototype.findAllDescriptions = function (db, cityId) {
-  return db.get(this.collection).aggregate([{$match: {cityId: cityId}},
-    {$group: {_id: '$description', count: {$sum: 1}}}, {$sort: {count: -1}}]);
-};
-Transactions.prototype.updateTrans = function (db, trans) {
-  const filter = {
-    cityId: trans.cityId,
-    id: trans.id
-  };
-
-  const mod = {
-    $set: {
-      category: trans.category,
-      description: trans.description,
-      amount: trans.amount,
-      transDt: trans.transDt,
-      transMonth: trans.transMonth,
-      adhoc: trans.adhoc,
-      adjust: trans.adjust,
-      tallied: trans.tallied,
-      tallyDt: trans.tallyDt,
-      accounts: trans.accounts
+  // internal utility methods...
+  buildSearchQueryOne(search, filter) {
+    // account id
+    if(search.acctId) {
+      filter.$or = [{'accounts.from.id': _.toNumber(search.acctId)},
+        {'accounts.to.id': _.toNumber(search.acctId)}];
     }
-  };
+    // bill id
+    if(search.billId) {
+      filter['bill.id'] = _.toNumber(search.billId);
+    }
+    // category id
+    if(search.catId) {
+      filter['category.id'] = _.toNumber(search.catId);
+    }
+    // description
+    if(search.description) {
+      filter.description = {$regex: new RegExp(search.description, 'gi')};
+    }
+    // amount
+    if(search.amount) {
+      const amt75 = _.toNumber(search.amount) * config.pct75;
+      const amt125 = _.toNumber(search.amount) * config.pct125;
 
-  if(trans.bill) {
-    mod.$set.bill = trans.bill;
-  } else {
-    mod.$unset = {bill: ''};
+      filter.$and = [{amount: {$gt: amt75}}, {amount: {$lt: amt125}}];
+    }
+    // adhoc ind
+    if(search.adhoc) {
+      filter.adhoc = search.adhoc === 'Y';
+    }
+    // adjust ind
+    if(search.adjust) {
+      filter.adjust = search.adjust === 'Y';
+    }
+    return filter;
   }
+  buildSearchQueryTwo(search, filter) {
+    // entry month
+    if(search.entryMonth) {
+      const entry = moment(search.entryMonth);
 
-  return this.update(db, filter, mod);
-};
+      if(search.entryYear == 'true') {
+        // set startDt as 31-Dec of previous year, since that it is > than.
+        // set endDt as 1-Jan of next year, since that it is > than.
+        const yearBegin = entry.clone().month(0).date(0).format(fmt.YYYYMMDD);
+        const yearEnd = entry.clone().month(11).date(31).format(fmt.YYYYMMDD);
+
+        filter.$and = [{entryMonth: {$gt: yearBegin}}, {entryMonth: {$lt: yearEnd}}];
+      } else {
+        filter.entryMonth = entry.format(fmt.YYYYMMDD);
+      }
+    }
+    // trans month
+    if(search.transMonth) {
+      const trans = moment(search.transMonth);
+
+      if(search.transYear == 'true') {
+        // set startDt as 31-Dec of previous year, since that it is > than.
+        const yearBegin = trans.clone().month(0).date(0).format(fmt.YYYYMMDD);
+        const yearEnd = trans.clone().month(11).date(31).format(fmt.YYYYMMDD);
+
+        filter.$and = [{transMonth: {$gt: yearBegin}}, {transMonth: {$lt: yearEnd}}];
+      } else {
+        filter.transMonth = trans.format(fmt.YYYYMMDD);
+      }
+    }
+    return filter;
+  }
+}
 
 module.exports = function () {
   return new Transactions();

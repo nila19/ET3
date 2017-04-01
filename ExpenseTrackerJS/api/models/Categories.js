@@ -1,6 +1,6 @@
 'use strict';
 
-const model = require('./Model');
+const Model = require('./Model');
 const schema = {
   id: 'int not-null primarykey autoincrement',
   name: 'string',
@@ -9,25 +9,21 @@ const schema = {
   subDesc: 'string default-NA',
   icon: 'string default- ',
   active: 'boolean',
-  seq: 'int default-0',
-  FLAGS: {},
+  seq: 'int default-0'
 };
 
-const Categories = function () {
-  // do nothing
-  this.FLAGS = schema.FLAGS;
-};
-
-Categories.prototype = model('categories');
-Categories.prototype.findForCity = function (db, cityId) {
-  return this.find(db, {cityId: cityId}, {fields: {_id: 0}, sort: {seq: 1}});
-};
-Categories.prototype.findForCityActive = function (db, cityId) {
-  return this.find(db, {
-    cityId: cityId,
-    active: true,
-  }, {fields: {_id: 0}, sort: {seq: 1}});
-};
+class Categories extends Model {
+  constructor() {
+    super('categories');
+    this.schema = schema;
+  }
+  findForCity(db, cityId) {
+    return super.find(db, {cityId: cityId}, {fields: {_id: 0}, sort: {seq: 1}});
+  }
+  findForCityActive(db, cityId) {
+    return super.find(db, {cityId: cityId, active: true}, {fields: {_id: 0}, sort: {seq: 1}});
+  }
+}
 
 module.exports = function () {
   return new Categories();

@@ -10,7 +10,7 @@
       "require": {
         "FunctionDeclaration": false,
         "MethodDefinition": false,
-        "ClassDeclaration": true
+        "ClassDeclaration": false
       }
     }],
     "func-style": ["error", "expression", {
@@ -86,10 +86,14 @@
     "node": true,
     "mongo": true
   },
+  "parserOptions": {
+    "sourceType": "module"
+  },
   "globals": {
     "window": true,
     "toastr": true,
     "$": true,
+    "_": true,
     "moment": true
   }
 }

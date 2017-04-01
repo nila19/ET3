@@ -1,27 +1,13 @@
 'use strict';
 
+const _ = require('lodash');
 const plugins = require('gulp-load-plugins')();
-
-// converts all object property values into an array.
-const toArray = function (obj) {
-  const arr = [];
-
-  for (const key in obj) {
-    // check if the property is directly on the object & not inherited from prototype.
-    if (Object.prototype.hasOwnProperty.call(obj, key)) {
-      arr.push(obj[key]);
-    }
-  }
-  return arr;
-};
 
 const buildExcludes = function (...args) {
   const excludes = [];
   // add the declared paths from path.excludes to a temp array.
-  let paths = toArray(path.excludes);
-
   // add any additional paths arguments to the array.
-  paths = paths.concat(args);
+  const paths = _.values(path.excludes).concat(args);
 
   // negate the path names.
   paths.forEach(function (path) {
@@ -47,10 +33,14 @@ const path = {
     theme: dir.public + '/theme/**/*.*'
   },
   public: {
-    js: dir.public + '/**/*.js',
-    less: dir.public + '/**/*.less',
-    htm: dir.public + '/**/*.htm',
-    images: dir.public + '/images/**/*.*'
+    js: dir.public + '/app/**/*.js',
+    less: dir.public + '/css/**/*.less',
+    htm: dir.public + '/app/**/*.htm',
+    images: dir.public + '/images/**/*.*',
+    minify: {
+      modules: dir.public + '/app/**/*.module.js',
+      rest: dir.public + '/app/**/*.js',
+    }
   },
   server: {
     js: {
@@ -69,23 +59,38 @@ const flag = {
   prod: Boolean(plugins.util.env.prod),
   // gulp --merge
   merge: Boolean(plugins.util.env.merge),
-  // gulp --merge
+  // gulp --minify
+  minify: Boolean(plugins.util.env.minify),
+  // gulp --maps
   maps: Boolean(plugins.util.env.maps)
 };
 
 const src = {
   public: {
     js: [path.public.js].concat(buildExcludes()),
-    less: [path.public.less].concat(buildExcludes())
+    less: [path.public.less].concat(buildExcludes()),
+    minify: {
+      modules: [path.public.minify.modules].concat(buildExcludes()),
+      rest: [path.public.minify.rest].concat(buildExcludes(path.public.minify.modules))
+    }
   },
   server: {
-    js: toArray(path.server.js).concat(buildExcludes()),
+    js: _.values(path.server.js).concat(buildExcludes()),
     ejs: [path.server.ejs].concat(buildExcludes())
+  }
+};
+
+const dest = {
+  folder: dir.public + '/dist',
+  file: {
+    modules: 'app.all.module.js',
+    rest: 'app.all.js'
   }
 };
 
 module.exports = {
   flag: flag,
   src: src,
+  dest: dest,
   log: log
 };

@@ -54,7 +54,8 @@
     const loadData = function (dt) {
       initRefresh();
       data.expense = dt;
-      // refresh the 'from' account from TA so what it will have 'billed' attribute.
+      data.expense.amount = _.round(data.expense.amount, 2);
+      // refresh the 'from' account from TA so that it will have 'billed' attribute.
       if(data.expense.accounts.from.id) {
         data.expense.accounts.from = us.getObjectOf(V.data.accounts, data.expense.accounts.from.id);
       }

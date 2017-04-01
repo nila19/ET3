@@ -3,7 +3,7 @@
 const Promise = require('bluebird');
 const moment = require('moment');
 const numeral = require('numeral');
-const sugar = require('sugar');
+const sugar = require('sugar/string');
 const accounts = require('../models/Accounts')();
 const bills = require('../models/Bills')();
 const transactions = require('../models/Transactions')();
@@ -32,7 +32,7 @@ const addExpensePromise = function (parms, data) {
       tr = trans;
       return copyAccountsData(data, tr);
     }).then(() => {
-      return sequences.getNextSeq(parms.db, {seqId: 'transactions', cityId: data.city.id});
+      return sequences.getNextSeq(parms.db, {table: 'transactions', cityId: data.city.id});
     }).then((seq) => {
       tr.id = seq.seq;
       tr.seq = seq.seq;
