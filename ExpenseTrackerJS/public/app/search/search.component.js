@@ -1,5 +1,8 @@
 /** ** ./search/search.component.js *** */
 
+import './search.module';
+import './search.service';
+
 (function (angular) {
   'use strict';
 

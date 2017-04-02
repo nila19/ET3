@@ -1,5 +1,8 @@
 /** ** ./dashboard/accounts/accounts.component.js *** */
 
+import './accounts.module';
+import './accounts.service';
+
 (function (angular) {
   'use strict';
 

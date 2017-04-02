@@ -1,6 +1,8 @@
 /** ** ./dashboard/chart/chart.service.js *** */
 /* eslint new-cap: ["error", { "capIsNewExceptions": ["Bar"] }], no-magic-numbers: 'off'*/
 
+import './chart.module';
+
 (function (angular) {
   'use strict';
 

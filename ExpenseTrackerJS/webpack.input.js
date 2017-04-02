@@ -15,22 +15,23 @@
 import jQuery from 'jquery';
 import _ from 'lodash';
 import angular from 'angular';
-import 'chart.js';
-import 'bootstrap';
-import 'less';
-import 'moment';
 
-import 'angular-resource';
-import 'angular-route';
-import 'angular-animate';
-import 'angular-chart';
-import 'angular-bootstrap';
-import 'bootstrap-datepicker';
+window.$ = jQuery;
+window._ = _;
+window.angular = angular;
 
-// window.jQuery = jQuery;
-// window._ = _;
-// window.angular = angular;
+require('chart.js');
+require('bootstrap');
+require('less');
+require('moment');
 
-const mat = require('./public/theme/js/material.min');
-const matdb = require('./public/theme/js/material-dashboard');
-const notify = require('./public/theme/js/bootstrap-notify');
+require('angular-resource');
+require('angular-route');
+require('angular-animate');
+require('angular-chart');
+require('angular-bootstrap');
+require('bootstrap-datepicker');
+
+require('./public/theme/js/material.min');
+require('./public/theme/js/material-dashboard');
+require('./public/theme/js/bootstrap-notify');

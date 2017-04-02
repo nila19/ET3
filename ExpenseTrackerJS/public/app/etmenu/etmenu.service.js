@@ -1,5 +1,7 @@
 /** ** ./etmenu/etmenu.service.js *** */
 
+import './etmenu.module';
+
 (function (angular) {
   'use strict';
 

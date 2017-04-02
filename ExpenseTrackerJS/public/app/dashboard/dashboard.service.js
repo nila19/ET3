@@ -1,5 +1,7 @@
 /** ** ./dashboard/dashboard.service.js *** */
 
+import './dashboard.module';
+
 (function (angular) {
   'use strict';
 

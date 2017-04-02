@@ -1,5 +1,7 @@
 /** ** ./core/values.js *** */
 
+import './core.module';
+
 (function (angular) {
   'use strict';
 

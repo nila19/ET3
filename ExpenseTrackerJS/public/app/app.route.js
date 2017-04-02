@@ -1,5 +1,14 @@
 /** ** ./app.route.js *** */
 
+import './app.module';
+
+import './core/core.component';
+import './dashboard/dashboard.component';
+import './etmenu/etmenu.component';
+import './search/search.component';
+import './startup/startup.component';
+import './summary/summary.component';
+
 (function (angular) {
   'use strict';
   const appRoute = function ($locationProvider, $routeProvider) {

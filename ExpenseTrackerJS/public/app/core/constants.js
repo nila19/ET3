@@ -1,6 +1,8 @@
 /** ** ./core/constants.js *** */
 /* eslint no-magic-numbers: "off" */
 
+import './core.module';
+
 (function (angular) {
   'use strict';
 

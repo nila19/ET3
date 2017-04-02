@@ -92,6 +92,7 @@
   "globals": {
     "window": true,
     "toastr": true,
+    "angular": true,
     "$": true,
     "_": true,
     "moment": true

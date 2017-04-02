@@ -1,5 +1,7 @@
 /** ** ./core/services/utils.service.js *** */
 
+import './services.module';
+
 (function (angular) {
   'use strict';
 

@@ -1,5 +1,7 @@
 /** ** ./dashboard/billpay/billpay.service.js *** */
 
+import './billpay.module';
+
 (function (angular) {
   'use strict';
 

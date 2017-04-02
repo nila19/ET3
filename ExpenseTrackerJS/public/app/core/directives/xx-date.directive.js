@@ -1,5 +1,7 @@
 /** ** ./core/directives/xx-date.directive.js *** */
 
+import './directives.module';
+
 (function (angular) {
   'use strict';
 

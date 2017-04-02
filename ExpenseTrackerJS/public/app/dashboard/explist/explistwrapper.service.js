@@ -1,5 +1,7 @@
 /** ** ./dashboard/explist/explistwrapper.service.js *** */
 
+import './explist.module';
+
 (function (angular) {
   'use strict';
 

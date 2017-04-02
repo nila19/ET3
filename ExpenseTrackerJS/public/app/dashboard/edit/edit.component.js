@@ -1,5 +1,8 @@
 /** ** ./dashboard/edit/edit.component.js *** */
 
+import './edit.module';
+import './edit.service';
+
 (function (angular) {
   'use strict';
 

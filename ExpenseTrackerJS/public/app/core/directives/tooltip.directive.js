@@ -1,5 +1,7 @@
 /** ** ./core/directives/xx-tooltip.directive.js *** */
 
+import './directives.module';
+
 (function (angular) {
   'use strict';
 

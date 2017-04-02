@@ -1,5 +1,18 @@
 /** ** ./dashboard/dashboard.component.js *** */
 
+import './dashboard.module';
+import './dashboard.flags.service';
+import './dashboard.service';
+import './dashboardwrapper.service';
+
+import './accounts/accounts.component';
+import './add/add.component';
+import './billpay/billpay.component';
+import './bills/bills.component';
+import './chart/chart.component';
+import './edit/edit.component';
+import './explist/explist.component';
+
 (function (angular) {
   'use strict';
 

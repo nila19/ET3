@@ -1,5 +1,7 @@
 /** ** ./summary/summary.service.js *** */
 
+import './summary.module';
+
 (function (angular) {
   'use strict';
 

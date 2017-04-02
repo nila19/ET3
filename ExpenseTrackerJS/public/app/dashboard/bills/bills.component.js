@@ -1,5 +1,9 @@
 /** ** ./dashboard/bills/bills.component.js *** */
 
+import './bills.module';
+import './bills.service';
+import './billswrapper.service';
+
 (function (angular) {
   'use strict';
 

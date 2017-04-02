@@ -1,5 +1,8 @@
 /** ** ./dashboard/add/add.component.js *** */
 
+import './add.module';
+import './add.service';
+
 (function (angular) {
   'use strict';
 

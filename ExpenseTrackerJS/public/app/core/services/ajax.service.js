@@ -1,5 +1,7 @@
 /** ** ./core/services/ajax.service.js *** */
 
+import './services.module';
+
 (function (angular) {
   'use strict';
 

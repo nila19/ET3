@@ -1,5 +1,7 @@
 /** ** ./startup/startup.service.js *** */
 
+import './startup.module';
+
 (function (angular) {
   'use strict';
 

@@ -1,5 +1,8 @@
 /** ** ./dashboard/chart/chart.component.js *** */
 
+import './chart.module';
+import './chart.service';
+
 (function (angular) {
   'use strict';
 

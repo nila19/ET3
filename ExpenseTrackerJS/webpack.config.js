@@ -16,7 +16,8 @@ module.exports = {
     // wp_angular: ['jQuery', 'lodash', 'angular'],
     // wp_angularAll: ['angular-route', 'angular-resource', 'angular-animate', 'angular-chart', 'angular-bootstrap'],
     // wp_others: ['chart.js', 'bootstrap', 'bootstrap-datepicker', 'less', 'moment'],
-    wp_main: './webpack.input.js'
+    wp_main: './webpack.input.js',
+    wp_app: './webpack.input.app.js'
   },
   output: {
     // filename: '[name].[chunkhash].js',

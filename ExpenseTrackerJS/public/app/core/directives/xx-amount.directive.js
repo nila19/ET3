@@ -1,5 +1,7 @@
 /** ** ./core/directives/xx-amount.directive.js *** */
 
+import './directives.module';
+
 (function (angular) {
   'use strict';
 
