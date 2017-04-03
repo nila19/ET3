@@ -36,34 +36,29 @@ const getCityById = function (req, resp, cityId) {
 };
 
 // **************************** account ****************************//
-const getActiveAccounts = function (req, resp) {
-  const promise = accounts.findForCityActive(req.app.locals.db, _.toNumber(req.query.cityId));
+const getAccounts = function (req, resp) {
+  const promise = accounts.findForCity(req.app.locals.db, _.toNumber(req.query.cityId));
 
   return cu.sendJson(promise, resp, req.app.locals.log);
 };
-const getInactiveAccounts = function (req, resp) {
-  const promise = accounts.findForCityInactive(req.app.locals.db, _.toNumber(req.query.cityId));
+const getAccountsThin = function (req, resp) {
+  const promise = accounts.findForCityThin(req.app.locals.db, _.toNumber(req.query.cityId));
 
-  return cu.sendJson(promise, resp, req.app.locals.log);
+  return cu.sendJsonEmbedNull(promise, resp, req.app.locals.log);
 };
 
 // **************************** categories ****************************//
-const getAllCategories = function (req, resp) {
+const getCategories = function (req, resp) {
   const promise = categories.findForCity(req.app.locals.db, _.toNumber(req.query.cityId));
 
-  return cu.sendJson(promise, resp, req.app.locals.log);
-};
-const getCategories = function (req, resp) {
-  const promise = categories.findForCityActive(req.app.locals.db, _.toNumber(req.query.cityId));
-
-  return cu.sendJson(promise, resp, req.app.locals.log);
+  return cu.sendJsonEmbedNull(promise, resp, req.app.locals.log);
 };
 
 // **************************** description ****************************//
 const getDescriptions = function (req, resp) {
   transactions.findAllDescriptions(req.app.locals.db, _.toNumber(req.query.cityId)).then((docs) => {
     const desc = docs.map(function (a) {
-      return a['_id'];
+      return {name: a['_id'], bills: null};
     });
 
     return resp.json({code: 0, data: desc});
@@ -103,9 +98,8 @@ module.exports = {
   getAllCities: getAllCities,
   getDefaultCity: getDefaultCity,
   getCityById: getCityById,
-  getActiveAccounts: getActiveAccounts,
-  getInactiveAccounts: getInactiveAccounts,
-  getAllCategories: getAllCategories,
+  getAccounts: getAccounts,
+  getAccountsThin: getAccountsThin,
   getCategories: getCategories,
   getDescriptions: getDescriptions,
   getEntryMonths: getEntryMonths,

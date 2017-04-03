@@ -30,13 +30,15 @@
               <div class="col-md-4">
                 <div class="form-group label-floating">
                   <label class="control-label">From Account</label>
-                  <input type="text" ng-model="$ctrl.data.expense.accounts.from" class="form-control" required uib-typeahead="acc as acc.name for acc in $ctrl.ta.accounts | filter:$viewValue | limitTo:8" typeahead-show-hint="true" typeahead-min-length="0" typeahead-editable="false">
+                  <input type="text" ng-model="$ctrl.data.expense.accounts.from" class="form-control" required uib-typeahead="acc as acc.name for acc in $ctrl.ta.accounts | filter: {active: true} | filter:$viewValue | limitTo:8" typeahead-show-hint="true" typeahead-min-length="0"
+                      typeahead-editable="false">
                 </div>
               </div>
               <div class="col-md-5">
                 <div class="form-group label-floating">
                   <label class="control-label">Category</label>
-                  <input type="text" ng-model="$ctrl.data.expense.category" class="form-control" required uib-typeahead="cat as cat.name for cat in $ctrl.ta.categories | filter:$viewValue | limitTo:8" typeahead-show-hint="true" typeahead-min-length="0" typeahead-editable="false">
+                  <input type="text" ng-model="$ctrl.data.expense.category" class="form-control" required uib-typeahead="cat as cat.name for cat in $ctrl.ta.categories | filter: {active: true} | filter:$viewValue | limitTo:8" typeahead-show-hint="true" typeahead-min-length="0"
+                      typeahead-editable="false">
                 </div>
               </div>
               <div class="col-md-1">
@@ -55,7 +57,7 @@
               <div class="col-md-4">
                 <div class="form-group label-floating">
                   <label class="control-label">Description</label>
-                  <input type="text" ng-model="$ctrl.data.expense.description" class="form-control" required uib-typeahead="desc for desc in $ctrl.ta.descriptions | filter:$viewValue | limitTo:8">
+                  <input type="text" ng-model="$ctrl.data.expense.description" class="form-control" required uib-typeahead="desc as desc.name for desc in $ctrl.ta.descriptions | filter:$viewValue | limitTo:8">
                 </div>
               </div>
               <div class="col-md-2">
@@ -87,13 +89,15 @@
               <div class="col-md-4">
                 <div class="form-group label-floating">
                   <label class="control-label">From Account</label>
-                  <input type="text" ng-model="$ctrl.data.expense.accounts.from" class="form-control" uib-typeahead="acc as acc.name for acc in $ctrl.ta.accounts | filter:$viewValue | limitTo:8" typeahead-show-hint="true" typeahead-min-length="0" typeahead-editable="false">
+                  <input type="text" ng-model="$ctrl.data.expense.accounts.from" class="form-control" uib-typeahead="acc as acc.name for acc in $ctrl.ta.accounts | filter: {active: true} | filter:$viewValue | limitTo:8" typeahead-show-hint="true" typeahead-min-length="0"
+                      typeahead-editable="false">
                 </div>
               </div>
               <div class="col-md-4">
                 <div class="form-group label-floating">
                   <label class="control-label">To Account</label>
-                  <input type="text" ng-model="$ctrl.data.expense.accounts.to" class="form-control" uib-typeahead="acc as acc.name for acc in $ctrl.ta.accounts | filter:$viewValue | limitTo:8" typeahead-show-hint="true" typeahead-min-length="0" typeahead-editable="false">
+                  <input type="text" ng-model="$ctrl.data.expense.accounts.to" class="form-control" uib-typeahead="acc as acc.name for acc in $ctrl.ta.accounts | filter: {active: true} | filter:$viewValue | limitTo:8" typeahead-show-hint="true" typeahead-min-length="0"
+                      typeahead-editable="false">
                 </div>
               </div>
               <div class="col-md-4">&nbsp;</div>
@@ -102,7 +106,7 @@
               <div class="col-md-4">
                 <div class="form-group label-floating">
                   <label class="control-label">Description</label>
-                  <input type="text" ng-model="$ctrl.data.expense.description" class="form-control" required uib-typeahead="desc for desc in $ctrl.ta.descriptions | filter:$viewValue | limitTo:8">
+                  <input type="text" ng-model="$ctrl.data.expense.description" class="form-control" required uib-typeahead="desc as desc.name for desc in $ctrl.ta.descriptions | filter:$viewValue | limitTo:8">
                 </div>
               </div>
               <div class="col-md-2">

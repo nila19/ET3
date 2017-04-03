@@ -24,14 +24,14 @@
                     <div class="col-lg-2 col-md-3">
                       <div class="form-group label-floating">
                         <label class="control-label">Category</label>
-                        <input ng-model="$ctrl.data.category" type="text" class="form-control" uib-typeahead="cat as cat.name for cat in $ctrl.ta.allCategories | filter:$viewValue | limitTo:12" typeahead-template-url="customTemplate.htm" typeahead-show-hint="true" typeahead-min-length="0"
+                        <input ng-model="$ctrl.data.category" type="text" class="form-control" uib-typeahead="cat as cat.name for cat in $ctrl.ta.categories | filter:$viewValue | limitTo:12" typeahead-template-url="customTemplate.htm" typeahead-show-hint="true" typeahead-min-length="0"
                             typeahead-editable="false">
                       </div>
                     </div>
                     <div class="col-lg-2 col-md-3">
                       <div class="form-group label-floating">
                         <label class="control-label">Description</label>
-                        <input ng-model="$ctrl.data.description" type="text" class="form-control" uib-typeahead="desc for desc in $ctrl.ta.descriptions | filter:$viewValue | limitTo:12">
+                        <input ng-model="$ctrl.data.description" type="text" class="form-control" uib-typeahead="desc as desc.name for desc in $ctrl.ta.descriptions | filter:$viewValue | limitTo:12">
                       </div>
                     </div>
                     <div class="col-lg-1 col-md-2">
@@ -55,7 +55,7 @@
                     <div class="col-lg-2 col-md-3">
                       <div class="form-group label-floating">
                         <label class="control-label">Account</label>
-                        <input ng-model="$ctrl.data.account" type="text" class="form-control" uib-typeahead="acc as acc.name for acc in $ctrl.ta.allAccounts | filter:$viewValue | limitTo:12" typeahead-template-url="customTemplate.htm" typeahead-show-hint="true" typeahead-min-length="0"
+                        <input ng-model="$ctrl.data.account" type="text" class="form-control" uib-typeahead="acc as acc.name for acc in $ctrl.ta.accounts | filter:$viewValue | limitTo:12" typeahead-template-url="customTemplate.htm" typeahead-show-hint="true" typeahead-min-length="0"
                             typeahead-editable="false">
                       </div>
                     </div>

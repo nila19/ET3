@@ -10,6 +10,7 @@ const fmt = require('../config/formats');
 const getMonth = function (date, year) {
   return {
     id: date,
+    bills: null,
     aggregate: year,
     name: moment(date).format(year ? fmt.YYYY : fmt.MMMYY),
     seq: _.toNumber(moment(date).format(fmt.YYYYMM)) + (year ? 1: 0),

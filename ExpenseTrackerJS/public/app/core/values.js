@@ -9,10 +9,8 @@
       city: {},
       cities: [],
       categories: [],
-      allCategories: [],
       descriptions: [],
       accounts: [],
-      allAccounts: [],
       transMonths: [],
       entryMonths: [],
       bills: []

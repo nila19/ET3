@@ -25,6 +25,18 @@ const sendJson = function (promise, resp, log) {
   });
 };
 
+const sendJsonEmbedNull = function (promise, resp, log) {
+  promise.then((data) => {
+    data.forEach(function (dt) {
+      dt.bills = null;
+    });
+    return resp.json({code: 0, data: data});
+  }).catch((err) => {
+    log.error(err);
+    return resp.json({code: config.error});
+  });
+};
+
 const checkCityEditable = function (db, id) {
   return new Promise(function (resolve, reject) {
     cities.findById(db, id).then((city) => {
@@ -53,6 +65,7 @@ module.exports = {
   buildParm: buildParm,
   logErr: logErr,
   sendJson: sendJson,
+  sendJsonEmbedNull: sendJsonEmbedNull,
   checkCityEditable: checkCityEditable,
   checkAccountsActive: checkAccountsActive
 };

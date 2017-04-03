@@ -65,6 +65,7 @@
     "gulp-uglify": "latest",
     "gulp-util": "latest",
     "jquery": "^3.2.1",
+    "less": "^2.7.2",
     "run-sequence": "^1.2.2",
     "sqlite3": "^3.1.8",
     "streamqueue": "^1.1.1",

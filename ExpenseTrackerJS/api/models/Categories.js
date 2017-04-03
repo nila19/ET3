@@ -18,10 +18,7 @@ class Categories extends Model {
     this.schema = schema;
   }
   findForCity(db, cityId) {
-    return super.find(db, {cityId: cityId}, {fields: {_id: 0}, sort: {seq: 1}});
-  }
-  findForCityActive(db, cityId) {
-    return super.find(db, {cityId: cityId, active: true}, {fields: {_id: 0}, sort: {seq: 1}});
+    return super.find(db, {cityId: cityId}, {fields: {_id: 0}, sort: {active: -1, seq: 1}});
   }
 }
 

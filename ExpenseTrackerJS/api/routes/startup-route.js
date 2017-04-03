@@ -32,15 +32,11 @@ router.get('/city/:cityId', function (req, res, next) {
 });
 
 router.get('/accounts', function (req, res, next) {
-  startup.getActiveAccounts(req, res);
+  startup.getAccounts(req, res);
 });
 
-router.get('/accounts/inactive', function (req, res, next) {
-  startup.getInactiveAccounts(req, res);
-});
-
-router.get('/categories/all', function (req, res, next) {
-  startup.getAllCategories(req, res);
+router.get('/accounts/thin', function (req, res, next) {
+  startup.getAccountsThin(req, res);
 });
 
 router.get('/categories', function (req, res, next) {

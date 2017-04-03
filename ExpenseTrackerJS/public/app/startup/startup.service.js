@@ -10,7 +10,7 @@
       loadInitiated: false
     };
     const TEN = 10;
-    const TOTAL = 100;
+    const TOTAL = 80;
     const wait = 10;  // milliseconds
 
     const checkLoadingComplete = function () {
@@ -43,26 +43,12 @@
     const getTransMonths = function (city) {
       aj.query('/startup/months/trans', {cityId: city.id}, loadTransMonths);
     };
-    const loadInactiveAccounts = function (dt) {
-      angular.forEach(dt.data, function (ac) {
-        V.data.allAccounts.push(ac);
-      });
-      data.status += TEN;
-    };
-    const getInactiveAccounts = function (city) {
-      aj.query('/startup/accounts/inactive', {cityId: city.id}, loadInactiveAccounts);
-    };
     const loadAccounts = function (dt) {
-      V.data.accounts = [];
-      V.data.allAccounts = [];
-      angular.forEach(dt.data, function (ac) {
-        V.data.accounts.push(ac);
-        V.data.allAccounts.push(ac);
-      });
+      V.data.accounts = dt.data;
       data.status += TEN;
     };
     const getAccounts = function (city) {
-      aj.query('/startup/accounts', {cityId: city.id}, loadAccounts);
+      aj.query('/startup/accounts/thin', {cityId: city.id}, loadAccounts);
     };
     const loadDescriptions = function (dt) {
       V.data.descriptions = dt.data;
@@ -70,13 +56,6 @@
     };
     const getDescriptions = function (city) {
       aj.query('/startup/descriptions', {cityId: city.id}, loadDescriptions);
-    };
-    const loadAllCategories = function (dt) {
-      V.data.allCategories = dt.data;
-      data.status += TEN;
-    };
-    const getAllCategories = function (city) {
-      aj.query('/startup/categories/all', {cityId: city.id}, loadAllCategories);
     };
     const loadCategories = function (dt) {
       V.data.categories = dt.data;
@@ -123,10 +102,8 @@
     };
     const loadAllForCity = function () {
       getCategories(V.data.city);
-      getAllCategories(V.data.city);
       getDescriptions(V.data.city);
       getAccounts(V.data.city);
-      getInactiveAccounts(V.data.city);
       getTransMonths(V.data.city);
       getEntryMonths(V.data.city);
       checkLoadingComplete();
