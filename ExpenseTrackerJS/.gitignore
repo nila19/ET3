@@ -1,0 +1,10 @@
+/node_modules/
+/**/bower_components/
+/public/dist/
+/public/dist2/
+
+npm-debug.log
+
+.jscsrc
+.tern-project
+README.md
