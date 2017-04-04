@@ -5,7 +5,7 @@
 
   const StartupController = function (sus, ms, C, V, $location, $timeout) {
     const vm = this;
-    const WAIT = 500; // milliseconds
+    const WAIT = 100; // milliseconds
 
     const init = function () {
       vm.data = sus.data;

@@ -11,7 +11,7 @@
     };
     const TEN = 10;
     const TOTAL = 80;
-    const wait = 10;  // milliseconds
+    const WAIT = 100;  // milliseconds
 
     const checkLoadingComplete = function () {
       if (data.status >= TOTAL) {
@@ -20,7 +20,7 @@
       } else {
         $timeout(function () {
           checkLoadingComplete();
-        }, wait);
+        }, WAIT);
       }
     };
     const loadEntryMonths = function (dt) {

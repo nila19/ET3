@@ -5,7 +5,7 @@
 
   const ETMenuController = function (ms, dfs, sus, us, C, V, $location, $timeout, $route) {
     const vm = this;
-    const WAIT = 500; // milliseconds
+    const WAIT = 100; // milliseconds
 
 		// ***** function declarations *****//
     const init = function () {

@@ -5,7 +5,7 @@
 
   const SearchController = function (ss, ms, sus, els, us, C, V, $routeParams, $timeout) {
     const vm = this;
-    const WAIT = 500; // milliseconds
+    const WAIT = 100; // milliseconds
 
 		// ***** function declarations *****//
     const init = function () {
