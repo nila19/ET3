@@ -7,7 +7,15 @@ const root = {
   thinList: 100,
   pct75: 0.75,
   pct125: 1.25,
-  error: 1000
+  error: 1000,
+  pulse: {
+    on: true,
+    interval: 30000 // milliseconds
+  },
+  billcloser: false,
+  blocked: {
+    on: false,
+  },
 };
 
 const regions = {
@@ -31,11 +39,6 @@ const regions = {
     port: 3300,
     dburl: 'localhost:27017/test',
     sqlite: 'C:\\Java\\SQLite\\Data\\Prod - v2017.03.13.db',
-    billcloser: false,
-    blocked: {
-      on: false,
-      threshold: 50 // milliseconds
-    },
     log: {
       path: 'C:\\Java\\logs\\ExpenseTracker-Test.log',
       period: '1m',

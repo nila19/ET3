@@ -21,12 +21,22 @@
       }
     };
 
-    const initForm = function () {
-      data.expense.amount = '';
+    const initializeData = function () {
+      data.expense.adjust = false;
+      data.expense.adhoc = false;
+      data.expense.category = null;
+      data.expense.accounts.from = null;
+      data.expense.accounts.to = null;
       data.expense.description = '';
+      data.expense.amount = '';
+      data.expense.transDt = '';
+    };
+    const resetForm = function () {
+      data.expense.description = '';
+      data.expense.amount = '';
     };
     const loadData = function (dt) {
-      initForm();
+      resetForm();
       us.showMsg('Add Expense', dt.code);
       if(dt.code === 0) {
         // add the newly added Expense to the top of the Expenselist..
@@ -46,6 +56,7 @@
 
     return {
       data: data,
+      initializeData: initializeData,
       addExpense: addExpense
     };
   };

@@ -10,6 +10,11 @@ const cu = require('../utils/common-utils');
 const config = require('../config/config');
 
 const canConnect = function (req, resp) {
+  if(!req.app.locals.db) {
+    req.app.locals.log.error('DB connection not available...');
+    return resp.json({code: config.error});
+  }
+
   accounts.findById(req.app.locals.db, 0).then(() => {
     return resp.json({code: 0, data: {env: config.env}});
   }).catch((err) => {

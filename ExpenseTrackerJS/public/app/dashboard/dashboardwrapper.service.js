@@ -3,7 +3,7 @@
 (function (angular) {
   'use strict';
 
-  const dashboardwrapperService = function (ds, ms, acs, ss, els, elws, bs) {
+  const dashboardwrapperService = function (ds, ms, acs, ss, els, elws, bs, as) {
     const loadComplete = function () {
 			// don't wait for Step 4 to be complete... Reduces the page loading time.
       ms.data.loading = false;
@@ -26,6 +26,7 @@
       els.data.currPageNo = 0;
       els.loadCurrentPage();
       ss.initializeData();
+      as.initializeData();
 
       acs.data.filterBy = null;
       bs.data.filterApplied = false;
@@ -40,5 +41,5 @@
 
   angular.module('dashboard').factory('dashboardwrapperService', dashboardwrapperService);
   dashboardwrapperService.$inject = ['dashboardService', 'etmenuService', 'accountsService', 'searchService',
-    'explistService', 'explistwrapperService', 'billsService'];
+    'explistService', 'explistwrapperService', 'billsService', 'addService'];
 })(window.angular);
