@@ -18,7 +18,7 @@ const helmet = require('helmet');
 const express = require('express');
 const app = express();
 
-let billsClosed = false;
+let billclosed = false;
 const httpSuccess = 400;  // less than 400 are success codes.
 
 const config = require('../config/config');
@@ -29,10 +29,10 @@ const billcloser = require('../services/BillCloserService');
 const dbConnect = function () {
   mongo.connect(app.locals.log, function (db) {
     app.locals.db = db;
-      // ensure it runs only one time.
-    if(config.billcloser && !billsClosed) {
+    // ensure billcloser runs only one time for every server start.
+    if(config.billcloser && !billclosed) {
       billcloser.execute({db: app.locals.db, log: app.locals.log});
-      billsClosed = true;
+      billclosed = true;
     }
   });
   // keep trying every x seconds.
