@@ -81,7 +81,7 @@ const copyTransData = function (data) {
       entryDt: moment().format(fmt.YYYYMMDDHHmmss),
       entryMonth: moment().date(1).format(fmt.YYYYMMDD),
       category: {id: 0, name: ' ~ '},
-      description: sugar.String(data.description).capitalize(false, true).raw,
+      description: sugar.String(data.description.name || data.description).capitalize(false, true).raw,
       amount: numeral(data.amount).value(),
       transDt: moment(data.transDt, fmt.DDMMMYYYY).format(fmt.YYYYMMDD),
       transMonth: moment(data.transDt, fmt.DDMMMYYYY).date(1).format(fmt.YYYYMMDD),

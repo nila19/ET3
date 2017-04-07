@@ -37,7 +37,7 @@
       };
 
       if (data.description && data.description !== '') {
-        input.description = data.description;
+        input.description = data.description.name || data.description;
       }
       if (data.amount && data.amount !== '' && data.amount !== 0) {
         input.amount = data.amount;

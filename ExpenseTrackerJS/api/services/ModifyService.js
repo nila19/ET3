@@ -156,7 +156,7 @@ const copyTransData = function (data, trans) {
         account: {id: data.accounts.from.id, name: data.accounts.from.name}
       };
     }
-    trans.description = sugar.String(data.description).capitalize(false, true).raw;
+    trans.description = sugar.String(data.description.name || data.description).capitalize(false, true).raw;
     trans.amount = _.toNumber(data.amount);
     if(trans.transDt !== data.transDt) {
       trans.transDt = moment(data.transDt, fmt.DDMMMYYYY).format(fmt.YYYYMMDD);

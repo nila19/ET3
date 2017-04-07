@@ -137,60 +137,60 @@ class Transactions extends Model {
     }
     return super.update(db, filter, mod);
   }
-  findForSearch(db, search) {
+  findForSearch(db, qry) {
     const options = {fields: {_id: 0}, sort: {seq: -1}};
-    let filter = {cityId: _.toNumber(search.cityId)};
+    let filter = {cityId: _.toNumber(qry.cityId)};
 
-    filter = this.buildSearchQueryOne(search, filter);
-    filter = this.buildSearchQueryTwo(search, filter);
+    filter = this.buildSearchQueryOne(qry, filter);
+    filter = this.buildSearchQueryTwo(qry, filter);
     // thin list
-    if(search.thinList == 'true') {
+    if(qry.thinList == 'true') {
       options.limit = config.thinList;
     }
     return super.find(db, filter, options);
   }
   // internal utility methods...
-  buildSearchQueryOne(search, filter) {
+  buildSearchQueryOne(qry, filter) {
     // account id
-    if(search.acctId) {
-      filter.$or = [{'accounts.from.id': _.toNumber(search.acctId)},
-        {'accounts.to.id': _.toNumber(search.acctId)}];
+    if(qry.acctId) {
+      filter.$or = [{'accounts.from.id': _.toNumber(qry.acctId)},
+        {'accounts.to.id': _.toNumber(qry.acctId)}];
     }
     // bill id
-    if(search.billId) {
-      filter['bill.id'] = _.toNumber(search.billId);
+    if(qry.billId) {
+      filter['bill.id'] = _.toNumber(qry.billId);
     }
     // category id
-    if(search.catId) {
-      filter['category.id'] = _.toNumber(search.catId);
+    if(qry.catId) {
+      filter['category.id'] = _.toNumber(qry.catId);
     }
     // description
-    if(search.description) {
-      filter.description = {$regex: new RegExp(search.description, 'gi')};
+    if(qry.description) {
+      filter.description = {$regex: new RegExp(qry.description, 'gi')};
     }
     // amount
-    if(search.amount) {
-      const amt75 = _.toNumber(search.amount) * config.pct75;
-      const amt125 = _.toNumber(search.amount) * config.pct125;
+    if(qry.amount) {
+      const amt75 = _.toNumber(qry.amount) * config.pct75;
+      const amt125 = _.toNumber(qry.amount) * config.pct125;
 
       filter.$and = [{amount: {$gt: amt75}}, {amount: {$lt: amt125}}];
     }
     // adhoc ind
-    if(search.adhoc) {
-      filter.adhoc = search.adhoc === 'Y';
+    if(qry.adhoc) {
+      filter.adhoc = qry.adhoc === 'Y';
     }
     // adjust ind
-    if(search.adjust) {
-      filter.adjust = search.adjust === 'Y';
+    if(qry.adjust) {
+      filter.adjust = qry.adjust === 'Y';
     }
     return filter;
   }
-  buildSearchQueryTwo(search, filter) {
+  buildSearchQueryTwo(qry, filter) {
     // entry month
-    if(search.entryMonth) {
-      const entry = moment(search.entryMonth);
+    if(qry.entryMonth) {
+      const entry = moment(qry.entryMonth);
 
-      if(search.entryYear == 'true') {
+      if(qry.entryYear == 'true') {
         // set startDt as 31-Dec of previous year, since that it is > than.
         // set endDt as 1-Jan of next year, since that it is > than.
         const yearBegin = entry.clone().month(0).date(0).format(fmt.YYYYMMDD);
@@ -202,10 +202,10 @@ class Transactions extends Model {
       }
     }
     // trans month
-    if(search.transMonth) {
-      const trans = moment(search.transMonth);
+    if(qry.transMonth) {
+      const trans = moment(qry.transMonth);
 
-      if(search.transYear == 'true') {
+      if(qry.transYear == 'true') {
         // set startDt as 31-Dec of previous year, since that it is > than.
         const yearBegin = trans.clone().month(0).date(0).format(fmt.YYYYMMDD);
         const yearEnd = trans.clone().month(11).date(31).format(fmt.YYYYMMDD);

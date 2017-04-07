@@ -6,13 +6,15 @@
   const dashboardFlagsService = function (ms, acs, as, cs, bs) {
     const setFlags = function () {
       acs.data.showAcctsRowOne = true;
-      as.data.showAdd = true;
+      acs.data.showAcctsMore = false;
+
       bs.data.showBills = true;
 
-      ms.data.showingMoreAccounts = false;
-      acs.data.showAcctsMore = false;
-      ms.data.showingChart = false;
+      as.data.showAdd = true;
       cs.data.showChart = false;
+
+      ms.data.showingMoreAccounts = false;
+      ms.data.showingChart = false;
     };
     const toggleMoreAccounts = function () {
       ms.data.showingMoreAccounts = !ms.data.showingMoreAccounts;
