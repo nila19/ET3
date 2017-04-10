@@ -19,6 +19,7 @@ const express = require('express');
 const app = express();
 
 let billclosed = false;
+let okToLog = true;
 const httpSuccess = 400;  // less than 400 are success codes.
 
 const config = require('../config/config');
@@ -27,12 +28,16 @@ const mongo = require('../config/mongodb-config');
 const billcloser = require('../services/BillCloserService');
 
 const dbConnect = function () {
-  mongo.connect(app.locals.log, function (db) {
-    app.locals.db = db;
-    // ensure billcloser runs only one time for every server start.
-    if(config.billcloser && !billclosed) {
-      billcloser.execute({db: app.locals.db, log: app.locals.log});
-      billclosed = true;
+  mongo.connect(app.locals.log, okToLog, function (err, db) {
+    // if connection error, print next connect msg.
+    okToLog = err ? true : false;
+    if(!err) {
+      app.locals.db = db;
+      // ensure billcloser runs only one time for every server start.
+      if(config.billcloser && !billclosed) {
+        billcloser.execute({db: app.locals.db, log: app.locals.log});
+        billclosed = true;
+      }
     }
   });
   // keep trying every x seconds.

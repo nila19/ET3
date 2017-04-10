@@ -58,6 +58,9 @@ class Accounts extends Model {
   findBillable(db, cityId) {
     return super.find(db, {cityId: cityId, active: true, billed: true}, {fields: {_id: 0}, sort: {seq: 1}});
   }
+  update(db, filter, mod, options) {
+    return super.update(db, filter, mod, options);
+  }
   findById(db, id) {
     const vm = this;
 
