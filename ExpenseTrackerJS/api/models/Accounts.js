@@ -2,7 +2,7 @@
 
 const Promise = require('bluebird');
 const bills = require('../models/Bills')();
-const socket = require('../services/SocketService');
+const socket = require('../bin/socket-handler');
 
 const Model = require('./Model');
 const schema = {
@@ -60,7 +60,14 @@ class Accounts extends Model {
     return super.find(db, {cityId: cityId, active: true, billed: true}, {fields: {_id: 0}, sort: {seq: 1}});
   }
   update(db, filter, mod, options) {
-    return super.update(db, filter, mod, options);
+    const promise = super.update(db, filter, mod, options);
+
+    promise.then(() => {
+      return this.findById(db, filter.id);
+    }).then((acc) => {
+      socket.publish(socket.PIPE.ACCOUNT, acc);
+    });
+    return promise;
   }
   findById(db, id) {
     const vm = this;

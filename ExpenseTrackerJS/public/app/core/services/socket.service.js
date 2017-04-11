@@ -1,5 +1,4 @@
-/** ** ./core/services/ajax.service.js *** */
-/* eslint no-console: "off" */
+/** ** ./core/services/socket.service.js *** */
 /* global io */
 
 (function (angular) {
@@ -15,7 +14,6 @@
       }
       on = true;
       socket.on('account', function (acct) {
-        console.log(JSON.stringify(acct));
         acs.loadAccount(acct);
       });
     };

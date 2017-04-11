@@ -42,15 +42,10 @@
       buildRows();
       ms.data.loading = false;
     };
-    const refreshAccount = function (id) {
-      ms.data.loading = true;
-      aj.get('/dashboard/account/' + id, {}, loadAccount);
-    };
     const loadTally = function (dt) {
       ms.data.loading = false;
       us.showMsg('Tally', dt.code);
       if(dt.code === 0) {
-        refreshAccount(data.tallyOn);
         ss.doSearch();
       }
     };
@@ -75,8 +70,7 @@
       loadAllAccounts: loadAllAccounts,
       loadAccount: loadAccount,
       tallyAccount: tallyAccount,
-      filterAccount: filterAccount,
-      refreshAccount: refreshAccount
+      filterAccount: filterAccount
     };
   };
 

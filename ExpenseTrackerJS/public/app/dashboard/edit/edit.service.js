@@ -7,33 +7,24 @@
     const data = {
       expense: {},
       toRefresh: {
-        accts: {},
         bills: {}
       },
       loading: false
     };
 
     const initRefresh = function () {
-      data.toRefresh.accts = {};
       data.toRefresh.bills = {};
     };
 
     // store the account ids to be refreshed after modify/delete.
     const loadRefresh = function () {
-      data.toRefresh.accts[data.expense.accounts.from.id] = data.expense.accounts.from.id;
-      data.toRefresh.accts[data.expense.accounts.to.id] = data.expense.accounts.to.id;
       if(data.expense.bill && data.expense.bill.id) {
         data.toRefresh.bills[data.expense.bill.id] = data.expense.bill.id;
       }
     };
 
-    // refresh all impacted accounts & bills after modify/delete.
+    // refresh all impacted bills after modify/delete.
     const refreshAll = function () {
-      angular.forEach(data.toRefresh.accts, function (value, id) {
-        if(id) {
-          acs.refreshAccount(id);
-        }
-      });
       angular.forEach(data.toRefresh.bills, function (value, id) {
         bs.refreshBill(id);
       });

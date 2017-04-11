@@ -9,7 +9,7 @@ const config = require('../config/config');
 const app = require('./app');
 const server = http.createServer(app);
 const io = require('socket.io')(server);
-const socketService = require('../services/SocketService');
+const socket = require('../bin/socket-handler');
 
 // store io in app context for use from other components.
 app.locals.io = io;
@@ -23,8 +23,8 @@ server.on('error', function (err) {
 server.on('listening', function () {
   handler.onListening(app);
 });
-io.on('connection', function (socket) {
-  socketService.onConnect(app, socket);
+io.on('connection', function () {
+  socket.onConnect(app);
 });
 // pings server every 100ms & look for process blockages. Logs if the wait time goes more than the threshold.
 if(config.blocked && config.blocked.on) {

@@ -41,12 +41,6 @@
       if(dt.code === 0) {
         // add the newly added Expense to the top of the Expenselist..
         elws.addItem(dt.data.id);
-        if (data.expense.accounts.from && data.expense.accounts.from.id) {
-          acs.refreshAccount(data.expense.accounts.from.id);
-        }
-        if (data.expense.accounts.to && data.expense.accounts.to.id) {
-          acs.refreshAccount(data.expense.accounts.to.id);
-        }
       }
     };
     const addExpense = function () {

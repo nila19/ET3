@@ -28,10 +28,8 @@
 			// add the newly added Expense to the top of the Expenselist..
         elws.addItem(dt.data.id);
 
-      // refresh accounts & bill
+      // refresh bill
         bs.refreshBill(data.bill.id);
-        acs.refreshAccount(data.bill.account.id);
-        acs.refreshAccount(data.account.id);
       }
     };
     const payBill = function () {
