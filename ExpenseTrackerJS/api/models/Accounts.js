@@ -62,12 +62,16 @@ class Accounts extends Model {
   update(db, filter, mod, options) {
     const promise = super.update(db, filter, mod, options);
 
+    this.publish(db, filter.id, promise);
+    return promise;
+  }
+  // utility method
+  publish(db, id, promise) {
     promise.then(() => {
-      return this.findById(db, filter.id);
+      return this.findById(db, id);
     }).then((acc) => {
       socket.publish(socket.PIPE.ACCOUNT, acc);
     });
-    return promise;
   }
   findById(db, id) {
     const vm = this;
