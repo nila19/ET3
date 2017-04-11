@@ -14,6 +14,7 @@ const morgan = require('morgan');
 // blocking cross site attacks.
 const helmet = require('helmet');
 const express = require('express');
+const config = require('../config/config');
 
 const app = express();
 
@@ -23,7 +24,9 @@ const routes = require('../config/route-config');
 const mongo = require('../config/mongodb-config');
 
 const setCacheControl = function (res) {
-  res.setHeader('Cache-Control', 'public, max-age=31536000'); // 1 year
+  if(config.cache.on) {  // set cache only for production.
+    res.setHeader('Cache-Control', 'public, max-age=31536000'); // 1 year
+  }
 };
 
 // store logger in app context for use from other components.

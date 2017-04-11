@@ -27,6 +27,7 @@
     "numeral": "^2.0.4",
     "serve-favicon": "~2.3.2",
     "serve-static": "^1.12.1",
+    "socket.io": "^1.7.3",
     "sugar": "^2.0.4"
   },
   "scripts": {
@@ -36,8 +37,7 @@
     "nodebug": "nodemon --inspect --debug-brk api/bin/server.js --region=dev | bunyan",
     "inspect": "node --inspect --debug-brk api/bin/server.js --region=dev | bunyan",
     "migrate": "node api/datamigrate/migrate --region=dev | bunyan",
-    "test": "node api/bin/test.js --region=dev | bunyan",
-    "webpack": "webpack --colors"
+    "test": "node api/bin/test.js --region=dev | bunyan"
   },
   "main": "bin/server.js",
   "devDependencies": {

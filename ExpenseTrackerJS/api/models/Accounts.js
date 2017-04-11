@@ -2,6 +2,7 @@
 
 const Promise = require('bluebird');
 const bills = require('../models/Bills')();
+const socket = require('../services/SocketService');
 
 const Model = require('./Model');
 const schema = {

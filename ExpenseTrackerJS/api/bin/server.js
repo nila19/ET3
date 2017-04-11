@@ -4,11 +4,15 @@ const http = require('http');
 // monitoring process blockages.
 const blocked = require('blocked');
 
-const app = require('./app');
 const handler = require('./handler');
 const config = require('../config/config');
+const app = require('./app');
 const server = http.createServer(app);
+const io = require('socket.io')(server);
+const socketService = require('../services/SocketService');
 
+// store io in app context for use from other components.
+app.locals.io = io;
 app.set('port', config.port);
 server.listen(config.port);
 
@@ -19,7 +23,9 @@ server.on('error', function (err) {
 server.on('listening', function () {
   handler.onListening(app);
 });
-
+io.on('connection', function (socket) {
+  socketService.onConnect(app, socket);
+});
 // pings server every 100ms & look for process blockages. Logs if the wait time goes more than the threshold.
 if(config.blocked && config.blocked.on) {
   blocked(function (ms) {

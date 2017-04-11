@@ -16,6 +16,9 @@ const root = {
   blocked: {
     on: false,
   },
+  cache: {
+    on: false,
+  },
 };
 
 const regions = {
@@ -27,6 +30,9 @@ const regions = {
     blocked: {
       on: true,
       threshold: 50 // milliseconds
+    },
+    cache: {
+      on: true,
     },
     log: {
       path: 'C:\\Java\\logs\\ExpenseTracker.log',

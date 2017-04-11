@@ -3,7 +3,7 @@
 (function (angular) {
   'use strict';
 
-  const dashboardwrapperService = function (ds, ms, acs, ss, els, elws, bs, as) {
+  const dashboardwrapperService = function (ds, ms, acs, ss, els, elws, bs, as, scs) {
     const loadComplete = function () {
 			// don't wait for Step 4 to be complete... Reduces the page loading time.
       ms.data.loading = false;
@@ -17,6 +17,7 @@
       bs.loadAllBills();
       elws.reloadExpenses();
       loadComplete();
+      scs.init(); // initialize the socket during first time load.
     };
     const initialize = function () {
       els.data.thinList = true;
@@ -41,5 +42,5 @@
 
   angular.module('dashboard').factory('dashboardwrapperService', dashboardwrapperService);
   dashboardwrapperService.$inject = ['dashboardService', 'etmenuService', 'accountsService', 'searchService',
-    'explistService', 'explistwrapperService', 'billsService', 'addService'];
+    'explistService', 'explistwrapperService', 'billsService', 'addService', 'socketService'];
 })(window.angular);

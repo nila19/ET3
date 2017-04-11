@@ -73,6 +73,7 @@
     return {
       data: data,
       loadAllAccounts: loadAllAccounts,
+      loadAccount: loadAccount,
       tallyAccount: tallyAccount,
       filterAccount: filterAccount,
       refreshAccount: refreshAccount

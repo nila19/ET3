@@ -3,5 +3,5 @@
 (function (angular) {
   'use strict';
 
-  angular.module('core.services', ['core', 'ngResource']);
+  angular.module('core.services', ['core', 'ngResource', 'dashboard.accounts']);
 })(window.angular);
