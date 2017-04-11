@@ -10,18 +10,18 @@ const plugins = require('gulp-load-plugins')();
 const del = require('del');
 const fs = require('fs');
 
-const gf = require('./api/bin/gulpfunctions');
-const src = gf.src;
+const gp = require('./gulp-paths');
+const src = gp.src;
 
 //* ******************************* tasks ********************************//
 gulp.task('default', function () {
-  gf.log('Usage : gulp [all | watch] --merge --minify');
+  gp.log('Usage : gulp [all | watch] --merge --minify');
 });
 
 gulp.task('all', function (next) {
   return runSequence('server', 'public', function () {
-    gf.log('default', 'END');
-    gf.log('COMPLETED ALL DEFAULT TASKS');
+    gp.log('default', 'END');
+    gp.log('COMPLETED ALL DEFAULT TASKS');
     next();
   });
 });
@@ -31,12 +31,12 @@ gulp.task('watch', ['all'], function () {
   gulp.watch(src.public.less, ['public-less']);
   gulp.watch(src.server.js, ['server-js']);
   gulp.watch(src.server.ejs, ['server.ejs']);
-  gf.log('WATCHING FOR SOURCE CHANGES');
+  gp.log('WATCHING FOR SOURCE CHANGES');
 });
 
 gulp.task('server', function (next) {
   return runSequence('server-js', function () {
-    gf.log('SERVER processing', 'COMPLETED');
+    gp.log('SERVER processing', 'COMPLETED');
     next();
   });
 });
@@ -53,12 +53,12 @@ gulp.task('server-ejs', function () {
 });
 
 gulp.task('public', ['public-js', 'public-less'], function () {
-  gf.log('PUBLIC processing', 'COMPLETED');
+  gp.log('PUBLIC processing', 'COMPLETED');
 });
 
 gulp.task('public-js', function (next) {
   return runSequence('public-js-eslint', 'public-js-merge-modules', 'public-js-merge-rest', function () {
-    gf.log('PUBLIC js processing', 'COMPLETED');
+    gp.log('PUBLIC js processing', 'COMPLETED');
     next();
   });
 });
@@ -70,28 +70,28 @@ gulp.task('public-js-eslint', ['public-js-clean'], function () {
 });
 
 gulp.task('public-js-clean', function () {
-  if(fs.existsSync(gf.dest.folder + '/' + gf.dest.file.modules)) {
-    del.sync(gf.dest.folder + '/' + gf.dest.file.modules);
+  if(fs.existsSync(gp.dest.folder + '/' + gp.dest.file.modules)) {
+    del.sync(gp.dest.folder + '/' + gp.dest.file.modules);
   }
-  if(fs.existsSync(gf.dest.folder + '/' + gf.dest.file.rest)) {
-    del.sync(gf.dest.folder + '/' + gf.dest.file.rest);
+  if(fs.existsSync(gp.dest.folder + '/' + gp.dest.file.rest)) {
+    del.sync(gp.dest.folder + '/' + gp.dest.file.rest);
   }
 });
 
 gulp.task('public-js-merge-modules', function () {
   return streamqueue({objectMode: true}, gulp.src(src.public.minify.modules))
-		.pipe(gulpif(gf.flag.merge, plugins.concat(gf.dest.file.modules)))
-		.pipe(gulpif(gf.flag.minify, plugins.uglify()))
-		.pipe(gulp.dest(gf.dest.folder));
+		.pipe(gulpif(gp.flag.merge, plugins.concat(gp.dest.file.modules)))
+		.pipe(gulpif(gp.flag.minify, plugins.uglify()))
+		.pipe(gulp.dest(gp.dest.folder));
 });
 
 gulp.task('public-js-merge-rest', function () {
   return streamqueue({objectMode: true}, gulp.src(src.public.minify.rest))
-		.pipe(gulpif(gf.flag.merge, plugins.concat(gf.dest.file.rest)))
-		.pipe(gulpif(gf.flag.minify, plugins.uglify()))
-		.pipe(gulp.dest(gf.dest.folder));
+		.pipe(gulpif(gp.flag.merge, plugins.concat(gp.dest.file.rest)))
+		.pipe(gulpif(gp.flag.minify, plugins.uglify()))
+		.pipe(gulp.dest(gp.dest.folder));
 });
 
 gulp.task('public-less', function () {
-  return gulp.src(src.public.less).pipe(plugins.less()).pipe(gulpif(gf.flag.prod, plugins.cleanCss()));
+  return gulp.src(src.public.less).pipe(plugins.less()).pipe(gulpif(gp.flag.prod, plugins.cleanCss()));
 });

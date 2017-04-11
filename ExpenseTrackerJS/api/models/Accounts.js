@@ -54,7 +54,7 @@ class Accounts extends Model {
   }
   findForCityThin(db, cityId) {
     return super.find(db, {cityId: cityId},
-      {fields: {_id: 0, id: 1, name: 1, active: 1, cash: 1}, sort: {active: -1, seq: 1}});
+      {fields: {_id: 0, id: 1, name: 1, active: 1, billed: 1, cash: 1}, sort: {active: -1, seq: 1}});
   }
   findBillable(db, cityId) {
     return super.find(db, {cityId: cityId, active: true, billed: true}, {fields: {_id: 0}, sort: {seq: 1}});

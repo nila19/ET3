@@ -1,5 +1,6 @@
 'use strict';
 
+const socket = require('../bin/socket-handler');
 const Model = require('./Model');
 
 const schema = {
@@ -43,6 +44,26 @@ class Bills extends Model {
   // used by billcloser
   findForCityOpen(db, cityId) {
     return super.find(db, {cityId: cityId, closed: false}, {fields: {_id: 0}, sort: {billDt: -1}});
+  }
+  findOneAndUpdate(db, filter, mod, options) {
+    const promise = super.findOneAndUpdate(db, filter, mod, options);
+
+    this.publish(db, filter.id, promise);
+    return promise;
+  }
+  update(db, filter, mod, options) {
+    const promise = super.update(db, filter, mod, options);
+
+    this.publish(db, filter.id, promise);
+    return promise;
+  }
+  // utility method
+  publish(db, id, promise) {
+    promise.then(() => {
+      return this.findById(db, id);
+    }).then((bill) => {
+      socket.publish(socket.PIPE.BILL, bill);
+    });
   }
   // utility method
   getName(acct, bill) {

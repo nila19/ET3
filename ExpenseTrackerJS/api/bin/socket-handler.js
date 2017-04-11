@@ -1,7 +1,10 @@
+/* eslint no-console: "off" */
 'use strict';
 
 const PIPE = {
-  ACCOUNT: 'account'
+  ACCOUNT: 'account',
+  BILL: 'bill',
+  TRANS: 'transaction'
 };
 let app = null;
 
@@ -10,8 +13,9 @@ const onConnect = function (ap) {
   app.locals.log.info('Socket connected...');
 };
 
-const publish = function (pipe, acc) {
-  app.locals.io.emit(pipe, {code: 0, data: acc});
+const publish = function (pipe, dt) {
+  console.log('Socket : ' + pipe + ' => ' + JSON.stringify(dt));
+  app.locals.io.emit(pipe, {code: 0, data: dt});
 };
 
 module.exports = {

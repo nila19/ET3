@@ -4,7 +4,7 @@
 (function (angular) {
   'use strict';
 
-  const socketService = function (acs) {
+  const socketService = function (acs, bs) {
     let on = false;
     const socket = io();
 
@@ -16,6 +16,9 @@
       socket.on('account', function (acct) {
         acs.loadAccount(acct);
       });
+      socket.on('bill', function (bill) {
+        bs.loadBill(bill);
+      });
     };
 
     return {
@@ -24,5 +27,5 @@
   };
 
   angular.module('core.services').factory('socketService', socketService);
-  socketService.$inject = ['accountsService'];
+  socketService.$inject = ['accountsService', 'billsService'];
 })(window.angular);

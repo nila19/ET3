@@ -6,29 +6,7 @@
   const editService = function (ms, elws, acs, bs, aj, us, V) {
     const data = {
       expense: {},
-      toRefresh: {
-        bills: {}
-      },
       loading: false
-    };
-
-    const initRefresh = function () {
-      data.toRefresh.bills = {};
-    };
-
-    // store the account ids to be refreshed after modify/delete.
-    const loadRefresh = function () {
-      if(data.expense.bill && data.expense.bill.id) {
-        data.toRefresh.bills[data.expense.bill.id] = data.expense.bill.id;
-      }
-    };
-
-    // refresh all impacted bills after modify/delete.
-    const refreshAll = function () {
-      angular.forEach(data.toRefresh.bills, function (value, id) {
-        bs.refreshBill(id);
-      });
-      initRefresh();
     };
 
 		// load Bills
@@ -43,15 +21,12 @@
 
 		// load Page Data
     const loadData = function (dt) {
-      initRefresh();
       data.expense = dt;
       data.expense.amount = _.round(data.expense.amount, 2);
       // refresh the 'from' account from TA so that it will have 'billed' attribute.
       if(data.expense.accounts.from.id) {
         data.expense.accounts.from = us.getObjectOf(V.data.accounts, data.expense.accounts.from.id);
       }
-      // store the account ids, bill id to be refreshed after modify/delete.
-      loadRefresh();
 			// initialize Bills TA.
       if (data.expense.accounts.from.billed) {
         loadBills();
@@ -64,13 +39,10 @@
       us.showMsg('Modify Expense', dt.code);
       if(dt.code === 0) {
         elws.modifyItem(data.expense.id);
-        refreshAll();
       }
       $('#model_Modify').modal('hide');
     };
     const modifyExpense = function () {
-      // re-store the account ids, bill id (if these are modified) to be refreshed after save.
-      loadRefresh();
       aj.post('/edit/modify', data.expense, loadModifyData);
       data.loading = true;
     };
@@ -81,7 +53,6 @@
       us.showMsg('Delete Expense', dt.code);
       if(dt.code === 0) {
         elws.deleteItem(data.expense.id);
-        refreshAll();
       }
       $('#model_Delete').modal('hide');
     };

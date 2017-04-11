@@ -38,10 +38,6 @@
       loadCurrentPage();
       data.loading = false;
     };
-    const refreshBill = function (id) {
-      data.loading = true;
-      aj.get('/dashboard/bill/' + id, {}, loadBill);
-    };
     const buildRowsForTab = function () {
       data.rows = data.tab === 'OPEN' ? data.openBills : data.closedBills;
       data.maxPageNo = Math.ceil(data.rows.length / rows) - 1;
@@ -89,7 +85,7 @@
       loadCurrentPage: loadCurrentPage,
       loadBillsForAcct: loadBillsForAcct,
       loadAllBills: loadAllBills,
-      refreshBill: refreshBill
+      loadBill: loadBill
     };
   };
 

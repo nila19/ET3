@@ -27,9 +27,6 @@
       if(dt.code === 0) {
 			// add the newly added Expense to the top of the Expenselist..
         elws.addItem(dt.data.id);
-
-      // refresh bill
-        bs.refreshBill(data.bill.id);
       }
     };
     const payBill = function () {

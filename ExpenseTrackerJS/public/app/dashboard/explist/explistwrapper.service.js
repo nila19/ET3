@@ -71,7 +71,6 @@
         data.tempPool.push(swap);
       });
 
-      // console.log('Publishing swaps...' + tempPool.length);
       els.data.loading = true;
       aj.post('/edit/swap/' + ms.data.menu.city.id, data.tempPool, resetSwapPool);
     };
