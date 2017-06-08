@@ -24,7 +24,7 @@ const root = {
 const regions = {
   prod: {
     env: 'PROD',
-    port: 3000,
+    port: 8000,
     dburl: 'localhost:27017/expense',
     billcloser: true,
     blocked: {
@@ -42,9 +42,10 @@ const regions = {
   },
   dev: {
     env: 'DEV',
-    port: 3300,
+    port: 8800,
     dburl: 'localhost:27017/test',
     sqlite: 'C:\\Java\\SQLite\\Data\\Prod - v2017.03.13.db',
+    billcloser: true,
     log: {
       path: 'C:\\Java\\logs\\ExpenseTracker-Test.log',
       period: '1m',

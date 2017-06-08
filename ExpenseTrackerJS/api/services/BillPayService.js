@@ -1,5 +1,6 @@
 'use strict';
 
+const _ = require('lodash');
 const Promise = require('bluebird');
 const addservice = require('./AddService');
 const bills = require('../models/Bills')();
@@ -31,7 +32,7 @@ const buildTransInput = function (data) {
       accounts: {from: data.account, to: data.bill.account},
       category: null,
       description: 'CC Bill Payment',
-      amount: data.bill.balance,
+      amount: _.toNumber(data.paidAmt),
       transDt: data.paidDt,
       adhoc: false,
       adjust: true

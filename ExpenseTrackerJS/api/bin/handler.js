@@ -24,7 +24,7 @@ const onError = function (err, app) {
 };
 
 const onListening = function (app) {
-  app.locals.log.info('Listening on port : ' + app.get('port'));
+  app.locals.log.info('Listening on port :: ' + app.get('port'));
 };
 
 const unCaught = function (err, app) {

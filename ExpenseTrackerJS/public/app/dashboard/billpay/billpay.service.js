@@ -8,6 +8,7 @@
       bill: null,
       city: null,
       account: '',
+      paidAmt: 0,
       paidDt: ''
     };
 
@@ -16,6 +17,8 @@
       data.paidDt = '';
       data.bill.balance = _.round(data.bill.balance, 2);
       data.bill.amount = _.round(data.bill.amount, 2);
+      // default it to balance amount.
+      data.paidAmt = data.bill.balance;
     };
     const loadData = function (dt) {
       data.bill = dt;

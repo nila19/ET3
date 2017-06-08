@@ -17,17 +17,23 @@
             <input type="text" ng-model="$ctrl.data.bill.name" class="form-control" disabled="disabled">
           </div>
           <div class="form-group">
-            <label class="control-label">Bill Balance</label>
-            <input type="text" ng-model="$ctrl.data.bill.balance" xx-amount class="form-control" disabled="disabled">
+            <div class="col-md-6">
+              <label class="control-label">Bill Balance</label>
+              <input type="text" ng-model="$ctrl.data.bill.balance" class="form-control" disabled="disabled">
+            </div>
+            <div class="col-md-6">
+              <label class="control-label ">Bill Due Date</label>
+              <input type="text" ng-model="$ctrl.data.bill.dueDt" class="form-control" xx-date disabled="disabled">
+            </div>
           </div>
-          <div class="form-group ">
-            <label class="control-label ">Bill Due Date</label>
-            <input type="text" ng-model="$ctrl.data.bill.dueDt " xx-date class="form-control " disabled="disabled">
+          <div class="form-group">
+            <label class="control-label">Pay From </label>
+            <input type="text" ng-model="$ctrl.data.account" class="form-control" required uib-typeahead="acc as acc.name for acc in $ctrl.ta.accounts | filter: {active: true, cash: true} | filter:$viewValue" typeahead-show-hint="true" typeahead-min-length="0" typeahead-editable="false">
           </div>
           <div class="form-group">
             <div class="col-md-6">
-              <label class="control-label">Pay From </label>
-              <input ng-model="$ctrl.data.account" type="text" class="form-control" required uib-typeahead="acc as acc.name for acc in $ctrl.ta.accounts | filter: {active: true, cash: true} | filter:$viewValue" typeahead-show-hint="true" typeahead-min-length="0" typeahead-editable="false">
+              <label class="control-label">Payment Amount </label>
+              <input type="text" ng-model="$ctrl.data.paidAmt" class="form-control" xx-amount required>
             </div>
             <div class="col-md-6">
               <label class="control-label">Date</label>
