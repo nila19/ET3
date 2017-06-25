@@ -1,5 +1,23 @@
 {
   "extends": ["eslint:recommended", "google"],
+  "env": {
+    "es6": true,
+    "node": true,
+    "mongo": true,
+    "mocha": true
+  },
+  "parserOptions": {
+    "ecmaVersion": 6,
+    "sourceType": "module",
+    "ecmaFeatures": {
+      "experimentalObjectRestSpread": true
+    }
+  },
+  "globals": {
+    "window": true,
+    "$": true,
+    "_": true
+  },
   "rules": {
     "max-len": [2, 120, 2],
     "new-cap": ["error", {
@@ -34,7 +52,7 @@
     }],
     "prefer-destructuring": "off",
     "no-magic-numbers": ["error", {
-      "ignore": [0, 1, 2, 3, 4, 5, -1, 11, 31, 0.01, -0.01],
+      "ignore": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, -1, 11, 31, 0.01, -0.01],
       "ignoreArrayIndexes": true,
       "enforceConst": true,
       "detectObjects": true
@@ -80,20 +98,5 @@
     "no-process-env": "warn",
     "no-process-exit": "warn",
     "no-sync": "warn"
-  },
-  "env": {
-    "es6": true,
-    "node": true,
-    "mongo": true
-  },
-  "parserOptions": {
-    "sourceType": "module"
-  },
-  "globals": {
-    "window": true,
-    "toastr": true,
-    "$": true,
-    "_": true,
-    "moment": true
   }
 }

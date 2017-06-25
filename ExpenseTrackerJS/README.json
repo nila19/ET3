@@ -1,0 +1,27 @@
+{
+  "Front-end spec files execution": {
+    "A. Mocha": {
+      "01": "Run >> npm run dev :: to start server against dev database.",
+      "02": "Run >> Gulp watch--merge :: to compile all spec files into ./public/dist.",
+      "03": "Browser >> http://localhost:8800/test/test.htm",
+      "04": "View mocha results in the browser."
+    },
+    "B.Karma (+ Mocha) - ./karma.conf.js": {
+      "01": "Run >> npm run dev :: to start server against dev database.",
+      "02": "Run >> Gulp watch--merge :: to compile all spec files into ./public/dist.",
+      "03": "Run >> npm run karma :: to execute all front-end mocha scripts",
+      "04": "View mocha results in the console."
+    }
+  },
+  "Back-end spec files execution": {
+    "A. Mocha - ./test/mocha.opts": {
+      "01": "Run >> npm test :: to execute mocha tests & watch for changes.",
+      "02": "View mocha results in the console."
+    },
+    "B. Istanbul(+Mocha) - ./nycrc": {
+      "01": "Run >> npm istanbul :: to execute mocha tests via istanbul for code coverage.",
+      "02": "View istanbul results in the console.",
+      "03": "View istanbul results @ ./coverage/lcov-report/index.html"
+    }
+  }
+}

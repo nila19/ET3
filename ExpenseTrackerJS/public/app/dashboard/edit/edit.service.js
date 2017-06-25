@@ -9,7 +9,7 @@
       loading: false
     };
 
-		// load Bills
+    // load Bills
     const loadBillData = function (dt) {
       V.data.bills = dt.data;
     };
@@ -19,25 +19,25 @@
       aj.query('/dashboard/bills', input, loadBillData);
     };
 
-		// load Page Data
+    // load Page Data
     const loadData = function (dt) {
       data.expense = dt;
       data.expense.amount = _.round(data.expense.amount, 2);
-      // refresh the 'from' account from TA so that it will have 'billed' attribute.
-      if(data.expense.accounts.from.id) {
+      // refresh the 'from' account from type-ahead so that it will have 'billed' attribute.
+      if (data.expense.accounts.from.id) {
         data.expense.accounts.from = us.getObjectOf(V.data.accounts, data.expense.accounts.from.id);
       }
-			// initialize Bills TA.
+      // initialize Bills type-ahead.
       if (data.expense.accounts.from.billed) {
         loadBills();
       }
     };
 
-		// modify Expense
+    // modify Expense
     const loadModifyData = function (dt) {
       data.loading = false;
       us.showMsg('Modify Expense', dt.code);
-      if(dt.code === 0) {
+      if (dt.code === 0) {
         elws.modifyItem(data.expense.id);
       }
       $('#model_Modify').modal('hide');
@@ -47,31 +47,31 @@
       data.loading = true;
     };
 
-		// delete Expense
+    // delete Expense
     const loadDeleteData = function (dt) {
       data.loading = false;
       us.showMsg('Delete Expense', dt.code);
-      if(dt.code === 0) {
+      if (dt.code === 0) {
         elws.deleteItem(data.expense.id);
       }
       $('#model_Delete').modal('hide');
     };
     const deleteExpense = function () {
-      aj.post('/edit/delete/' + data.expense.id, {},
-					loadDeleteData);
+      aj.post('/edit/delete/' + data.expense.id, {}, loadDeleteData);
       data.loading = true;
     };
 
     return {
       data: data,
+      loadBills: loadBills,
       loadData: loadData,
       modifyExpense: modifyExpense,
-      deleteExpense: deleteExpense,
-      loadBills: loadBills
+      deleteExpense: deleteExpense
     };
   };
 
   angular.module('dashboard.edit').factory('editService', editService);
   editService.$inject = ['etmenuService', 'explistwrapperService', 'accountsService', 'billsService', 'ajaxService',
-    'utilsService', 'VALUES'];
+    'utilsService', 'VALUES'
+  ];
 })(window.angular);

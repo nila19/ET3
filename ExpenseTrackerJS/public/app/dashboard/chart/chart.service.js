@@ -53,16 +53,14 @@
       data.data[0] = dt.data.regulars.slice(0, data.cols);
       data.data[1] = dt.data.adhocs.slice(0, data.cols);
       data.data[2] = dt.data.totals.slice(0, data.cols);
-			// chartOptions.high = Math.max.apply(null, data.series[0]);
+      // chartOptions.high = Math.max.apply(null, data.series[0]);
 
       buildDataSet();
       data.loaded = true;
       ds.data.loading.donestep = 4;
     };
     const getChartData = function () {
-      aj.get('/summary/chart', {
-        cityId: ms.data.menu.city.id
-      }, loadChartData);
+      aj.get('/summary/chart', {cityId: ms.data.menu.city.id}, loadChartData);
     };
     const renderChart = function () {
       if (!data.loaded) {

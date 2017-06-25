@@ -20,11 +20,11 @@
     const clearFilter = function () {
       ss.initializeData();
       if (ms.data.page === C.PAGES.DASHBOARD) {
-				// clear filter for Bills
+        // clear filter for Bills
         if (acs.data.filterBy) {
           bs.data.filterApplied = false;
           bs.clearBillsList();
-          bs.loadAllBills();
+          bs.loadBills();
         }
         bs.data.filterBy = null;
         acs.data.filterBy = null;
@@ -47,7 +47,7 @@
       els.deleteItem(id);
     };
 
-		// swap Expenses.
+    // swap Expenses.
     const resetSwapPool = function () {
       angular.forEach(data.tempPool, function (temp) {
         const i = {idx: -1, i: 0};
@@ -98,7 +98,7 @@
         toTrans: id2
       });
 
-			// swap them in the $view.
+      // swap them in the $view.
       const trans1 = els.data.rows[idx1];
 
       els.data.rows[idx1] = els.data.rows[idx2];
@@ -114,8 +114,9 @@
     };
 
     return {
-      clearFilter: clearFilter,
+      data: data,
       reloadExpenses: reloadExpenses,
+      clearFilter: clearFilter,
       addItem: addItem,
       modifyItem: modifyItem,
       deleteItem: deleteItem,
@@ -125,5 +126,6 @@
 
   angular.module('dashboard.explist').factory('explistwrapperService', explistwrapperService);
   explistwrapperService.$inject = ['explistService', 'etmenuService', 'searchService', 'accountsService',
-    'billsService', 'ajaxService', 'utilsService', 'CONSTANTS', '$timeout'];
+    'billsService', 'ajaxService', 'utilsService', 'CONSTANTS', '$timeout'
+  ];
 })(window.angular);

@@ -1,4 +1,5 @@
 /** ** ./dashboard/accounts/accounts.component.js *** */
+/* global moment*/
 
 (function (angular) {
   'use strict';
@@ -6,12 +7,12 @@
   const AccountsController = function (acs, ds, bs, elws) {
     const vm = this;
 
-		// ***** function declarations *****//
+    // ***** function declarations *****//
     const init = function () {
       vm.data = acs.data;
     };
     const filterAccount = function (id) {
-			// if same account is already selected, do nothing.
+      // if same account is already selected, do nothing.
       if (acs.data.filterBy !== id) {
         acs.filterAccount(id);
         elws.reloadExpenses();
@@ -24,7 +25,7 @@
       return moment().isSame(moment(tallyDt), 'day');
     };
 
-		// ***** exposed functions ******//
+    // ***** exposed functions ******//
     vm.filterAccount = filterAccount;
     vm.tallyAccount = tallyAccount;
     vm.isTallyToday = isTallyToday;

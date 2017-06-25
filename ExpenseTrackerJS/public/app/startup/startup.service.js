@@ -1,4 +1,5 @@
 /** ** ./startup/startup.service.js *** */
+/* eslint no-console: "off" */
 
 (function (angular) {
   'use strict';
@@ -11,7 +12,7 @@
     };
     const TEN = 10;
     const TOTAL = 80;
-    const WAIT = 100;  // milliseconds
+    const WAIT = 100; // milliseconds
 
     const checkLoadingComplete = function () {
       if (data.status >= TOTAL) {
@@ -80,7 +81,6 @@
       aj.get('/startup/city/default', {}, loadDefaultCity);
     };
     const loadConnect = function (dt) {
-      // if resp code is 0.
       data.connect = (dt.code === 0);
       if (data.connect) {
         V.data.env = dt.data.env;
@@ -89,15 +89,15 @@
         getCities();
       }
     };
-    const connect = function () {
-      aj.get('/startup/connect', {}, loadConnect);
+    const connect = function (cb) {
+      aj.get('/startup/connect', {}, cb);
     };
-    const loadAll = function () {
+    const loadAll = function (cb = loadConnect) {
       if (!data.loadInitiated) {
         ms.data.loading = true;
         data.loadInitiated = true;
         // console.log('@ StartupService: Loading startup components...');
-        connect();
+        connect(cb);
       }
     };
     const loadAllForCity = function () {
@@ -117,7 +117,7 @@
     return {
       data: data,
       loadAll: loadAll,
-      loadOthers: loadOthers,
+      loadOthers: loadOthers
     };
   };
 

@@ -2,9 +2,12 @@
 /**/bower_components/
 /public/dist/
 /public/dist2/
+/coverage/
 
 npm-debug.log
 
+.nyc_output/
+.vscode/
 .jscsrc
 .tern-project
 README.md

@@ -1,4 +1,5 @@
 /** ** ./core/services/ajax.service.js *** */
+/* eslint no-console: "off" */
 
 (function (angular) {
   'use strict';
@@ -21,6 +22,7 @@
     };
     const error = function (resp) {
       us.show('AJAX Error!!.. ' + resp.status + ' :: ' + resp.statusText, C.MSG.DANGER);
+      console.log('AJAX Error!!.. ' + resp.status + ' :: ' + resp.statusText);
     };
 
     return {

@@ -12,7 +12,9 @@ const onConnect = function (ap) {
 };
 
 const publish = function (pipe, dt) {
-  app.locals.io.emit(pipe, {code: 0, data: dt});
+  if (app && app.locals) {
+    app.locals.io.emit(pipe, {code: 0, data: dt});
+  }
 };
 
 module.exports = {

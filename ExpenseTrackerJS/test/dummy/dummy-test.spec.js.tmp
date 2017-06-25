@@ -1,0 +1,47 @@
+'use strict';
+const assert = require('assert');
+const chai = require('chai');
+const expect = chai.expect;
+// const sinon = require('sinon');
+const calc = require('../../api/utils/dummy-calculator.js');
+
+describe('Array #indexOf', () => {
+  it('should return -1 when the value is not present.',
+    () => assert.equal(-1, [1, 2, 3].indexOf(5)));
+
+  it('should return value when the value is present.',
+    () => expect([1, 2, 3].indexOf(3)).to.equal(2));
+});
+
+describe('Calculator', () => {
+  describe('add', () => {
+    it('should be equal to 5', () => {
+      expect(calc.add(2, 3)).to.equal(5);
+    });
+  });
+  // describe('multiply', () => {
+  //   const clock = sinon.useFakeTimers();
+  //   const eventStub = sinon.stub(calc, 'emit');
+  //   const cbSpy = sinon.spy();
+  //   const _1000 = 1000;
+
+  //   it('should be equal to 10 & emit the event before callback', (cb) => {
+  //     calc.multiply(2, 5, cbSpy);
+  //     clock.tick(_1000);
+  //     expect(cbSpy.called).to.equal(true);
+  //     expect(eventStub.calledWithExactly('result', 10)).to.equal(true);
+  //     expect(eventStub.calledBefore(cbSpy)).to.equal(true);
+  //     cb();
+  //   });
+
+  //   after(() => clock.restore());
+  // });
+  // describe('subtract', () => {
+  //   it('should be equal to 3', (cb) => {
+  //     calc.subtract(5, 2, (result) => {
+  //       expect(result).to.equal(3);
+  //       cb();
+  //     });
+  //   });
+  // });
+});

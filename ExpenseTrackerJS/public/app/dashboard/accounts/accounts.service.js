@@ -45,7 +45,7 @@
     const loadTally = function (dt) {
       ms.data.loading = false;
       us.showMsg('Tally', dt.code);
-      if(dt.code === 0) {
+      if (dt.code === 0) {
         ss.doSearch();
       }
     };
@@ -57,12 +57,12 @@
     const filterAccount = function (id) {
       data.filterBy = id;
       bs.clearBillsList();
-      bs.loadBillsForAcct(id);
+      bs.loadBills(id);
       ss.data.account = {
         id: id
       };
       ss.data.bill = null;
-			// search will be triggered from ctrl.
+      // search will be triggered from ctrl.
     };
 
     return {
@@ -76,5 +76,6 @@
 
   angular.module('dashboard.accounts').factory('accountsService', accountsService);
   accountsService.$inject = ['etmenuService', 'dashboardService', 'billsService', 'explistService', 'searchService',
-    'utilsService', 'ajaxService', 'CONSTANTS'];
+    'utilsService', 'ajaxService', 'CONSTANTS'
+  ];
 })(window.angular);

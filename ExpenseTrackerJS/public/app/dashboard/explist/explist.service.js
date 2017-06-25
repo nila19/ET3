@@ -34,6 +34,9 @@
     };
     const paginate = function () {
       data.maxPageNo = Math.ceil(data.rows.length / data.rowCount) - 1;
+      // data.total = data.rows.map((r) => r.amount).reduce((acc, r) => {
+      //   acc + r;
+      // }, 0);
       calTotal();
       loadCurrentPage();
     };
@@ -62,9 +65,8 @@
 
     return {
       data: data,
-      loadData: loadData,
-      paginate: paginate,
       loadCurrentPage: loadCurrentPage,
+      loadData: loadData,
       addItem: addItem,
       modifyItem: modifyItem,
       deleteItem: deleteItem

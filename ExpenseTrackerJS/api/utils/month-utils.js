@@ -13,7 +13,7 @@ const getMonth = function (date, year) {
     bills: null,
     aggregate: year,
     name: moment(date).format(year ? fmt.YYYY : fmt.MMMYY),
-    seq: _.toNumber(moment(date).format(fmt.YYYYMM)) + (year ? 1: 0),
+    seq: _.toNumber(moment(date).format(fmt.YYYYMM)) + (year ? 1 : 0),
     year: _.toNumber(moment(date).format(fmt.YYYY))
   };
 };
@@ -24,7 +24,7 @@ const buildMonthsList = function (dates, log) {
     async.waterfall([function (cb) {
       return cb(null, dates);
     }, buildMonths, addCurrentMonth, addYears, sortMonths], function (err, months) {
-      if(err) {
+      if (err) {
         cu.logErr(log, err);
         return reject(err);
       }
@@ -38,15 +38,15 @@ const buildMonths = function (dates, next) {
   const months = [];
 
   dates.forEach(function (date) {
-    months.push(getMonth(date, false));
+    months.push(getMonth(moment(date).startOf('month').format(fmt.YYYYMMDD), false));
   });
   return next(null, months);
 };
 
 // step 2.2 - check if current month is in the list, if not add it.
 const addCurrentMonth = function (months, next) {
-  if(!_.find(months, ['seq', getMonth(moment().format(fmt.YYYYMMDD), false).seq])) {
-    months.push(getMonth(moment().format(fmt.YYYYMMDD), false));
+  if (!_.find(months, ['seq', getMonth(moment().format(fmt.YYYYMMDD), false).seq])) {
+    months.push(getMonth(moment().startOf('month').format(fmt.YYYYMMDD), false));
   }
   return next(null, months);
 };

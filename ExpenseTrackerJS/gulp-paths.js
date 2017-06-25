@@ -34,20 +34,20 @@ const path = {
   },
   public: {
     js: dir.public + '/app/**/*.js',
+    jsTest: dir.public + '/test/**/*.spec.js',
     less: dir.public + '/css/**/*.less',
     htm: dir.public + '/app/**/*.htm',
     images: dir.public + '/images/**/*.*',
     minify: {
       modules: dir.public + '/app/**/*.module.js',
       rest: dir.public + '/app/**/*.js',
+      test: dir.public + '/test/**/*.spec.js',
     }
   },
   server: {
     js: {
       api: dir.root + '/api/**/*.js',
-      bin: dir.root + '/bin/**/*.js',
-      routes: dir.root + '/routes/**/*.js',
-      utils: dir.root + '/utils/**/*.js'
+      test: dir.root + '/test/**/*.spec.js'
     },
     ejs: dir.root + '/views/**/*.ejs'
   }
@@ -68,10 +68,12 @@ const flag = {
 const src = {
   public: {
     js: [path.public.js].concat(buildExcludes()),
+    jsTest: [path.public.jsTest].concat(buildExcludes()),
     less: [path.public.less].concat(buildExcludes()),
     minify: {
       modules: [path.public.minify.modules].concat(buildExcludes()),
-      rest: [path.public.minify.rest].concat(buildExcludes(path.public.minify.modules))
+      rest: [path.public.minify.rest].concat(buildExcludes(path.public.minify.modules)),
+      test: [path.public.minify.test].concat(buildExcludes())
     }
   },
   server: {
@@ -84,7 +86,8 @@ const dest = {
   folder: dir.public + '/dist',
   file: {
     modules: 'app.all.module.js',
-    rest: 'app.all.js'
+    rest: 'app.all.js',
+    test: 'test.all.js'
   }
 };
 
