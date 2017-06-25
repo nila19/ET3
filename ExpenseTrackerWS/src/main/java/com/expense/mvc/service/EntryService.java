@@ -165,9 +165,8 @@ public class EntryService {
 					if (fr == t2.getToAccount().getAccountId()) {
 						t.setFromBalanceBf(t2.getToBalanceAf());
 					}
-					double transamt = (t.getFromAccount().getType() == Account.Type.CASH.type) ? t.getAmount()
-							: t.getAmount() * -1;
-					t.setFromBalanceAf(t.getFromBalanceBf() - transamt);
+					double amt = (t.getFromAccount().getType() == Account.Type.CASH.type) ? t.getAmount() : t.getAmount() * -1;
+					t.setFromBalanceAf(t.getFromBalanceBf() - amt);
 					break;
 				}
 			}
@@ -188,9 +187,8 @@ public class EntryService {
 					if (to == t2.getToAccount().getAccountId()) {
 						t.setToBalanceBf(t2.getToBalanceAf());
 					}
-					double transamt = (t.getToAccount().getType() == Account.Type.CASH.type) ? t.getAmount()
-							: t.getAmount() * -1;
-					t.setToBalanceAf(t.getToBalanceBf() + transamt);
+					double amt = (t.getToAccount().getType() == Account.Type.CASH.type) ? t.getAmount() : t.getAmount() * -1;
+					t.setToBalanceAf(t.getToBalanceBf() + amt);
 					break;
 				}
 			}

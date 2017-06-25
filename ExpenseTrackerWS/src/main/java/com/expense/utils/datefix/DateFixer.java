@@ -1,4 +1,4 @@
-package com.expense.utils;
+package com.expense.utils.datefix;
 
 import java.sql.Connection;
 import java.sql.Date;
@@ -105,8 +105,7 @@ public class DateFixer {
 	}
 
 	private static void billUpdate(Connection con, HashMap<Integer, Bill> m) throws SQLException, ParseException {
-		String sql = "UPDATE BILL SET CREATED_DT = ?, BILL_DT = ?, DUE_DT = ?, BILL_PAID_DT = ?  "
-				+ " WHERE BILL_ID = ?";
+		String sql = "UPDATE BILL SET CREATED_DT = ?, BILL_DT = ?, DUE_DT = ?, BILL_PAID_DT = ?  " + " WHERE BILL_ID = ?";
 		PreparedStatement stmt = con.prepareStatement(sql);
 		for (Bill b : m.values()) {
 			stmt.setTimestamp(1, b.getCreatedDate());
@@ -167,8 +166,7 @@ public class DateFixer {
 		stmt.close();
 	}
 
-	private static void tallySecondFetch(Connection con, HashMap<Integer, String> m)
-			throws SQLException, ParseException {
+	private static void tallySecondFetch(Connection con, HashMap<Integer, String> m) throws SQLException, ParseException {
 		Statement stmt = con.createStatement();
 		for (Integer id : m.keySet()) {
 			ResultSet rs = stmt.executeQuery("SELECT * FROM TALLY_HISTORY WHERE TALLY_SEQ = " + id);
@@ -213,8 +211,7 @@ public class DateFixer {
 		stmt.close();
 	}
 
-	private static void acctSecondFetch(Connection con, HashMap<Integer, String> m)
-			throws SQLException, ParseException {
+	private static void acctSecondFetch(Connection con, HashMap<Integer, String> m) throws SQLException, ParseException {
 		Statement stmt = con.createStatement();
 		for (Integer id : m.keySet()) {
 			if (m.get(id) != null) {
@@ -289,8 +286,7 @@ public class DateFixer {
 		stmt.close();
 	}
 
-	private static void transSecondFetch(Connection con, HashMap<Integer, Trans> m)
-			throws SQLException, ParseException {
+	private static void transSecondFetch(Connection con, HashMap<Integer, Trans> m) throws SQLException, ParseException {
 		Statement stmt = con.createStatement();
 		for (Trans t : m.values()) {
 			ResultSet rs = stmt.executeQuery("SELECT * FROM TRANSACTIONS WHERE TRANS_ID = " + t.getId());
